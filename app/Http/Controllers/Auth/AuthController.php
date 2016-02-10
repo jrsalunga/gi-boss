@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-//use App\Events\UserLoggedIn;
+use App\Events\UserLoggedIn;
 
 class AuthController extends Controller
 {
@@ -115,7 +115,7 @@ class AuthController extends Controller
         //$credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            //event(new UserLoggedIn($request));
+            event(new UserLoggedIn($request));
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 

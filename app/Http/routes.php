@@ -10,12 +10,21 @@ Route::post('login', ['as'=>'auth.postlogin', 'uses'=>'Auth\AuthController@postL
 Route::get('logout', ['as'=>'auth.getlogout', 'uses'=>'Auth\AuthController@getLogout']);
 
 
-Route::get('/', ['middleware' => 'auth', 'uses'=>'DashboardController@getIndex']);
+Route::group(['middleware' => 'auth'], function(){
 
-Route::get('dashboard', ['middleware' => 'auth', 'uses'=>'DashboardController@getIndex']);
+Route::get('settings/{param1?}/{param2?}', ['uses'=>'SettingsController@getIndex'])
+    ->where(['param1'=>'password', 
+                    'param2'=>'week|[0-9]+']);
+
+Route::post('/settings/password',  ['uses'=>'SettingsController@changePassword']);
 
 
+Route::get('/', ['uses'=>'DashboardController@getIndex']);
 
+Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
+
+
+}); /******* end middeware:auth ********/
 
 
 

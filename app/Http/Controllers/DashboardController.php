@@ -27,6 +27,6 @@ class DashboardController extends Controller
 
 		$dailysales = $this->repo->branchByDate($date);
 		
-		return view('index')->with('dailysales', $dailysales)->with('date', $date);
+		return view('dashboard')->with('dailysales', $dailysales)->with('date', $date);
 	}
 }

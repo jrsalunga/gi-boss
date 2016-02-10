@@ -6,11 +6,11 @@
 <ul class="nav navbar-nav navbar-right"> 
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <span class="glyphicon glyphicon-cog"></span>
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
       <b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
-    	<li><a href="/settings"><span class="glyphicon glyphicon-cloud-upload"></span> Settings</a></li>
+    	<li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
       <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
     </ul>
   </li>

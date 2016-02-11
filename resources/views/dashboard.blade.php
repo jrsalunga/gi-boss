@@ -55,17 +55,25 @@
   			<tr>
   				<td>{{ $key }} - {{ $ds['br']->descriptor }}</td>
           @if(is_null($ds['ds']))
-            <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @else
-            <td>{{ number_format($ds['ds']->sales,2) }}</td>
-            <td>{{ number_format($ds['ds']->custcount,0) }}</td>
-            <td>{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
-            <td>{{ number_format($ds['ds']->tips,2) }}</td>
-            <td>{{ $ds['ds']->custcount==0 || $ds['ds']->tips=='0.00' ? 0:number_format(($ds['ds']->sales/$ds['ds']->custcount)/$ds['ds']->tips, 3) }}</td>
-            <td>{{ $ds['ds']->empcount }}</td>
-            <td>{{ $ds['ds']->sales=='0.00' ? 0:number_format(($ds['br']->mancost*$ds['ds']->empcount)/$ds['ds']->sales,2) }}</td>
-            <td>-</td>
-            <td>-</td>
+            <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
+            <td class="text-right">{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->tips,2) }}</td>
+            <td class="text-right">{{ $ds['ds']->custcount==0 || $ds['ds']->tips=='0.00' ? 0:number_format(($ds['ds']->sales/$ds['ds']->custcount)/$ds['ds']->tips, 3) }}</td>
+            <td class="text-right">{{ $ds['ds']->empcount }}</td>
+            <td class="text-right">{{ $ds['ds']->sales=='0.00' ? 0:number_format(($ds['br']->mancost*$ds['ds']->empcount)/$ds['ds']->sales,2) }}</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @endif
           
   			</tr>

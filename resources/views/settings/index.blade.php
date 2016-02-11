@@ -16,7 +16,8 @@
   	<div class="col-sm-3">
   		<ul class="nav nav-pills nav-stacked">
   			<li role="presentation" class="active"><a href="/settings">Profile</a></li>
-			  <li role="presentation"><a href="/settings/password">Change Password</a></li>
+        <li role="presentation"><a href="/settings/password">Change Password</a></li>
+			  <li role="presentation"><a href="/settings/bossbranch">Branch</a></li>
 			</ul>
   	</div>
   	<div class="col-sm-9">

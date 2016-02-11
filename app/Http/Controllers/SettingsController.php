@@ -8,8 +8,17 @@ use App\User;
 use Validator;
 use Auth;
 use App\Events\UserChangePassword;
+use App\Models\Branch;
+use App\Models\BossBranch;
+use App\Repositories\BossBranchRepository;
 
 class SettingsController extends Controller {
+
+	protected $repository;
+
+	public function __construct(BossBranchRepository $repository) {
+		$this->repository = $repository;
+	}
 
 
 
@@ -20,6 +29,8 @@ class SettingsController extends Controller {
 			return $this->makeViewWeek($request, $param1, $param3); //task/mansked/2016/week/7
 		else if(preg_match('/^[A-Fa-f0-9]{32}+$/', $param1) && strtolower($param2)==='edit')
 			return $this->makeEditView($request, $param1);
+		else if($param1==='bossbranch' && $param2==null)   //preg_match('/^[A-Fa-f0-9]{32}+$/',$action))
+			return $this->makeBossbranchView($request, $param1, $param2);
 		else if($param1==='password' && $param2==null)   //preg_match('/^[A-Fa-f0-9]{32}+$/',$action))
 			return $this->makePasswordView($request, $param1, $param2);
 		else
@@ -73,6 +84,60 @@ class SettingsController extends Controller {
 
 		return redirect('/settings/password')->with('alert-success', 'Password change!');
 		return view('settings.password');	
+	}
+
+
+
+	public function makeBossbranchView(Request $request, $p1, $p2) {
+
+		$arr = [];
+
+		/*
+		$branchs = Branch::orderBy('code', 'ASC')->get();
+		$i = 0;
+		foreach ($branchs as $branch) {
+			$b = BossBranch::where('branchid', $branch->id)->where('bossid', $request->user()->id)->first();
+			$arr[$i]['branch'] = $branch;
+			$arr[$i]['assign'] = is_null($b) ? null : $branch->id;
+			$i++;
+		}
+		*/
+		
+		$branchs = Branch::leftJoin('boss.bossbranch', 'hr.branch.id', '=', 'boss.bossbranch.branchid')
+										 ->select('hr.branch.*', 'boss.bossbranch.branchid')
+										 ->orderBy('hr.branch.code', 'ASC')
+										 ->get();
+		
+		for ($i=0; $i < count($branchs) ; $i++) { 
+			$arr[$i]['branch'] = $branchs[$i];
+			$arr[$i]['assign'] = is_null($branchs[$i]->branchid) ? null : $branchs[$i]->branchid;
+		}
+		
+
+		//return $arr;
+		
+		return view('settings.bossbranch')->with('datas', $arr);	
+	}
+
+
+	public function assignBranch(Request $request){
+
+
+		if($request->ajax()){
+			$b = BossBranch::where('branchid', $request->input('branchid'))
+								->where('bossid', $request->user()->id) 
+								->first();
+				// false = create & null
+			if ($request->input('assign') && is_null($b)) 
+				//$this->repository->create()
+				BossBranch::create(['branchid' => $request->input('branchid'), 'bossid' => $request->user()->id]);
+			//elseif (!$request->input('assign') && !is_null($b)) // true = delete & not null
+			//	echo ''; //$b->delete();
+			else 
+				$b->delete();
+		}
+
+		return json_encode(['branch'=>$b, 'assign'=>$request->input('assign')]);
 	}
 
 

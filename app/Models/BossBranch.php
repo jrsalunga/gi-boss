@@ -8,6 +8,13 @@ class BossBranch extends BaseModel {
 	protected $table = 'bossbranch';
  	protected $fillable = ['bossid', 'branchid'];
 
+
+ 	public function __construct(array $attributes = [])
+  {
+    parent::__construct($attributes);
+    
+  }
+
 	public function branch() {
     return $this->belongsTo('App\Models\Branch', 'branchid');
   }

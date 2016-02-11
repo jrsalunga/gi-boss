@@ -13,11 +13,11 @@ Route::get('logout', ['as'=>'auth.getlogout', 'uses'=>'Auth\AuthController@getLo
 Route::group(['middleware' => 'auth'], function(){
 
 Route::get('settings/{param1?}/{param2?}', ['uses'=>'SettingsController@getIndex'])
-    ->where(['param1'=>'password', 
+    ->where(['param1'=>'password|bossbranch', 
                     'param2'=>'week|[0-9]+']);
 
 Route::post('/settings/password',  ['uses'=>'SettingsController@changePassword']);
-
+Route::post('/settings/bossbranch',  ['uses'=>'SettingsController@assignBranch']);
 
 Route::get('/', ['uses'=>'DashboardController@getIndex']);
 

@@ -22,6 +22,10 @@ Route::post('/settings/bossbranch',  ['uses'=>'SettingsController@assignBranch']
 Route::get('/', ['uses'=>'DashboardController@getIndex']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
+Route::get('sales', ['uses'=>'DashboardController@getSales']);
+Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
+Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
+
 
 
 }); /******* end middeware:auth ********/

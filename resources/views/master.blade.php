@@ -18,6 +18,10 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
   <link rel="shortcut icon" type="image/x-icon" href="/images/g.png" />
   <link rel="stylesheet" href="/css/styles-all.min.css">
 
+  @section('css-internal')
+
+  @show
+
 
   
 </head>

@@ -30,11 +30,20 @@ class DashboardController extends Controller
 
 	public function getIndex(Request $request) {
 
-		$date = carbonCheckOrNow($request->input('date'));
+	
 
-		$dailysales = $this->repo->branchByDate($date);
-		
-		return view('dashboard2')->with('dailysales', $dailysales)->with('date', $date);
+		$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(2));
+
+		//$dailysales = $this->repo->branchByDate($this->dr->now);
+
+		//return $dailysales;
+
+		$response = new Response(view('index', compact('dailysales'))
+			->with('dailysales', $dailysales)
+			->with('dr', $this->dr));
+		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
+		return $response;
 	}
 
 

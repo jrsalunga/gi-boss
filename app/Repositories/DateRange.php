@@ -7,12 +7,14 @@ class DateRange {
 
   public $fr;
   public $to;
-  public $current_date;
+  public $date;
+  public $now;
 
 
   public function __construct(Request $request, $now = null) {
-  	$this->current_date = $this->carbonCheckorNow($request->input('date'));
+  	$this->date = $this->carbonCheckorNow($request->input('date'));
   	$this->setDates($request);
+  	$this->now = Carbon::now();
   }
 
   private function checkDates(Request $request) {
@@ -20,13 +22,13 @@ class DateRange {
   	try {
 			$this->fr = Carbon::parse($request->input('fr').' 00:00:00');
 		} catch(\Exception $e) {
-			$this->fr = Carbon::parse($this->current_date->year.'-'.$this->current_date->month.'-01 00:00:00');
+			$this->fr = Carbon::parse($this->date->year.'-'.$this->date->month.'-01 00:00:00');
 		}
 
 		try {
 			$this->to = Carbon::parse($request->input('to').' 00:00:00');
 		} catch(\Exception $e) {
-			$this->to = Carbon::parse($this->current_date->year.'-'.$this->current_date->month.'-'.$this->current_date->daysInMonth.' 00:00:00');
+			$this->to = Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->daysInMonth.' 00:00:00');
 		}
 		// if to less than fr
 		if($this->to->lt($this->fr))
@@ -61,12 +63,12 @@ class DateRange {
   private function getCurrentNewOrCookie(Request $request){
 
 		if (is_null($request->cookie('fr')))
-      $this->fr = Carbon::parse($this->current_date->year.'-'.$this->current_date->month.'-01 00:00:00');
+      $this->fr = Carbon::parse($this->date->year.'-'.$this->date->month.'-01 00:00:00');
 		else 
 			$this->fr = Carbon::parse($request->cookie('fr'));
 		
 		if (is_null($request->cookie('to')))
-      $this->to =  Carbon::parse($this->current_date->year.'-'.$this->current_date->month.'-'.$this->current_date->daysInMonth.' 00:00:00');
+      $this->to =  Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->daysInMonth.' 00:00:00');
 		else 
 			$this->to = Carbon::parse($request->cookie('to'));
   }

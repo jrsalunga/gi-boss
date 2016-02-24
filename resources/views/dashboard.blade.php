@@ -89,6 +89,10 @@
   		</tbody>
 		</table>
   
+    {{ $dr->fr->format('Y-m-d') }}
+    {{ $dr->to->format('Y-m-d') }}
+    {{ $dr->date->format('Y-m-d') }}
+    {{ $dr->now }}
 
 
 

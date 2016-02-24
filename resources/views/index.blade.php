@@ -64,7 +64,7 @@
           <h3 class="panel-title"><span class="gly gly-disk-remove"></span> Last Backup</h3>
         </div>
         <div class="panel-body">
-        dsaa
+        
         </div>
       </div>
     </div>

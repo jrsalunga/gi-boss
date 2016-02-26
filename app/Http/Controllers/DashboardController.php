@@ -32,7 +32,8 @@ class DashboardController extends Controller
 
 	
 
-		$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
+		$dailysales = $this->repo->todayTopSales($this->dr->now);
+		//$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
 
 		//$dailysales = $this->repo->branchByDate($this->dr->now);
 

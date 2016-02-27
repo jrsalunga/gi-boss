@@ -23,6 +23,8 @@ Route::get('/', ['uses'=>'DashboardController@getIndex']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);
+Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);
+Route::get('dailysales/all', ['uses'=>'DashboardController@getDailySalesAll']);
 Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
 

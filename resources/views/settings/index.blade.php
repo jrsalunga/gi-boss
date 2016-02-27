@@ -1,4 +1,4 @@
-@extends('index')
+@extends('master')
 
 @section('title', ' - Settings')
 

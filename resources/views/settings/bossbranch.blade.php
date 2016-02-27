@@ -1,4 +1,4 @@
-@extends('index')
+@extends('master')
 
 @section('title', ' - Settings')
 
@@ -36,7 +36,7 @@
                 <div class="btn-group br-btn" data-toggle="buttons" data-branchid="{{ $data['branch']->id }}">
                   <label class="btn btn-default {{ is_null($data['assign']) ? '':'active' }}">
                     <input type="checkbox" autocomplete="off" {{ is_null($data['assign']) ? '':'checked' }}> 
-                    <span class="glyphicon glyphicon{{ is_null($data['assign']) ? '-remove':'-ok' }}"></span> 
+                    <span class="glyphicon glyphicon{{ is_null($data['assign']) ? '-star-empty':'-star' }}"></span> 
                     {{ $data['branch']->code }} - {{ $data['branch']->descriptor }}
                   </label>
                 </div>
@@ -59,7 +59,10 @@
 
 
 @section('js-external')
-  @parent
+  
+  <script src="/js/vendors-common.min.js"></script>
+
+
 
   <script>
 
@@ -100,9 +103,9 @@
       var active = $(this).children('label').hasClass('active');
 
       if(active) {
-        $(this).children('label').children('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
+        $(this).children('label').children('span').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
       } else {
-        $(this).children('label').children('span').removeClass('glyphicon-remove').addClass('glyphicon-ok');
+        $(this).children('label').children('span').removeClass('glyphicon-star-empty').addClass('glyphicon-star');
       }
 
       assignBranch($(this).data('branchid'), active);

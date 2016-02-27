@@ -63,6 +63,8 @@
               @endforeach
             </tbody>
           </table>
+
+          <p>View <a href="/dailysales">Starred</a> <a href="/dailysales/all">All</a></p>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 <?php namespace App\Repositories;
 
+use StdClass;
 use Carbon\Carbon;
 use App\Models\DailySales;
 use App\Models\Branch;
@@ -66,25 +67,59 @@ class DailySalesRepository extends BaseRepository {
   }
 
 
+
+  public function allBranchByDate(Carbon $date) {
+    $ads = []; // array of dailysales
+    $bb = Branch::orderBy('code', 'ASC')->get();
+
+    foreach ($bb as $b) { // each bossbranch
+      $ds = DailySales::whereBranchid($b->branchid)
+                        ->where('date', $date->format('Y-m-d'))
+                        ->first();
+      if(is_null($ds))
+        $ads[$b->code]['ds'] = NULL;
+
+      $ads[$b->code]['ds'] = $ds;
+      $ads[$b->code]['br'] = $b;
+    }
+
+    return array_sort_recursive($ads);
+    return array_sort($ads, function($value){
+      return $value;
+    });
+  }
+
+
   public function todayTopSales(Carbon $date, $limit=10) {
 
-
     $arr = [];
-  
+    $ds_null = false;
 
     $ds = DailySales::where('date', $date->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
     
+    if(count($ds)=='0') {
+      $ds = DailySales::where('date', $date->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
+      $ds_null = true;
+    } 
+
     foreach ($ds as $d) {
       $branch = Branch::where('id', $d->branchid)->get(['code', 'descriptor', 'id'])->first();
-      $y = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->where('branchid', $d->branchid)->first();
+      
+      if($ds_null) {
+        $ds_today = new DailySales;
+        $ds_yesteday = $d;
+      } else {
+        $ds_today = $d;
+        $ds_yesteday = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->where('branchid', $d->branchid)->first(); 
+      } 
 
-      $s = new \StdClass;
-      $c = new \StdClass;
+      $s = new StdClass;
+      $c = new StdClass;
 
       $s->branch = $branch;
-      $s->today = $d;
-      $s->yesterday = $y;
-      $c->sales = ($d->sales - $y->sales);
+      $s->today = $ds_today;
+      $s->yesterday = $ds_yesteday;
+        $c->sales = ($ds_today - $ds_yesteday->sales);
       $s->diff = $c;
 
       array_push($arr, $s);

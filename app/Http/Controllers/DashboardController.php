@@ -38,26 +38,44 @@ class DashboardController extends Controller
 		//$dailysales = $this->repo->branchByDate($this->dr->now);
 
 		//return $dailysales;
-
+		/*
 		$response = new Response(view('index', compact('dailysales'))
 			->with('dailysales', $dailysales)
 			->with('dr', $this->dr));
 		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
 		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
+		return $response;
+		*/
+		return $this->setViewWithDS('index', $dailysales);
+	}
+
+	private function setViewWithDS($view, $dailysales){
+		$response = new Response(view($view)
+			->with('dailysales', $dailysales)
+			->with('dr', $this->dr));
+		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
 		return $response;
 	}
 
-
-
 	public function getSales(Request $request) {
-
-		
 		$date = carbonCheckOrNow($request->input('date'));
-
-		//$data = $this->getDashboardCSV($request);
-		
-		
 		return view('sales')->with('date', $date);
+		//$data = $this->getDashboardCSV($request);
+	}
+
+	public function getDailySales(Request $request) {
+		$dailysales = $this->repo->branchByDate($this->dr->date);
+		return $this->setViewWithDS('dashboard.dailysales', $dailysales);
+		//return view()->with('dr', $this->dr)->with('dailysales', $dailysales);
+	}
+
+	public function getDailySalesAll(Request $request) {
+		$dailysales = $this->repo->allBranchByDate($this->dr->date);
+		return $this->setViewWithDS('dashboard.dailysales', $dailysales);
+		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 
 

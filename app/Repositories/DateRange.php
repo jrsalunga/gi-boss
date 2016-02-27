@@ -71,6 +71,11 @@ class DateRange {
       $this->to =  Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->daysInMonth.' 00:00:00');
 		else 
 			$this->to = Carbon::parse($request->cookie('to'));
+
+		if (is_null($request->cookie('date')))
+      $this->date =  Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->day.' 00:00:00');
+		else 
+			$this->date = Carbon::parse($request->cookie('date'));
   }
 
 

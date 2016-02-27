@@ -119,7 +119,7 @@ class DailySalesRepository extends BaseRepository {
       $s->branch = $branch;
       $s->today = $ds_today;
       $s->yesterday = $ds_yesteday;
-        $c->sales = ($ds_today - $ds_yesteday->sales);
+        $c->sales = ($ds_today->sales - $ds_yesteday->sales);
       $s->diff = $c;
 
       array_push($arr, $s);

@@ -87,8 +87,7 @@
   		</tbody>
 		</table>
 
-    {{ $dr->fr }} <br>
-    {{ $dr->to }}
+    
   
     
 

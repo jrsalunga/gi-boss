@@ -73,7 +73,7 @@ class DailySalesRepository extends BaseRepository {
     $bb = Branch::orderBy('code', 'ASC')->get();
 
     foreach ($bb as $b) { // each bossbranch
-      $ds = DailySales::whereBranchid($b->branchid)
+      $ds = DailySales::whereBranchid($b->id)
                         ->where('date', $date->format('Y-m-d'))
                         ->first();
       if(is_null($ds))

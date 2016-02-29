@@ -97,7 +97,7 @@
           @else
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
-            <td class="text-right">{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
+            <td class="text-right hidden-xs hidden-sm">{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
             <td class="text-right hidden-xs hidden-sm hidden-md">{{ number_format($ds['ds']->tips,2) }}</td>
             <td class="text-right hidden-xs hidden-sm hidden-md">{{ $ds['ds']->custcount==0 || $ds['ds']->tips=='0.00' ? 0:number_format(($ds['ds']->sales/$ds['ds']->custcount)/$ds['ds']->tips, 3) }}</td>
             <td class="text-right hidden-xs hidden-sm hidden-md">{{ $ds['ds']->empcount }}</td>

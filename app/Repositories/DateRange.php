@@ -12,9 +12,9 @@ class DateRange {
 
 
   public function __construct(Request $request, $now = null) {
+  	$this->now = Carbon::now();
   	$this->date = $this->carbonCheckorNow($request->input('date'));
   	$this->setDates($request);
-  	$this->now = Carbon::now();
   }
 
   private function checkDates(Request $request) {
@@ -22,20 +22,24 @@ class DateRange {
   	try {
 			$this->fr = Carbon::parse($request->input('fr').' 00:00:00');
 		} catch(\Exception $e) {
-			$this->fr = Carbon::parse($this->date->year.'-'.$this->date->month.'-01 00:00:00');
+			//$this->fr = Carbon::parse($this->date->year.'-'.$this->date->month.'-01 00:00:00');
+			$this->fr = $this->date;
 		}
-
+		
 		try {
 			$this->to = Carbon::parse($request->input('to').' 00:00:00');
 		} catch(\Exception $e) {
-			$this->to = Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->daysInMonth.' 00:00:00');
+			//$this->to = Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->daysInMonth.' 00:00:00');
+			$this->to = $this->date;
 		}
+		
 		// if to less than fr
 		if($this->to->lt($this->fr))
 			$this->to = Carbon::parse($this->fr->year.'-'.$this->fr->month.'-'.$this->fr->daysInMonth.' 00:00:00');
+  	
   }
 
-  private function setDates(Request $request) {
+  public function setDates(Request $request) {
 
   	if (is_null($request->input('fr')) && !is_null($request->input('to'))) {
 			
@@ -47,8 +51,14 @@ class DateRange {
 			$this->fr = Carbon::parse(date('Y-m-d', strtotime($request->input('fr'))).' 00:00:00');	
 			$this->to = Carbon::parse(date('Y-m-t', strtotime($request->input('fr'))).' 00:00:00');
 
-		} else if(is_null($request->input('fr')) && is_null($request->input('to'))){
-		
+		} else if(!is_null($request->input('date'))) {
+
+			$this->date = $this->carbonCheckorNow($request->input('date'));	
+			$this->fr = $this->date;	
+			$this->to = $this->date;
+
+		} else if(is_null($request->input('fr')) && is_null($request->input('to')) && is_null($request->input('date'))){
+
 			$this->getCurrentNewOrCookie($request);
 		
 		} else {

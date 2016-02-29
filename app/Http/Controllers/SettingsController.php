@@ -92,26 +92,19 @@ class SettingsController extends Controller {
 
 		$arr = [];
 
-		/*
-		$branchs = Branch::orderBy('code', 'ASC')->get();
+		$bb = $this->repository->all(['branchid']);
+		
+		$branchs = Branch::select(['code', 'descriptor', 'id'])->orderBy('code', 'ASC')->get();
 		$i = 0;
 		foreach ($branchs as $branch) {
-			$b = BossBranch::where('branchid', $branch->id)->where('bossid', $request->user()->id)->first();
+			$b = $bb->where('branchid', $branch->id)->first();
 			$arr[$i]['branch'] = $branch;
 			$arr[$i]['assign'] = is_null($b) ? null : $branch->id;
 			$i++;
 		}
-		*/
 		
-		$branchs = Branch::leftJoin('boss.bossbranch', 'hr.branch.id', '=', 'boss.bossbranch.branchid')
-										 ->select('hr.branch.*', 'boss.bossbranch.branchid')
-										 ->orderBy('hr.branch.code', 'ASC')
-										 ->get();
 		
-		for ($i=0; $i < count($branchs) ; $i++) { 
-			$arr[$i]['branch'] = $branchs[$i];
-			$arr[$i]['assign'] = is_null($branchs[$i]->branchid) ? null : $branchs[$i]->branchid;
-		}
+		
 		
 
 		//return $arr;

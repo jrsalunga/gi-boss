@@ -12,9 +12,9 @@ class DateRange {
 
 
   public function __construct(Request $request, $now = null) {
-  	$this->now = Carbon::now();
   	$this->date = $this->carbonCheckorNow($request->input('date'));
   	$this->setDates($request);
+  	$this->now = Carbon::now();
   }
 
   private function checkDates(Request $request) {

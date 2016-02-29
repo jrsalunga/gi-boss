@@ -36,8 +36,9 @@ class DashboardController extends Controller
 		//$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
 
 		//$dailysales = $this->repo->branchByDate($this->dr->now);
+		
+		
 
-		//return $dailysales;
 		/*
 		$response = new Response(view('index', compact('dailysales'))
 			->with('dailysales', $dailysales)
@@ -76,7 +77,7 @@ class DashboardController extends Controller
 
 	public function getDailySalesAll(Request $request) {
 		$dailysales = $this->repo->allBranchByDate($this->dr->date);
-		return $this->setViewWithDS('dashboard.dailysales', $dailysales);
+		return $this->setViewWithDS('dashboard.dailysales-all', $dailysales);
 		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 

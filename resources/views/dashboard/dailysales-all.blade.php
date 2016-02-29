@@ -39,12 +39,15 @@
         <div class="btn-group" role="group">
           <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
             <span class="gly gly-unshare"></span>
+            <span class="hidden-xs hidden-sm">Back</span>
           </a> 
           <a href="/dailysales" class="btn btn-default" title="All Branches">
             <span class="glyphicon glyphicon-star"></span>
+            <span class="hidden-xs hidden-sm">Starred</span>
           </a>
           <button type="button" class="btn btn-default active" title="Strarred Branches">
             <span class="glyphicon glyphicon-list-alt"></span>
+            <span class="hidden-xs hidden-sm">All</span>
           </button>
         </div>
         <div class="btn-group pull-right" role="group">

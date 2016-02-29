@@ -31,7 +31,7 @@
   <div style="margin-top:50px;" class="hidden-xs"></div>
   <div style="margin-top:10px;" class="visible-xs-block"></div>
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-md-7">
       <div id="panel-top-sales" class="panel panel-success">
         <div class="panel-heading">
           <h3 class="panel-title"><span class="fa fa-line-chart"></span> Today's Branch Top Sales</h3>
@@ -68,14 +68,18 @@
 
           <p>View
             <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
-              <span class="glyphicon glyphicon-star"></span> Starred</a> 
+              <span class="glyphicon glyphicon-star"></span> 
+              <span class="hidden-xs hidden-sm">Starred</span>
+            </a> 
             <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
-              <span class="glyphicon glyphicon-list-alt"></span> All</a>
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">All</span>
+            </a>
           </p> 
         </div>
       </div>
     </div>
-    <div class="col-sm-5">
+    <div class="col-md-5">
       <div id="panel-top-sales" class="panel panel-success">
         <div class="panel-heading">
           <h3 class="panel-title"><span class="gly gly-disk-remove"></span> Last Backup</h3>

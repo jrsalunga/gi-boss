@@ -26,7 +26,7 @@
     <li class="active">Dashboard</li>
   </ol>
 
-  
+
 
   <div style="margin-top:50px;" class="hidden-xs"></div>
   <div style="margin-top:10px;" class="visible-xs-block"></div>
@@ -66,7 +66,12 @@
             </tbody>
           </table>
 
-          <p>View <a href="/dailysales">Starred</a> <a href="/dailysales/all">All</a></p>
+          <p>View
+            <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+              <span class="glyphicon glyphicon-star"></span> Starred</a> 
+            <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+              <span class="glyphicon glyphicon-list-alt"></span> All</a>
+          </p> 
         </div>
       </div>
     </div>

@@ -31,36 +31,31 @@
   </ol>
 
   <nav id="nav-action" class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-form">
-          <div class="btn-group" role="group">
-            <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
-              <span class="gly gly-unshare"></span>
-            </a> 
-            <!--
-            <a href="/backups/history" class="btn btn-default">
-              <span class="glyphicon glyphicon-th-list"></span>
-            </a>
-            -->
-            <button type="button" class="btn btn-default active" title="Strarred Branches">
-              <span class="glyphicon glyphicon-star"></span>
-            </button>
-            <a href="/dailysales/all" class="btn btn-default" title="All Branches">
-              <span class="glyphicon glyphicon-list-alt"></span>
-            </a>
-          </div>
-          <div class="btn-group pull-right" role="group">
-            <a href="/dailysales?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            <button class="btn btn-default">{{ $dr->date->format('D, M j, Y') }}</button>
-            <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-          </div>
+    <div class="container-fluid">
+      <div class="navbar-form">
+        <div class="btn-group" role="group">
+          <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
+            <span class="gly gly-unshare"></span>
+          </a> 
+          <button type="button" class="btn btn-default active" title="Strarred Branches">
+            <span class="glyphicon glyphicon-star"></span>
+          </button>
+          <a href="/dailysales/all" class="btn btn-default" title="All Branches">
+            <span class="glyphicon glyphicon-list-alt"></span>
+          </a>
+        </div>
+        <div class="btn-group pull-right" role="group">
+          <a href="/dailysales?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <button class="btn btn-default">{{ $dr->date->format('D, M j, Y') }}</button>
+          <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 	
   
     

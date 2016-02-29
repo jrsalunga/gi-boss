@@ -47,15 +47,15 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th>Sales</th>
-          <th>Customer</th>
-          <th>Head Spend</th>
-          <th>Tips</th>
-          <th>Tips %</th>
-          <th>Emp Count</th>
-          <th>Manpower %</th>
-          <th>Cost of Food</th>
-          <th>Cost of Food %</th>
+          <th class="text-center">Sales</th>
+          <th class="text-center">Customer</th>
+          <th class="text-center hidden-xs hidden-sm">Head Spend</th>
+          <th class="text-center hidden-xs hidden-sm hidden-md">Tips</th>
+          <th class="text-center hidden-xs hidden-sm hidden-md">Tips %</th>
+          <th class="text-center hidden-xs hidden-sm hidden-md">Emp Count</th>
+          <th class="text-center hidden-xs hidden-sm hidden-md">Manpower %</th>
+          <th class="text-center hidden-xs hidden-sm">Cost of Food</th>
+          <th class="text-center hidden-xs hidden-sm">Cost of Food %</th>
         </tr>
       </thead>
       <tbody>

@@ -69,8 +69,8 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th>Sales</th>
-          <th>Customer</th>
+          <th class="text-center">Sales</th>
+          <th class="text-right">Customer</th>
           <th class="hidden-xs hidden-sm">Head Spend</th>
           <th class="hidden-xs hidden-sm hidden-md">Tips</th>
           <th class="hidden-xs hidden-sm hidden-md">Tips %</th>

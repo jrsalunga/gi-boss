@@ -48,6 +48,17 @@ return [
             'root'   => storage_path('app'),
         ],
 
+        'pos'=>[
+            'local'=>[
+                'driver' => 'local',
+                'root'   => '../../gi-cashier/TEST_POS_BACKUP/'
+            ],
+            'production'=>[
+                'driver' => 'local',
+                'root'   => '/home/server-admin/Public/maindepot/TEST_POS_BACKUP/'
+            ]
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

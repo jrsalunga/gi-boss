@@ -12,6 +12,8 @@ Route::get('logout', ['as'=>'auth.getlogout', 'uses'=>'Auth\AuthController@getLo
 
 Route::group(['middleware' => 'auth'], function(){
 
+Route::get('/', ['uses'=>'DashboardController@getIndex']);
+
 Route::get('settings/{param1?}/{param2?}', ['uses'=>'SettingsController@getIndex'])
     ->where(['param1'=>'password|bossbranch', 
                     'param2'=>'week|[0-9]+']);
@@ -19,7 +21,9 @@ Route::get('settings/{param1?}/{param2?}', ['uses'=>'SettingsController@getIndex
 Route::post('/settings/password',  ['uses'=>'SettingsController@changePassword']);
 Route::post('/settings/bossbranch',  ['uses'=>'SettingsController@assignBranch']);
 
-Route::get('/', ['uses'=>'DashboardController@getIndex']);
+Route::get('/backup',  ['uses'=>'BackupController@index']);
+Route::get('/storage/{param1?}/{param2?}/{param3?}',  ['uses'=>'BackupController@getStorage']);
+Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);

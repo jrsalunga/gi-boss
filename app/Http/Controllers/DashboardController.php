@@ -27,39 +27,27 @@ class DashboardController extends Controller
 		$this->dr = $dr;
 	}
 
+	private function setViewWithDR($view){
+		$response = new Response($view->with('dr', $this->dr));
+		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
+		return $response;
+	}
 
 	public function getIndex(Request $request) {
-
-		
 
 		$dailysales = $this->repo->todayTopSales($this->dr->now);
 		//$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
 
 		//$dailysales = $this->repo->branchByDate($this->dr->now);
 		
-		
-
-		/*
-		$response = new Response(view('index', compact('dailysales'))
-			->with('dailysales', $dailysales)
-			->with('dr', $this->dr));
-		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
-		return $response;
-		*/
-		return $this->setViewWithDS('index', $dailysales);
+		//return $dailysales;
+		$view = view('index')
+			->with('dailysales', $dailysales);
+		return $this->setViewWithDR($view);
 	}
 
-	private function setViewWithDS($view, $dailysales){
-		$response = new Response(view($view)
-			->with('dailysales', $dailysales)
-			->with('dr', $this->dr));
-		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
-		return $response;
-	}
 
 	public function getSales(Request $request) {
 		$date = carbonCheckOrNow($request->input('date'));
@@ -71,13 +59,13 @@ class DashboardController extends Controller
 		$this->dr->setDates($request);
 		//return dd($this->dr);
 		$dailysales = $this->repo->branchByDate($this->dr->date);
-		return $this->setViewWithDS('dashboard.dailysales', $dailysales);
+		return $this->setViewWithDR(view('dashboard.dailysales')->with('dailysales', $dailysales));
 		//return view()->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 
 	public function getDailySalesAll(Request $request) {
 		$dailysales = $this->repo->allBranchByDate($this->dr->date);
-		return $this->setViewWithDS('dashboard.dailysales-all', $dailysales);
+		return $this->setViewWithDR(view('dashboard.dailysales-all')->with('dailysales', $dailysales));
 		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 

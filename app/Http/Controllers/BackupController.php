@@ -27,7 +27,7 @@ class BackupController extends Controller
 
 	public function __construct(Request $request, PhpRepository $mimeDetect, BackupRepository $backuprepository){
 
-		$this->disk = new StorageRepository($mimeDetect, 'pos.'.app()->environment());
+		$this->disk = new StorageRepository($mimeDetect, app()->environment());
 		$this->repository = $backuprepository;
 	
 		

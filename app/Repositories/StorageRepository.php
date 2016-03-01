@@ -121,7 +121,7 @@ class StorageRepository {
   }
 
   public function realFullPath($path){
-    return '../../gi-cashier/TEST_POS_BACKUP/'.$path;
+    return config('giligans.backup.'.$this->type).$path;
   }
 
   /**

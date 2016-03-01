@@ -80,12 +80,45 @@
       </div>
     </div>
     <div class="col-md-5">
-      <div id="panel-top-sales" class="panel panel-success">
+      <div id="panel-latest-backup" class="panel panel-success">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="gly gly-disk-remove"></span> Last Backup</h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-cloud-upload"></span> Backup Log</h3>
         </div>
         <div class="panel-body">
-        
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Branch</th>
+                <th>Backup</th>
+                <th>Uploaded</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($backups as $b)
+                <tr>
+                  <td title="{{ $b->branch->descriptor }}">{{ $b->branch->code }}</td>
+                  <td>{{ $b->filename }}</td>
+                  <td><em><small>{{ diffForHumans($b->uploaddate) }}</small></em></td>
+                
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+
+          <p>View
+            <a href="/storage/log" class="btn btn-default">
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">Full Log</span>
+            </a>
+            <a href="/storage" class="btn btn-default">
+              <span class="gly gly-hdd"></span> 
+              <span class="hidden-xs hidden-sm">Storage</span>
+            </a> 
+            <button class="btn btn-default" disabled>
+              <span class="gly gly-disk-remove"></span> 
+              <span class="hidden-xs hidden-sm">Delinquent</span>
+            </button> 
+          </p> 
         </div>
       </div>
     </div>

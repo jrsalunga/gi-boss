@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Criterias\DateCriteria;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\BossBranchRepository as BBRepo;
+use App\Repositories\BackupRepository as BRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
 use Exception;
@@ -20,9 +21,10 @@ class DashboardController extends Controller
 	protected $bb;
 	protected $dr;
 
-	public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr) {
+	public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr, BRepo $brepo) {
 		$this->repo = $dsrepo;
 		$this->bb = $bbrepo;
+		$this->br = $brepo;
 		$this->bb->pushCriteria(new BossBranchCriteria);
 		$this->dr = $dr;
 	}
@@ -37,14 +39,21 @@ class DashboardController extends Controller
 
 	public function getIndex(Request $request) {
 
+		$backups = $this->br->with(['branch'=>function($query){
+        $query->select(['code', 'descriptor', 'id']);
+      }])->scopeQuery(function($query){
+	   	 return $query->orderBy('uploaddate','desc')->take(10);
+			})->all();
+
 		$dailysales = $this->repo->todayTopSales($this->dr->now);
 		//$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
 
 		//$dailysales = $this->repo->branchByDate($this->dr->now);
 		
-		//return $dailysales;
+		//return $backups;
 		$view = view('index')
-			->with('dailysales', $dailysales);
+			->with('dailysales', $dailysales)
+			->with('backups', $backups);
 		return $this->setViewWithDR($view);
 	}
 

@@ -121,7 +121,7 @@ class StorageRepository {
   }
 
   public function realFullPath($path){
-    return config('gi-dtr.upload_path.'.$this->type).$path;
+    return '../../gi-cashier/TEST_POS_BACKUP/'.$path;
   }
 
   /**

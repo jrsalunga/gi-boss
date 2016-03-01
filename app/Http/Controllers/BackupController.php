@@ -38,13 +38,13 @@ class BackupController extends Controller
 	public function index(Request $request) {
 		$folder = '';
 		return $this->disk->folderInfo($folder);
+		return dd($this->disk->disk);
 		return $request->all();
 	}
 
 
 	public function getStorage(Request $request, $p1=NULL, $p2=NULL, $p3=NULL) {
 		$folder = $p1.'/'.$p2.'/'.$p3;
-		return dd($this->disk->disk);
 
 		$data = $this->disk->folderInfo($folder);
 		//return $data;
@@ -53,6 +53,26 @@ class BackupController extends Controller
 		
 		return dd($this->disk);
 		return $request->all();
+	}
+
+
+	//backups/history
+	public function getHistory(Request $request) {
+
+		
+		
+		
+		$this->repository->with(['branch'=>function($query){
+        $query->select(['code', 'descriptor', 'id']);
+      }])->scopeQuery(function($query){
+	   	 return $query->orderBy('uploaddate','desc');
+			})->all();
+		
+		$backups = $this->repository->paginate(10, $columns = ['*']);
+
+		//return $backups;
+		
+		return view('backup.index')->with('backups', $backups);
 	}
 
 
@@ -65,16 +85,16 @@ class BackupController extends Controller
     	throw new Http404("Error Processing Request");
     }
 
-    $path = $p2.'/'.$p3.'/'.$p4;
+    $path = $p1.'/'.$p2.'/'.$p3.'/'.$p4;
 
-		//$storage = $this->getStorageType($path);
+		logAction('backup:download', 'user:'.$request->user()->username.' '.$p4);
 
 		$file = $this->disk->get($path);
 		$mimetype = $this->disk->fileMimeType($path);
 
     $response = \Response::make($file, 200);
 	 	$response->header('Content-Type', $mimetype);
-  	$response->header('Content-Disposition', 'attachment; filename="'.$p5.'"');
+  	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
 	  return $response;
   }

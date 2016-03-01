@@ -4,6 +4,21 @@
 
 @section('body-class', 'generate-dtr')
 
+@section('navbar-2')
+<ul class="nav navbar-nav navbar-right"> 
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
+    </ul>
+  </li>
+</ul>
+<p class="navbar-text navbar-right">{{ $name }}</p>
+@endsection
+
 @section('container-body')
 <div class="container-fluid">
 
@@ -38,7 +53,7 @@
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs hidden-sm">Storage</span>
             </button>
-            <a href="/backups/log" class="btn btn-default" title="Back to Main Menu">
+            <a href="/storage/log" class="btn btn-default" title="Back to Main Menu">
               <span class="glyphicon glyphicon-th-list"></span> 
               <span class="hidden-xs hidden-sm">Log</span>
             </a> 

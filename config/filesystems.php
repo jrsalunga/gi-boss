@@ -48,7 +48,7 @@ return [
             'root'   => storage_path('app'),
         ],
 
-        'pos'=>[
+        'backup'=>[
             'local'=>[
                 'driver' => 'local',
                 'root'   => '../../gi-cashier/TEST_POS_BACKUP/'

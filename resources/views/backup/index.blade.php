@@ -97,10 +97,8 @@
         </tr>
         @endforeach
       </tbody>
-    </table>
-    
-    {!! $backups->render() !!}
-     
+    </table>  
+    {!! $backups->render() !!}     
   </div>
 </div><!-- end container-fluid -->
 @endsection

@@ -92,7 +92,7 @@ class BackupController extends Controller
 				'branchid' 		=> $branch->id,
 				'filename' 		=> is_null($backup) ? '':$backup->filename,
 				'uploaddate' 	=> is_null($backup) ? '':$backup->uploaddate,
-				'date' 				=> is_null($backup) ? '':$backup->uploaddate->format('Y-m-d'),
+				'date' 				=> is_null($backup) ? '':$backup->uploaddate->format('Y-m-d h:i:s'),
 			]);
 		}
 

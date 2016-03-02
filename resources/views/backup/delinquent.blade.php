@@ -59,14 +59,15 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th>Last Upload</th>
           <th>Backup</th>
+          <th>Upload Date</th>
         </tr>
       </thead>
       <tbody>
         @foreach($backups as $backup)
           <tr>
             <td>{{ $backup['code'] }} <span class="hidden-xs">- {{ $backup['descriptor'] }}</span></td>
+            <td>{{ $backup['filename'] }} </td>
             <td>
             @if(!empty($backup['date']))
               {{ $backup['uploaddate']->format('D m/d/Y h:i A') }} 
@@ -75,7 +76,6 @@
               -
             @endif
             </td>
-            <td>{{ $backup['filename'] }} </td>
           </tr>
         @endforeach
       </tbody>

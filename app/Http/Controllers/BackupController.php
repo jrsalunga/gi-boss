@@ -84,6 +84,8 @@ class BackupController extends Controller
 		foreach ($branchs as $key => $branch) {
 			$backup = Backup::where('branchid', $branch->id)
 									->where('processed', 1)
+									->orderBy('year', 'DESC')
+									->orderBy('month', 'DESC')
 									->orderBy('filename', 'DESC')
 									->first(['filename', 'uploaddate']);
 			//$arr[$key]['branch'] = $branch;

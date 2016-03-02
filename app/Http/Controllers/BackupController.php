@@ -9,6 +9,7 @@ use Illuminate\Filesystem\Filesystem;
 use App\Http\Controllers\Controller;
 use App\Repositories\BackupRepository;
 use App\Models\Backup;
+use App\Models\Branch;
 use App\Repositories\StorageRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException as Http404;
 
@@ -73,6 +74,34 @@ class BackupController extends Controller
 		//return $backups;
 		
 		return view('backup.index')->with('backups', $backups);
+	}
+
+	public function getDelinquent(Request $request){
+		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+	
+		$arr = [];
+		
+		foreach ($branchs as $key => $branch) {
+			$backup = Backup::where('branchid', $branch->id)->orderBy('uploaddate', 'DESC')->first(['filename', 'uploaddate']);
+			//$arr[$key]['branch'] = $branch;
+			//$arr[$key]['backup'] = $backup;
+			
+			array_push($arr, [
+				'code'				=> $branch->code,
+				'descriptor' 	=> $branch->descriptor,
+				'branchid' 		=> $branch->id,
+				'filename' 		=> is_null($backup) ? '':$backup->filename,
+				'uploaddate' 	=> is_null($backup) ? '':$backup->uploaddate,
+				'date' 				=> is_null($backup) ? '':$backup->uploaddate->format('Y-m-d'),
+			]);
+		}
+
+		$arr = array_values(array_sort($arr, function ($value) {
+    	return $value['date'];
+		}));
+
+		return view('backup.delinquent')->with('backups', collect($arr));
+		return dd(collect($arr));
 	}
 
 

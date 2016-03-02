@@ -23,6 +23,7 @@ Route::post('/settings/bossbranch',  ['uses'=>'SettingsController@assignBranch']
 
 Route::get('/backup',  ['uses'=>'BackupController@index']);
 Route::get('/storage/log',  ['uses'=>'BackupController@getHistory']);
+Route::get('/backup/delinquent',  ['uses'=>'BackupController@getDelinquent']);
 Route::get('/storage/{param1?}/{param2?}/{param3?}',  ['uses'=>'BackupController@getStorage']);
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 

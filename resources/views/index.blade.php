@@ -114,10 +114,10 @@
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs hidden-sm">Storage</span>
             </a> 
-            <button class="btn btn-default" disabled>
+            <a href="/backup/delinquent" class="btn btn-default">
               <span class="gly gly-disk-remove"></span> 
               <span class="hidden-xs hidden-sm">Delinquent</span>
-            </button> 
+            </a> 
           </p> 
         </div>
       </div>

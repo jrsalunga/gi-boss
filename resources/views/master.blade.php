@@ -16,6 +16,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
   <title>Giligan's Restaurant @yield('title')</title>
 
   <link rel="shortcut icon" type="image/x-icon" href="/images/g.png" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
   <link rel="stylesheet" href="/css/styles-all.min.css">
 
   @section('css-internal')

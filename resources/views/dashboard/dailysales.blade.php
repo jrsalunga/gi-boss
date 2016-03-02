@@ -51,7 +51,10 @@
           <a href="/dailysales?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
-          <button class="btn btn-default">{{ $dr->date->format('D, M j, Y') }}</button>
+          <!--
+          <button class="btn btn-default" id="dp-dates">{{ $dr->date->format('D, M j, Y') }}</button>
+          -->
+          <input type="text" class="btn btn-default" id="dp-date" >
           <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
@@ -135,10 +138,22 @@
   
 <script src="/js/vendors-common.min.js"></script>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
 
 <script>
+  $(document).ready(function(){
+    
 
+    $('#dp-date').datetimepicker({
+      defaultDate: "{{ $dr->date->format('Y-m-d') }}",
+      format: 'ddd, MMM D, YYYY'
+    }).on('dp.change', function(e){
+      document.location.href = '/dailysales?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+    });
+
+
+  });
 
 </script>
 

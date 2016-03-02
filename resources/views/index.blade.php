@@ -95,12 +95,13 @@
             </thead>
             <tbody>
               @foreach($backups as $b)
-                <tr>
-                  <td title="{{ $b->branch->descriptor }}">{{ $b->branch->code }}</td>
-                  <td>{{ $b->filename }}</td>
-                  <td><em><small>{{ diffForHumans($b->uploaddate) }}</small></em></td>
-                
-                </tr>
+              <tr>
+                <td title="{{ $b->branch->descriptor }}">{{ $b->branch->code }}</td>
+                <td>{{ $b->filename }}</td>
+                <td title="{{ $b->uploaddate->format('D, M j, Y h:i A') }}">
+                  <em><small>{{ diffForHumans($b->uploaddate) }}</small></em>
+                </td>
+              </tr>
               @endforeach
             </tbody>
           </table>

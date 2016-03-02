@@ -67,7 +67,13 @@
         @foreach($backups as $backup)
           <tr>
             <td>{{ $backup['code'] }} <span class="hidden-xs">- {{ $backup['descriptor'] }}</span></td>
-            <td>{{ $backup['filename'] }} </td>
+            <td>
+            @if(!empty($backup['filename']))
+              {{ $backup['filename'] }} 
+            @else
+              -
+            @endif
+            </td>
             <td>
             @if(!empty($backup['date']))
               {{ $backup['uploaddate']->format('D m/d/Y h:i A') }} 

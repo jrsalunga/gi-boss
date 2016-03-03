@@ -56,7 +56,7 @@
           <!--
           <button class="btn btn-default" id="dp-dates">{{ $dr->date->format('D, M j, Y') }}</button>
           -->
-          <input type="text" class="btn btn-default" id="dp-date" style="pointer-events: none; cursor: text;">
+          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('D, M j, Y') }}" style="pointer-events: none; cursor: text;">
           <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
           <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
@@ -143,7 +143,6 @@
 @section('js-external')
   
 <script src="/js/vendors-common.min.js"></script>
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
 

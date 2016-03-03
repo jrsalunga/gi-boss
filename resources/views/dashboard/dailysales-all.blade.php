@@ -50,7 +50,7 @@
             <span class="hidden-xs hidden-sm">All</span>
           </button>
         </div>
-        <div class="btn-group pull-right" role="group">
+        <div class="btn-group pull-right clearfix" role="group">
           <a href="/dailysales/all?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>

@@ -121,7 +121,7 @@ class BackupController extends Controller
 
     $path = $p1.'/'.$p2.'/'.$p3.'/'.$p4;
 
-		logAction('backup:download', 'user:'.$request->user()->username.' '.$p4);
+		logAction('backup:download', 'user:'.$request->user()->username.' '.$path);
 
 		$file = $this->disk->get($path);
 		$mimetype = $this->disk->fileMimeType($path);

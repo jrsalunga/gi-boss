@@ -33,6 +33,7 @@
   <nav id="nav-action" class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-form">
+        
         <div class="btn-group" role="group">
           <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
             <span class="gly gly-unshare"></span>
@@ -47,19 +48,24 @@
             <span class="hidden-xs hidden-sm">All</span>
           </a>
         </div>
-        <div class="btn-group pull-right" role="group">
+        
+        <div class="btn-group pull-right clearfix" role="group">
           <a href="/dailysales?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
           <!--
           <button class="btn btn-default" id="dp-dates">{{ $dr->date->format('D, M j, Y') }}</button>
           -->
-          <input type="text" class="btn btn-default" id="dp-date" >
+          <input type="text" class="btn btn-default" id="dp-date" style="pointer-events: none; cursor: text;">
+          <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
           <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
         </div>
-      </div>
+        
+        
+      
+      </div> <!-- end: .navbar-form -->
     </div>
   </nav>
 	
@@ -147,7 +153,8 @@
 
     $('#dp-date').datetimepicker({
       defaultDate: "{{ $dr->date->format('Y-m-d') }}",
-      format: 'ddd, MMM D, YYYY'
+      format: 'ddd, MMM D, YYYY',
+      showTodayButton: true
     }).on('dp.change', function(e){
       document.location.href = '/dailysales?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
     });

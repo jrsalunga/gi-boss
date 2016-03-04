@@ -136,10 +136,10 @@ class DailySalesRepository extends BaseRepository {
       $s->otherday = $ds_otherday;
 
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
-        $s->yesterday->sign = $this->getSign($ds_today->sales - $ds_yesteday->sales);
+        $s->today->sign = $this->getSign($ds_today->sales - $ds_yesteday->sales);
         
         $c->sales1 = ($ds_yesteday->sales - $ds_otherday->sales);
-        $s->otherday->sign = $this->getSign($ds_yesteday->sales - $ds_otherday->sales);
+        $s->yesterday->sign = $this->getSign($ds_yesteday->sales - $ds_otherday->sales);
       
       $s->diff = $c;
 

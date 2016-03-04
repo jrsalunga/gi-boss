@@ -45,6 +45,10 @@
               <span class="glyphicon glyphicon-th-list"></span> 
               <span class="hidden-xs hidden-sm">Log</span>
             </button>
+            <a href="/backup/delinquent" class="btn btn-default">
+              <span class="gly gly-disk-remove"></span> 
+              <span class="hidden-xs hidden-sm">Delinquent</span>
+            </a> 
           </div> <!-- end btn-grp -->
           
         </div>
@@ -54,14 +58,14 @@
     @include('_partials.alerts')
 
     
-   <table class="table">
+    <table class="table">
       <thead>
         <tr>
           <th>Br Code</th>
           <th></th>
           <th>Filename</th>
           <th>Uploaded</th>
-          <th class="">Processed</th>
+          <th>Processed</th>
           <th class="hidden-xs hidden-sm">Remarks</th>
           <th class="hidden-xs hidden-sm">IP Address</th>
         </tr>

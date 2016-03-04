@@ -57,6 +57,10 @@
               <span class="glyphicon glyphicon-th-list"></span> 
               <span class="hidden-xs hidden-sm">Log</span>
             </a> 
+            <a href="/backup/delinquent" class="btn btn-default">
+              <span class="gly gly-disk-remove"></span> 
+              <span class="hidden-xs hidden-sm">Delinquent</span>
+            </a> 
           </div> <!-- end btn-grp -->
           <!--
           <div class="btn-group" role="group">

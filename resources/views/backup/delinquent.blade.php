@@ -42,6 +42,14 @@
               <span class="hidden-xs hidden-sm">Storage</span>
             </a> 
             -->
+            <a href="/storage" class="btn btn-default" title="Back to Main Menu">
+              <span class="gly gly-hdd"></span>
+              <span class="hidden-xs hidden-sm">Storage</span>
+            </a> 
+            <a href="/storage/log" class="btn btn-default" title="Back to Main Menu">
+              <span class="glyphicon glyphicon-th-list"></span> 
+              <span class="hidden-xs hidden-sm">Log</span>
+            </a> 
             <button type="button" class="btn btn-default active">
               <span class="gly gly-disk-remove"></span> 
               <span class="hidden-xs hidden-sm">Delinquent</span>

@@ -12,6 +12,9 @@ use App\Repositories\Criterias\BranchDailySalesCriteria;
 use Exception;
 use Illuminate\Http\Response;
 use App\Repositories\DateRange;
+use App\Models\Branch;
+use App\Models\Backup;
+
 
 
 class DashboardController extends Controller 
@@ -37,23 +40,70 @@ class DashboardController extends Controller
 		return $response;
 	}
 
-	public function getIndex(Request $request) {
+	private function delinquent(Request $request){
+		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+	
+		$arr = [];
+		$arr_wd = [];
+		$arr_wo = [];
+		
+		foreach ($branchs as $key => $branch) {
+			$backup = Backup::where('branchid', $branch->id)
+									->where('processed', 1)
+									->orderBy('year', 'DESC')
+									->orderBy('month', 'DESC')
+									->orderBy('filename', 'DESC')
+									->first(['filename', 'uploaddate']);
 
+			if(is_null($backup)) {
+				array_push($arr_wo, [
+					'code'				=> $branch->code,
+					'descriptor' 	=> $branch->descriptor,
+					'branchid' 		=> $branch->id,
+					'filename' 		=> null,
+					'uploaddate' 	=> null,
+					'date' 				=> null,
+				]);
+			} else {
+				array_push($arr_wd, [
+					'code'				=> $branch->code,
+					'descriptor' 	=> $branch->descriptor,
+					'branchid' 		=> $branch->id,
+					'filename' 		=> $backup->filename,
+					'uploaddate' 	=> $backup->uploaddate,
+					'date' 				=> $backup->uploaddate->format('Y-m-d H:i:s'),
+				]);
+			}
+
+		}
+
+		$arr_wd = array_values(array_sort($arr_wd, function ($value) {
+    	return $value['date'];
+		}));
+
+		$arr_wo = array_values(array_sort($arr_wo, function ($value) {
+    	return $value['code'];
+		}));
+
+		return collect([$arr_wo, $arr_wd]);
+	}
+
+	public function getIndex(Request $request) {
+		/*
 		$backups = $this->br->with(['branch'=>function($query){
         $query->select(['code', 'descriptor', 'id']);
       }])->scopeQuery(function($query){
 	   	 return $query->orderBy('uploaddate','desc')->take(10);
 			})->all();
-
+		*/
 		$dailysales = $this->repo->todayTopSales($this->dr->now);
-		//$dailysales = $this->repo->todayTopSales($this->dr->now->subDay(1));
-
-		//$dailysales = $this->repo->branchByDate($this->dr->now);
 		
-		//return $backups;
+		$delinquents = $this->delinquent($request);
+		
 		$view = view('index')
 			->with('dailysales', $dailysales)
-			->with('backups', $backups);
+			//->with('backups', $backups)
+			->with('delinquents', $delinquents);
 		return $this->setViewWithDR($view);
 	}
 

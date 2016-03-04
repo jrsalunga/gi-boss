@@ -37,6 +37,16 @@
           <h3 class="panel-title"><span class="fa fa-line-chart"></span> Today's Branch Top Sales</h3>
         </div>
         <div class="panel-body">
+          <p class="text-right">
+            <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+              <span class="glyphicon glyphicon-star"></span> 
+              <span class="hidden-xs hidden-sm">Starred</span>
+            </a> 
+            <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">All</span>
+            </a>
+          </p> 
           <table class="table">
             <thead>
               <tr>
@@ -66,47 +76,18 @@
             </tbody>
           </table>
 
-          <p>View
-            <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
-              <span class="glyphicon glyphicon-star"></span> 
-              <span class="hidden-xs hidden-sm">Starred</span>
-            </a> 
-            <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
-              <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs hidden-sm">All</span>
-            </a>
-          </p> 
+          
         </div>
       </div>
-    </div>
+    </div> <!-- end: col-md-7 -->
     <div class="col-md-5">
       <div id="panel-latest-backup" class="panel panel-success">
         <div class="panel-heading">
           <h3 class="panel-title"><span class="glyphicon glyphicon-cloud-upload"></span> Backup Log</h3>
         </div>
         <div class="panel-body">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Branch</th>
-                <th>Backup</th>
-                <th>Uploaded</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($backups as $b)
-              <tr>
-                <td title="{{ $b->branch->descriptor }}">{{ $b->branch->code }}</td>
-                <td>{{ $b->filename }}</td>
-                <td title="{{ $b->uploaddate->format('D, M j, Y h:i A') }}">
-                  <em><small>{{ diffForHumans($b->uploaddate) }}</small></em>
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
 
-          <p>View
+          <p class="text-right">
             <a href="/storage/log" class="btn btn-default">
               <span class="glyphicon glyphicon-list-alt"></span> 
               <span class="hidden-xs hidden-sm">Full Log</span>
@@ -115,20 +96,110 @@
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs hidden-sm">Storage</span>
             </a> 
+            <!--
             <a href="/backup/delinquent" class="btn btn-default">
               <span class="gly gly-disk-remove"></span> 
               <span class="hidden-xs hidden-sm">Delinquent</span>
             </a> 
-          </p> 
+            -->
+          </p>
+
+
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Backups Update
+                  </a>
+                  <span class="badge">{{ count($delinquents[1]) }}</span>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Branch</th>
+                        <th>Backup</th>
+                        <th>Uploaded</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($delinquents[1] as $delinquent)
+                      <tr>
+                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
+                        <td>{{ $delinquent['filename'] }}</td>
+                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Did Not Upload
+                  </a>
+                  <span class="badge">{{ count($delinquents[0]) }}</span>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  <table class="table">
+                    <!--
+                    <thead>
+                      <tr>
+                        <th>Branch</th>
+                        <th>Backup</th>
+                        <th>Uploaded</th>
+                      </tr>
+                    </thead>
+                    -->
+                    <tbody>
+                      <?php
+                        $ctr = 0;
+                        $x = 0;
+                        $ave = ceil(count($delinquents[0]) / 3);
+                      ?>
+                       @for($i=0; $i < $ave; $i++) 
+                          <tr>
+                          <td title="{{ $delinquents[0][$i]['descriptor'] }}"> 
+                            {{ $delinquents[0][$i]['code'] }}
+                          </td>
+                          <td title="{{ $delinquents[0][$ave+$i]['descriptor'] }}">
+                            {{ $delinquents[0][$ave+$i]['code'] }}</td>
+                          <td>
+                          @if(count($delinquents[0]) <= ($ave+$ave+$i))
+                            -
+                          @else
+                            <div title="{{ $delinquents[0][$ave+$ave+$i]['descriptor'] }}">
+                            {{ $delinquents[0][$ave+$ave+$i]['code'] }}
+                            </div>
+                          @endif
+                          </td>
+                          </tr>
+                        @endfor 
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end: panel-group -->
         </div>
-      </div>
-    </div>
-  </div>  
+      </div> 
+    </div>  <!-- end: col-md-5 -->
+    
   
 
 
 
-</div>
+  </div> <!-- end: row -->
 @endsection
 
 

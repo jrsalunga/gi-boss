@@ -111,6 +111,61 @@ class BackupController extends Controller
 
 
 
+	public function delinquent(Request $request){
+		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+	
+		$arr = [];
+		$arr_wd = [];
+		$arr_wo = [];
+		
+		foreach ($branchs as $key => $branch) {
+			$backup = Backup::where('branchid', $branch->id)
+									->where('processed', 1)
+									->orderBy('year', 'DESC')
+									->orderBy('month', 'DESC')
+									->orderBy('filename', 'DESC')
+									->first(['filename', 'uploaddate']);
+			//$arr[$key]['branch'] = $branch;
+			//$arr[$key]['backup'] = $backup;
+			if(is_null($backup)) {
+				array_push($arr_wo, [
+					'code'				=> $branch->code,
+					'descriptor' 	=> $branch->descriptor,
+					'branchid' 		=> $branch->id,
+					'filename' 		=> null,
+					'uploaddate' 	=> null,
+					'date' 				=> null,
+				]);
+			} else {
+				array_push($arr_wd, [
+					'code'				=> $branch->code,
+					'descriptor' 	=> $branch->descriptor,
+					'branchid' 		=> $branch->id,
+					'filename' 		=> is_null($backup) ? '':$backup->filename,
+					'uploaddate' 	=> is_null($backup) ? '':$backup->uploaddate,
+					'date' 				=> is_null($backup) ? '':$backup->uploaddate->format('Y-m-d H:i:s'),
+				]);
+			}
+
+		}
+
+		$arr_wd = array_values(array_sort($arr_wd, function ($value) {
+    	return $value['date'];
+		}));
+
+		$arr_wo = array_values(array_sort($arr_wo, function ($value) {
+    	return $value['code'];
+		}));
+
+
+		//return view('backup.delinquent')->with('backups', collect($arr));
+		//$arr = [$arr_wo, $arr_wd];
+
+		return collect([$arr_wo, $arr_wd]);
+	}
+
+
+
 
 
   public function getDownload(Request $request, $p1=NULL, $p2=NULL, $p3=NULL, $p4=NULL){

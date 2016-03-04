@@ -1,16 +1,16 @@
 <?php namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Repositories\Criterias\DateCriteria;
-use App\Repositories\DailySalesRepository as DSRepo;
-use App\Repositories\BossBranchRepository as BBRepo;
-use App\Repositories\BackupRepository as BRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
-use Exception;
-use Illuminate\Http\Response;
+use App\Repositories\BackupRepository as BRepo;
+use App\Repositories\DailySalesRepository as DSRepo;
+use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\DateRange;
 use App\Models\Branch;
 use App\Models\Backup;
@@ -107,7 +107,6 @@ class DashboardController extends Controller
 		return $this->setViewWithDR($view);
 	}
 
-
 	public function getSales(Request $request) {
 		$date = carbonCheckOrNow($request->input('date'));
 		return view('sales')->with('date', $date);
@@ -127,8 +126,6 @@ class DashboardController extends Controller
 		return $this->setViewWithDR(view('dashboard.dailysales-all')->with('dailysales', $dailysales));
 		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
-
-
 
 	public function getDashboardTSV(Request $request) {
 
@@ -169,7 +166,6 @@ class DashboardController extends Controller
   	$response->header('Content-Disposition', 'attachment; filename="data.tsv"');
 	  return $response;
 	}
-
 
 	public function getDashboardCSV(Request $request) {
 

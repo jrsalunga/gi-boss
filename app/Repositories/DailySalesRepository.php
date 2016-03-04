@@ -112,6 +112,7 @@ class DailySalesRepository extends BaseRepository {
         $ds_today = $d;
         $ds_yesteday = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->where('branchid', $d->branchid)->first(); 
       } 
+      $ds_otherday = DailySales::where('date', $date->copy()->subDay(2)->format('Y-m-d'))->where('branchid', $d->branchid)->first(); 
 
       $s = new StdClass;
       $c = new StdClass;
@@ -119,6 +120,7 @@ class DailySalesRepository extends BaseRepository {
       $s->branch = $branch;
       $s->today = $ds_today;
       $s->yesterday = $ds_yesteday;
+      $s->otherday = $ds_otherday;
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
       $s->diff = $c;
 

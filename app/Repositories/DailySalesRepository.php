@@ -117,13 +117,28 @@ class DailySalesRepository extends BaseRepository {
       $s = new StdClass;
       $c = new StdClass;
 
+      function getSign($x=0) {
+
+        if ($x > 0)
+          return '+';
+        else if ($x < 0)
+          return '-';
+        else
+          return '';
+
+      }
+
       $s->branch = $branch;
       $s->today = $ds_today;
       $s->yesterday = $ds_yesteday;
       $s->otherday = $ds_otherday;
 
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
+        $s->yesterday->sign = getSign($c->sales);
+        
         $c->sales1 = ($ds_yesteday->sales - $ds_otherday->sales);
+        $s->otherday->sign = getSign($c->sales1);
+      
       $s->diff = $c;
 
       array_push($arr, $s);

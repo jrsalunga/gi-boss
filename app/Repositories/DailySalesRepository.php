@@ -89,6 +89,17 @@ class DailySalesRepository extends BaseRepository {
     });
   }
 
+  public function getSign($x=0) {
+
+        if ($x > 0)
+          return '+';
+        else if ($x < 0)
+          return '-';
+        else
+          return '';
+
+      }
+
 
   public function todayTopSales(Carbon $date, $limit=10) {
 
@@ -117,16 +128,7 @@ class DailySalesRepository extends BaseRepository {
       $s = new StdClass;
       $c = new StdClass;
 
-      function getSign($x=0) {
-
-        if ($x > 0)
-          return '+';
-        else if ($x < 0)
-          return '-';
-        else
-          return '';
-
-      }
+      
 
       $s->branch = $branch;
       $s->today = $ds_today;
@@ -134,10 +136,10 @@ class DailySalesRepository extends BaseRepository {
       $s->otherday = $ds_otherday;
 
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
-        $s->yesterday->sign = getSign($c->sales);
+        $s->yesterday->sign = $this->getSign($c->sales);
         
         $c->sales1 = ($ds_yesteday->sales - $ds_otherday->sales);
-        $s->otherday->sign = getSign($c->sales1);
+        $s->otherday->sign = $this->getSign($c->sales1);
       
       $s->diff = $c;
 

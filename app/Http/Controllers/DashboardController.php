@@ -77,7 +77,7 @@ class DashboardController extends Controller
 
 		}
 
-		$arr_wd = array_values(array_sort($arr_wd, function ($value) {
+		$arr_wd = array_values(array_sort_recursive($arr_wd, function ($value) {
     	return $value['date'];
 		}));
 

@@ -74,8 +74,8 @@
               @foreach($dailysales as $ds)
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
-                  <td class="text-right">{{ number_format($ds->today->sales,2) }} {{ $ds->today->sign }}</td>
-                  <td class="text-right">{{ number_format($ds->yesterday->sales,2) }} {{ $ds->yesterday->sign }}</td>
+                  <td class="text-right">{{ number_format($ds->today->sales,2) }} {{ $ds->sales }}</td>
+                  <td class="text-right">{{ number_format($ds->yesterday->sales,2) }} {{ $ds->sales1 }}</td>
                   <td class="text-right">{{ number_format($ds->otherday->sales,2) }}</td>
                 </tr>
               @endforeach

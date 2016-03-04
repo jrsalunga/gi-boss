@@ -77,9 +77,9 @@
                   <td class="text-right">
                     {{ number_format($ds->today->sales,2) }} 
                     @if($ds->today->sign=='+')
-                      <span style="font-size: 70%;" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      <span style="font-size: 70%;" title="{{ $ds->today->sales }}" class="glyphicon glyphicon-arrow-up text-success"></span>
                     @elseif($ds->today->sign=='-')
-                      <span style="font-size: 70%;" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      <span style="font-size: 70%;" title="{{ $ds->today->sales }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
                     @else
 
                     @endif
@@ -87,9 +87,9 @@
                   <td class="text-right">
                     {{ number_format($ds->yesterday->sales,2) }} 
                     @if($ds->yesterday->sign=='+')
-                      <span style="font-size: 70%;" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      <span style="font-size: 70%;" title="{{ $ds->yesterday->sales1 }}" class="glyphicon glyphicon-arrow-up text-success"></span>
                     @elseif($ds->yesterday->sign=='-')
-                      <span style="font-size: 70%;" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      <span style="font-size: 70%;" title="{{ $ds->yesterday->sales1 }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
                     @else
 
                     @endif

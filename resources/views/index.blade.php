@@ -86,9 +86,9 @@
                   </td>
                   <td class="text-right">
                     {{ number_format($ds->yesterday->sales,2) }} 
-                    @if($ds->today->sign=='+')
+                    @if($ds->yesterday->sign=='+')
                       <span class="glyphicon glyphicon-arrow-up"></span>
-                    @elseif($ds->today->sign=='-')
+                    @elseif($ds->yesterday->sign=='-')
                       <span class="glyphicon glyphicon-arrow-down"></span>
                     @else
 

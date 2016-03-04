@@ -51,17 +51,23 @@
             <thead>
               <tr>
                 <th>Branch</th>
-                <th class="text-center">Today
+                <th class="text-center">
                   <div style="font-weight: normal; font-size: 11px;">
+                  Today
+                  </div>
                     {{ $dr->now->format('D, M j') }}
-                  </div>
                 </th>
-                <th class="text-center">Yesterday
+                <th class="text-center">
                   <div style="font-weight: normal; font-size: 11px;">
+                  Yesterday
+                  </div>
                     {{ $dr->now->copy()->subDay()->format('D, M j') }}
+                </th>
+                <th class="text-center">
+                    {{ $dr->now->copy()->subDay(2)->format('D, M j') }}
+                  <div style="font-weight: normal; font-size: 11px;">
                   </div>
                 </th>
-                <th class="text-center">+/-</th>
               </tr>
             </thead>
             <tbody>

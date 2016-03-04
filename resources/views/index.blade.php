@@ -88,14 +88,14 @@
         <div class="panel-body">
 
           <p class="text-right">
-            <a href="/storage/log" class="btn btn-default">
-              <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs hidden-sm">Full Log</span>
-            </a>
             <a href="/storage" class="btn btn-default">
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs hidden-sm">Storage</span>
             </a> 
+            <a href="/storage/log" class="btn btn-default">
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">Full Log</span>
+            </a>
             <!--
             <a href="/backup/delinquent" class="btn btn-default">
               <span class="gly gly-disk-remove"></span> 
@@ -104,14 +104,12 @@
             -->
           </p>
 
-
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
                   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Backups Update
-                  </a>
+                    Latest Backup</a>
                   <span class="badge">{{ count($delinquents[1]) }}</span>
                 </h4>
               </div>
@@ -144,8 +142,7 @@
               <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Did Not Upload
-                  </a>
+                    Did Not Upload</a>
                   <span class="badge">{{ count($delinquents[0]) }}</span>
                 </h4>
               </div>

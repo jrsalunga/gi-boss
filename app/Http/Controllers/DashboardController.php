@@ -78,7 +78,7 @@ class DashboardController extends Controller
 
 				$diff = $backup->uploaddate->diffInDays($this->dr->now, false); 
 
-				if($diff > 2)
+				if($diff > 1)
 					array_push($arr_wd, $a); // push delinquent
 				else
 					array_push($arr_wl, $a); // push latest

@@ -129,15 +129,82 @@
           </p>
 
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+             
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Delinquent Branches</a>
+                  <span class="badge">{{ count($delinquents[2]) }}</span>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Branch</th>
+                        <th>Backup</th>
+                        <th>Uploaded</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($delinquents[2] as $delinquent)
+                      <tr>
+                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
+                        <td>{{ $delinquent['filename'] }}</td>
+                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div> <!-- end: panel for delinquent -->        
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Latest Backup</a>
+                  <span class="badge">{{ count($delinquents[1]) }}</span>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Branch</th>
+                        <th>Backup</th>
+                        <th>Uploaded</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($delinquents[1] as $delinquent)
+                      <tr>
+                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
+                        <td>{{ $delinquent['filename'] }}</td>
+                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div> <!-- end: panel for latest -->
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Delinquent Branches</a>
+                    Did Not Upload</a>
                   <span class="badge">{{ count($delinquents[0]) }}</span>
                 </h4>
               </div>
-              <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body">
                   <table class="table">
                     <!--
@@ -177,40 +244,7 @@
                   </table>
                 </div>
               </div>
-            </div> <!-- end: panel-2 -->            
-            <div class="panel panel-default">
-              <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Latest Backup</a>
-                  <span class="badge">{{ count($delinquents[1]) }}</span>
-                </h4>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Branch</th>
-                        <th>Backup</th>
-                        <th>Uploaded</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($delinquents[1] as $delinquent)
-                      <tr>
-                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
-                        <td>{{ $delinquent['filename'] }}</td>
-                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div> <!-- end: panel-1 -->
+            </div> <!-- end: panel for did not upload -->   
             
           </div> <!-- end: panel-group -->
         </div>

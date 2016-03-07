@@ -24,6 +24,7 @@ class BackupController extends Controller
 	protected $branch;
 	protected $mime;
 	protected $backup;
+	protected $repository;
 	public $override = false;
 
 	public function __construct(Request $request, PhpRepository $mimeDetect, BackupRepository $backuprepository){

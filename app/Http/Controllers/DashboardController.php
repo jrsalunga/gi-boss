@@ -44,8 +44,9 @@ class DashboardController extends Controller
 		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];
-		$arr_wd = [];
+		$arr_wl = [];
 		$arr_wo = [];
+		$arr_wd = [];
 		
 		foreach ($branchs as $key => $branch) {
 			$backup = Backup::where('branchid', $branch->id)
@@ -65,27 +66,38 @@ class DashboardController extends Controller
 					'date' 				=> null,
 				]);
 			} else {
-				array_push($arr_wd, [
+				
+				$a = [
 					'code'				=> $branch->code,
 					'descriptor' 	=> $branch->descriptor,
 					'branchid' 		=> $branch->id,
 					'filename' 		=> $backup->filename,
 					'uploaddate' 	=> $backup->uploaddate,
 					'date' 				=> $backup->uploaddate->format('Y-m-d H:i:s'),
-				]);
+				];
+
+				$diff = $backup->uploaddate->diffInDays($this->dr->now, false); 
+
+				if($diff > 2)
+					array_push($arr_wd, $a); // push delinquent
+				else
+					array_push($arr_wl, $a); // push latest
 			}
-
 		}
-
-		$arr_wd = array_values(array_reverse(array_sort($arr_wd, function ($value) {
-    	return $value['date'];
-		})));
 
 		$arr_wo = array_values(array_sort($arr_wo, function ($value) {
     	return $value['code'];
 		}));
 
-		return collect([$arr_wo, $arr_wd]);
+		$arr_wl = array_values(array_reverse(array_sort($arr_wl, function ($value) {
+    	return $value['date'];
+		})));
+
+		$arr_wd = array_values(array_sort($arr_wd, function ($value) {
+    	return $value['date'];
+		}));
+
+		return collect([$arr_wo, $arr_wl, $arr_wd]);
 	}
 
 	public function getIndex(Request $request) {
@@ -99,7 +111,7 @@ class DashboardController extends Controller
 		$dailysales = $this->repo->todayTopSales($this->dr->now);
 		
 		$delinquents = $this->delinquent($request);
-		
+		//return $delinquents;
 		$view = view('index')
 			->with('dailysales', $dailysales)
 			//->with('backups', $backups)

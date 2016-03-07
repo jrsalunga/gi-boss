@@ -28,6 +28,10 @@ Route::get('/show/delinquent',  ['uses'=>'BackupController@delinquent']);
 Route::get('/storage/{param1?}/{param2?}/{param3?}',  ['uses'=>'BackupController@getStorage']);
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
+
+Route::get('status/branch/{branchid?}', ['uses'=>'BranchController@getStatus'])
+    ->where(['branchid'=>'[0-9a-zA-z]{32}+']);
+
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);
 Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);

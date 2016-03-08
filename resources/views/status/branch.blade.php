@@ -79,11 +79,15 @@
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
             -->
-            <label class="btn btn-default" for="dp-date-fr"><span class="glyphicon glyphicon-calendar"></span></label>
+            <label class="btn btn-default" for="dp-date-fr">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
             <input type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('D, M j') }}" style="pointer-events: none; cursor: text; max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
             <input type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('D, M j') }}" style="pointer-events: none; cursor: text; max-width: 110px;">
-            <label class="btn btn-default" for="dp-date-to"><span class="glyphicon glyphicon-calendar"></span></label>
+            <label class="btn btn-default" for="dp-date-to">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
             <!--
             <a href="/" class="btn btn-default" title="">
               <span class="glyphicon glyphicon-chevron-right"></span>
@@ -118,15 +122,18 @@
         showTodayButton: true
       }).on('dp.change', function(e){
         console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
       });
 
 
       $('#dp-date-to').datetimepicker({
         defaultDate: "{{ $dr->to->format('Y-m-d') }}",
         format: 'ddd, MMM D',
-        showTodayButton: true
+        showTodayButton: true,
+        useCurrent: false
       }).on('dp.change', function(e){
         console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
       });
 
 

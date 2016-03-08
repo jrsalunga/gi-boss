@@ -14,6 +14,9 @@ use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\DateRange;
 use App\Models\Branch;
 use App\Models\Backup;
+use App\Repositories\BranchRepository;
+use Illuminate\Container\Container as App;
+use Illuminate\Support\Collection;
 
 
 
@@ -30,6 +33,7 @@ class DashboardController extends Controller
 		$this->br = $brepo;
 		$this->bb->pushCriteria(new BossBranchCriteria);
 		$this->dr = $dr;
+		$this->branch = new BranchRepository(new App, new Collection);
 	}
 
 	private function setViewWithDR($view){
@@ -41,7 +45,8 @@ class DashboardController extends Controller
 	}
 
 	private function delinquent(Request $request){
-		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+		//$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+		$branchs = $this->branch->all(['code', 'descriptor', 'id']);
 	
 		$arr = [];
 		$arr_wl = [];

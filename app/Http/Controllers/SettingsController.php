@@ -11,15 +11,17 @@ use App\Events\UserChangePassword;
 use App\Models\Branch;
 use App\Models\BossBranch;
 use App\Repositories\BossBranchRepository;
+use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 
 class SettingsController extends Controller {
 
 	protected $repository;
 
-	public function __construct(BossBranchRepository $repository) {
+	public function __construct(BossBranchRepository $repository, BranchRepo $branch) {
 		$this->repository = $repository;
 		$this->repository->pushCriteria(new BossBranchCriteria);
+		$this->branch = $branch;
 	}
 
 
@@ -97,7 +99,7 @@ class SettingsController extends Controller {
 		$bb = $this->repository->all(['branchid']);
 		//return $bb;
 		
-		$branchs = Branch::select(['code', 'descriptor', 'id'])->orderBy('code', 'ASC')->get();
+		$branchs = $this->branch->all(['code', 'descriptor', 'id']);
 		$i = 0;
 		foreach ($branchs as $branch) {
 			$b = $bb->where('branchid', $branch->id)->first();

@@ -9,17 +9,22 @@ use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
 use Illuminate\Container\Container as Application;
+
+use App\Repositories\BranchRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Container\Container as App;
+
 
 class DailySalesRepository extends BaseRepository {
 
 	
 	public $bossbranch;
 
-	public function __construct(Application $app, BBRepo $bbrepo, DailySales $dailysales) {
+	public function __construct(Application $app, BBRepo $bbrepo, DailySales $dailysales, BranchRepository $branch) {
 		parent::__construct($app);
 		$this->bossbranch = $bbrepo;
 		$this->bossbranch->pushCriteria(new BossBranchCriteria);
+    $this->branch = new BranchRepository(new App, new Collection);
 	}
 	
 
@@ -70,7 +75,8 @@ class DailySalesRepository extends BaseRepository {
 
   public function allBranchByDate(Carbon $date) {
     $ads = []; // array of dailysales
-    $bb = Branch::orderBy('code', 'ASC')->get();
+    //$bb = Branch::orderBy('code', 'ASC')->get();
+    $bb = $this->branch->all();
 
     foreach ($bb as $b) { // each bossbranch
       $ds = DailySales::whereBranchid($b->id)

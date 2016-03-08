@@ -28,6 +28,7 @@ class BranchController extends Controller
 
 	public function getStatus(Request $request, $branchid = NULL) {
 
+		return $branchs = $this->repository->all();
 		return $this->setViewWithDR(view('status.branch'));
 	}
 

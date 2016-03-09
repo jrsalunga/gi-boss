@@ -31,6 +31,7 @@ Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupC
 
 Route::get('status/branch/{branchid?}', ['uses'=>'BranchController@getStatus'])
     ->where(['branchid'=>'[0-9a-zA-z]{32}+']);
+Route::post('status/branch', ['uses'=>'BranchController@postStatus']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);

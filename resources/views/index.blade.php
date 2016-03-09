@@ -34,7 +34,7 @@
     <div class="col-md-7">
       <div id="panel-top-sales" class="panel panel-success">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="fa fa-line-chart"></span> Today's Branch Top Sales</h3>
+          <h3 class="panel-title"><span class="fa fa-line-chart"></span> Today's Branches Top Sales</h3>
         </div>
         <div class="panel-body">
           <p class="text-right">

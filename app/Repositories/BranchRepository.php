@@ -24,7 +24,7 @@ class BranchRepository extends BaseRepository implements CacheableInterface
   public function boot() {
   	$this->scopeQuery(function($query){
   		return $query->whereNotIn('id', ['971077BCA54611E5955600FF59FBB323', '3C561250F87448E3A2DD0562B24E3639'])
-  									->orderBy('code','asc');
+  								->orderBy('code','asc');
 		});
   }
 

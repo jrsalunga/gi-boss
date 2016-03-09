@@ -2,6 +2,7 @@
 
 use File;
 use Exception;
+use Validator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,8 +29,48 @@ class BranchController extends Controller
 
 	public function getStatus(Request $request, $branchid = NULL) {
 
-		return $branchs = $this->repository->all();
-		return $this->setViewWithDR(view('status.branch'));
+		$branches = $this->repository->all(['code', 'descriptor', 'id']);
+		return $this->setViewWithDR(view('status.branch')->with('branches', $branches));
+	}
+
+	public function postStatus(Request $request) {
+
+		//return is_uuid($request->input('branchid'));
+		//return $request->all();
+
+		$rules = array(
+			'fr'				=> 'required|max:10|min:10',
+			'to' 				=> 'required|max:10|min:10',
+			'branchid' 	=> 'required|max:32|min:32',
+		);
+
+		$messages = [
+	    'fr.required' 				=> 'From date is required.',
+	    'to.required' 				=> 'To date is required.',
+	    'branchid.required' 	=> 'Please a select Branch.',
+	    'fr.max' 							=> 'From date is required...',
+	    'to.max' 							=> 'To date is required...',
+	    'branchid.max' 				=> 'Please a select Branch...',
+	    'fr.min' 							=> 'From date is required..',
+	    'to.min' 							=> 'To date is required..',
+	    'branchid.min' 				=> 'Please a select Branch..',
+		];
+		
+		$validator = Validator::make($request->all(), $rules, $messages);
+
+		if ($validator->fails())
+			return redirect('/status/branch')->withErrors($validator);
+
+
+		if (!is_uuid($request->input('branchid'))) 
+			return redirect('/status/branch')->withErrors(['message'=>'Invalid branchid']);
+
+		$branch = $this->repository->find($request->input('branchid') , ['code', 'descriptor', 'id']);
+
+		return redirect('/status/branch/'.$branch->lid())
+							->withCookie(cookie('test-cookie', 'test', 1));
+		return $request->all();
+
 	}
 
 

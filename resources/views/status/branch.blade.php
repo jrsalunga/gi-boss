@@ -104,9 +104,9 @@
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('D, M j') }}" style="pointer-events: none; cursor: text; max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('D, M j') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('D, M j') }}" style="pointer-events: none; cursor: text; max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('D, M j') }}" style="max-width: 110px;">
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -142,7 +142,8 @@
       $('#dp-date-fr').datetimepicker({
         defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
         format: 'ddd, MMM D',
-        showTodayButton: true
+        showTodayButton: true,
+        ignoreReadonly: true
       }).on('dp.change', function(e){
         console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
@@ -154,7 +155,8 @@
         defaultDate: "{{ $dr->to->format('Y-m-d') }}",
         format: 'ddd, MMM D',
         showTodayButton: true,
-        useCurrent: false
+        useCurrent: false,
+        ignoreReadonly: true
       }).on('dp.change', function(e){
         console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
         $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);

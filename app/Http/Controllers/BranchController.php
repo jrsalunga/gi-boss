@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Branch;
 use App\Repositories\BranchRepository;
 use App\Repositories\DateRange;
+use App\Repositories\DailySalesRepository as DSRepo;
 
 
 
@@ -18,42 +19,63 @@ class BranchController extends Controller
 
 	protected $repository;
 
-	public function __construct(BranchRepository $branchrepository, DateRange $dr){
+	public function __construct(BranchRepository $branchrepository, DSRepo $dsrepo, DateRange $dr){
 
 		$this->repository = $branchrepository;
 		$this->dr = $dr;
+		$this->ds = $dsrepo;
 	}
-
-
-
 
 	public function getStatus(Request $request, $branchid = NULL) {
 
 		$branches = $this->repository->all(['code', 'descriptor', 'id']);
-		return $this->setViewWithDR(view('status.branch')->with('branches', $branches));
+		
+		if (is_null($branchid)) {
+			$branch = null;
+			$dailysales = null;
+			return $this->setViewWithDR(view('status.branch')
+									->with('dailysales', $dailysales)
+									->with('branches', $branches)
+									->with('branch', $branch));
+		}
+		
+		if (!is_uuid($branchid)) 
+			return redirect('/status/branch')->withErrors(['message'=>'Invalid branchid']);
+
+		$branch = $this->repository->find($branchid, ['code', 'descriptor', 'mancost', 'id']);
+
+		$dailysales = $this->ds->branchByDR($branch, $this->dr);
+
+		
+		
+		return $this->setViewWithDR(view('status.branch')
+								->with('dailysales', $dailysales)
+								->with('branches', $branches)
+								->with('branch', $branch));
 	}
 
 	public function postStatus(Request $request) {
 
-		//return is_uuid($request->input('branchid'));
-		//return $request->all();
+		$fr = carbonCheckorNow($request->input('fr'));
+		$to = carbonCheckorNow($request->input('to'));
+
+		if ($to->lt($fr)) {
+			$to = Carbon::now();
+			$fr = $to->copy()->subDay(30); //$fr = $to->copy()->subDay(7);
+		} 
+
+		$this->dr->fr = $fr;
+		$this->dr->to = $to;
+		$this->dr->date = $to;
 
 		$rules = array(
-			'fr'				=> 'required|max:10|min:10',
-			'to' 				=> 'required|max:10|min:10',
 			'branchid' 	=> 'required|max:32|min:32',
 		);
 
 		$messages = [
-	    'fr.required' 				=> 'From date is required.',
-	    'to.required' 				=> 'To date is required.',
 	    'branchid.required' 	=> 'Please a select Branch.',
-	    'fr.max' 							=> 'From date is required...',
-	    'to.max' 							=> 'To date is required...',
-	    'branchid.max' 				=> 'Please a select Branch...',
-	    'fr.min' 							=> 'From date is required..',
-	    'to.min' 							=> 'To date is required..',
 	    'branchid.min' 				=> 'Please a select Branch..',
+	    'branchid.max' 				=> 'Please a select Branch...',
 		];
 		
 		$validator = Validator::make($request->all(), $rules, $messages);
@@ -61,14 +83,11 @@ class BranchController extends Controller
 		if ($validator->fails())
 			return redirect('/status/branch')->withErrors($validator);
 
-
-		if (!is_uuid($request->input('branchid'))) 
-			return redirect('/status/branch')->withErrors(['message'=>'Invalid branchid']);
-
-		$branch = $this->repository->find($request->input('branchid') , ['code', 'descriptor', 'id']);
-
-		return redirect('/status/branch/'.$branch->lid())
-							->withCookie(cookie('test-cookie', 'test', 1));
+		return redirect('/status/branch/'.strtolower($request->input('branchid')))
+							->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 120))
+							->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 120))
+							->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 120));
+		
 		return $request->all();
 
 	}
@@ -91,9 +110,9 @@ class BranchController extends Controller
 
 	private function setViewWithDR($view){
 		$response = new Response($view->with('dr', $this->dr));
-		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
-		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
+		$response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 120));
+		$response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 120));
+		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 120));
 		return $response;
 	}
 

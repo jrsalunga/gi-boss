@@ -47,13 +47,13 @@
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
             {!! Form::open(['url' => '/status/branch', 'method' => 'post']) !!}
-            <button type="submit" class="btn btn-success" title="Go">
+            <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid='. $branch->id  }}>
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
-              <input type="hidden" name="branchid" id="branchid" value="">
-              <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}">
-              <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}">
             </button> 
+            <input type="hidden" name="branchid" id="branchid" value="{{ is_null($branch) ? '':$branch->id }}">
+            <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}" data-fr="{{ $dr->fr->format('Y-m-d') }}">
+            <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}" data-to="{{ $dr->fr->format('Y-m-d') }}">
             {!! Form::close() !!}
           </div> <!-- end btn-grp -->
 
@@ -61,14 +61,18 @@
             <div class="dropdown">
               <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="gly gly-shop"></span>
-                <span class="br-code">Select Branch</span>
-                <span class="br-desc hidden-xs hidden-sm"></span>
+                @if(is_null(($branch)))
+                  <span class="br-code">Select Branch</span>
+                @else
+                  <span class="br-code">{{ $branch->code }}</span>
+                  <span class="br-desc hidden-xs hidden-sm">- {{ $branch->descriptor }}</span>
+                @endif
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dLabel" style="max-height: 400px; overflow-y: scroll;">
-                @foreach($branches as $branch)
+                @foreach($branches as $b)
                 <li>
-                  <a href="#" data-desc="{{ $branch->descriptor }}" data-code="{{ $branch->code }}" data-branchid="{{ $branch->id }}">{{ $branch->code }}</a>
+                  <a href="#" data-desc="{{ $b->descriptor }}" data-code="{{ $b->code }}" data-branchid="{{ $b->id }}">{{ $b->code }}</a>
                 </li>
                 @endforeach
               </ul>
@@ -123,8 +127,61 @@
 
     @include('_partials.alerts')
 
-    
-        
+
+    <div class="row">
+      <class class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+                <th>Date</th>
+                <th class="text-center">Sales</th>
+                <th class="text-center">Customer</th>
+                <th class="text-right">Head Spend</th>
+                <th class="text-center">Tips</th>
+                <th class="text-center">Tips %</th>
+                <th class="text-right">Emp Count</th>
+                <th class="text-center">Manpower %</th>
+                <th class="text-center">Cost of Food</th>
+                <th class="text-center">Cost of Food %</th>
+            </tr>
+          </thead>
+          @if(is_null($dailysales))
+
+          @else
+            @foreach($dailysales as $d)
+            <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
+              <td>{{ $d->date->format('M j, D') }}</td>
+              @if(!is_null($d->dailysale))
+              <td class="text-right">{{ number_format($d->dailysale['sales'], 2) }}</td>
+              <td class="text-right">{{ number_format($d->dailysale['custcount'], 0) }}</td>
+              <td class="text-right">{{ $d->dailysale['custcount']==0 ? 0:number_format($d->dailysale['sales']/$d->dailysale['custcount'], 2) }}</td>
+              <td class="text-right">{{ number_format($d->dailysale['tips'],2) }}</td>
+              <td class="text-right">{{ $d->dailysale['custcount']==0 || $d->dailysale['tips']=='0.00' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['custcount'])/$d->dailysale['tips'], 3) }}</td>
+              <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
+              <td class="text-right">{{ $d->dailysale['sales']=='0.00' ? 0:number_format(($branch->mancost*$d->dailysale['empcount'])/$d->dailysale['sales'],2) }}</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              @else 
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              <td class="text-right">-</td>
+              @endif
+              </tr>
+            @endforeach
+          @endif
+          <tbody>
+          </tbody>
+        </table>
+      </div><!--  end: table-responsive -->
+      </div>
+    </div>
   </div>
 </div><!-- end container-fluid -->
 @endsection
@@ -145,9 +202,14 @@
         showTodayButton: true,
         ignoreReadonly: true
       }).on('dp.change', function(e){
-        console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        var date = e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+        //console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
-        $('#fr').val(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
       });
 
 
@@ -158,9 +220,14 @@
         useCurrent: false,
         ignoreReadonly: true
       }).on('dp.change', function(e){
-        console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        //console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        var date = e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
         $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
-        $('#to').val(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
       });
 
       
@@ -174,7 +241,12 @@
         $('.br-desc').text('- '+el.data('desc'));
         $('#branchid').val(el.data('branchid'));
         //$('#dLabel').stop( true, true ).effect("highlight", {}, 1000);
-        console.log(el.data('code'));
+        if(el.data('branchid')==$('.btn-go').data('branchid'))
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+        
+        //console.log($('.btn-go').data('branchid'));
       });
 
 

@@ -60,6 +60,34 @@ get('branch', function () {
 });
 
 
+get('dailysales/recompute', function () {
+    $dss = App\Models\DailySales::all();
+    //$dss = App\Models\DailySales::take(10)->get();
+
+    foreach ($dss as $ds) {
+        
+         
+        $headspend  = $ds->custcount=='0' ? 0:($ds->sales/$ds->custcount);
+        $tipspct    = ($ds->custcount=='0' || $ds->tips=='0' || $ds->tips=='0.00') ? 0 : (($ds->sales/$ds->custcount)/$ds->tips);
+        $mancostpct = ($ds->sales=='0.00' || $ds->sales=='0') ? 0:(650*$ds->empcount)/$ds->sales;
+        $cospct = 0;
+
+        $ds->headspend  = number_format($headspend, 2);
+        $ds->tipspct    = number_format($tipspct, 2);
+        $ds->mancostpct = number_format($mancostpct, 2);
+        $ds->cospct     =  number_format($cospct, 2);
+        $ds->save();
+
+        echo number_format($headspend, 2).' - ';
+        echo number_format($tipspct, 2).' - ';
+        echo number_format($mancostpct, 2).' - ';
+        echo number_format($cospct, 2).'<br>';
+    }
+
+
+});
+
+
 
 
 

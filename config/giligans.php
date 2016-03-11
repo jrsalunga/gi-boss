@@ -18,7 +18,11 @@ return [
 		[
 			'local' => '../../gi-cashier/TEST_POS_BACKUP/',
 			'production' => '/home/server-admin/Public/maindepot/TEST_POS_BACKUP/'
-		]
+		],
+
+	'cookie' => [
+		'expiry' => 120
+	]
 	
 
 ];

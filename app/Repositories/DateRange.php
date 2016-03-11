@@ -1,5 +1,7 @@
 <?php namespace App\Repositories;
 
+use DateInterval;
+use DatePeriod;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -86,6 +88,14 @@ class DateRange {
       $this->date =  Carbon::parse($this->date->year.'-'.$this->date->month.'-'.$this->date->day.' 00:00:00');
 		else 
 			$this->date = Carbon::parse($request->cookie('date'));
+  }
+
+
+  public function dateInterval(){
+  	$to = $this->to->copy();
+    $interval = new DateInterval('P1D');
+    $to->add($interval);
+    return new DatePeriod($this->fr, $interval, $to);
   }
 
 

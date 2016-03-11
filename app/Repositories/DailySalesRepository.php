@@ -4,6 +4,7 @@ use StdClass;
 use Carbon\Carbon;
 use App\Models\DailySales;
 use App\Models\Branch;
+use App\Repositories\DateRange;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
@@ -42,8 +43,10 @@ class DailySalesRepository extends BaseRepository {
       return "App\\Models\\DailySales";
   }
 
-
-
+  /**
+   * starred braches by date //dailysales
+   *
+   */
   public function branchByDate(Carbon $date) {
   	$ads = []; // array of dailysales
   	$bb = $this->bossbranch->with([
@@ -67,12 +70,11 @@ class DailySalesRepository extends BaseRepository {
   	return array_sort($ads, function($value){
   		return $value;
   	});
-		
-
   }
 
-
-
+  /**
+   * all braches by date //dailysales/all
+   */
   public function allBranchByDate(Carbon $date) {
     $ads = []; // array of dailysales
     //$bb = Branch::orderBy('code', 'ASC')->get();
@@ -106,7 +108,7 @@ class DailySalesRepository extends BaseRepository {
 
       }
 
-
+  // column 1 //dashboard
   public function todayTopSales(Carbon $date, $limit=10) {
 
     $arr = [];
@@ -152,7 +154,32 @@ class DailySalesRepository extends BaseRepository {
       array_push($arr, $s);
     }
 
+    return collect($arr);
+  }
+
+  public function branchByDR(Branch $branch, DateRange $dr, $order = 'ASC') {
+    
+    $arr = [];
+    $dss = $this->scopeQuery(function($query) use ($order, $dr) {
+              return $query->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                            ->orderBy('date', $order);
+          })->findWhere([
+            'branchid' => $branch->id
+          ]);
+    
+
+    foreach ($dr->dateInterval() as $key => $date) {
+      $filtered = $dss->filter(function ($item) use ($date){
+          return $item->date->format('Y-m-d') == $date->format('Y-m-d')
+                ? $item : null;
+      });
+      $obj = new StdClass;
+      $obj->date = $date;
+      $obj->dailysale = $filtered->first();
+      $arr[$key] = $obj;
+    }
 
     return collect($arr);
+
   }
 }

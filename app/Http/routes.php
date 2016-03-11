@@ -72,16 +72,19 @@ get('dailysales/recompute', function () {
         $mancostpct = ($ds->sales=='0.00' || $ds->sales=='0') ? 0:(650*$ds->empcount)/$ds->sales;
         $cospct = 0;
 
-        $ds->headspend  = number_format($headspend, 2);
-        $ds->tipspct    = number_format($tipspct, 2);
-        $ds->mancostpct = number_format($mancostpct, 2);
-        $ds->cospct     =  number_format($cospct, 2);
-        $ds->save();
+        if(is_null($ds->headspend) || empty($ds->headspend)) {
+            
+            $ds->headspend  = number_format($headspend, 2);
+            $ds->tipspct    = number_format($tipspct, 2);
+            $ds->mancostpct = number_format($mancostpct, 2);
+            $ds->cospct     =  number_format($cospct, 2);
+            $ds->save();
 
-        echo number_format($headspend, 2).' - ';
-        echo number_format($tipspct, 2).' - ';
-        echo number_format($mancostpct, 2).' - ';
-        echo number_format($cospct, 2).'<br>';
+            echo number_format($headspend, 2).' - ';
+            echo number_format($tipspct, 2).' - ';
+            echo number_format($mancostpct, 2).' - ';
+            echo number_format($cospct, 2).'<br>';
+        }
     }
 
 

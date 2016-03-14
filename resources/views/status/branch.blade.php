@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li class="active">Branch Status</li>
+    <li class="active">Branch Analytics</li>
   </ol>
 
   <div>
@@ -134,12 +134,15 @@
       @if(is_null($dailysales))
 
       @else
+      <div id="container"></div>
+
+
       <class class="col-md-12">
         <div class="table-responsive">
           <table class="table table-hover table-striped">
             <thead>
               <tr>
-                  <th>Date</th>
+                  <th class="text-right">Date</th>
                   <th class="text-center">Sales</th>
                   <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
@@ -165,15 +168,54 @@
               <td class="text-right">-</td>
               <td class="text-right">-</td>
               @else 
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              @endif
+              </tr>
+            @endforeach
+          <tbody>
+          </tbody>
+        </table>
+
+        <table id="datatable" class="tb-data" style="display:none;">
+            <thead>
+              <tr>
+                  <th>Date</th>
+                  <th class="text-center">Sales</th>
+                  <th>Customer</th>
+                  <th>Head Spend</th>
+                  <th>Tips</th>
+                  <th>Tips %</th>
+                  <th>Emp Count</th>
+                  <th>Manpower %</th>
+              </tr>
+            </thead>
+            @foreach($dailysales as $d)
+            <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
+              <td>{{ $d->date->format('Y-m-d') }}</td>
+              @if(!is_null($d->dailysale))
+              <td>{{ $d->dailysale['sales'] }}</td>
+              <td>{{ $d->dailysale['custcount'] }}</td>
+              <td>{{ $d->dailysale['headspend'] }}</td>
+              <td>{{ $d->dailysale['tips'] }}</td>
+              <td>{{ $d->dailysale['tipspct'] }}</td>
+              <td>{{ $d->dailysale['empcount'] }}</td>
+              <td>{{ $d->dailysale['mancostpct'] }}</td>
+              @else 
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
               @endif
               </tr>
             @endforeach
@@ -193,7 +235,10 @@
   <script src="/js/vendors-common.min.js"></script>
   
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-  <script src="//d3js.org/d3.v3.min.js"></script>
+  
+  <script src="/js/hc-all.js"></script>
+ 
+  <
   
   <script>
     $(document).ready(function(){
@@ -250,6 +295,138 @@
         
         //console.log($('.btn-go').data('branchid'));
       });
+
+    Highcharts.setOptions({
+        chart: {
+            style: {
+                fontFamily: "Helvetica"
+            }
+        }
+    });
+
+    var arr = [];
+
+    $('#container').highcharts({
+      data: {
+          table: 'datatable'
+      },
+      chart: {
+        type: 'line',
+        spacingRight: 0,
+        marginTop: 40,
+        zoomType: 'x',
+        panning: true,
+        panKey: 'shift'
+      },
+      title: {
+          text: ''
+      },
+      xAxis: [
+        {
+          gridLineColor: "#CCCCCC",
+          type: 'datetime',
+          //tickInterval: 24 * 3600 * 1000, // one week
+          tickWidth: 0,
+          gridLineWidth: 0,
+          lineColor: "#C0D0E0", // line on X axis
+          labels: {
+            align: 'center',
+            x: 3,
+            y: 15,
+            formatter: function () {
+              //var date = new Date(this.value);
+              //console.log(date.getDay());
+              //console.log(date);
+              return Highcharts.dateFormat('%b %e', this.value);
+            }
+          },
+          plotLines: arr
+        },
+        { // slave axis
+          type: 'datetime',
+          linkedTo: 0,
+          opposite: true,
+          tickInterval: 7 * 24 * 3600 * 1000,
+          tickWidth: 0,
+          labels: {
+            formatter: function () {
+              arr.push({ // mark the weekend
+                color: "#CCCCCC",
+                width: 1,
+                value: this.value-86400000,
+                zIndex: 3
+              });
+              //return Highcharts.dateFormat('%a', (this.value-86400000));
+            }
+          }
+        }
+      ],
+      yAxis: [{ // left y axis
+        min: 0,
+          title: {
+            text: null
+          },
+          labels: {
+            align: 'left',
+            x: 3,
+            y: 16,
+            format: '{value:.,0f}'
+          },
+            showFirstLabel: false
+          }], 
+      legend: {
+        align: 'left',
+        verticalAlign: 'top',
+        y: -10,
+        floating: true,
+        borderWidth: 0
+      },
+      tooltip: {
+        shared: true,
+        crosshairs: true
+      },
+      plotOptions: {
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: function (e) {
+              console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
+              /*
+                hs.htmlExpand(null, {
+                    pageOrigin: {
+                        x: e.pageX,
+                        y: e.pageY
+                    },
+                    headingText: this.series.name,
+                    maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
+                        this.y +' visits',
+                    width: 200
+                });
+              */
+              }
+            }
+          },
+          marker: {
+            symbol: 'circle',
+            radius: 0
+          },
+          lineWidth: 3,
+          dataLabels: {
+              enabled: false,
+              align: 'right',
+              crop: false,
+              formatter: function () {
+                console.log(this.series.index);
+                return this.series.name;
+              },
+              x: 1,
+              verticalAlign: 'middle'
+          }
+        }
+      }
+    });
+
 
 
 

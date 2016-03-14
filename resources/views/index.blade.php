@@ -49,11 +49,11 @@
               <span class="hidden-xs hidden-sm">View All Branches</span>
             </a>
             <a href="/status/branch" class="btn btn-default">
-              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="gly gly-cardio"></span> 
               <span class="hidden-xs hidden-sm">Branch Analytics</span>
             </a>
             <button class="btn btn-default" disabled>
-              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="gly gly-stats"></span> 
               <span class="hidden-xs hidden-sm">Comparative Analytics</span>
             </button>
           </p> 

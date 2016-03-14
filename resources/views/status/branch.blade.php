@@ -233,12 +233,7 @@
 
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-  
-  <script src="/js/hc-all.js"></script>
- 
-  <
+  <script src="/js/hc-all.js"> </script>
   
   <script>
     $(document).ready(function(){

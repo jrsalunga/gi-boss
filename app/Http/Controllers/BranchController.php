@@ -81,7 +81,10 @@ class BranchController extends Controller
 		$validator = Validator::make($request->all(), $rules, $messages);
 
 		if ($validator->fails())
-			return redirect('/status/branch')->withErrors($validator);
+			return redirect('/status/branch')->withErrors($validator)
+							->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 120))
+							->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 120))
+							->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 120));
 
 		return redirect('/status/branch/'.strtolower($request->input('branchid')))
 							->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 120))

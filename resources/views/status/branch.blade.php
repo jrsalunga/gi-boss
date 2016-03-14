@@ -70,7 +70,7 @@
                 @endif
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu" aria-labelledby="dLabel" style="max-height: 400px; overflow-y: scroll;">
+              <ul class="dropdown-menu br" aria-labelledby="dLabel" style="max-height: 400px; overflow-y: scroll;">
                 @foreach($branches as $b)
                 <li>
                   <a href="#" data-desc="{{ $b->descriptor }}" data-code="{{ $b->code }}" data-branchid="{{ $b->id }}">{{ $b->code }}</a>
@@ -141,12 +141,12 @@
               <tr>
                   <th>Date</th>
                   <th class="text-center">Sales</th>
-                  <th class="text-center">Customer</th>
+                  <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
-                  <th class="text-center">Tips</th>
-                  <th class="text-center">Tips %</th>
+                  <th class="text-right">Tips</th>
+                  <th class="text-right">Tips %</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-center">Manpower %</th>
+                  <th class="text-right">Manpower %</th>
                   <th class="text-center">Cost of Food</th>
                   <th class="text-center">Cost of Food %</th>
               </tr>
@@ -157,11 +157,11 @@
               @if(!is_null($d->dailysale))
               <td class="text-right">{{ number_format($d->dailysale['sales'], 2) }}</td>
               <td class="text-right">{{ number_format($d->dailysale['custcount'], 0) }}</td>
-              <td class="text-right">{{ $d->dailysale['custcount']==0 ? 0:number_format($d->dailysale['sales']/$d->dailysale['custcount'], 2) }}</td>
+              <td class="text-right">{{ number_format($d->dailysale['headspend'], 2) }}</td>
               <td class="text-right">{{ number_format($d->dailysale['tips'],2) }}</td>
-              <td class="text-right">{{ $d->dailysale['custcount']==0 || $d->dailysale['tips']=='0.00' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['custcount'])/$d->dailysale['tips'], 3) }}</td>
+              <td class="text-right">{{ $d->dailysale['tipspct'] }}</td>
               <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
-              <td class="text-right">{{ $d->dailysale['sales']=='0.00' ? 0:number_format(($branch->mancost*$d->dailysale['empcount'])/$d->dailysale['sales'],2) }}</td>
+              <td class="text-right">{{ $d->dailysale['mancostpct'] }}</td>
               <td class="text-right">-</td>
               <td class="text-right">-</td>
               @else 
@@ -234,7 +234,7 @@
 
       
 
-      $('.dropdown-menu li a').on('click', function(e){
+      $('.br.dropdown-menu li a').on('click', function(e){
         e.preventDefault();
         var el = $(e.currentTarget);
         el.parent().siblings().children().css('background-color', '#fff');

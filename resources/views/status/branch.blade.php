@@ -142,8 +142,8 @@
           <table class="table table-hover table-striped">
             <thead>
               <tr>
-                  <th class="text-right">Date</th>
-                  <th class="text-center">Sales</th>
+                  <th>Date</th>
+                  <th class="text-right">Sales</th>
                   <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Tips</th>
@@ -188,7 +188,7 @@
             <thead>
               <tr>
                   <th>Date</th>
-                  <th class="text-center">Sales</th>
+                  <th>Sales</th>
                   <th>Customer</th>
                   <th>Head Spend</th>
                   <th>Tips</th>
@@ -198,7 +198,7 @@
               </tr>
             </thead>
             @foreach($dailysales as $d)
-            <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
+            <tr>
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>

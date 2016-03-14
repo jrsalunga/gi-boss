@@ -63,6 +63,7 @@
                 <span class="gly gly-shop"></span>
                 @if(is_null(($branch)))
                   <span class="br-code">Select Branch</span>
+                  <span class="br-desc hidden-xs hidden-sm"></span>
                 @else
                   <span class="br-code">{{ $branch->code }}</span>
                   <span class="br-desc hidden-xs hidden-sm">- {{ $branch->descriptor }}</span>
@@ -129,26 +130,27 @@
 
 
     <div class="row">
-      <class class="col-md-12">
-      <div class="table-responsive">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-                <th>Date</th>
-                <th class="text-center">Sales</th>
-                <th class="text-center">Customer</th>
-                <th class="text-right">Head Spend</th>
-                <th class="text-center">Tips</th>
-                <th class="text-center">Tips %</th>
-                <th class="text-right">Emp Count</th>
-                <th class="text-center">Manpower %</th>
-                <th class="text-center">Cost of Food</th>
-                <th class="text-center">Cost of Food %</th>
-            </tr>
-          </thead>
-          @if(is_null($dailysales))
+      
+      @if(is_null($dailysales))
 
-          @else
+      @else
+      <class class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                  <th>Date</th>
+                  <th class="text-center">Sales</th>
+                  <th class="text-center">Customer</th>
+                  <th class="text-right">Head Spend</th>
+                  <th class="text-center">Tips</th>
+                  <th class="text-center">Tips %</th>
+                  <th class="text-right">Emp Count</th>
+                  <th class="text-center">Manpower %</th>
+                  <th class="text-center">Cost of Food</th>
+                  <th class="text-center">Cost of Food %</th>
+              </tr>
+            </thead>
             @foreach($dailysales as $d)
             <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
               <td>{{ $d->date->format('M j, D') }}</td>
@@ -175,12 +177,12 @@
               @endif
               </tr>
             @endforeach
-          @endif
           <tbody>
           </tbody>
         </table>
       </div><!--  end: table-responsive -->
       </div>
+          @endif
     </div>
   </div>
 </div><!-- end container-fluid -->

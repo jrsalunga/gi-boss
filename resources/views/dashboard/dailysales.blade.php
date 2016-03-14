@@ -56,7 +56,7 @@
           <!--
           <button class="btn btn-default" id="dp-dates">{{ $dr->date->format('D, M j, Y') }}</button>
           -->
-          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('D, M j, Y') }}" style="pointer-events: none; cursor: text;">
+          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('D, M j') }}" style="max-width: 110px;" readonly>
           <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
           <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
@@ -71,20 +71,20 @@
 	
   
     
-
-    <table class="table">
+  <div class="table-responsive">
+    <table class="table table-hover table-striped">
       <thead>
         <tr>
           <th>Branch</th>
           <th class="text-center">Sales</th>
           <th class="text-center">Customer</th>
-          <th class="text-center hidden-xs hidden-sm">Head Spend</th>
-          <th class="text-center hidden-xs hidden-sm hidden-md">Tips</th>
-          <th class="text-center hidden-xs hidden-sm hidden-md">Tips %</th>
-          <th class="text-center hidden-xs hidden-sm hidden-md">Emp Count</th>
-          <th class="text-center hidden-xs hidden-sm hidden-md">Manpower %</th>
-          <th class="text-center hidden-xs hidden-sm">Cost of Food</th>
-          <th class="text-center hidden-xs hidden-sm">Cost of Food %</th>
+          <th class="text-center">Head Spend</th>
+          <th class="text-center">Tips</th>
+          <th class="text-center">Tips %</th>
+          <th class="text-center">Emp Count</th>
+          <th class="text-center">Manpower %</th>
+          <th class="text-center">Cost of Food</th>
+          <th class="text-center">Cost of Food %</th>
         </tr>
       </thead>
       <tbody>
@@ -94,30 +94,30 @@
           @if(is_null($ds['ds']))
             <td class="text-right">-</td>
             <td class="text-right">-</td>
-            <td class="text-right hidden-xs hidden-sm">-</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">-</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">-</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">-</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">-</td>
-            <td class="text-right hidden-xs hidden-sm">-</td>
-            <td class="text-right hidden-xs hidden-sm">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @else
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
-            <td class="text-right hidden-xs hidden-sm">{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">{{ number_format($ds['ds']->tips,2) }}</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">{{ $ds['ds']->custcount==0 || $ds['ds']->tips=='0.00' ? 0:number_format(($ds['ds']->sales/$ds['ds']->custcount)/$ds['ds']->tips, 3) }}</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">{{ $ds['ds']->empcount }}</td>
-            <td class="text-right hidden-xs hidden-sm hidden-md">{{ $ds['ds']->sales=='0.00' ? 0:number_format(($ds['br']->mancost*$ds['ds']->empcount)/$ds['ds']->sales,2) }}</td>
-            <td class="text-right hidden-xs hidden-sm">-</td>
-            <td class="text-right hidden-xs hidden-sm">-</td>
+            <td class="text-right">{{ $ds['ds']->custcount==0 ? 0:number_format($ds['ds']->sales/$ds['ds']->custcount, 2) }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->tips,2) }}</td>
+            <td class="text-right">{{ $ds['ds']->custcount==0 || $ds['ds']->tips=='0.00' ? 0:number_format(($ds['ds']->sales/$ds['ds']->custcount)/$ds['ds']->tips, 3) }}</td>
+            <td class="text-right">{{ $ds['ds']->empcount }}</td>
+            <td class="text-right">{{ $ds['ds']->sales=='0.00' ? 0:number_format(($ds['br']->mancost*$ds['ds']->empcount)/$ds['ds']->sales,2) }}</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @endif
           
   			</tr>
   			@endforeach
   		</tbody>
 		</table>
-
+  </div>
     
   
     
@@ -152,8 +152,9 @@
 
     $('#dp-date').datetimepicker({
       defaultDate: "{{ $dr->date->format('Y-m-d') }}",
-      format: 'ddd, MMM D, YYYY',
-      showTodayButton: true
+      format: 'ddd, MMM D',
+      showTodayButton: true,
+      ignoreReadonly: true
     }).on('dp.change', function(e){
       document.location.href = '/dailysales?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
     });

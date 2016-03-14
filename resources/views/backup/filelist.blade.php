@@ -30,13 +30,13 @@
         $temp = $data['breadcrumbs'];
         array_shift($temp) 
       ?>
-      <li><a href="/storage">Storage</a></li>
+      <li><a href="/storage">Filing System</a></li>
       @foreach($temp as $path => $folder)
         <li><a href="/storage{{ $path }}">{{ $folder }}</a></li>
       @endforeach
       <li class="active">{{ $data['folderName'] }}</li>
     @else 
-      <li class="active">Storage</li>
+      <li class="active">Filing System</li>
     @endif
   </ol>
 
@@ -51,11 +51,11 @@
             </a> 
             <button type="button" class="btn btn-default active">
               <span class="gly gly-hdd"></span> 
-              <span class="hidden-xs hidden-sm">Storage</span>
+              <span class="hidden-xs hidden-sm">Filing System</span>
             </button>
             <a href="/storage/log" class="btn btn-default" title="Back to Main Menu">
               <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs hidden-sm">Log</span>
+              <span class="hidden-xs hidden-sm">Logs</span>
             </a> 
             <a href="/backup/delinquent" class="btn btn-default">
               <span class="gly gly-disk-remove"></span> 
@@ -109,7 +109,7 @@
         @endif
         </div>
 
-        <table id="tb-backups" class="table">
+        <table id="tb-backups" class="table table-hover">
           <!--
           <thead>
             <tr>

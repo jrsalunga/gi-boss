@@ -61,7 +61,7 @@ get('branch', function () {
 
 
 get('dailysales/recompute', function () {
-    $dss = App\Models\DailySales::all();
+    //$dss = App\Models\DailySales::all();
     //$dss = App\Models\DailySales::take(10)->get();
 
     foreach ($dss as $ds) {
@@ -73,7 +73,7 @@ get('dailysales/recompute', function () {
         $cospct = 0;
 
         if(is_null($ds->headspend) || empty($ds->headspend)) {
-            
+
             $ds->headspend  = number_format($headspend, 2);
             $ds->tipspct    = number_format($tipspct, 2);
             $ds->mancostpct = number_format($mancostpct, 2);

@@ -34,7 +34,9 @@
     <div class="col-md-7">
       <div id="panel-top-sales" class="panel panel-success">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="fa fa-line-chart"></span> Today's Branches Top Sales</h3>
+          <h3 class="panel-title"><span class="fa fa-line-chart"></span> 
+            <strong>Today's Top Branches</strong>
+          </h3>
         </div>
         <div class="panel-body">
           <p class="text-right">
@@ -44,10 +46,18 @@
             </a> 
             <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
               <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs hidden-sm">All</span>
+              <span class="hidden-xs hidden-sm">View All Branches</span>
             </a>
+            <a href="/status/branch" class="btn btn-default">
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">Branch Analytics</span>
+            </a>
+            <button class="btn btn-default" disabled>
+              <span class="glyphicon glyphicon-list-alt"></span> 
+              <span class="hidden-xs hidden-sm">Comparative Analytics</span>
+            </button>
           </p> 
-          <table class="table">
+          <table class="table table-striped table-hover">
             <thead>
               <tr>
                 <th>Branch</th>
@@ -107,18 +117,20 @@
     <div class="col-md-5">
       <div id="panel-latest-backup" class="panel panel-success">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="glyphicon glyphicon-cloud-upload"></span> Backup Log</h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-cloud-upload"></span> 
+            <strong>Cashier's Dropbox</strong>
+          </h3>
         </div>
         <div class="panel-body">
 
           <p class="text-right">
             <a href="/storage" class="btn btn-default">
               <span class="gly gly-hdd"></span> 
-              <span class="hidden-xs hidden-sm">Storage</span>
+              <span class="hidden-xs hidden-sm">Filing System</span>
             </a> 
             <a href="/storage/log" class="btn btn-default">
-              <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs hidden-sm">Full Log</span>
+              <span class="glyphicon glyphicon-th-list"></span> 
+              <span class="hidden-xs hidden-sm">View All Logs</span>
             </a>
             <!--
             <a href="/backup/delinquent" class="btn btn-default">
@@ -134,13 +146,14 @@
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Delinquent Branches</a>
+                    <strong>Delinquent Branches</strong>
+                  </a>
                   <span class="badge">{{ count($delinquents[2]) }}</span>
                 </h4>
               </div>
               <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
                 <div class="panel-body">
-                  <table class="table">
+                  <table class="table table-striped table-hover">
                     <thead>
                       <tr>
                         <th>Branch</th>
@@ -167,13 +180,14 @@
               <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
                   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Latest Backup</a>
+                    <strong>Latest Backup</strong>
+                  </a>
                   <span class="badge">{{ count($delinquents[1]) }}</span>
                 </h4>
               </div>
               <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
-                  <table class="table">
+                  <table class="table table-striped table-hover">
                     <thead>
                       <tr>
                         <th>Branch</th>
@@ -200,13 +214,14 @@
               <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Did Not Upload</a>
+                    <strong>Did Not Upload</strong>
+                  </a>
                   <span class="badge">{{ count($delinquents[0]) }}</span>
                 </h4>
               </div>
               <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body">
-                  <table class="table">
+                  <table class="table table-striped">
                     <!--
                     <thead>
                       <tr>

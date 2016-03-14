@@ -24,8 +24,8 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/storage">Storage</a></li>
-    <li class="active">Log</li>
+    <li><a href="/storage">Filing System</a></li>
+    <li class="active">Logs</li>
   </ol>
 
   <div>
@@ -39,11 +39,11 @@
             </a> 
             <a href="/storage" class="btn btn-default" title="Back to Main Menu">
               <span class="gly gly-hdd"></span>
-              <span class="hidden-xs hidden-sm">Storage</span>
+              <span class="hidden-xs hidden-sm">Filing System</span>
             </a> 
             <button type="button" class="btn btn-default active">
               <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs hidden-sm">Log</span>
+              <span class="hidden-xs hidden-sm">Logs</span>
             </button>
             <a href="/backup/delinquent" class="btn btn-default">
               <span class="gly gly-disk-remove"></span> 
@@ -58,7 +58,7 @@
     @include('_partials.alerts')
 
     
-    <table class="table">
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th>Br Code</th>

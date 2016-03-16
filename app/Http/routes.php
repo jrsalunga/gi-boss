@@ -61,7 +61,7 @@ get('branch', function () {
 
 
 get('dailysales/recompute', function () {
-    //$dss = App\Models\DailySales::all();
+    $dss = App\Models\DailySales::all();
     //$dss = App\Models\DailySales::take(10)->get();
 
     foreach ($dss as $ds) {

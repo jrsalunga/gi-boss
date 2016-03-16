@@ -68,8 +68,8 @@ get('dailysales/recompute', function () {
         
          
         $headspend  = $ds->custcount=='0' ? 0:($ds->sales/$ds->custcount);
-        $tipspct    = ($ds->custcount=='0' || $ds->tips=='0' || $ds->tips=='0.00') ? 0 : (($ds->sales/$ds->custcount)/$ds->tips);
-        $mancostpct = ($ds->sales=='0.00' || $ds->sales=='0') ? 0:(650*$ds->empcount)/$ds->sales;
+        $tipspct    = ($ds->sales=='0.00' || $ds->sales=='0') ? 0 : (($ds->tips/$ds->sales)*100);
+        $mancostpct = ($ds->sales=='0.00' || $ds->sales=='0') ? 0 : ((650*$ds->empcount)/$ds->sales)*100;
         $cospct = 0;
 
         if(is_null($ds->headspend) || empty($ds->headspend)) {

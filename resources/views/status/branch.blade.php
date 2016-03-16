@@ -191,7 +191,6 @@
                   <th>Sales</th>
                   <th>Tips</th>
                   <th>Man Cost</th>
-                  <th>Emp Count</th>
                   <th>Sales/Emp</th>
               </tr>
             </thead>
@@ -202,10 +201,8 @@
               <td>{{ $d->dailysale['sales'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
               <td>{{ ($d->dailysale['empcount']*$branch->mancost) }}</td>
-              <td>{{ $d->dailysale['empcount'] }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
-              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>

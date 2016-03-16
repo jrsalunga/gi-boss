@@ -76,15 +76,15 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-center">Sales</th>
-          <th class="text-center">Customer</th>
-          <th class="text-center">Head Spend</th>
-          <th class="text-center">Tips</th>
-          <th class="text-center">Tips %</th>
-          <th class="text-center">Emp Count</th>
-          <th class="text-center">Manpower %</th>
-          <th class="text-center">Cost of Food</th>
-          <th class="text-center">Cost of Food %</th>
+          <th class="text-right">Sales</th>
+          <th class="text-right">Customer</th>
+          <th class="text-right">Head Spend</th>
+          <th class="text-right">Emp Count</th>
+          <th class="text-right">Sales/Emp</th>
+          <th class="text-right">Man Cost</th>
+          <th class="text-right">Man Cost %</th>
+          <th class="text-right">Tips</th>
+          <th class="text-right">Tips %</th>
         </tr>
       </thead>
       <tbody>
@@ -105,12 +105,12 @@
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->headspend,2) }}</td>
+            <td class="text-right">{{ $ds['ds']->empcount }}</td>
+            <td class="text-right">{{ $ds['ds']->empcount=='0' ? '0.00':number_format(($ds['ds']->sales/$ds['ds']->empcount),2) }}</td>
+            <td class="text-right">{{ $ds['ds']->empcount=='0' ? '0.00':number_format($ds['ds']->empcount*$ds['br']->mancost,2) }}</td>
+            <td class="text-right">{{ $ds['ds']->mancostpct }}</td>
             <td class="text-right">{{ number_format($ds['ds']->tips,2) }}</td>
             <td class="text-right">{{ $ds['ds']->tipspct }}</td>
-            <td class="text-right">{{ $ds['ds']->empcount }}</td>
-            <td class="text-right">{{ $ds['ds']->mancostpct }}</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
           @endif
           
   			</tr>

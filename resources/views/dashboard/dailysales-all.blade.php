@@ -65,7 +65,7 @@
   </nav>
 
   <div class="table-responsive">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped table-sort">
       <thead>
         <tr>
           <th>Branch</th>
@@ -136,13 +136,12 @@
 @section('js-external')
   
 <script src="/js/vendors-common.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-<script src="//d3js.org/d3.v3.min.js"></script>
+
 
 <script>
+    
   $(document).ready(function(){
     
-
     $('#dp-date').datetimepicker({
       defaultDate: "{{ $dr->date->format('Y-m-d') }}",
       format: 'ddd, MMM D',

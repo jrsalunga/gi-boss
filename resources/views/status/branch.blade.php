@@ -139,7 +139,7 @@
 
       <class class="col-md-12">
         <div class="table-responsive">
-          <table class="table table-hover table-striped">
+          <table class="table table-hover table-striped table-sort">
             <thead>
               <tr>
                   <th>Date</th>

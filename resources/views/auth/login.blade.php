@@ -8,9 +8,10 @@
   <meta http-equiv="Cache-Control" content="no-cache"/>
   <meta http-equiv="Pragma" content="no-cache">
 
-  <title>Giligan's Restaurant @yield('title')</title>
+  <title>GI Boss - Login</title>
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="/images/g.png" /> 
+  <link rel="icon" type="image/x-icon" href="/images/g.png" /> 
   <link rel="stylesheet" href="/css/styles-all.min.css">
 
 

@@ -72,12 +72,13 @@ get('dailysales/recompute', function () {
         $mancostpct = ($ds->sales=='0.00' || $ds->sales=='0') ? 0 : ((650*$ds->empcount)/$ds->sales)*100;
         $cospct = 0;
 
-        if(is_null($ds->headspend) || empty($ds->headspend)) {
+        if(is_null($ds->cos)) {
 
             $ds->headspend  = number_format($headspend, 2);
             $ds->tipspct    = number_format($tipspct, 2);
             $ds->mancostpct = number_format($mancostpct, 2);
             $ds->cospct     =  number_format($cospct, 2);
+            $ds->cos        =  number_format(0, 2);
             $ds->save();
 
             echo number_format($headspend, 2).' - ';

@@ -166,7 +166,7 @@
               <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
               <td class="text-right">{{ number_format($d->dailysale['empcount']*$branch->mancost,2) }}</td>
               <td class="text-right">{{ $d->dailysale['mancostpct'] }}</td>
-              <td class="text-right">{{ number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2) }}</td>
+              <td class="text-right">{{ $d->dailysale['empcount']=='0' ? '0.00':number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2) }}</td>
               @else 
               <td>-</td>
               <td>-</td>
@@ -207,7 +207,7 @@
               <td>{{ $d->dailysale['tips'] }}</td>
               <td>{{ ($d->dailysale['empcount']*$branch->mancost) }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
-              <td>{{ number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
+              <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
               <td>0</td>
               <td>0</td>

@@ -76,7 +76,7 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-center string-min">Sales</th>
+          <th class="text-center">Sales</th>
           <th class="text-center">Customer</th>
           <th class="text-center">Head Spend</th>
           <th class="text-center">Tips</th>

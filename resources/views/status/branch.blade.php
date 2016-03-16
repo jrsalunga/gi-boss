@@ -189,8 +189,6 @@
               <tr>
                   <th>Date</th>
                   <th>Sales</th>
-                  <th>Customer</th>
-                  <th>Head Spend</th>
                   <th>Tips</th>
                   <th>Man Cost</th>
                   <th>Emp Count</th>

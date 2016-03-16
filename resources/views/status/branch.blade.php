@@ -149,9 +149,9 @@
                   <th class="text-right">Tips</th>
                   <th class="text-right">Tips %</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-right">Manpower %</th>
-                  <th class="text-center">Cost of Food</th>
-                  <th class="text-center">Cost of Food %</th>
+                  <th class="text-right">Man Cost</th>
+                  <th class="text-right">Man Cost %</th>
+                  <th class="text-right">Sales/Emp</th>
               </tr>
             </thead>
             @foreach($dailysales as $d)
@@ -164,9 +164,9 @@
               <td class="text-right">{{ number_format($d->dailysale['tips'],2) }}</td>
               <td class="text-right">{{ $d->dailysale['tipspct'] }}</td>
               <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
+              <td class="text-right">{{ number_format($d->dailysale['empcount']*$branch->mancost,2) }}</td>
               <td class="text-right">{{ $d->dailysale['mancostpct'] }}</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
+              <td class="text-right">{{ number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2) }}</td>
               @else 
               <td>-</td>
               <td>-</td>
@@ -192,9 +192,9 @@
                   <th>Customer</th>
                   <th>Head Spend</th>
                   <th>Tips</th>
-                  <th>Tips %</th>
+                  <th>Man Cost</th>
                   <th>Emp Count</th>
-                  <th>Manpower %</th>
+                  <th>Sales/Emp</th>
               </tr>
             </thead>
             @foreach($dailysales as $d)
@@ -205,10 +205,11 @@
               <td>{{ $d->dailysale['custcount'] }}</td>
               <td>{{ $d->dailysale['headspend'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
-              <td>{{ $d->dailysale['tipspct'] }}</td>
+              <td>{{ ($d->dailysale['empcount']*$branch->mancost) }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
-              <td>{{ $d->dailysale['mancostpct'] }}</td>
+              <td>{{ number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -245,7 +246,7 @@
         ignoreReadonly: true
       }).on('dp.change', function(e){
         var date = e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
-        //console.log(date);
+        console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)

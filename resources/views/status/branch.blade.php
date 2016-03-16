@@ -134,7 +134,7 @@
       @if(is_null($dailysales))
 
       @else
-      <div id="container"></div>
+      <div id="container" style="overflow: hidden;"></div>
 
 
       <class class="col-md-12">
@@ -309,6 +309,7 @@
         type: 'line',
         spacingRight: 0,
         marginTop: 40,
+        marginRight: 30,
         zoomType: 'x',
         panning: true,
         panKey: 'shift'

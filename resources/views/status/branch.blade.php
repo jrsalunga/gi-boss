@@ -397,9 +397,9 @@
           },
           marker: {
             symbol: 'circle',
-            radius: 2
+            radius: 3
           },
-          lineWidth: 3,
+          lineWidth: 2,
           dataLabels: {
               enabled: false,
               align: 'right',

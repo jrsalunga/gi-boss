@@ -228,6 +228,8 @@
   
   <script>
     $(document).ready(function(){
+
+      
     
       $('#dp-date-fr').datetimepicker({
         defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
@@ -235,7 +237,7 @@
         showTodayButton: true,
         ignoreReadonly: true
       }).on('dp.change', function(e){
-        var date = e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+        var date = e.date.format('YYYY-MM-DD');
         console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
@@ -253,8 +255,7 @@
         useCurrent: false,
         ignoreReadonly: true
       }).on('dp.change', function(e){
-        //console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
-        var date = e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+        var date = e.date.format('YYYY-MM-DD');
         $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
         if($('#to').data('to')==date)
@@ -396,7 +397,7 @@
           },
           marker: {
             symbol: 'circle',
-            radius: 0
+            radius: 2
           },
           lineWidth: 3,
           dataLabels: {

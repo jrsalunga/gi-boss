@@ -78,7 +78,7 @@ class DailySalesRepository extends BaseRepository {
   public function allBranchByDate(Carbon $date) {
     $ads = []; // array of dailysales
     //$bb = Branch::orderBy('code', 'ASC')->get();
-    $bb = $this->branch->all();
+    $bb = $this->branch->all(['code', 'descriptor', 'mancost', 'id']);
 
     foreach ($bb as $b) { // each bossbranch
       $ds = DailySales::whereBranchid($b->id)

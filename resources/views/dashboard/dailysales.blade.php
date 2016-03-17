@@ -157,6 +157,10 @@
       ignoreReadonly: true
     }).on('dp.change', function(e){
       document.location.href = '/dailysales?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+    }).on('dp.show', function(e){
+      console.log(e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD'));
+    }).on('dp.update', function(e){
+      console.log('update');
     });
 
 

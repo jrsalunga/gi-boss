@@ -92,7 +92,23 @@ class BranchController extends Controller
 							->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 120));
 		
 		return $request->all();
+	}
 
+	public function getComparative(Request $request) {
+
+		$branches = $this->repository->all(['code', 'descriptor', 'mancost', 'id']);
+
+		return $this->setViewWithDR(view('status.comparative')
+								->with('branches', $branches)); 
+	}
+
+	public function postComparative(Request $request) {
+
+		return  $request->input('branch');
+		$branches = $this->repository->all(['code', 'descriptor', 'mancost', 'id']);
+
+		return $this->setViewWithDR(view('status.comparative')
+								->with('branches', $branches)); 
 	}
 
 

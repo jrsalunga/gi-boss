@@ -41,6 +41,7 @@ Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);
 Route::get('dailysales/all', ['uses'=>'DashboardController@getDailySalesAll']);
 Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
+Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 
 
 

@@ -8,6 +8,7 @@ use App\Repositories\DateRange;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
 use Illuminate\Container\Container as Application;
 
@@ -25,7 +26,8 @@ class DailySalesRepository extends BaseRepository {
 		parent::__construct($app);
 		$this->bossbranch = $bbrepo;
 		$this->bossbranch->pushCriteria(new BossBranchCriteria);
-    $this->branch = new BranchRepository(new App, new Collection);
+    $this->branch = new BranchRepository($app, new Collection);
+    $this->branch->pushCriteria(new ActiveBranch);
 	}
 	
 
@@ -79,6 +81,7 @@ class DailySalesRepository extends BaseRepository {
     $ads = []; // array of dailysales
     //$bb = Branch::orderBy('code', 'ASC')->get();
     $bb = $this->branch->all(['code', 'descriptor', 'mancost', 'id']);
+    //return $bb = $this->branch->getByCriteria(new ActiveBranch)->all(['code', 'descriptor', 'mancost', 'id']);
 
     foreach ($bb as $b) { // each bossbranch
       $ds = DailySales::whereBranchid($b->id)

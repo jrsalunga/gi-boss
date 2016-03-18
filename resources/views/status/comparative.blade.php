@@ -57,7 +57,7 @@
       {!! Form::open(['url' => '/status/post-comparative', 'method' => 'post', 'class'=>'form-horizontal']) !!}
         <div class="form-group">
           <label for="inputEmail3" class="col-sm-2 control-label">Branches</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
             <select class="selectpicker form-control" multiple data-max-options="5" style="display: none;">
               @foreach($branches as $b)
                 <option value="{{ $b->id }}" title="{{ $b->code }}"> {{ $b->code }} - {{ $b->descriptor }} </option>
@@ -95,12 +95,14 @@
             -->
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
+              <input type="hidden" id="fr" value="{{ $dr->fr->format('Y-m-d') }}">
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('D, M j') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('D, M j') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
+              <input type="hidden" id="to" value="{{ $dr->to->format('Y-m-d') }}">
             </label>
             <!--
             <a href="/" class="btn btn-default" title="">
@@ -135,12 +137,12 @@
 
       $('#dp-date-fr').datetimepicker({
         defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
-        format: 'ddd, MMM D',
+        format: 'MM/DD/YYYY',
         showTodayButton: true,
         ignoreReadonly: true
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
-        console.log(date);
+        //console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)
@@ -152,7 +154,7 @@
 
       $('#dp-date-to').datetimepicker({
         defaultDate: "{{ $dr->to->format('Y-m-d') }}",
-        format: 'ddd, MMM D',
+        format: 'MM/DD/YYYY',
         showTodayButton: true,
         useCurrent: false,
         ignoreReadonly: true
@@ -170,19 +172,70 @@
     var data = {};
 
     $('.selectpicker').on('hidden.bs.select', function (e) {
-      console.log($(this).val());
+      //console.log($(this).val());
     }).on('changed.bs.select', function (e) {
-      data.branch = $(this).val();
+      data.branches = $(this).val();
     });
 
 
     $('#btn-go').on('click', function(){
-      console.log(data);
+
+      if(data.branches=='undefined' || data.branches==null) {
+        console.log('walang branches');
+        //alert('Please select branches');
+      } else {
+
+        data.stat = checkStat();
+        setDates();
+        console.log(data);
+
+        assignBranch(data);
+      }
     });
 
-    $('#option1').on('click', function(){
-      console.log('fdsafsa');
-    });
+    var checkStat = function(){
+      if ($('#option1').prop('checked') == true)
+        return 1;
+      else if ($('#option2').prop('checked'))
+        return 2;
+      else if ($('#option3').prop('checked'))
+        return 3;
+      else if ($('#option4').prop('checked'))
+        return 4;
+      else 
+        return 1;
+    }
+
+    var setDates = function(){
+      data.fr = $('#fr').val();
+      data.to = $('#to').val();
+    }
+
+
+    var assignBranch = function(a){
+      var formData = a;
+      console.log(a);
+      return $.ajax({
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            url: '/api/csv/comparative',
+            dataType: "json",
+            data: formData,
+            //async: false,
+            success: function(data, textStatus, jqXHR){
+                //aData = data;
+                console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+          
+                //alert(textStatus + ' Failed on posting data');
+            }
+        }); 
+      
+      //return aData;
+    }
+
+    
 
 
  

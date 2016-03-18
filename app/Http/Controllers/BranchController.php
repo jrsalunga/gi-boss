@@ -111,6 +111,14 @@ class BranchController extends Controller
 								->with('branches', $branches)); 
 	}
 
+	public function getComparativeCSV(Request $request){
+		$dss = $this->ds->scopeQuery(function($query) use ($request) {
+              return $query->whereBetween('date', [$request->input('fr'), $request->input('to')])
+              						->whereIn('branchid', $request->input('branches'))
+                          ->orderBy('date', 'ASC');
+          })->all();
+	}
+
 
 
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Criterias\DateCriteria;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 use App\Repositories\BackupRepository as BRepo;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\BossBranchRepository as BBRepo;
@@ -34,6 +35,7 @@ class DashboardController extends Controller
 		$this->bb->pushCriteria(new BossBranchCriteria);
 		$this->dr = $dr;
 		$this->branch = new BranchRepository(new App, new Collection);
+		$this->branch->pushCriteria(new ActiveBranch);
 	}
 
 	private function setViewWithDR($view){

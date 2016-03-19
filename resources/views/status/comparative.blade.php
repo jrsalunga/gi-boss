@@ -114,7 +114,7 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button id="btn-go" type="button" class="btn btn-success" >Plot</button>
+            <button id="btn-go" type="button" class="btn btn-success" disabled>Plot</button>
             <!--
             <button id="btn-cancel" type="button" class="btn btn-default" >Clear</button>
             -->
@@ -144,8 +144,7 @@
     $(document).ready(function(){
 
       $('#dp-date-fr').datetimepicker({
-        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
-        defaultDate: "2016-01-01",
+        defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         ignoreReadonly: true
@@ -162,8 +161,7 @@
 
 
       $('#dp-date-to').datetimepicker({
-        //defaultDate: "{{ $dr->to->format('Y-m-d') }}",
-        defaultDate: "2016-01-05",
+        defaultDate: "{{ $dr->to->format('Y-m-d') }}",
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         useCurrent: false,
@@ -185,6 +183,10 @@
       //console.log($(this).val());
     }).on('changed.bs.select', function (e) {
       data.branches = $(this).val();
+      if(data.branches==null)
+        $('#btn-go').prop('disabled', true);
+      else
+        $('#btn-go').prop('disabled', false);
     });
 
 
@@ -197,13 +199,10 @@
 
         data.stat = checkStat();
         setDates();
-        console.log(data);
 
         assignBranch(data).fail(function(jqXHR, textStatus, errorThrown) {
           var csv = jqXHR.responseText;
           var arr = [];
-          console.log(csv);
-
 
           $('#graph').highcharts({
             data: {

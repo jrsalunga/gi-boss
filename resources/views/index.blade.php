@@ -232,7 +232,14 @@
                     </thead>
                     -->
                     <tbody>
-                      
+                      @foreach($delinquents[0] as $delinquent)
+                          <tr>
+                          <td> 
+                            {{ $delinquent['code'] }}
+                          </td>
+                          
+                          </tr>
+                        @endforeach 
                     </tbody>
                   </table>
                 </div>

@@ -114,8 +114,10 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button id="btn-go" type="button" class="btn btn-success" >Go</button>
+            <button id="btn-go" type="button" class="btn btn-success" >Plot</button>
+            <!--
             <button id="btn-cancel" type="button" class="btn btn-default" >Clear</button>
+            -->
           </div>
         </div>
       </form>

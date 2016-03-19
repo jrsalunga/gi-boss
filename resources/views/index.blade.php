@@ -162,7 +162,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      
+                      @foreach($delinquents[2] as $delinquent)
+                      <tr>
+                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
+                        <td>{{ $delinquent['filename'] }}</td>
+                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                        </td>
+                      </tr>
+                      @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -224,29 +232,7 @@
                     </thead>
                     -->
                     <tbody>
-                      <?php
-                        $ctr = 0;
-                        $x = 0;
-                        $ave = ceil(count($delinquents[0]) / 3);
-                      ?>
-                       @for($i=0; $i < $ave; $i++) 
-                          <tr>
-                          <td title="{{ $delinquents[0][$i]['descriptor'] }}"> 
-                            {{ $delinquents[0][$i]['code'] }}
-                          </td>
-                          <td title="{{ $delinquents[0][$ave+$i]['descriptor'] }}">
-                            {{ $delinquents[0][$ave+$i]['code'] }}</td>
-                          <td>
-                          @if(count($delinquents[0]) <= ($ave+$ave+$i))
-                            -
-                          @else
-                            <div title="{{ $delinquents[0][$ave+$ave+$i]['descriptor'] }}">
-                            {{ $delinquents[0][$ave+$ave+$i]['code'] }}
-                            </div>
-                          @endif
-                          </td>
-                          </tr>
-                        @endfor 
+                      
                     </tbody>
                   </table>
                 </div>

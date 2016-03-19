@@ -10,7 +10,7 @@ use App\Models\Branch;
 use App\Repositories\BranchRepository;
 use App\Repositories\DateRange;
 use App\Repositories\DailySalesRepository as DSRepo;
-
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 
 
 
@@ -22,6 +22,7 @@ class BranchController extends Controller
 	public function __construct(BranchRepository $branchrepository, DSRepo $dsrepo, DateRange $dr){
 
 		$this->repository = $branchrepository;
+		$this->repository->pushCriteria(new ActiveBranch);
 		$this->dr = $dr;
 		$this->ds = $dsrepo;
 	}
@@ -112,11 +113,63 @@ class BranchController extends Controller
 	}
 
 	public function getComparativeCSV(Request $request){
-		$dss = $this->ds->scopeQuery(function($query) use ($request) {
-              return $query->whereBetween('date', [$request->input('fr'), $request->input('to')])
+
+		$this->dr->fr = carbonCheckorNow($request->input('fr'));
+		$this->dr->to = carbonCheckorNow($request->input('to'));
+
+
+		$branches = $this->repository->findWhereIn('id', $request->input('branches'), ['code', 'descriptor', 'mancost', 'id']);
+
+		$dss = $this->ds->with(['branch'=>function($query){
+						$query->select(['code', 'descriptor', 'mancost', 'id']);
+					}])
+					->scopeQuery(function($query) use ($request) {
+             return $query->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
               						->whereIn('branchid', $request->input('branches'))
                           ->orderBy('date', 'ASC');
           })->all();
+
+
+		echo "Date";
+		foreach ($branches as $b) {
+			echo ','.$b->code;
+		}
+
+		echo PHP_EOL;
+
+		
+		foreach ($this->dr->dateInterval() as $date) {
+			echo $date->format('Y-m-d');
+
+			foreach ($branches as $b) {
+				
+				$filtered = $dss->filter(function ($item) use ($b, $date){
+				  return $item->branchid == $b->id && $item->date->format('Y-m-d') == $date->format('Y-m-d') ? $item : null;
+				})->first();
+
+				$ds = $filtered;
+
+				echo ',';
+
+				if(is_null($ds))
+					echo 0;
+				else {
+					
+					if($request->input('stat')==2)
+						echo number_format($ds['empcount']*$b->mancost,2,'.','');
+					elseif($request->input('stat')==3)
+						echo $ds['tips'];
+					elseif($request->input('stat')==4) 
+						echo $ds->empcount=='0' ? '0.00':number_format(($ds->sales/$ds->empcount),2,'.','');
+					else
+						echo $ds['sales'];
+				}
+
+			}
+				echo PHP_EOL;
+		}
+
+		return;
 	}
 
 

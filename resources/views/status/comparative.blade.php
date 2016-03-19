@@ -115,9 +115,15 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button id="btn-go" type="button" class="btn btn-success" >Go</button>
+            <button id="btn-cancel" type="button" class="btn btn-default" >Clear</button>
           </div>
         </div>
       </form>
+
+
+      <div id="graph">
+
+      </div>
     
 
 
@@ -130,13 +136,14 @@
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/hc-all.js"> </script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"> </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
   
   <script>
     $(document).ready(function(){
 
       $('#dp-date-fr').datetimepicker({
-        defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        defaultDate: "2016-01-01",
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         ignoreReadonly: true
@@ -153,7 +160,8 @@
 
 
       $('#dp-date-to').datetimepicker({
-        defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        //defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        defaultDate: "2016-01-05",
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         useCurrent: false,
@@ -189,7 +197,147 @@
         setDates();
         console.log(data);
 
-        assignBranch(data);
+        assignBranch(data).fail(function(jqXHR, textStatus, errorThrown) {
+          var csv = jqXHR.responseText;
+          var arr = [];
+          console.log(csv);
+
+
+          $('#graph').highcharts({
+            data: {
+                csv: csv,
+              // Parse the American date format used by Google
+              parseDate: function (s) {
+                //console.log(s);
+                //var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
+
+                var match = s.match(/(\d{4})-(\d{2})-(\d{2})/);
+                //console.log(match);
+                if (match) {
+                  //console.log(match[1]+'-'+match[2]+'-'+match[3]);
+                  //console.log(Date.UTC(+(match[1]), match[2] - 1, +match[1]))
+                  return Date.UTC(+(match[1]), match[2] - 1, +match[3]);
+                }
+              }
+            },
+            chart: {
+              type: 'line',
+              spacingRight: 0,
+              marginTop: 40,
+              marginRight: 30,
+              zoomType: 'x',
+              panning: true,
+              panKey: 'shift'
+            },
+            title: {
+                text: ''
+            },
+            xAxis: [
+              {
+                gridLineColor: "#CCCCCC",
+                type: 'datetime',
+                //tickInterval: 24 * 3600 * 1000, // one week
+                tickWidth: 0,
+                gridLineWidth: 0,
+                lineColor: "#C0D0E0", // line on X axis
+                labels: {
+                  align: 'center',
+                  x: 3,
+                  y: 15,
+                  formatter: function () {
+                    //var date = new Date(this.value);
+                    //console.log(date.getDay());
+                    //console.log(date);
+                    return Highcharts.dateFormat('%b %e', this.value);
+                  }
+                },
+                plotLines: arr
+              },
+              { // slave axis
+                type: 'datetime',
+                linkedTo: 0,
+                opposite: true,
+                tickInterval: 7 * 24 * 3600 * 1000,
+                tickWidth: 0,
+                labels: {
+                  formatter: function () {
+                    arr.push({ // mark the weekend
+                      color: "#CCCCCC",
+                      width: 1,
+                      value: this.value-86400000,
+                      zIndex: 3
+                    });
+                    //return Highcharts.dateFormat('%a', (this.value-86400000));
+                  }
+                }
+              }
+            ],
+            yAxis: [{ // left y axis
+              min: 0,
+                title: {
+                  text: null
+                },
+                labels: {
+                  align: 'left',
+                  x: 3,
+                  y: 16,
+                  format: '{value:.,0f}'
+                },
+                  showFirstLabel: false
+                }], 
+            legend: {
+              align: 'left',
+              verticalAlign: 'top',
+              y: -10,
+              floating: true,
+              borderWidth: 0
+            },
+            tooltip: {
+              shared: true,
+              crosshairs: true
+            },
+            plotOptions: {
+              series: {
+                cursor: 'pointer',
+                point: {
+                  events: {
+                    click: function (e) {
+                    console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
+                    /*
+                      hs.htmlExpand(null, {
+                          pageOrigin: {
+                              x: e.pageX,
+                              y: e.pageY
+                          },
+                          headingText: this.series.name,
+                          maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
+                              this.y +' visits',
+                          width: 200
+                      });
+                    */
+                    }
+                  }
+                },
+                marker: {
+                  symbol: 'circle',
+                  radius: 3
+                },
+                lineWidth: 2,
+                dataLabels: {
+                    enabled: false,
+                    align: 'right',
+                    crop: false,
+                    formatter: function () {
+                      console.log(this.series.index);
+                      return this.series.name;
+                    },
+                    x: 1,
+                    verticalAlign: 'middle'
+                }
+              }
+            }
+          }); // end: graph
+        });
       }
     });
 
@@ -214,20 +362,23 @@
 
     var assignBranch = function(a){
       var formData = a;
-      console.log(a);
+      console.log('assignBranch');
       return $.ajax({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             url: '/api/csv/comparative',
-            dataType: "json",
+            dataType: "text/plain",
             data: formData,
             //async: false,
-            success: function(data, textStatus, jqXHR){
+            success: function(d, textStatus, jqXHR){
                 //aData = data;
-                console.log(data);
+              console.log('success');
+              console.log(d);
+              console.log(textStatus);
+              console.log(jqXHR);
             },
             error: function(jqXHR, textStatus, errorThrown){
-          
+              //console.log(jqXHR.responseText);
                 //alert(textStatus + ' Failed on posting data');
             }
         }); 

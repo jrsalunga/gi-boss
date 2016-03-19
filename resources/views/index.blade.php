@@ -52,10 +52,10 @@
               <span class="gly gly-cardio"></span> 
               <span class="hidden-xs hidden-sm">Branch Analytics</span>
             </a>
-            <button class="btn btn-default" disabled>
+            <a href="/status/comparative" class="btn btn-default">
               <span class="gly gly-stats"></span> 
               <span class="hidden-xs hidden-sm">Comparative Analytics</span>
-            </button>
+            </a>
           </p> 
           <table class="table table-striped table-hover">
             <thead>

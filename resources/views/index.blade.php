@@ -162,17 +162,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @if(count($delinquents[2])>0)
-                      @foreach($delinquents[2] as $delinquent)
-                      <tr>
-                        <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
-                        <td>{{ $delinquent['filename'] }}</td>
-                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
-                        </td>
-                      </tr>
-                      @endforeach
-                      @endif
+                      
                     </tbody>
                   </table>
                 </div>

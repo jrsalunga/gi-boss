@@ -52,10 +52,10 @@
               <span class="gly gly-cardio"></span> 
               <span class="hidden-xs hidden-sm">Branch Analytics</span>
             </a>
-            <button class="btn btn-default" disabled>
+            <a href="/status/comparative" class="btn btn-default">
               <span class="gly gly-stats"></span> 
               <span class="hidden-xs hidden-sm">Comparative Analytics</span>
-            </button>
+            </a>
           </p> 
           <table class="table table-striped table-hover">
             <thead>
@@ -162,6 +162,7 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @if(count($delinquents[2])>0)
                       @foreach($delinquents[2] as $delinquent)
                       <tr>
                         <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
@@ -171,6 +172,7 @@
                         </td>
                       </tr>
                       @endforeach
+                      @endif
                     </tbody>
                   </table>
                 </div>

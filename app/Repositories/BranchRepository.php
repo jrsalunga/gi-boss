@@ -12,10 +12,10 @@ use Prettus\Repository\Contracts\CacheableInterface;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 
 
-class BranchRepository extends BaseRepository implements CacheableInterface
-//class BranchRepository extends BaseRepository 
+//class BranchRepository extends BaseRepository implements CacheableInterface
+class BranchRepository extends BaseRepository 
 {
-  use CacheableRepository;
+  //use CacheableRepository;
 
 	public function __construct(App $app, Collection $collection) {
       parent::__construct($app, $collection);

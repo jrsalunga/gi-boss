@@ -134,10 +134,31 @@
       @if(is_null($dailysales))
 
       @else
-      <div id="container" style="overflow: hidden;"></div>
 
+      <div class="col-sm-6 col-md-3 text-right">
+        <p>Total Sales:</p>
+        <h2 id="h-tot-sales">0</h2>
+      </div>
+      <div class="col-sm-6 col-md-3 text-right">
+        <p>Total Customer:</p>
+        <h2 id="h-tot-customer">0</h2>
+      </div>
+      <div class="col-sm-6 col-md-3 text-right">
+        <p>Total Manpower Cost:</p>
+        <h2 id="h-tot-mancost">0</h2>
+      </div>
+      <div class="col-sm-6 col-md-3 text-right">
+        <p>Total Tips:</p>
+        <h2 id="h-tot-tips">0</h2>
+      </div>
 
-      <class class="col-md-12">
+      <div class="col-md-12" style="margin-top: 20px;">&nbsp;</div>
+
+      <div class="col-md-12">
+        <div id="container" style="overflow: hidden;"></div>
+      </div>
+
+      <div class="col-md-12">
         <div class="table-responsive">
           <table class="table table-hover table-striped table-sort">
             <thead>
@@ -215,13 +236,13 @@
             <tr>
               <td></td>
               <td class="text-right">
-                <strong>{{ number_format($tot_sales,2) }}</strong>
+                <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_sales/count($dailysales),2) }}</small></em>
                 </div>
               </td>
               <td class="text-right">
-                <strong>{{ number_format($tot_custcount, 0) }}</strong>
+                <strong id="f-tot-customer">{{ number_format($tot_custcount, 0) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_custcount/count($dailysales),2) }}</small></em>
                 </div>
@@ -245,7 +266,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong>{{ number_format($tot_mancost,2) }}</strong>
+                <strong id="f-tot-mancost">{{ number_format($tot_mancost,2) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_mancost/count($dailysales),2) }}</small></em>
                 </div>
@@ -257,7 +278,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong>{{ number_format($tot_tips,2) }}</strong>
+                <strong id="f-tot-tips">{{ number_format($tot_tips,2) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_tips/count($dailysales),2) }}</small></em>
                 </div>
@@ -502,6 +523,13 @@
         }
       }
     });
+
+
+
+    $('#h-tot-sales').text($('#f-tot-sales').text());
+    $('#h-tot-customer').text($('#f-tot-customer').text());
+    $('#h-tot-mancost').text($('#f-tot-mancost').text());
+    $('#h-tot-tips').text($('#f-tot-tips').text());
 
 
 

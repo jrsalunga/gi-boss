@@ -234,7 +234,12 @@
           </tbody>
           <tfoot>
             <tr>
-              <td></td>
+              <td>
+                <strong>
+                {{ count($dailysales) }}
+                {{ count($dailysales) > 1 ? 'days':'day' }}
+                </strong>
+              </td>
               <td class="text-right">
                 <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
                 <div>

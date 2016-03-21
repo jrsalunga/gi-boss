@@ -415,7 +415,7 @@
         type: 'line',
         spacingRight: 0,
         marginTop: 40,
-        //marginRight: 30,
+        marginRight: 10,
         zoomType: 'x',
         panning: true,
         panKey: 'shift'

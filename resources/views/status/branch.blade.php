@@ -254,7 +254,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong>{{ $tot_empcount }}</strong>
+                <strong>{{ number_format($tot_empcount,0) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_empcount/count($dailysales),2) }}</small></em>
                 </div>

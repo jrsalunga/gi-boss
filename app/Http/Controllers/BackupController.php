@@ -12,6 +12,9 @@ use App\Models\Backup;
 use App\Models\Branch;
 use App\Repositories\StorageRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException as Http404;
+use App\Repositories\BranchRepository;
+use Illuminate\Support\Collection;
+use Illuminate\Container\Container as App;
 
 
 
@@ -31,6 +34,7 @@ class BackupController extends Controller
 
 		$this->disk = new StorageRepository($mimeDetect, 'backup.'.app()->environment());
 		$this->repository = $backuprepository;
+		$this->branch = new BranchRepository(app(), new Collection);
 	
 		
 	}
@@ -78,7 +82,8 @@ class BackupController extends Controller
 	}
 
 	public function getDelinquent(Request $request){
-		$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
+		$branchs =  $this->branch->active()->all();
+		//$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];
 		

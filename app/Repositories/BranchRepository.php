@@ -9,6 +9,8 @@ use Illuminate\Container\Container as App;
 use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
+
 
 class BranchRepository extends BaseRepository implements CacheableInterface
 //class BranchRepository extends BaseRepository 
@@ -30,6 +32,10 @@ class BranchRepository extends BaseRepository implements CacheableInterface
 
 	public function model() {
     return 'App\\Models\\Branch';
+  }
+
+  public function active(){
+    return $this->getByCriteria(new ActiveBranch);
   }
 
   

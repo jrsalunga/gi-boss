@@ -56,7 +56,10 @@
     
       {!! Form::open(['url' => '/status/post-comparative', 'method' => 'post', 'class'=>'form-horizontal']) !!}
         <div class="form-group">
-          <label for="inputEmail3" class="col-sm-2 control-label">Branches</label>
+          <label for="inputEmail3" class="col-sm-2 control-label">Branch Picker
+
+            <div><small><em>(max 5 branches)</em></small></div>
+          </label>
           <div class="col-sm-7">
             <select class="selectpicker form-control" multiple data-max-options="5" style="display: none;">
               @foreach($branches as $b)

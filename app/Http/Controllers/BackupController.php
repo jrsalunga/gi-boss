@@ -62,12 +62,9 @@ class BackupController extends Controller
 	}
 
 
-	//backups/history
+	//storage/log
 	public function getHistory(Request $request) {
 
-		
-		
-		
 		$this->repository->with(['branch'=>function($query){
         $query->select(['code', 'descriptor', 'id']);
       }])->scopeQuery(function($query){
@@ -75,12 +72,10 @@ class BackupController extends Controller
 			})->all();
 		
 		$backups = $this->repository->paginate(10, $columns = ['*']);
-
-		//return $backups;
-		
 		return view('backup.index')->with('backups', $backups);
 	}
 
+	//backup/delinquent
 	public function getDelinquent(Request $request){
 		$branchs =  $this->branch->active()->all();
 		//$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);

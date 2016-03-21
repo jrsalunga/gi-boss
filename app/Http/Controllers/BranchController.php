@@ -27,6 +27,7 @@ class BranchController extends Controller
 		$this->ds = $dsrepo;
 	}
 
+	//status/branch/{branchid}
 	public function getStatus(Request $request, $branchid = NULL) {
 
 		$branches = $this->repository->all(['code', 'descriptor', 'id']);
@@ -46,8 +47,6 @@ class BranchController extends Controller
 		$branch = $this->repository->find($branchid, ['code', 'descriptor', 'mancost', 'id']);
 
 		$dailysales = $this->ds->branchByDR($branch, $this->dr);
-
-		
 		
 		return $this->setViewWithDR(view('status.branch')
 								->with('dailysales', $dailysales)

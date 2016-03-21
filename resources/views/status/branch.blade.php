@@ -154,6 +154,19 @@
                   <th class="text-right">Tips %</th>
               </tr>
             </thead>
+            <tbody>
+              <?php
+                $tot_sales = 0;
+                $tot_custcount = 0;
+                $tot_headspend = 0;
+                $tot_empcount = 0;
+                $tot_sales_emp = 0;
+                $tot_mancost = 0;
+                $tot_mancostpct = 0;
+                $tot_tips = 0;
+                $tot_tipspct = 0;
+
+              ?>
             @foreach($dailysales as $d)
             <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
               <td>{{ $d->date->format('M j, D') }}</td>
@@ -163,10 +176,27 @@
               <td class="text-right">{{ number_format($d->dailysale['headspend'], 2) }}</td>
               <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
               <td class="text-right">{{ $d->dailysale['empcount']=='0' ? '0.00':number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2) }}</td>
-              <td class="text-right">{{ number_format($d->dailysale['empcount']*$branch->mancost,2) }}</td>
+              <?php
+                $mancost = $d->dailysale['empcount']*$branch->mancost;
+              ?>
+              <td class="text-right">{{ number_format($mancost,2) }}</td>
               <td class="text-right">{{ $d->dailysale['mancostpct'] }}</td>
               <td class="text-right">{{ number_format($d->dailysale['tips'],2) }}</td>
               <td class="text-right">{{ $d->dailysale['tipspct'] }}</td>
+              <?php
+                $tot_sales      += $d->dailysale['sales'];
+                $tot_custcount  += $d->dailysale['custcount'];
+                $tot_headspend  += $d->dailysale['headspend'];
+                $tot_empcount   += $d->dailysale['empcount'];
+
+                if($d->dailysale['empcount']!='0')
+                  $tot_sales_emp += number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2, '.', '');
+
+                $tot_mancost    += $mancost;
+                $tot_mancostpct += $d->dailysale['mancostpct'];
+                $tot_tips       += $d->dailysale['tips'];
+                $tot_tipspct    += $d->dailysale['tipspct'];
+              ?>
               @else 
               <td class="text-right">-</td>
               <td class="text-right">-</td>
@@ -178,10 +208,68 @@
               <td class="text-right">-</td>
               <td class="text-right">-</td>
               @endif
-              </tr>
+            </tr>
             @endforeach
-          <tbody>
           </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="text-right">
+                <strong>{{ number_format($tot_sales,2) }}</strong>
+                <div>
+                <em><small>{{ number_format($tot_sales/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>{{ number_format($tot_custcount, 0) }}</strong>
+                <div>
+                <em><small>{{ number_format($tot_custcount/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>&nbsp;</strong>
+                <div>
+                <em><small>{{ number_format($tot_headspend/count($dailysales),0) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>{{ $tot_empcount }}</strong>
+                <div>
+                <em><small>{{ number_format($tot_empcount/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>&nbsp;</strong>
+                <div>
+                <em><small>{{ number_format($tot_sales_emp/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>{{ number_format($tot_mancost,2) }}</strong>
+                <div>
+                <em><small>{{ number_format($tot_mancost/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>&nbsp;</strong>
+                <div>
+                <em><small>{{ number_format($tot_mancostpct/count($dailysales),2) }}%</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>{{ number_format($tot_tips,2) }}</strong>
+                <div>
+                <em><small>{{ number_format($tot_tips/count($dailysales),2) }}</small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong>&nbsp;</strong>
+                <div>
+                <em><small>{{ number_format($tot_tipspct/count($dailysales),2) }}%</small></em>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
 
         <table id="datatable" class="tb-data" style="display:none;">

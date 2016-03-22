@@ -144,72 +144,11 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
   
   <script>
-    $(document).ready(function(){
-
-      $('#dp-date-fr').datetimepicker({
-        defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
-        format: 'MM/DD/YYYY',
-        showTodayButton: true,
-        ignoreReadonly: true
-      }).on('dp.change', function(e){
-        var date = e.date.format('YYYY-MM-DD');
-        //console.log(date);
-        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
-        $('#fr').val(date);
-        if($('#fr').data('fr')==date)
-          $('.btn-go').prop('disabled', true);
-        else
-          $('.btn-go').prop('disabled', false);
-      });
-
-
-      $('#dp-date-to').datetimepicker({
-        defaultDate: "{{ $dr->to->format('Y-m-d') }}",
-        format: 'MM/DD/YYYY',
-        showTodayButton: true,
-        useCurrent: false,
-        ignoreReadonly: true
-      }).on('dp.change', function(e){
-        var date = e.date.format('YYYY-MM-DD');
-        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
-        $('#to').val(date);
-        if($('#to').data('to')==date)
-          $('.btn-go').prop('disabled', true);
-        else
-          $('.btn-go').prop('disabled', false);
-      });
-    });
-
-    var data = {};
-
-    $('.selectpicker').on('hidden.bs.select', function (e) {
-      //console.log($(this).val());
-    }).on('changed.bs.select', function (e) {
-      data.branches = $(this).val();
-      if(data.branches==null)
-        $('#btn-go').prop('disabled', true);
-      else
-        $('#btn-go').prop('disabled', false);
-    });
-
-
-    $('#btn-go').on('click', function(){
-
-      if(data.branches=='undefined' || data.branches==null) {
-        console.log('walang branches');
-        //alert('Please select branches');
-      } else {
-
-        data.stat = checkStat();
-        setDates();
-
-        assignBranch(data).fail(function(jqXHR, textStatus, errorThrown) {
-          var csv = jqXHR.responseText;
-          var arr = [];
-
-          $('#graph').highcharts({
+    var generateGraph = function(data) {
+      var arr = [];
+      $('#graph').highcharts({
             data: {
-                csv: csv,
+                csv: data,
               // Parse the American date format used by Google
               parseDate: function (s) {
                 //console.log(s);
@@ -228,7 +167,7 @@
               type: 'line',
               spacingRight: 0,
               marginTop: 40,
-              marginRight: 30,
+              marginRight: 20,
               zoomType: 'x',
               panning: true,
               panKey: 'shift'
@@ -341,6 +280,73 @@
               }
             }
           }); // end: graph
+    }
+
+    $(document).ready(function(){
+
+      $('#dp-date-fr').datetimepicker({
+        defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        //console.log(date);
+        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-date-to').datetimepicker({
+        defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+    });
+
+    var data = {};
+
+    $('.selectpicker').on('hidden.bs.select', function (e) {
+      //console.log($(this).val());
+    }).on('changed.bs.select', function (e) {
+      data.branches = $(this).val();
+      if(data.branches==null)
+        $('#btn-go').prop('disabled', true);
+      else
+        $('#btn-go').prop('disabled', false);
+    });
+
+
+    $('#btn-go').on('click', function(){
+
+      if(data.branches=='undefined' || data.branches==null) {
+        console.log('walang branches');
+        alert('Please select branches');
+      } else {
+
+        data.stat = checkStat();
+        setDates();
+
+        assignBranch(data).fail(function(jqXHR, textStatus, errorThrown) {
+          var csv = jqXHR.responseText;
+          
+          generateGraph(csv);
+
+          
         });
       }
     });

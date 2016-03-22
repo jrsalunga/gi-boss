@@ -306,7 +306,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong>&nbsp;</strong>
+                <strong>&nbsp; {{ number_format(($tot_tips/$tot_sales)*100,2)}}%</strong>
                 <div>
                 <em><small>{{ number_format($tot_tipspct/count($dailysales),2) }}%</small></em>
                 </div>

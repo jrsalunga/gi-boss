@@ -292,7 +292,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong>&nbsp; {{ number_format((($tot_empcount*$tot_mancost)/$tot_sales)*.100,2) }}%</strong>
+                <strong>&nbsp; {{ number_format((($tot_empcount*$branch->mancost)/$tot_sales)*100,2) }}%</strong>
                 <div>
                 <em><small>{{ number_format($tot_mancostpct/count($dailysales),2) }}%</small></em>
                 </div>

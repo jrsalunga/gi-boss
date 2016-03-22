@@ -308,8 +308,8 @@
               <td class="text-right">
                 <strong>&nbsp; </strong>
                 <div>
-                <em><small title="{{ ({{$tot_tips}}/{{$tot_sales}})*100 ">
-                  {{ number_format(($tot_tips/$tot_sales)*100,2)}}%
+                <em><small title="({{$tot_tips}}/{{$tot_sales}})*100 ">
+                  {{ number_format(($tot_tips/$tot_sales)*100,2) }}%
                 </small></em>
                 </div>
               </td>

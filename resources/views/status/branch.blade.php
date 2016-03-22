@@ -135,24 +135,25 @@
 
       @else
 
-      <div class="col-xs-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
         <p>Total Sales:</p>
         <h3 id="h-tot-sales" style="margin-top:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
         <p>Total Customer:</p>
         <h3 id="h-tot-customer" style="margin-top:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
         <p>Total Manpower Cost:</p>
         <h3 id="h-tot-mancost" style="margin-top:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right">
-        <p>Ave Sales/Emp:</p>
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
+        <p>Total Sales/Total Emp:</p>
         <h3 id="h-tot-tips" style="margin-top:0">0</h3>
       </div>
 
-      <div class="col-md-12" style="margin-top: 10px;">&nbsp;</div>
+    </div>
+    <div class="row">
 
       <div class="col-md-12">
         <div id="container" style="overflow: hidden;"></div>
@@ -243,41 +244,55 @@
               <td class="text-right">
                 <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
                 <div>
-                <em><small>{{ number_format($tot_sales/count($dailysales),2) }}</small></em>
+                <em><small title="{{$tot_sales}}/{{count($dailysales)}}">
+                  {{ number_format($tot_sales/count($dailysales),2) }}
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
                 <strong id="f-tot-customer">{{ number_format($tot_custcount, 0) }}</strong>
                 <div>
-                <em><small>{{ number_format($tot_custcount/count($dailysales),2) }}</small></em>
+                <em><small title="{{$tot_custcount}}/{{count($dailysales)}}">
+                  {{ number_format($tot_custcount/count($dailysales),2) }}
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
                 <strong>&nbsp;</strong>
                 <div>
-                <em><small>{{ number_format($tot_headspend/count($dailysales),0) }}</small></em>
+                <em><small title="{{$tot_headspend}}/{{count($dailysales)}}">
+                  {{ number_format($tot_headspend/count($dailysales),2) }}
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
                 <strong>{{ number_format($tot_empcount,0) }}</strong>
                 <div>
-                <em><small>{{ number_format($tot_empcount/count($dailysales),2) }}</small></em>
+                <em><small title="{{$tot_empcount}}/{{count($dailysales)}}">
+                  {{ number_format($tot_empcount/count($dailysales),2) }}
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
                 <strong>&nbsp;</strong>
                 <div>
-                <em><small id="f-tot-tips">{{ number_format($tot_sales_emp/count($dailysales),2) }}</small></em>
+                <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}" data-ave="{{ number_format($tot_sales_emp/count($dailysales),2) }}">
+                  @if($tot_empcount!='0')
+                    {{ number_format($tot_sales/$tot_empcount,2) }}
+                  @endif
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
                 <strong id="f-tot-mancost">{{ number_format($tot_mancost,2) }}</strong>
                 <div>
-                <em><small>{{ number_format($tot_mancost/count($dailysales),2) }}</small></em>
+                <em><small title="{{$tot_mancost}}/{{count($dailysales)}}">
+                  {{ number_format($tot_mancost/count($dailysales),2) }}
+                </small></em>
                 </div>
               </td>
               <td class="text-right">
-                <strong>&nbsp;</strong>
+                <strong>&nbsp; {{ number_format((($tot_empcount*$tot_mancost)/$tot_sales)*.100,2) }}%</strong>
                 <div>
                 <em><small>{{ number_format($tot_mancostpct/count($dailysales),2) }}%</small></em>
                 </div>

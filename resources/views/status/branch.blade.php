@@ -161,7 +161,7 @@
 
       <div class="col-md-12">
         <div class="table-responsive">
-          <table class="table table-hover table-striped table-sort">
+          <table class="table table-hover table-striped table-sort-data">
             <thead>
               <tr>
                   <th>Date</th>
@@ -170,7 +170,12 @@
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
                   <th class="text-right">Sales/Emp</th>
-                  <th class="text-right">Man Cost</th>
+                  <th class="text-right">
+                    <div style="font-weight: normal; font-size: 11px; cursor: help;">
+                      <em title="Branch Mancost">{{ $branch->mancost }}</em>
+                    </div>
+                    Man Cost
+                  </th>
                   <th class="text-right">Man Cost %</th>
                   <th class="text-right">Tips</th>
                   <th class="text-right">Tips %</th>
@@ -191,20 +196,23 @@
               ?>
             @foreach($dailysales as $d)
             <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
-              <td>{{ $d->date->format('M j, D') }}</td>
+              <td data-sort="{{$d->date->format('Y-m-d')}}">{{ $d->date->format('M j, D') }}</td>
               @if(!is_null($d->dailysale))
-              <td class="text-right">{{ number_format($d->dailysale['sales'], 2) }}</td>
-              <td class="text-right">{{ number_format($d->dailysale['custcount'], 0) }}</td>
-              <td class="text-right">{{ number_format($d->dailysale['headspend'], 2) }}</td>
-              <td class="text-right">{{ $d->dailysale['empcount'] }}</td>
-              <td class="text-right">{{ $d->dailysale['empcount']=='0' ? '0.00':number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2) }}</td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">{{ number_format($d->dailysale['sales'], 2) }}</td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
+              <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">{{ $d->dailysale['empcount'] }}</td>
+              <?php
+                $s = $d->dailysale['empcount']=='0' ? '0.00':($d->dailysale['sales']/$d->dailysale['empcount']);
+              ?>
+              <td class="text-right" data-sort="{{$s}}">{{number_format($s,2)}}</td>
               <?php
                 $mancost = $d->dailysale['empcount']*$branch->mancost;
               ?>
-              <td class="text-right">{{ number_format($mancost,2) }}</td>
-              <td class="text-right">{{ $d->dailysale['mancostpct'] }}</td>
-              <td class="text-right">{{ number_format($d->dailysale['tips'],2) }}</td>
-              <td class="text-right">{{ $d->dailysale['tipspct'] }}</td>
+              <td class="text-right" data-sort="{{ number_format($mancost,2,'.','') }}">{{ number_format($mancost,2) }}</td>
+              <td class="text-right" data-sort="{{ $d->dailysale['mancostpct'] }}">{{ $d->dailysale['mancostpct'] }}</td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
+              <td class="text-right" data-sort="{{ $d->dailysale['tipspct'] }}">{{ $d->dailysale['tipspct'] }}</td>
               <?php
                 $tot_sales      += $d->dailysale['sales'];
                 $tot_custcount  += $d->dailysale['custcount'];
@@ -220,15 +228,15 @@
                 $tot_tipspct    += $d->dailysale['tipspct'];
               ?>
               @else 
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
-              <td class="text-right">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
               @endif
             </tr>
             @endforeach
@@ -295,7 +303,11 @@
                 <strong>&nbsp;</strong>
                 <div>
                 <em><small title="(({{$tot_empcount}}*{{$branch->mancost}})/{{$tot_sales}})*100">
+                  @if($tot_sales!='0')
                   {{ number_format((($tot_empcount*$branch->mancost)/$tot_sales)*100,2) }}%
+                  @else
+                    0
+                  @endif
                 </small></em>
                 </div>
               </td>
@@ -309,7 +321,11 @@
                 <strong>&nbsp; </strong>
                 <div>
                 <em><small title="({{$tot_tips}}/{{$tot_sales}})*100 ">
+                  @if($tot_sales!='0')
                   {{ number_format(($tot_tips/$tot_sales)*100,2) }}%
+                  @else
+                    0
+                  @endif
                 </small></em>
                 </div>
               </td>
@@ -361,8 +377,6 @@
   
   <script>
     $(document).ready(function(){
-
-      
     
       $('#dp-date-fr').datetimepicker({
         defaultDate: "{{ $dr->fr->format('Y-m-d') }}",

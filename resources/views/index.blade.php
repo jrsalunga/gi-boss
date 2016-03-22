@@ -40,21 +40,21 @@
         </div>
         <div class="panel-body">
           <p class="text-right">
-            <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+            <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-star"></span> 
-              <span class="hidden-xs hidden-sm">Starred</span>
+              <span class="hidden-xs">Starred</span>
             </a> 
-            <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default">
+            <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs hidden-sm">View All Branches</span>
+              <span class="hidden-xs">All Branches</span>
             </a>
-            <a href="/status/branch" class="btn btn-default">
+            <a href="/status/branch" class="btn btn-default btn-sm">
               <span class="gly gly-cardio"></span> 
-              <span class="hidden-xs hidden-sm">Branch Analytics</span>
+              <span class="hidden-xs">Branch Analytics</span>
             </a>
-            <a href="/status/comparative" class="btn btn-default">
+            <a href="/status/comparative" class="btn btn-default btn-sm">
               <span class="gly gly-stats"></span> 
-              <span class="hidden-xs hidden-sm">Comparative Analytics</span>
+              <span class="hidden-xs">Comparative Analytics</span>
             </a>
           </p> 
           <table class="table table-striped table-hover">
@@ -73,7 +73,7 @@
                   </div>
                     {{ $dr->now->copy()->subDay()->format('D, M j') }}
                 </th>
-                <th class="text-center">
+                <th class="text-center hidden-xs">
                     {{ $dr->now->copy()->subDay(2)->format('D, M j') }}
                   <div style="font-weight: normal; font-size: 11px;">
                   </div>
@@ -104,7 +104,7 @@
 
                     @endif
                   </td>
-                  <td class="text-right">{{ number_format($ds->otherday->sales,2) }}</td>
+                  <td class="text-right  hidden-xs">{{ number_format($ds->otherday->sales,2) }}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -126,11 +126,11 @@
           <p class="text-right">
             <a href="/storage" class="btn btn-default">
               <span class="gly gly-hdd"></span> 
-              <span class="hidden-xs hidden-sm">Filing System</span>
+              <span class="hidden-xs">Filing System</span>
             </a> 
             <a href="/storage/log" class="btn btn-default">
               <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs hidden-sm">View All Logs</span>
+              <span class="hidden-xs">View All Logs</span>
             </a>
             <!--
             <a href="/backup/delinquent" class="btn btn-default">

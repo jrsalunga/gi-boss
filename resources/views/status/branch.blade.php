@@ -135,24 +135,24 @@
 
       @else
 
-      <div class="col-sm-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right">
         <p>Total Sales:</p>
-        <h2 id="h-tot-sales">0</h2>
+        <h3 id="h-tot-sales" style="margin-top:0">0</h3>
       </div>
-      <div class="col-sm-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right">
         <p>Total Customer:</p>
-        <h2 id="h-tot-customer">0</h2>
+        <h3 id="h-tot-customer" style="margin-top:0">0</h3>
       </div>
-      <div class="col-sm-6 col-md-3 text-right">
+      <div class="col-xs-6 col-md-3 text-right">
         <p>Total Manpower Cost:</p>
-        <h2 id="h-tot-mancost">0</h2>
+        <h3 id="h-tot-mancost" style="margin-top:0">0</h3>
       </div>
-      <div class="col-sm-6 col-md-3 text-right">
-        <p>Total Tips:</p>
-        <h2 id="h-tot-tips">0</h2>
+      <div class="col-xs-6 col-md-3 text-right">
+        <p>Ave Sales/Emp:</p>
+        <h3 id="h-tot-tips" style="margin-top:0">0</h3>
       </div>
 
-      <div class="col-md-12" style="margin-top: 20px;">&nbsp;</div>
+      <div class="col-md-12" style="margin-top: 10px;">&nbsp;</div>
 
       <div class="col-md-12">
         <div id="container" style="overflow: hidden;"></div>
@@ -267,7 +267,7 @@
               <td class="text-right">
                 <strong>&nbsp;</strong>
                 <div>
-                <em><small>{{ number_format($tot_sales_emp/count($dailysales),2) }}</small></em>
+                <em><small id="f-tot-tips">{{ number_format($tot_sales_emp/count($dailysales),2) }}</small></em>
                 </div>
               </td>
               <td class="text-right">
@@ -283,7 +283,7 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong id="f-tot-tips">{{ number_format($tot_tips,2) }}</strong>
+                <strong>{{ number_format($tot_tips,2) }}</strong>
                 <div>
                 <em><small>{{ number_format($tot_tips/count($dailysales),2) }}</small></em>
                 </div>
@@ -413,13 +413,16 @@
       },
       chart: {
         type: 'line',
+        height: 300,
         spacingRight: 0,
         marginTop: 40,
-        marginRight: 20,
+        //marginRight: 20,
+        marginRight: 10,
         zoomType: 'x',
         panning: true,
         panKey: 'shift'
       },
+      colors: ['#15C0C2', '#B09ADB', '#5CB1EF', '#F49041', '#D36A71', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
       title: {
           text: ''
       },

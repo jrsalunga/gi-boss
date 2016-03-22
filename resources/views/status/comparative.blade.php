@@ -72,16 +72,16 @@
           <label for="inputPassword3" class="col-sm-2 control-label">Stat to View</label>
           <div class="col-sm-10">
             <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active">
+              <label class="btn btn-default stat active">
                 <input type="radio" name="options" id="option1" autocomplete="off" checked>Sales
               </label>
-              <label class="btn btn-default">
+              <label class="btn btn-default stat">
                 <input type="radio" name="options" id="option2" autocomplete="off">Man Cost
               </label>
-              <label class="btn btn-default">
+              <label class="btn btn-default stat">
                 <input type="radio" name="options" id="option3" autocomplete="off">Tips
               </label>
-              <label class="btn btn-default">
+              <label class="btn btn-default stat">
                 <input type="radio" name="options" id="option4" autocomplete="off">Sales/Emp
               </label>
             </div>
@@ -151,27 +151,31 @@
                 csv: data,
               // Parse the American date format used by Google
               parseDate: function (s) {
-                //console.log(s);
-                //var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
-
                 var match = s.match(/(\d{4})-(\d{2})-(\d{2})/);
-                //console.log(match);
                 if (match) {
-                  //console.log(match[1]+'-'+match[2]+'-'+match[3]);
-                  //console.log(Date.UTC(+(match[1]), match[2] - 1, +match[1]))
                   return Date.UTC(+(match[1]), match[2] - 1, +match[3]);
                 }
               }
             },
             chart: {
               type: 'line',
+              height: 300,
               spacingRight: 0,
               marginTop: 40,
               marginRight: 20,
               zoomType: 'x',
               panning: true,
-              panKey: 'shift'
+              panKey: 'shift',
+              events: {
+                redraw: function (event) {
+                  console.log(
+                    Highcharts.dateFormat('%Y-%m-%d', event.target.xAxis[0].min),
+                    Highcharts.dateFormat('%Y-%m-%d', event.target.xAxis[0].max)
+                  );
+                }
+              }
             },
+            colors: ['#15C0C2', '#B09ADB', '#5CB1EF', '#F49041', '#D36A71', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
             title: {
                 text: ''
             },
@@ -188,9 +192,6 @@
                   x: 3,
                   y: 15,
                   formatter: function () {
-                    //var date = new Date(this.value);
-                    //console.log(date.getDay());
-                    //console.log(date);
                     return Highcharts.dateFormat('%b %e', this.value);
                   }
                 },
@@ -204,7 +205,7 @@
                 tickWidth: 0,
                 labels: {
                   formatter: function () {
-                    arr.push({ // mark the weekend
+                    arr.push({ 
                       color: "#CCCCCC",
                       width: 1,
                       value: this.value-86400000,
@@ -333,6 +334,14 @@
 
     $('#btn-go').on('click', function(){
 
+      render();
+    });
+
+    $('.stat').on('click', function(){
+      render();
+    });
+
+    var render = function(){
       if(data.branches=='undefined' || data.branches==null) {
         console.log('walang branches');
         alert('Please select branches');
@@ -341,15 +350,18 @@
         data.stat = checkStat();
         setDates();
 
-        assignBranch(data).fail(function(jqXHR, textStatus, errorThrown) {
+        assignBranch(data).success(function(data, textStatus, jqXHR) {
           var csv = jqXHR.responseText;
+          console.log('data');
+          //console.log(data);
+          console.log(textStatus);
           
-          generateGraph(csv);
+          generateGraph(data);
 
           
         });
       }
-    });
+    }
 
     var checkStat = function(){
       if ($('#option1').prop('checked') == true)
@@ -372,28 +384,20 @@
 
     var assignBranch = function(a){
       var formData = a;
-      console.log('assignBranch');
       return $.ajax({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             url: '/api/csv/comparative',
-            dataType: "text/plain",
+            //dataType: 'text/csv',
             data: formData,
             //async: false,
             success: function(d, textStatus, jqXHR){
-                //aData = data;
-              console.log('success');
-              console.log(d);
-              console.log(textStatus);
-              console.log(jqXHR);
+
             },
             error: function(jqXHR, textStatus, errorThrown){
-              //console.log(jqXHR.responseText);
-                //alert(textStatus + ' Failed on posting data');
+              alert(textStatus + ' Failed on redering graph');
             }
         }); 
-      
-      //return aData;
     }
 
     

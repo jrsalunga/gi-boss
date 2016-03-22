@@ -165,10 +165,13 @@ class BranchController extends Controller
 				}
 
 			}
-				echo PHP_EOL;
+			echo PHP_EOL;
 		}
 
-		return;
+
+		$response = new Response;
+	 	$response->header('Content-Type','text/csv');
+	  return $response;
 	}
 
 

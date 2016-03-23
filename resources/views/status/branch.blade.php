@@ -135,19 +135,19 @@
 
       @else
 
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Sales</p>
         <h3 id="h-tot-sales" style="margin:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Customer</p>
         <h3 id="h-tot-customer" style="margin:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Manpower Cost</p>
         <h3 id="h-tot-mancost" style="margin:0">0</h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Sales per Total Emp</p>
         <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
@@ -342,7 +342,7 @@
                   <th>Sales</th>
                   <th>Tips</th>
                   <th>Man Cost</th>
-                  <th>Sales/Emp</th>
+                  <th>Sales per Emp</th>
               </tr>
             </thead>
             @foreach($dailysales as $d)

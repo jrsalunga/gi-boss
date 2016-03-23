@@ -136,20 +136,20 @@
       @else
 
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
-        <p>Total Sales:</p>
-        <h3 id="h-tot-sales" style="margin-top:0">0</h3>
+        <p style="margin-bottom:0">Total Sales</p>
+        <h3 id="h-tot-sales" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
-        <p>Total Customer:</p>
-        <h3 id="h-tot-customer" style="margin-top:0">0</h3>
+        <p style="margin-bottom:0">Total Customer</p>
+        <h3 id="h-tot-customer" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
-        <p>Total Manpower Cost:</p>
-        <h3 id="h-tot-mancost" style="margin-top:0">0</h3>
+        <p style="margin-bottom:0">Total Manpower Cost</p>
+        <h3 id="h-tot-mancost" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 15px;">
-        <p>Total Sales/Total Emp:</p>
-        <h3 id="h-tot-tips" style="margin-top:0">0</h3>
+        <p style="margin-bottom:0">Total Sales per Total Emp</p>
+        <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
 
     </div>
@@ -169,7 +169,7 @@
                   <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-right">Sales/Emp</th>
+                  <th class="text-right">Sales per Emp</th>
                   <th class="text-right">
                     <div style="font-weight: normal; font-size: 11px; cursor: help;">
                       <em title="Branch Mancost">{{ $branch->mancost }}</em>
@@ -287,6 +287,8 @@
                 <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}" data-ave="{{ number_format($tot_sales_emp/count($dailysales),2) }}">
                   @if($tot_empcount!='0')
                     {{ number_format($tot_sales/$tot_empcount,2) }}
+                  @else
+                    0
                   @endif
                 </small></em>
                 </div>

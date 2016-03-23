@@ -115,7 +115,7 @@
             </div><!-- end btn-grp -->
           </div>
           <div class="col-sm-4">
-            <div class="  visible-xs">&nbsp;</div>
+            <div class="visible-xs">&nbsp;</div>
             <button id="btn-go" type="button" class="btn btn-success" disabled>Compare</button>
           </div>
         </div>

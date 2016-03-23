@@ -146,7 +146,7 @@
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <strong>Delinquent Branches</strong>
+                    <strong style="color: red;">Delinquent Branches</strong>
                   </a>
                   <span class="badge">{{ count($delinquents[2]) }}</span>
                 </h4>

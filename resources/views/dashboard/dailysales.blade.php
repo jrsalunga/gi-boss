@@ -56,7 +56,7 @@
           <!--
           <button class="btn btn-default" id="dp-dates">{{ $dr->date->format('D, M j, Y') }}</button>
           -->
-          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('D, M j') }}" style="max-width: 110px;" readonly>
+          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/d/Y') }}" style="max-width: 110px;" readonly>
           <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
           <a href="/dailysales?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
@@ -152,7 +152,7 @@
 
     $('#dp-date').datetimepicker({
       defaultDate: "{{ $dr->date->format('Y-m-d') }}",
-      format: 'ddd, MMM D',
+      format: 'MM/DD/YYYY',
       showTodayButton: true,
       ignoreReadonly: true
     }).on('dp.change', function(e){

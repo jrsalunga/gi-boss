@@ -89,7 +89,7 @@
         </div>
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">Time Frame</label>
-          <div class="col-sm-10">
+          <div class="col-sm-6">
             <div class="btn-group" role="group">
             <!--
             <a href="/" class="btn btn-default" title="">
@@ -112,17 +112,14 @@
               <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
             -->
-          </div><!-- end btn-grp -->
+            </div><!-- end btn-grp -->
+          </div>
+          <div class="col-sm-4">
+            <div class="  visible-xs">&nbsp;</div>
+            <button id="btn-go" type="button" class="btn btn-success" disabled>Compare</button>
           </div>
         </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button id="btn-go" type="button" class="btn btn-success" disabled>Plot</button>
-            <!--
-            <button id="btn-cancel" type="button" class="btn btn-default" >Clear</button>
-            -->
-          </div>
-        </div>
+        
       </form>
 
 

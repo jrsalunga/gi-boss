@@ -124,11 +124,11 @@
         <div class="panel-body">
 
           <p class="text-right">
-            <a href="/storage" class="btn btn-default">
+            <a href="/storage" class="btn btn-default btn-sm">
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs">Filing System</span>
             </a> 
-            <a href="/storage/log" class="btn btn-default">
+            <a href="/storage/log" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-th-list"></span> 
               <span class="hidden-xs">View All Logs</span>
             </a>

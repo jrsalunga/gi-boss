@@ -148,7 +148,7 @@
         <h3 id="h-tot-mancost" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Sales per Total Emp</p>
+        <p style="margin-bottom:0">Sales per Employee</p>
         <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
 

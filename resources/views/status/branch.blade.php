@@ -109,9 +109,9 @@
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('D, M j') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('D, M j') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -382,7 +382,7 @@
     
       $('#dp-date-fr').datetimepicker({
         defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
-        format: 'ddd, MMM D',
+        format: 'MM/DD/YYYY',
         showTodayButton: true,
         ignoreReadonly: true
       }).on('dp.change', function(e){
@@ -399,7 +399,7 @@
 
       $('#dp-date-to').datetimepicker({
         defaultDate: "{{ $dr->to->format('Y-m-d') }}",
-        format: 'ddd, MMM D',
+        format: 'MM/DD/YYYY',
         showTodayButton: true,
         useCurrent: false,
         ignoreReadonly: true

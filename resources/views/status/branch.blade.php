@@ -140,7 +140,7 @@
         <h3 id="h-tot-sales" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Customer</p>
+        <p style="margin-bottom:0">Total Customers</p>
         <h3 id="h-tot-customer" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -166,7 +166,7 @@
               <tr>
                   <th>Date</th>
                   <th class="text-right">Sales</th>
-                  <th class="text-right">Customer</th>
+                  <th class="text-right">Customers</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
                   <th class="text-right">Sales per Emp</th>

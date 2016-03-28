@@ -210,7 +210,11 @@
                 $mancost = $d->dailysale['empcount']*$branch->mancost;
               ?>
               <td class="text-right" data-sort="{{ number_format($mancost,2,'.','') }}">{{ number_format($mancost,2) }}</td>
-              <td class="text-right" data-sort="{{ $d->dailysale['mancostpct'] }}">{{ $d->dailysale['mancostpct'] }}</td>
+              <td class="text-right" data-sort="{{ $d->dailysale['mancostpct'] }}"
+                @if($d->dailysale['sales']!=='0.00' || $d->dailysale['sales']!=='0')
+                title="({{$d->dailysale['empcount']}}*{{$branch->mancost}})/$d->dailysale['sales']"
+                @endif
+                >{{ $d->dailysale['mancostpct'] }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
               <td class="text-right" data-sort="{{ $d->dailysale['tipspct'] }}">{{ $d->dailysale['tipspct'] }}</td>
               <?php

@@ -76,13 +76,13 @@
                 <input type="radio" name="options" id="option1" autocomplete="off" checked>Sales
               </label>
               <label class="btn btn-default stat">
-                <input type="radio" name="options" id="option2" autocomplete="off">Man Cost
+                <input type="radio" name="options" id="option2" autocomplete="off">Man Cost %
               </label>
               <label class="btn btn-default stat">
-                <input type="radio" name="options" id="option3" autocomplete="off">Tips
+                <input type="radio" name="options" id="option3" autocomplete="off">Tips %
               </label>
               <label class="btn btn-default stat">
-                <input type="radio" name="options" id="option4" autocomplete="off">Sales/Emp
+                <input type="radio" name="options" id="option4" autocomplete="off">Sales per Emp
               </label>
             </div>
           </div>
@@ -215,17 +215,17 @@
             ],
             yAxis: [{ // left y axis
               min: 0,
-                title: {
-                  text: null
-                },
-                labels: {
-                  align: 'left',
-                  x: 3,
-                  y: 16,
-                  format: '{value:.,0f}'
-                },
-                  showFirstLabel: false
-                }], 
+              title: {
+                text: null
+              },
+              labels: {
+                align: 'left',
+                x: 3,
+                y: 16,
+                format: '{value:.,0f}'
+              },
+                showFirstLabel: false
+              }], 
             legend: {
               align: 'left',
               verticalAlign: 'top',
@@ -335,6 +335,8 @@
     });
 
     $('.stat').on('click', function(){
+      $(this).children('input').prop('checked', true);
+      console.log($(this).children('input'));
       render();
     });
 
@@ -345,6 +347,7 @@
       } else {
 
         data.stat = checkStat();
+        console.log('stat: '+ data.stat);
         setDates();
 
         assignBranch(data).success(function(data, textStatus, jqXHR) {
@@ -363,11 +366,11 @@
     var checkStat = function(){
       if ($('#option1').prop('checked') == true)
         return 1;
-      else if ($('#option2').prop('checked'))
+      else if ($('#option2').prop('checked') == true)
         return 2;
-      else if ($('#option3').prop('checked'))
+      else if ($('#option3').prop('checked') == true)
         return 3;
-      else if ($('#option4').prop('checked'))
+      else if ($('#option4').prop('checked') == true)
         return 4;
       else 
         return 1;

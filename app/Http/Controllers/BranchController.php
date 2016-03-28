@@ -154,10 +154,13 @@ class BranchController extends Controller
 					echo 0;
 				else {
 					
-					if($request->input('stat')==2)
-						echo number_format($ds['empcount']*$b->mancost,2,'.','');
-					elseif($request->input('stat')==3)
-						echo $ds['tips'];
+					if($request->input('stat')==2) {
+
+						//echo number_format($ds['empcount']*$b->mancost,2,'.','');
+						echo number_format($ds['mancostpct'],2,'.','');
+						//echo $ds['mancostpct'];
+					} elseif($request->input('stat')==3)
+						echo $ds['tipspct'];
 					elseif($request->input('stat')==4) 
 						echo $ds->empcount=='0' ? '0.00':number_format(($ds->sales/$ds->empcount),2,'.','');
 					else

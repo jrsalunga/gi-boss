@@ -179,6 +179,69 @@ class BranchController extends Controller
 
 
 
+	public function getComparativeJSON(Request $request){
+
+		$this->dr->fr = carbonCheckorNow($request->input('fr'));
+		$this->dr->to = carbonCheckorNow($request->input('to'));
+
+		$arr = [];
+
+
+		$branches = $this->repository->findWhereIn('id', $request->input('branches'), ['code', 'descriptor', 'mancost', 'id']);
+
+		$dss = $this->ds->with(['branch'=>function($query){
+						$query->select(['code', 'descriptor', 'mancost', 'id']);
+					}])
+					->scopeQuery(function($query) use ($request) {
+             return $query->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
+              						->whereIn('branchid', $request->input('branches'))
+                          ->orderBy('date', 'ASC');
+          })->all();
+
+
+		
+		
+
+
+
+		
+		foreach ($branches as $b) {
+			$arr[$b->code] = [];
+			foreach ($this->dr->dateInterval() as $date) {
+				
+				$filtered = $dss->filter(function ($item) use ($b, $date){
+				  return $item->branchid == $b->id && $item->date->format('Y-m-d') == $date->format('Y-m-d') ? $item : null;
+				})->first();
+
+				$ds = $filtered;
+				
+				$data['date'] = $date->format('Y-m-d');
+				$data['timestamp'] = $date->timestamp;
+
+				if(is_null($ds)) {
+					$data['sales'] 			= 0;
+					$data['mancost'] 		= 0;
+					$data['mancostpct']	= 0;
+					$data['tips']				= 0;
+					$data['tipspct']		= 0;
+					$data['salesemp']		= 0;
+				} else {
+					$data['sales'] 		= (float) $ds->sales;
+					$data['mancost'] 	= (float) number_format($ds->empcount*$b->mancost,2,'.','');
+					$data['mancostpct']	= (float) $ds->mancostpct;
+					$data['tips']	=	(float) $ds->tips;
+					$data['tipspct']	= (float) $ds->tipspct;
+					$data['salesemp'] = $ds->empcount=='0' ? (float) '0.00':(float) number_format(($ds->sales/$ds->empcount),2,'.','');
+				}
+
+				array_push($arr[$b->code], $data);
+			}
+		}
+		return response()->json($arr);
+	}
+
+
+
 
 
 

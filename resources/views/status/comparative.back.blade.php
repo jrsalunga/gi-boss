@@ -137,13 +137,150 @@
 
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
-  <script src="/js/hc-all.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="/js/hc-all.js"> </script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
   
   <script>
-    
+    var generateGraph = function(data) {
+      console.log(data);
+      var arr = [];
+      $('#graph').highcharts({
+            data: {
+                csv: data,
+              // Parse the American date format used by Google
+              parseDate: function (s) {
+                console.log(s);
+                var match = s.match(/(\d{4})-(\d{2})-(\d{2})/);
+                if (match) {
+                  return Date.UTC(+(match[1]), match[2] - 1, +match[3]);
+                }
+              }
+            },
+            chart: {
+              type: 'line',
+              height: 300,
+              spacingRight: 0,
+              marginTop: 40,
+              marginRight: 20,
+              zoomType: 'x',
+              panning: true,
+              panKey: 'shift',
+              events: {
+                redraw: function (event) {
+                  console.log(
+                    Highcharts.dateFormat('%Y-%m-%d', event.target.xAxis[0].min),
+                    Highcharts.dateFormat('%Y-%m-%d', event.target.xAxis[0].max)
+                  );
+                }
+              }
+            },
+            colors: ['#15C0C2', '#B09ADB', '#5CB1EF', '#F49041', '#D36A71', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+            title: {
+                text: ''
+            },
+            xAxis: [
+              {
+                gridLineColor: "#CCCCCC",
+                type: 'datetime',
+                //tickInterval: 24 * 3600 * 1000, // one week
+                tickWidth: 0,
+                gridLineWidth: 0,
+                lineColor: "#C0D0E0", // line on X axis
+                labels: {
+                  align: 'center',
+                  x: 3,
+                  y: 15,
+                  formatter: function () {
+                    return Highcharts.dateFormat('%b %e', this.value);
+                  }
+                },
+                plotLines: arr
+              },
+              { // slave axis
+                type: 'datetime',
+                linkedTo: 0,
+                opposite: true,
+                tickInterval: 7 * 24 * 3600 * 1000,
+                tickWidth: 0,
+                labels: {
+                  formatter: function () {
+                    arr.push({ 
+                      color: "#CCCCCC",
+                      width: 1,
+                      value: this.value-86400000,
+                      zIndex: 3
+                    });
+                    //return Highcharts.dateFormat('%a', (this.value-86400000));
+                  }
+                }
+              }
+            ],
+            yAxis: [{ // left y axis
+              min: 0,
+              title: {
+                text: null
+              },
+              labels: {
+                align: 'left',
+                x: 3,
+                y: 16,
+                format: '{value:.,0f}'
+              },
+                showFirstLabel: false
+              }], 
+            legend: {
+              align: 'left',
+              verticalAlign: 'top',
+              y: -10,
+              floating: true,
+              borderWidth: 0
+            },
+            tooltip: {
+              shared: true,
+              crosshairs: true
+            },
+            plotOptions: {
+              series: {
+                cursor: 'pointer',
+                point: {
+                  events: {
+                    click: function (e) {
+                    console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
+                    /*
+                      hs.htmlExpand(null, {
+                          pageOrigin: {
+                              x: e.pageX,
+                              y: e.pageY
+                          },
+                          headingText: this.series.name,
+                          maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
+                              this.y +' visits',
+                          width: 200
+                      });
+                    */
+                    }
+                  }
+                },
+                marker: {
+                  symbol: 'circle',
+                  radius: 3
+                },
+                lineWidth: 2,
+                dataLabels: {
+                    enabled: false,
+                    align: 'right',
+                    crop: false,
+                    formatter: function () {
+                      console.log(this.series.index);
+                      return this.series.name;
+                    },
+                    x: 1,
+                    verticalAlign: 'middle'
+                }
+              }
+            }
+          }); // end: graph
+    }
 
     $(document).ready(function(){
 
@@ -158,9 +295,9 @@
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)
-          $('#btn-go').prop('disabled', true);
+          $('.btn-go').prop('disabled', true);
         else
-          $('#btn-go').prop('disabled', false);
+          $('.btn-go').prop('disabled', false);
       });
 
 
@@ -175,14 +312,13 @@
         $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
         if($('#to').data('to')==date)
-          $('#btn-go').prop('disabled', true);
+          $('.btn-go').prop('disabled', true);
         else
-          $('#btn-go').prop('disabled', false);
+          $('.btn-go').prop('disabled', false);
       });
     });
 
     var data = {};
-    var dataset = {}
 
     $('.selectpicker').on('hidden.bs.select', function (e) {
       //console.log($(this).val());
@@ -197,269 +333,34 @@
 
     $('#btn-go').on('click', function(){
 
-      getData();
-      
-      //console.log(data.dataset)
-      //render();
-
+      render();
     });
-
 
     $('.stat').on('click', function(){
       $(this).children('input').prop('checked', true);
-      //console.log($(this).children('input'));
-      //console.log(data.dataset);
-
-        render(loadData(dataset.data));
+      console.log($(this).children('input'));
+      render();
     });
 
-    var loadData = function(ds){
-      
-      data.stat = checkStat();
-      console.log('build data');
-     
-      if(data.stat === 2) {
-          return generateSeries2(ds,'mancostpct','mancost');
-      } else if(data.stat === 3) {
-          return generateSeries2(ds,'tipspct','tips');
-      } else if(data.stat === 4) {
-          return generateSeries(ds,'salesemp');
-      } else {
-          return generateSeries(ds,'sales');
-      }
-    }
-
-    var generateSeries = function(ds, y){
-      var as = []; // array of series
-      _.each(ds, function(value, key, list){
-        var ds = {};
-        ds.name = key;
-        ds.data = [];
-        
-        _.each(value, function(value, key, list){
-          var match = value.date.match(/(\d{4})-(\d{2})-(\d{2})/);
-          if (match) {
-            var d = Date.UTC(+(match[1]), match[2] - 1, +match[3]);
-          }
-          var obj = {}; //data of series
-          obj.x = d;
-          obj.y = value[y];
-          ds.data.push(obj);
-        });
-        as.push(ds);
-      });
-      return as;
-    }
-
-    var generateSeries2 = function(ds, y, p){
-      var as = []; // array of series
-      _.each(ds, function(value, key, list){
-        var ds = {};
-        ds.name = key;
-        ds.data = [];
-        
-        _.each(value, function(value, key, list){
-          var match = value.date.match(/(\d{4})-(\d{2})-(\d{2})/);
-          if (match) {
-            var d = Date.UTC(+(match[1]), match[2] - 1, +match[3]);
-          }
-          var obj = {}; //data of series
-          obj.x = d;
-          obj.y = value[y];
-          obj.amount = value[p];
-          obj.formatedAmount = accounting.formatMoney(value[p],"", 2,",");
-          ds.data.push(obj);
-        });
-        as.push(ds);
-      });
-      return as;
-    }
-
-
-    var render = function(dt) {
-      console.log('render');
-      var arr = [];
-      var options = {
-        chart: {
-            renderTo: 'graph',
-            type: 'line',
-            height: 300,
-            spacingRight: 0,
-            marginTop: 40,
-            marginRight: 20,
-            zoomType: 'x',
-            panning: true,
-            panKey: 'shift'
-        },
-        style: {
-          fontFamily: "Helvetica"
-        },
-        colors: ['#15C0C2', '#B09ADB', '#5CB1EF', '#F49041', '#D36A71', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
-        title: {
-            text: ''
-        },
-        xAxis: [
-          {
-            gridLineColor: "#CCCCCC",
-            type: 'datetime',
-            //tickInterval: 24 * 3600 * 1000, // one week
-            tickWidth: 0,
-            gridLineWidth: 0,
-            lineColor: "#C0D0E0", // line on X axis
-            labels: {
-              align: 'center',
-              x: 3,
-              y: 15,
-              formatter: function () {
-                return Highcharts.dateFormat('%b %e', this.value);
-              }
-            },
-            plotLines: arr
-          },
-          { // slave axis
-            type: 'datetime',
-            linkedTo: 0,
-            opposite: true,
-            tickInterval: 7 * 24 * 3600 * 1000,
-            tickWidth: 0,
-            labels: {
-              formatter: function () {
-                arr.push({ 
-                  color: "#CCCCCC",
-                  width: 1,
-                  value: this.value-86400000,
-                  zIndex: 3
-                });
-                //return Highcharts.dateFormat('%a', (this.value-86400000));
-              }
-            }
-          }
-        ],
-        yAxis: [{ // left y axis
-          min: 0,
-          title: {
-            text: null
-          },
-          labels: {
-            align: 'left',
-            x: 3,
-            y: 16,
-            format: '{value:.,0f}'
-          },
-            showFirstLabel: false
-          }], 
-        legend: {
-          align: 'left',
-          verticalAlign: 'top',
-          y: -10,
-          floating: true,
-          borderWidth: 0
-        },
-        plotOptions: {
-          series: {
-            cursor: 'pointer',
-            point: {
-              events: {
-                click: function (e) {
-                console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
-                console.log(this);
-                /*
-                  hs.htmlExpand(null, {
-                      pageOrigin: {
-                          x: e.pageX,
-                          y: e.pageY
-                      },
-                      headingText: this.series.name,
-                      maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
-                          this.y +' visits',
-                      width: 200
-                  });
-                */
-                }
-              }
-            },
-            marker: {
-              symbol: 'circle',
-              radius: 3
-            },
-            lineWidth: 2,
-            dataLabels: {
-              enabled: false,
-              align: 'right',
-              crop: false,
-              formatter: function () {
-                console.log(this.series.index);
-                return this.series.name;
-              },
-              x: 1,
-              verticalAlign: 'middle'
-            },
-            states: {
-              hover: {
-                enabled: false
-              }
-            }
-          }
-        },
-        series: []
-      };
-
-      if(checkStat()=='2' || checkStat()=='3') {
-        options.tooltip = {
-          shared: true,
-          crosshairs: true,
-          useHTML: true,
-          headerFormat: '<small>{point.key}</small><table>',
-          pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
-              '<td style="text-align: right; padding-left:5px;"><b>{point.y}</b></td>'+
-              '<td style="text-align: right; padding-left:5px;">({point.formatedAmount})</td></tr>' ,
-          footerFormat: '</table>',
-          valueDecimals: 2,
-          valueSuffix: ' %'
-          
-        }
-      } else {
-        options.tooltip = {
-          shared: true,
-          crosshairs: true,
-          useHTML: true,
-          headerFormat: '<small>{point.key}</small><table>',
-          pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
-              '<td style="text-align: right; padding-left:5px;"><b>{point.y}</b></td></tr>',
-          footerFormat: '</table>',
-          valueDecimals: 2
-        }
-      }
-
-       _.each(dt, function(value, key, list){ 
-        options.series.push(value);
-      });
-
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-      }});
-      
-      var chart = new Highcharts.Chart(options);
-      $('#btn-go').prop('disabled', true);
-    }
-
-    
-
-    var getData = function(){
+    var render = function(){
       if(data.branches=='undefined' || data.branches==null) {
         console.log('walang branches');
         alert('Please select branches');
       } else {
-        //console.log('stat: '+ data.stat);
+
+        data.stat = checkStat();
+        console.log('stat: '+ data.stat);
         setDates();
-        assignBranch(data).success(function(dt, textStatus, jqXHR) {
-          //console.log('data');
-          console.log(dt);
-          //console.log(textStatus);
-          dataset.data = dt;
-          var l = loadData(dt);
-          render(l);
+
+        assignBranch(data).success(function(data, textStatus, jqXHR) {
+          var csv = jqXHR.responseText;
+          console.log('data');
+          //console.log(data);
+          console.log(textStatus);
+          
+          generateGraph(data);
+
+          
         });
       }
     }
@@ -485,11 +386,10 @@
 
     var assignBranch = function(a){
       var formData = a;
-      console.log(formData);
       return $.ajax({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
-            url: '/api/json/comparative',
+            url: '/api/csv/comparative',
             //dataType: 'text/csv',
             data: formData,
             //async: false,
@@ -497,8 +397,7 @@
 
             },
             error: function(jqXHR, textStatus, errorThrown){
-              //alert(textStatus + ' Failed on redering graph');
-              alert('Failed on redering graph. Try refreshing your browser.');
+              alert(textStatus + ' Failed on redering graph');
             }
         }); 
     }

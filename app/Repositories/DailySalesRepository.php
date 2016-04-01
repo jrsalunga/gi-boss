@@ -116,13 +116,24 @@ class DailySalesRepository extends BaseRepository {
 
     $arr = [];
     $ds_null = false;
+    $current_day_zero_sales = false;
 
     $ds = DailySales::where('date', $date->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
     
+    
+
     if(count($ds)=='0') {
       $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
       $ds_null = true;
-    } 
+    } else {
+      foreach ($ds as $d) {
+        if($d->sales == '0.00'){
+          $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
+          $ds_null = true;
+          continue;
+        }
+      }
+    }
 
     foreach ($ds as $d) {
       $branch = Branch::where('id', $d->branchid)->get(['code', 'descriptor', 'id'])->first();

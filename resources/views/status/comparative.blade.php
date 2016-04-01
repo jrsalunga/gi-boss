@@ -154,7 +154,6 @@
         ignoreReadonly: true
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
-        //console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)
@@ -185,7 +184,6 @@
     var dataset = {}
 
     $('.selectpicker').on('hidden.bs.select', function (e) {
-      //console.log($(this).val());
     }).on('changed.bs.select', function (e) {
       data.branches = $(this).val();
       if(data.branches==null)
@@ -196,27 +194,19 @@
 
 
     $('#btn-go').on('click', function(){
-
       getData();
-      
-      //console.log(data.dataset)
-      //render();
-
     });
 
 
     $('.stat').on('click', function(){
       $(this).children('input').prop('checked', true);
-      //console.log($(this).children('input'));
-      //console.log(data.dataset);
-
         render(loadData(dataset.data));
     });
 
     var loadData = function(ds){
       
       data.stat = checkStat();
-      console.log('build data');
+      //console.log('build data');
      
       if(data.stat === 2) {
           return generateSeries2(ds,'mancostpct','mancost');
@@ -277,7 +267,6 @@
 
 
     var render = function(dt) {
-      console.log('render');
       var arr = [];
       var options = {
         chart: {
@@ -302,7 +291,6 @@
           {
             gridLineColor: "#CCCCCC",
             type: 'datetime',
-            //tickInterval: 24 * 3600 * 1000, // one week
             tickWidth: 0,
             gridLineWidth: 0,
             lineColor: "#C0D0E0", // line on X axis
@@ -451,12 +439,8 @@
         console.log('walang branches');
         alert('Please select branches');
       } else {
-        //console.log('stat: '+ data.stat);
         setDates();
         assignBranch(data).success(function(dt, textStatus, jqXHR) {
-          //console.log('data');
-          console.log(dt);
-          //console.log(textStatus);
           dataset.data = dt;
           var l = loadData(dt);
           render(l);
@@ -485,19 +469,17 @@
 
     var assignBranch = function(a){
       var formData = a;
-      console.log(formData);
+      //console.log(formData);
       return $.ajax({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             url: '/api/json/comparative',
-            //dataType: 'text/csv',
             data: formData,
             //async: false,
             success: function(d, textStatus, jqXHR){
 
             },
             error: function(jqXHR, textStatus, errorThrown){
-              //alert(textStatus + ' Failed on redering graph');
               alert('Failed on redering graph. Try refreshing your browser.');
             }
         }); 

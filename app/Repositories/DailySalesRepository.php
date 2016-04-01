@@ -119,7 +119,7 @@ class DailySalesRepository extends BaseRepository {
 
     $ds = DailySales::where('date', $date->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
     
-    if(count($ds)=='0' || $ds->sales == '0.00') {
+    if(count($ds)=='0') {
       $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
       $ds_null = true;
     } 

@@ -65,7 +65,7 @@
   </nav>
 
   <div class="table-responsive">
-    <table class="table table-hover table-striped table-sort">
+    <table class="table table-hover table-striped table-sort-all">
       <thead>
         <tr>
           <th>Branch</th>
@@ -141,6 +141,16 @@
 <script>
     
   $(document).ready(function(){
+
+    $('.table-sort-all').tablesorter({
+      stringTo: 'min',
+      sortList: [[1,1]],
+      headers: {
+        1: { sorter: "digit", string: "min" }, // non-numeric content is treated as a MAX value
+        //2: { sorter: "digit", empty : "top" }, // sort empty cells to the top
+        //3: { sorter: "digit", string: "min" }  // non-numeric content is treated as a MIN value
+      } 
+    });
     
     $('#dp-date').datetimepicker({
       defaultDate: "{{ $dr->date->format('Y-m-d') }}",

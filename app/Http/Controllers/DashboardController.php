@@ -100,7 +100,7 @@ class DashboardController extends Controller
 		}));
 
 		$arr_wl = array_values(array_reverse(array_sort($arr_wl, function ($value) {
-    	return $value['date'];
+    	return $value['uploaddate'];
 		})));
 
 		$arr_wd = array_values(array_sort($arr_wd, function ($value) {

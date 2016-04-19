@@ -75,7 +75,7 @@ class DashboardController extends Controller
 			} else {
 
 				$d = filename_to_date2($backup->filename);
-				$date = Carbon::parse($d->format('Y-m-d').' '.$backup->uploaddate->format('Y-m-d H:i:s'));
+				$date = Carbon::parse($d->format('Y-m-d').' '.$backup->uploaddate->format('H:i:s'));
 				
 				$a = [
 					'code'				=> $branch->code,

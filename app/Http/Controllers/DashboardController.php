@@ -73,6 +73,8 @@ class DashboardController extends Controller
 					'date' 				=> null,
 				]);
 			} else {
+
+				$date = filename_to_date2($backup->filename);
 				
 				$a = [
 					'code'				=> $branch->code,
@@ -80,10 +82,10 @@ class DashboardController extends Controller
 					'branchid' 		=> $branch->id,
 					'filename' 		=> $backup->filename,
 					'uploaddate' 	=> $backup->uploaddate,
-					'date' 				=> $backup->uploaddate->format('Y-m-d H:i:s'),
+					'date' 				=> $date->format('Y-m-d H:i:s'),
 				];
 
-				$diff = $backup->uploaddate->diffInDays($this->dr->now, false); 
+				$diff = $date->diffInDays($this->dr->now, false); 
 
 				if($diff > 1)
 					array_push($arr_wd, $a); // push delinquent

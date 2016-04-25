@@ -28,8 +28,7 @@
 
 
 
-  <div style="margin-top:50px;" class="hidden-xs"></div>
-  <div style="margin-top:10px;" class="visible-xs-block"></div>
+  
   <div class="row">
     <div class="col-md-7">
       <div id="panel-top-sales" class="panel panel-success">
@@ -158,7 +157,7 @@
                       <tr>
                         <th>Branch</th>
                         <th>Backup</th>
-                        <th>Uploaded</th>
+                        <th>Delayed</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -166,8 +165,8 @@
                       <tr>
                         <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
                         <td>{{ $delinquent['filename'] }}</td>
-                        <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                        <td title="uploaded: {{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                          <em><small>{{ diffForHumans($delinquent['date']) }}</small></em>
                         </td>
                       </tr>
                       @endforeach
@@ -201,7 +200,7 @@
                         <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
                         <td>{{ $delinquent['filename'] }}</td>
                         <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }}</small></em>
+                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }} ago</small></em>
                         </td>
                       </tr>
                       @endforeach

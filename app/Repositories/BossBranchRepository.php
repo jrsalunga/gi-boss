@@ -2,7 +2,17 @@
 
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class BossBranchRepository extends BaseRepository {
+
+use Prettus\Repository\Traits\CacheableRepository;
+use Prettus\Repository\Contracts\CacheableInterface;
+
+
+class BossBranchRepository extends BaseRepository implements CacheableInterface
+//class BossBranchRepository extends BaseRepository 
+{
+  use CacheableRepository;
+
+
 
   /**
    * Specify Model class name

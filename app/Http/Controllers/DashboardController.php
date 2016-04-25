@@ -74,8 +74,8 @@ class DashboardController extends Controller
 				]);
 			} else {
 
-				$d = filename_to_date2($backup->filename);
-				$date = Carbon::parse($d->format('Y-m-d').' '.$backup->uploaddate->format('H:i:s'));
+				//$d = filename_to_date2($backup->filename);
+				//$date = Carbon::parse($d->format('Y-m-d').' '.$backup->uploaddate->format('H:i:s'));
 				
 				$a = [
 					'code'				=> $branch->code,
@@ -83,10 +83,10 @@ class DashboardController extends Controller
 					'branchid' 		=> $branch->id,
 					'filename' 		=> $backup->filename,
 					'uploaddate' 	=> $backup->uploaddate,
-					'date' 				=> $date->format('Y-m-d H:i:s'),
+					'date' 				=> $backup->date,
 				];
 
-				$diff = $date->diffInDays($this->dr->now, false); 
+				$diff = $backup->date->diffInDays($this->dr->now, false); 
 
 				if($diff > 1)
 					array_push($arr_wd, $a); // push delinquent

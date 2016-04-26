@@ -933,11 +933,6 @@
           yAxis: 1
         }, {
           type: 'line',
-          type: 'line',
-          dashStyle: 'shortdot',
-          yAxis: 1
-        }, {
-          type: 'line',
           //dashStyle: 'shortdot',
           yAxis: 0
         }, {

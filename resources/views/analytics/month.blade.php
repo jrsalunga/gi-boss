@@ -458,7 +458,7 @@
               <td>{{ ($d->dailysale['empcount']*$branch->mancost) }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
-              <td>0</td>
+           
               <td>0</td>
               <td>0</td>
               <td>0</td>

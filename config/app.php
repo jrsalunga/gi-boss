@@ -150,6 +150,7 @@ return [
         Vinkla\Pusher\PusherServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         GrahamCampbell\Flysystem\FlysystemServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
 
     ],
@@ -209,6 +210,7 @@ return [
         'Pusher' => Vinkla\Pusher\Facades\Pusher::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Flysystem' => GrahamCampbell\Flysystem\Facades\Flysystem::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

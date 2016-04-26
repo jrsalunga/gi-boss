@@ -1062,12 +1062,11 @@
           yAxis: 0
         }, {
           type: 'line',
-          yAxis: 0
+           dashStyle: 'shortdot',
+          yAxis: 1
         }, {
           type: 'line',
-          type: 'line',
-          dashStyle: 'shortdot',
-          yAxis: 1
+          yAxis: 0
         }, {
           type: 'line',
           //dashStyle: 'shortdot',

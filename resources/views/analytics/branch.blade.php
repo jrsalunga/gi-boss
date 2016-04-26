@@ -227,6 +227,7 @@
                 $div_custcount+=($d->dailysale['custcount']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0; 
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
+                $div_mancost+=($d->dailysale['mancost']!=0)?1:0; 
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
               ?>
 
@@ -246,10 +247,6 @@
                 $s = $d->dailysale['empcount']=='0' ? '0.00':($d->dailysale['sales']/$d->dailysale['empcount']);
               ?>
               <td class="text-right" data-sort="{{$s}}">{{number_format($s,2)}}</td>
-              <?php
-                $mancost = $d->dailysale['empcount']*$branch->mancost;
-                $div_mancost+=($mancost!=0)?1:0; 
-              ?>
               <td class="text-right" data-sort="{{ number_format($mancost,2,'.','') }}">{{ number_format($mancost,2) }}</td>
               <td class="text-right" data-sort="{{ $d->dailysale['mancostpct'] }}"
                 @if(!empty($d->dailysale['sales']) && $d->dailysale['sales']!='0.00' && $d->dailysale['sales']!='0')   
@@ -270,7 +267,7 @@
                   $tot_sales_emp += number_format(($d->dailysale['sales']/$d->dailysale['empcount']),2, '.', '');
                 }
 
-                $tot_mancost    += $mancost;
+                $tot_mancost    += $d->dailysale['mancost'];
                 $tot_mancostpct += $d->dailysale['mancostpct'];
                 $tot_tips       += $d->dailysale['tips'];
                 $tot_tipspct    += $d->dailysale['tipspct'];
@@ -423,7 +420,7 @@
               <td>{{ $d->dailysale['empcount'] }}</td>
               
               <td>{{ $d->dailysale['tips'] }}</td>
-              <td>{{ ($d->dailysale['empcount']*$branch->mancost) }}</td>
+              <td>{{ ($d->dailysale['mancost'] }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
               <td>0</td>

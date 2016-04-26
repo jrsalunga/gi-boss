@@ -1,5 +1,5 @@
 <?php namespace App\Repositories;
-
+use DB;
 use StdClass;
 use Carbon\Carbon;
 use App\Models\DailySales;
@@ -10,11 +10,12 @@ use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 use App\Repositories\Criterias\BranchDailySalesCriteria;
-use Illuminate\Container\Container as Application;
+
+use Illuminate\Http\Request;
 
 use App\Repositories\BranchRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Container\Container as App;
+
 
 
 class DailySalesRepository extends BaseRepository {
@@ -22,11 +23,11 @@ class DailySalesRepository extends BaseRepository {
 	
 	public $bossbranch;
 
-	public function __construct(Application $app, BBRepo $bbrepo, DailySales $dailysales, BranchRepository $branch) {
-		parent::__construct($app);
+	public function __construct(BBRepo $bbrepo, DailySales $dailysales, BranchRepository $branch) {
+		parent::__construct(app());
 		$this->bossbranch = $bbrepo;
 		$this->bossbranch->pushCriteria(new BossBranchCriteria);
-    $this->branch = new BranchRepository($app, new Collection);
+    $this->branch = new BranchRepository;
     $this->branch->pushCriteria(new ActiveBranch);
 	}
 	
@@ -195,5 +196,38 @@ class DailySalesRepository extends BaseRepository {
 
     return collect($arr);
 
+  }
+  private function getAggregateByDateRange($fr, $to) {
+
+    $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
+      return $query->select(DB::raw($sql))
+        ->whereBetween('date', [$fr, $to])
+        ->groupBy(DB::raw('MONTH(date), YEAR (date)'))
+        ->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+    });
+
+  }
+
+  public function getMonth(Request $request, DateRange $dr) {
+    $arr = [];
+    $data = $this->getAggregateByDateRange($dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d'))->all();
+
+    foreach ($dr->monthInterval() as $key => $date) {
+
+      $filtered = $data->filter(function ($item) use ($date){
+        return $item->date->format('Y-m') == $date->format('Y-m')
+          ? $item : null;
+      });
+
+      $obj = new StdClass;
+      $obj->date = $date;
+      $obj->dailysale = $filtered->first();
+      $arr[$key] = $obj;
+    }
+    return collect($arr);
   }
 }

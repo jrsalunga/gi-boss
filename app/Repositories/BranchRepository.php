@@ -17,13 +17,13 @@ class BranchRepository extends BaseRepository implements CacheableInterface
 {
   use CacheableRepository;
 
-	public function __construct(App $app, Collection $collection) {
-      parent::__construct($app, $collection);
+	public function __construct() {
+      parent::__construct(app());
 
-			$this->boot();      
+			//$this->boots();      
   }
 
-  public function boot() {
+  public function boots() {
   	$this->scopeQuery(function($query){
   		return $query->whereNotIn('id', ['971077BCA54611E5955600FF59FBB323', '3C561250F87448E3A2DD0562B24E3639'])
   								->orderBy('code','asc');

@@ -28,12 +28,15 @@ Route::get('/show/delinquent',  ['uses'=>'BackupController@delinquent']);
 Route::get('/storage/{param1?}/{param2?}/{param3?}',  ['uses'=>'BackupController@getStorage']);
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
-
+/*
 Route::get('status/branch/{branchid?}', ['uses'=>'BranchController@getStatus'])
     ->where(['branchid'=>'[0-9a-zA-z]{32}+']);
 Route::post('status/branch', ['uses'=>'BranchController@postStatus']);
 Route::get('status/comparative', ['uses'=>'BranchController@getComparative']);
 Route::post('status/post-comparative', ['uses'=>'BranchController@postComparative']);
+*/
+Route::get('status/branch', ['uses'=>'AnalyticsController@getDaily']);
+Route::get('status/branch/month', ['uses'=>'AnalyticsController@getMonth']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);
@@ -45,9 +48,15 @@ Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV'
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);
 
 
+/******************* API  *************************************************/
+Route::group(['prefix'=>'api'], function(){
+
+Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
+
+});/******* end prefix:api ********/
+
 
 }); /******* end middeware:auth ********/
-
 
 
 get('branch', function () {

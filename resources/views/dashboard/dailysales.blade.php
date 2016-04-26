@@ -77,6 +77,7 @@
         <tr>
           <th>Branch</th>
           <th class="text-right">Sales</th>
+          <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>
           <th class="text-right">Emp Count</th>
@@ -101,8 +102,10 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
             <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @else
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->headspend,2) }}</td>
             <td class="text-right">{{ $ds['ds']->empcount }}</td>

@@ -407,10 +407,10 @@
                 <th>Sales</th>
                 <th>Purchased</th>
                 <th>Emp Count</th>
-                
+  
                 <th>Man Cost</th>
-                <th>Sales per Emp</th>
                 <th>Tips</th>
+                <th>Sales per Emp</th>
             </tr>
           </thead>
           <tbody>
@@ -421,12 +421,11 @@
               <td>{{ $d->dailysale['sales'] }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
-              
+              <td>{{ $d->dailysale['mancost'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
-              <td>{{ ($d->dailysale['mancost']*$branch->mancost) }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
-              <td>0</td>
+
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -1063,8 +1062,7 @@
           yAxis: 0
         }, {
           type: 'line',
-          dashStyle: 'shortdot',
-          yAxis: 1
+          yAxis: 0
         }, {
           type: 'line',
           type: 'line',
@@ -1073,9 +1071,6 @@
         }, {
           type: 'line',
           //dashStyle: 'shortdot',
-          yAxis: 0
-        }, {
-          type: 'line',
           yAxis: 0
         }, {
           type: 'line',

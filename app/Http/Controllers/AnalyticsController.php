@@ -47,6 +47,8 @@ class AnalyticsController extends Controller
   public function getDaily(Request $request) {
 
     $bb = $this->bossBranch();
+
+
     
     // get /status/branch
     if(is_null($request->input('branchid'))) {
@@ -54,7 +56,7 @@ class AnalyticsController extends Controller
     } 
     
     if(!is_uuid($request->input('branchid'))
-    || !in_array(strtoupper($request->input('branchid')), $this->bb->with('branch')->all()->pluck('branchid')->all())) 
+    || !in_array(strtoupper($request->input('branchid')), $this->branch->all()->pluck('id')->all())) 
     {
       return redirect('/status/branch')->with('alert-warning', 'Please select a branch.');
       //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
@@ -85,7 +87,7 @@ class AnalyticsController extends Controller
     } 
     
     if(!is_uuid($request->input('branchid'))
-    || !in_array(strtoupper($request->input('branchid')), $this->bb->with('branch')->all()->pluck('branchid')->all())) 
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
     {
       return redirect('/status/branch/month')->with('alert-warning', 'Please select a branch.');
       //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');

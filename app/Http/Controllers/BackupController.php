@@ -64,14 +64,16 @@ class BackupController extends Controller
 
 	//storage/log
 	public function getHistory(Request $request) {
-
+		/*
 		$this->repository->with(['branch'=>function($query){
         $query->select(['code', 'descriptor', 'id']);
       }])->scopeQuery(function($query){
 	   	 return $query->orderBy('uploaddate','desc');
 			})->all();
-		
-		$backups = $this->repository->paginate(10, $columns = ['*']);
+		*/
+		$backups = $this->repository->scopeQuery(function($query){
+	   	 return $query->orderBy('uploaddate','desc');
+			})->paginate(10, $columns = ['*']);
 		return view('backup.index')->with('backups', $backups);
 	}
 

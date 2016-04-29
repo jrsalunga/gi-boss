@@ -37,6 +37,9 @@ Route::post('status/post-comparative', ['uses'=>'BranchController@postComparativ
 Route::get('status/comparative', ['uses'=>'BranchController@getComparative']);
 Route::get('status/branch', ['uses'=>'AnalyticsController@getDaily']);
 Route::get('status/branch/month', ['uses'=>'AnalyticsController@getMonth']);
+Route::get('status/branch/week', ['uses'=>'AnalyticsController@underConstruction']);
+Route::get('status/branch/quarter', ['uses'=>'AnalyticsController@underConstruction']);
+Route::get('status/branch/year', ['uses'=>'AnalyticsController@underConstruction']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);

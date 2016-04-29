@@ -29,6 +29,11 @@ class AnalyticsController extends Controller
   }
 
 
+  public function underConstruction(Request $request) {
+    return 'Under Construction';
+  }
+
+
   private function bossBranch(){
     return array_sort($this->branch->active()->all(['code', 'descriptor', 'id']), 
       function ($value) {
@@ -45,6 +50,10 @@ class AnalyticsController extends Controller
   }
 
   public function getDaily(Request $request) {
+
+    //$date = Carbon::parse('2015-12-27');
+
+    //return $date->weekOfYear;
 
     $bb = $this->bossBranch();
 
@@ -65,7 +74,7 @@ class AnalyticsController extends Controller
     $res = $this->setDateRangeMode($request, 'daily');
     
     try {
-      $branch = $this->branch->find(strtolower($request->input('branchid')), ['code', 'descriptor', 'mancost', 'id']);
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
     } catch (Exception $e) {
       return $this->setDailyViewVars('analytics.branch', null, $bb, null);
     }
@@ -98,7 +107,7 @@ class AnalyticsController extends Controller
     $res = $this->setDateRangeMode($request, 'month');
 
     try {
-      $branch = $this->branch->find(strtolower($request->input('branchid')), ['code', 'descriptor', 'mancost', 'id']);
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
     } catch (Exception $e) {
       return $this->setDailyViewVars('analytics.month', null, $bb, null);
     }

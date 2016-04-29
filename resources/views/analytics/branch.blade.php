@@ -47,12 +47,16 @@
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/status/branch', 'method' => 'get']) !!}
+            {!! Form::open(['url' => '/status/branch', 'method' => 'get', 'id'=>'dp-form']) !!}
+            <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
+            -->  
+            <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
             <input type="hidden" name="branchid" id="branchid" value="{{ is_null($branch) ? '':$branch->lid() }}">
+            <input type="hidden" name="datetype" id="datetype" value="daily">
             <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}" data-fr="{{ $dr->fr->format('Y-m-d') }}">
             <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}" data-to="{{ $dr->to->format('Y-m-d') }}">
             {!! Form::close() !!}
@@ -80,33 +84,9 @@
               </ul>
             </div> <!-- .dropdown -->
           </div>
-
-          <!--
-          <div class="btn-group pull-right clearfix" style="margin-left: 5px;">
-            <div type="button" class="btn btn-default" style="pointer-events: none;">
-              <span class="gly gly-shop"></span>
-              <span class="br-code">Select Branch</span>
-            </div>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu" style="max-height: 400px; overflow-y: scroll;">
-              
-            </ul>
-          </div>
-          -->
-          
-          <?php
-
-
-          ?>
-          <div class="btn-group pull-right clearfix" role="group">
-            <!--
-            <a href="/" class="btn btn-default" title="">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            -->
+      
+          <div class="btn-group pull-right clearfix dp-container" role="group">
+            
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -116,19 +96,34 @@
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <!--
-            <a href="/" class="btn btn-default" title="">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-            -->
+        
           </div><!-- end btn-grp -->
+
+          <div class="btn-group pull-right clearfix" role="group">
+            <div class="btn-group date-type-selector" style="margin-left: 5px;">
+              <div class="dropdown">
+                <a class="btn btn-link" id="date-type" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span id="date-type-name">Daily</span>
+                  <span class="caret"></span>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="date-type">
+                  <li><a href="#" data-date-type="daily">Daily</a></li>
+                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
+                  <li><a href="#" data-date-type="monthly">Monthly</a></li>
+                  <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
+                  <li><a href="#" data-date-type="yearly">Yearly</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
           
         </div>
       </div>
     </nav>
 
     @include('_partials.alerts')
-
+    <!--
     <ul class="nav nav-tabs" role="tablist" style="margin: -10px 0 10px 0;">
       <li role="presentation" class="active">
         <a href="#" role="tab" data-toggle="tab">
@@ -141,6 +136,26 @@
         </a>
       </li>
     </ul>
+    -->
+    @if(!is_null($branch))
+    <div class="row"  style="margin: -10px 0 10px 0;">
+      <div class="col-md-5" title="Address">
+        <span class="glyphicon glyphicon-map-marker"></span> {{ is_null($branch)?'':$branch->address}}
+      </div>
+      <div class="col-md-3 col-sm-6" title="Branch Manager / OIC">
+        <span class="gly gly-user"></span> {{ is_null($branch)?'':''}}
+      </div>
+      <div class="col-md-3 col-sm-4" title="Contact Nos.">
+        <span class="glyphicon glyphicon-phone-alt"></span> 
+        <?=is_null($branch)?'':'<a href="tel:+'.preg_replace("/[^0-9\s]/", "", $branch->tel).'">'.$branch->tel.'</a>' ?>
+        / <span class="glyphicon glyphicon-phone"></span> 
+        <?=is_null($branch)?'':'<a href="tel:+'.preg_replace("/[^0-9\s]/", "", $branch->mobile).'">'.$branch->mobile.'</a>' ?>
+      </div>
+      <div class="col-md-1 col-sm-2"  title="Seating Capacity">
+        <span class="fa fa-group"></span> {{ is_null($branch)?'':$branch->seating}}
+      </div>
+    </div>
+    @endif
 
     <div class="row">
       
@@ -635,6 +650,136 @@
   
   
   <script>
+
+  moment.locale('en', { week : {
+    dow : 1 // Monday is the first day of the week.
+  }});
+
+    var initDatePicker = function(){
+
+      $('#dp-date-fr').datetimepicker({
+        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true,
+        calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
+        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-date-to').datetimepicker({
+       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true,
+        calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+      $('#dp-m-date-fr').datetimepicker({
+        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        format: 'MM/YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true,
+        viewMode: 'months'
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
+        $('#dp-m-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-m-date-to').datetimepicker({
+       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        format: 'MM/YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true,
+        viewMode: 'months'
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-m-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-y-date-fr').datetimepicker({
+        format: 'YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true,
+        viewMode: 'years'
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
+        $('#dp-y-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-y-date-to').datetimepicker({
+        format: 'YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true,
+        viewMode: 'years'
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-y-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('.dp-w-fr').on('change', function(e){
+
+        //console.log($('.dp-w-fr')[0].value);
+        //console.log($('.dp-w-fr')[1].value);
+        var day = moment($('.dp-w-fr')[0].value+'-08-27').startOf('week').week($('.dp-w-fr')[1].value);
+        console.log(day.format('YYYY-MM-DD'));
+        //console.log(moment().startOf('week').week($('.dp-w-fr')[1].value));
+        //console.log(moment($('.dp-w-fr')[0].value+'W0'+$('.dp-w-fr')[1].value+'1'));
+
+        $('.dp-w-fr').each(function(idx, el){
+
+        })
+        
+      });
+
+    } /* end inidDatePicker */
+
+
     var fetchPurchased = function(a){
     var formData = a;
     //console.log(formData);
@@ -655,172 +800,173 @@
 
     $(document).ready(function(){
 
+      initDatePicker();
+
       var getOptions = function(to, table) {
-      var options = {
-        data: {
-          table: table,
-          startColumn: 1,
-          endColumn: 2,
-        },
-        chart: {
-          renderTo: to,
-          type: 'pie',
-          height: 300,
-          width: 300,
-          events: {
-            load: function (e) {
-              //console.log(e.target.series[0].data);
+        var options = {
+          data: {
+            table: table,
+            startColumn: 1,
+            endColumn: 2,
+          },
+          chart: {
+            renderTo: to,
+            type: 'pie',
+            height: 300,
+            width: 300,
+            events: {
+              load: function (e) {
+                //console.log(e.target.series[0].data);
+              }
             }
-          }
-        },
-        title: {
-            text: ''
-        },
-        style: {
-          fontFamily: "Helvetica"
-        },
-        tooltip: {
-          pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
-        },
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: false
-            },
-            showInLegend: true,
-            point: {
-              events: {
-                mouseOver: function(e) {    
-                  var orig = this.name;
-                  var tb = $(this.series.chart.container).parent().data('table');
-                  var tr = $(tb).children('tbody').children('tr');
-                   _.each(tr, function(tr, key, list){
-                    var text = $(tr).children('td:nth-child(2)').text();             
-                    if(text==orig){
-                      $(tr).children('td').addClass('bg-success');
-                    }
-                  });
-                },
-                mouseOut: function() {
-                  var orig = this.name;
-                  var tb = $(this.series.chart.container).parent().data('table');
-                  var tr = $(tb).children('tbody').children('tr');
-                   _.each(tr, function(tr, key, list){
-                      $(tr).children('td').removeClass('bg-success');
-                  });
-                },
-                click: function(event) {
-                  //console.log(this);
+          },
+          title: {
+              text: ''
+          },
+          style: {
+            fontFamily: "Helvetica"
+          },
+          tooltip: {
+            pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: false
+              },
+              showInLegend: true,
+              point: {
+                events: {
+                  mouseOver: function(e) {    
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                      var text = $(tr).children('td:nth-child(2)').text();             
+                      if(text==orig){
+                        $(tr).children('td').addClass('bg-success');
+                      }
+                    });
+                  },
+                  mouseOut: function() {
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                        $(tr).children('td').removeClass('bg-success');
+                    });
+                  },
+                  click: function(event) {
+                    //console.log(this);
+                  }
                 }
               }
             }
-          }
-        },
-        
-        legend: {
-          enabled: false,
-          //layout: 'vertical',
-          //align: 'right',
-          //width: 400,
-          //verticalAlign: 'top',
-          borderWidth: 0,
-          useHTML: true,
-          labelFormatter: function() {
-            //total += this.y;
-            return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
           },
-          title: {
-            text: null,
+          
+          legend: {
+            enabled: false,
+            //layout: 'vertical',
+            //align: 'right',
+            //width: 400,
+            //verticalAlign: 'top',
+            borderWidth: 0,
+            useHTML: true,
+            labelFormatter: function() {
+              //total += this.y;
+              return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
+            },
+            title: {
+              text: null,
+            },
+              itemStyle: {
+              fontWeight: 'normal',
+              fontSize: '12px',
+              lineHeight: '12px'
+            }
           },
-            itemStyle: {
-            fontWeight: 'normal',
-            fontSize: '12px',
-            lineHeight: '12px'
+          
+          exporting: {
+            enabled: false
           }
-        },
-        
-        exporting: {
-          enabled: false
         }
+        return options;
       }
-      return options;
-    }
 
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: ','
-    }});
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+      }});
 
     
 
 
-    $('.btn-purch').on('click', function(e){
-      e.preventDefault();
-      var data = {};
-      data.date = $(this).data('date');
-      data.branchid = "{{is_null($branch)?'':$branch->id}}";
+      $('.btn-purch').on('click', function(e){
+        e.preventDefault();
+        var data = {};
+        data.date = $(this).data('date');
+        data.branchid = "{{is_null($branch)?'':$branch->id}}";
 
-      fetchPurchased(data).success(function(d, textStatus, jqXHR){
-        //console.log(d);
-        if(d.code===200){
-          $('.modal-title small').text(moment(d.data.items.date).format('ddd MMM D, YYYY'));
-          renderToTable(d.data.items.data);  
-          renderTable(d.data.stats.categories, '.tb-category-data'); 
-          var categoryChart = new Highcharts.Chart(getOptions('graph-pie-category', 'category-data'));
-          renderTable(d.data.stats.expenses, '.tb-expense-data');  
-          var expenseChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
-          renderTable(d.data.stats.suppliers, '.tb-supplier-data');  
-          var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
-          $('#link-download')[0].href="/api/t/purchase?date="+moment(d.data.items.date).format('YYYY-MM-DD')+"&branchid={{is_null($branch)?'':$branch->id}}&download=1";
-          //$('#link-print')[0].href="/api/t/purchase?date="+moment(d.date).format('YYYY-MM-DD');
-          $('ul[role=tablist] a:first').tab('show');
-          $('#mdl-purchased').modal('show');
-        } else if(d.code===401) {
-          document.location.href = '/analytics';
-        } else if(d.code===300) {
-          alert(d.message);
-        } else {
-          alert('Error on fetching data. Kindly refresh your browser');
-        }
+        fetchPurchased(data).success(function(d, textStatus, jqXHR){
+          //console.log(d);
+          if(d.code===200){
+            $('.modal-title small').text(moment(d.data.items.date).format('ddd MMM D, YYYY'));
+            renderToTable(d.data.items.data);  
+            renderTable(d.data.stats.categories, '.tb-category-data'); 
+            var categoryChart = new Highcharts.Chart(getOptions('graph-pie-category', 'category-data'));
+            renderTable(d.data.stats.expenses, '.tb-expense-data');  
+            var expenseChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
+            renderTable(d.data.stats.suppliers, '.tb-supplier-data');  
+            var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+            $('#link-download')[0].href="/api/t/purchase?date="+moment(d.data.items.date).format('YYYY-MM-DD')+"&branchid={{is_null($branch)?'':$branch->id}}&download=1";
+            //$('#link-print')[0].href="/api/t/purchase?date="+moment(d.date).format('YYYY-MM-DD');
+            $('ul[role=tablist] a:first').tab('show');
+            $('#mdl-purchased').modal('show');
+          } else if(d.code===401) {
+            document.location.href = '/analytics';
+          } else if(d.code===300) {
+            alert(d.message);
+          } else {
+            alert('Error on fetching data. Kindly refresh your browser');
+          }
+        });
+
       });
 
-    });
 
-
-    var renderToTable = function(data) {
-      var tr = '';
-      var ctr = 1;
-      var totcost = 0;
-      _.each(data, function(purchase, key, list){
-          //console.log(purchase);
-          tr += '<tr>';
-          tr += '<td class="text-right">'+ ctr +'</td>';
-          tr += '<td>'+ purchase.comp +'</td>';
-          tr += '<td>'+ purchase.catname +'</td>';
-          tr += '<td>'+ purchase.unit +'</td>';
-          tr += '<td class="text-right">'+ purchase.qty +'</td>';
-          tr += '<td class="text-right">'+ accounting.formatMoney(purchase.ucost, "", 2, ",", ".") +'</td>';
-          tr += '<td class="text-right">'+ accounting.formatMoney(purchase.tcost, "", 2, ",", ".") +'</td>';
-          tr += '<td class="text-right" data-toggle="tooltip" data-placement="top" title="'+ purchase.supname +'">'+ purchase.supno +'</td>';
-          tr += '<td class="text-right">'+ purchase.terms +'</td>';
-          tr += '<td class="text-right">'+ purchase.vat +'</td>';
-          tr +='</tr>';
-          ctr++;
-          totcost += parseFloat(purchase.tcost);
-      });
-      $('#tot-purch-cost').html(accounting.formatMoney(totcost, "", 2, ",", "."));
-      $('.tb-purchase-data .tb-data').html(tr);
-      $('.table-sort').trigger('update')
-                      .trigger('sorton', [[0,0]]);
-      
-    }
+      var renderToTable = function(data) {
+        var tr = '';
+        var ctr = 1;
+        var totcost = 0;
+        _.each(data, function(purchase, key, list){
+            //console.log(purchase);
+            tr += '<tr>';
+            tr += '<td class="text-right">'+ ctr +'</td>';
+            tr += '<td>'+ purchase.comp +'</td>';
+            tr += '<td>'+ purchase.catname +'</td>';
+            tr += '<td>'+ purchase.unit +'</td>';
+            tr += '<td class="text-right">'+ purchase.qty +'</td>';
+            tr += '<td class="text-right">'+ accounting.formatMoney(purchase.ucost, "", 2, ",", ".") +'</td>';
+            tr += '<td class="text-right">'+ accounting.formatMoney(purchase.tcost, "", 2, ",", ".") +'</td>';
+            tr += '<td class="text-right" data-toggle="tooltip" data-placement="top" title="'+ purchase.supname +'">'+ purchase.supno +'</td>';
+            tr += '<td class="text-right">'+ purchase.terms +'</td>';
+            tr += '<td class="text-right">'+ purchase.vat +'</td>';
+            tr +='</tr>';
+            ctr++;
+            totcost += parseFloat(purchase.tcost);
+        });
+        $('#tot-purch-cost').html(accounting.formatMoney(totcost, "", 2, ",", "."));
+        $('.tb-purchase-data .tb-data').html(tr);
+        $('.table-sort').trigger('update')
+                        .trigger('sorton', [[0,0]]);
+      }
 
 
 
 
-    var renderTable = function(data, table) {
+      var renderTable = function(data, table) {
       var tr = '';
       var ctr = 1;
       var totcost = 0;
@@ -846,44 +992,9 @@
       $(table+' thead').after(tr);
       $(table).tablesorter(); 
       $(table).trigger('update');
-
-
-      
-    }
+      }
     
-      $('#dp-date-fr').datetimepicker({
-        defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
-        format: 'MM/DD/YYYY',
-        showTodayButton: true,
-        ignoreReadonly: true
-      }).on('dp.change', function(e){
-        var date = e.date.format('YYYY-MM-DD');
-        console.log(date);
-        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
-        $('#fr').val(date);
-        if($('#fr').data('fr')==date)
-          $('.btn-go').prop('disabled', true);
-        else
-          $('.btn-go').prop('disabled', false);
-      });
-
-
-      $('#dp-date-to').datetimepicker({
-        defaultDate: "{{ $dr->to->format('Y-m-d') }}",
-        format: 'MM/DD/YYYY',
-        showTodayButton: true,
-        useCurrent: false,
-        ignoreReadonly: true
-      }).on('dp.change', function(e){
-        var date = e.date.format('YYYY-MM-DD');
-        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
-        $('#to').val(date);
-        if($('#to').data('to')==date)
-          $('.btn-go').prop('disabled', true);
-        else
-          $('.btn-go').prop('disabled', false);
-      });
-
+     
       
 
       $('.br.dropdown-menu li a').on('click', function(e){
@@ -903,180 +1014,180 @@
         //console.log($('.btn-go').data('branchid'));
       });
 
-    Highcharts.setOptions({
-        chart: {
-            style: {
-                fontFamily: "Helvetica"
-            }
-        }
-    });
+      Highcharts.setOptions({
+          chart: {
+              style: {
+                  fontFamily: "Helvetica"
+              }
+          }
+      });
 
-    var arr = [];
+      var arr = [];
 
-    $('#container').highcharts({
-      data: {
-        table: 'datatable'
-      },
-      chart: {
-        type: 'line',
-        height: 300,
-        spacingRight: 0,
-        marginTop: 40,
-        //marginRight: 20,
-        marginRight: 10,
-        zoomType: 'x',
-        panning: true,
-        panKey: 'shift'
-      },
-      colors: ['#15C0C2', '#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
-      title: {
-          text: ''
-      },
-      xAxis: [
-        {
-          gridLineColor: "#CCCCCC",
-          type: 'datetime',
-          //tickInterval: 24 * 3600 * 1000, // one week
-          tickWidth: 0,
-          gridLineWidth: 0,
-          lineColor: "#C0D0E0", // line on X axis
-          labels: {
-            align: 'center',
-            x: 3,
-            y: 15,
-            formatter: function () {
-              //var date = new Date(this.value);
-              //console.log(date.getDay());
-              //console.log(date);
-              return Highcharts.dateFormat('%b %e', this.value);
-            }
-          },
-          plotLines: arr
+      $('#container').highcharts({
+        data: {
+          table: 'datatable'
         },
-        { // slave axis
-          type: 'datetime',
-          linkedTo: 0,
-          opposite: true,
-          tickInterval: 7 * 24 * 3600 * 1000,
-          tickWidth: 0,
-          labels: {
-            formatter: function () {
-              arr.push({ // mark the weekend
-                color: "#CCCCCC",
-                width: 1,
-                value: this.value-86400000,
-                zIndex: 3
-              });
-              //return Highcharts.dateFormat('%a', (this.value-86400000));
+        chart: {
+          type: 'line',
+          height: 300,
+          spacingRight: 0,
+          marginTop: 40,
+          //marginRight: 20,
+          marginRight: 10,
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift'
+        },
+        colors: ['#15C0C2', '#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+        title: {
+            text: ''
+        },
+        xAxis: [
+          {
+            gridLineColor: "#CCCCCC",
+            type: 'datetime',
+            //tickInterval: 24 * 3600 * 1000, // one week
+            tickWidth: 0,
+            gridLineWidth: 0,
+            lineColor: "#C0D0E0", // line on X axis
+            labels: {
+              align: 'center',
+              x: 3,
+              y: 15,
+              formatter: function () {
+                //var date = new Date(this.value);
+                //console.log(date.getDay());
+                //console.log(date);
+                return Highcharts.dateFormat('%b %e', this.value);
+              }
+            },
+            plotLines: arr
+          },
+          { // slave axis
+            type: 'datetime',
+            linkedTo: 0,
+            opposite: true,
+            tickInterval: 7 * 24 * 3600 * 1000,
+            tickWidth: 0,
+            labels: {
+              formatter: function () {
+                arr.push({ // mark the weekend
+                  color: "#CCCCCC",
+                  width: 1,
+                  value: this.value-86400000,
+                  zIndex: 3
+                });
+                //return Highcharts.dateFormat('%a', (this.value-86400000));
+              }
             }
           }
-        }
-      ],
-      yAxis: [{ // left y axis
-        min: 0,
-        title: {
-          text: null
-        },
-        labels: {
-          align: 'left',
-          x: 3,
-          y: 16,
-          format: '{value:.,0f}'
-        },
-          showFirstLabel: false
-        },
-        { // right y axis
-        min: 0,
+        ],
+        yAxis: [{ // left y axis
+          min: 0,
           title: {
             text: null
           },
           labels: {
-            align: 'right',
-            x: -10,
-            y: 15,
+            align: 'left',
+            x: 3,
+            y: 16,
             format: '{value:.,0f}'
           },
-            showFirstLabel: false,
-            opposite: true
-          }], 
-      legend: {
-        align: 'left',
-        verticalAlign: 'top',
-        y: -10,
-        floating: true,
-        borderWidth: 0
-      },
-      tooltip: {
-        shared: true,
-        crosshairs: true
-      },
-      plotOptions: {
-        series: {
-          cursor: 'pointer',
-          point: {
-            events: {
-              click: function (e) {
-              console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
-              /*
-                hs.htmlExpand(null, {
-                    pageOrigin: {
-                        x: e.pageX,
-                        y: e.pageY
-                    },
-                    headingText: this.series.name,
-                    maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
-                        this.y +' visits',
-                    width: 200
-                });
-              */
-              }
-            }
+            showFirstLabel: false
           },
-          marker: {
-            symbol: 'circle',
-            radius: 3
-          },
-          lineWidth: 2,
-          dataLabels: {
-              enabled: false,
+          { // right y axis
+          min: 0,
+            title: {
+              text: null
+            },
+            labels: {
               align: 'right',
-              crop: false,
-              formatter: function () {
-                console.log(this.series.index);
-                return this.series.name;
-              },
-              x: 1,
-              verticalAlign: 'middle'
+              x: -10,
+              y: 15,
+              format: '{value:.,0f}'
+            },
+              showFirstLabel: false,
+              opposite: true
+            }], 
+        legend: {
+          align: 'left',
+          verticalAlign: 'top',
+          y: -10,
+          floating: true,
+          borderWidth: 0
+        },
+        tooltip: {
+          shared: true,
+          crosshairs: true
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function (e) {
+                console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
+                /*
+                  hs.htmlExpand(null, {
+                      pageOrigin: {
+                          x: e.pageX,
+                          y: e.pageY
+                      },
+                      headingText: this.series.name,
+                      maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) +':<br/> '+
+                          this.y +' visits',
+                      width: 200
+                  });
+                */
+                }
+              }
+            },
+            marker: {
+              symbol: 'circle',
+              radius: 3
+            },
+            lineWidth: 2,
+            dataLabels: {
+                enabled: false,
+                align: 'right',
+                crop: false,
+                formatter: function () {
+                  console.log(this.series.index);
+                  return this.series.name;
+                },
+                x: 1,
+                verticalAlign: 'middle'
+            }
           }
-        }
-      },
-      exporting: {
-        enabled: false
-      },
-      series: [
-        {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-           dashStyle: 'shortdot',
-          yAxis: 1
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          //dashStyle: 'shortdot',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }
-      ]
-    });
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [
+          {
+            type: 'line',
+            yAxis: 0
+          }, {
+            type: 'line',
+            yAxis: 0
+          }, {
+            type: 'line',
+             dashStyle: 'shortdot',
+            yAxis: 1
+          }, {
+            type: 'line',
+            yAxis: 0
+          }, {
+            type: 'line',
+            //dashStyle: 'shortdot',
+            yAxis: 0
+          }, {
+            type: 'line',
+            yAxis: 0
+          }
+        ]
+      });
 
 
 
@@ -1086,10 +1197,123 @@
 
     
 
-    $('#h-tot-sales').text($('#f-tot-sales').text());
-    $('#h-tot-purch').text($('#f-tot-purch').text());
-    $('#h-tot-mancost').text($('#f-tot-mancost').text());
-    $('#h-tot-tips').text($('#f-tot-tips').text());
+      $('#h-tot-sales').text($('#f-tot-sales').text());
+      $('#h-tot-purch').text($('#f-tot-purch').text());
+      $('#h-tot-mancost').text($('#f-tot-mancost').text());
+      $('#h-tot-tips').text($('#f-tot-tips').text());
+
+
+      $('.date-type-selector .dropdown-menu li a').on('click', function(e){
+      
+        e.preventDefault();
+
+        var type = $(this).data('date-type');
+        if(type!==$('#datetype')[0].value) {
+          //console.log(type);
+          //console.log($(this)[0].text);
+          $('#datetype')[0].value = type;
+          $('#date-type-name').text($(this)[0].text);
+          console.log();
+          
+          $('.dp-container').html(getDatePickerLayout(type));
+
+          initDatePicker();
+        }
+      });
+
+      
+
+
+      var getDatePickerLayout = function(type) {
+      console.log(type);
+      var html = '';
+      switch (type) {
+        case 'weekly':
+          html = '<select class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +' </select>'
+            +'<select class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=1;$x<53;$x++)
+              +'<option value="{{$x}}" {{ $dr->fr->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+              @endfor
+            +'</select>'
+            +'<div class="btn btn-default dp-w-to" style="pointer-events: none;">-</div>'
+            +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +'</select>'
+            +'<select class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=1;$x<53;$x++)
+                +'<option value="{{$x}}" {{ $dr->to->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+              @endfor
+            +'</select>';
+            $('#dp-form').prop('action', '/status/branch/week');
+          break;
+        case 'monthly':
+          html = '<label class="btn btn-default" for="dp-m-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-m-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
+            $('#dp-form').prop('action', '/status/branch/month');
+          break;
+        case 'quarterly':
+          html = '<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +'</select>'
+            +'<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=1;$x<5;$x++)
+              +'<option value="{{$x}}" {{ $dr->fr->quarter==$x?'selected':'' }}>{{$x}}</option>'
+              @endfor
+            +'</select>'
+            +'<div class="btn btn-default dp-q-to" style="pointer-events: none;">-</div>'
+            +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +'</select>'
+            +'<select class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=1;$x<5;$x++)
+                +'<option value="{{$x}}" {{ $dr->to->quarter==$x?'selected':'' }}>{{$x}}</option>'
+              @endfor
+            +'</select>';
+            $('#dp-form').prop('action', '/status/branch/quarter');
+          break;
+        case 'yearly':
+          html = '<label class="btn btn-default" for="dp-y-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span></label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-y-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
+          $('#dp-form').prop('action', '/status/branch/year');
+          break;
+        default:
+          html = '<label class="btn btn-default" for="dp-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
+          $('#dp-form').prop('action', '/status/branch');
+      }
+
+      return html;
+      }
 
 
 

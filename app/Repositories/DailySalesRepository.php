@@ -197,6 +197,7 @@ class DailySalesRepository extends BaseRepository {
     return collect($arr);
 
   }
+  
   private function getAggregateByDateRange($fr, $to) {
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, ';
@@ -220,6 +221,47 @@ class DailySalesRepository extends BaseRepository {
 
       $filtered = $data->filter(function ($item) use ($date){
         return $item->date->format('Y-m') == $date->format('Y-m')
+          ? $item : null;
+      });
+
+      $obj = new StdClass;
+      $obj->date = $date;
+      $obj->dailysale = $filtered->first();
+      $arr[$key] = $obj;
+    }
+    return collect($arr);
+  }
+
+
+
+  private function getAggregateWeekly($fr, $to) {
+
+    $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, ';
+    $sql .= 'WEEKOFYEAR(date) as week, YEARWEEK(date, 3) AS yearweak, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
+      return $query->select(DB::raw($sql))
+        ->whereBetween('date', [$fr, $to])
+        ->groupBy(DB::raw('YEARWEEK(date, 3)'));
+        //->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+    });
+
+  }
+
+
+
+  public function getWeek(Request $request, DateRange $dr) {
+    $arr = [];
+    $data = $this->getAggregateWeekly($dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d'))->all();
+
+    //return $dr->weekInterval();
+
+    foreach ($dr->weekInterval() as $key => $date) {
+
+      $filtered = $data->filter(function ($item) use ($date){
+        return $item->yearweak == $date->format('YW')
           ? $item : null;
       });
 

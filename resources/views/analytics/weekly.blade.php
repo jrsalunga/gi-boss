@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Branch Status')
+@section('title', '- By Week Analytics')
 
-@section('body-class', 'branch-status')
+@section('body-class', 'analytics-week')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -25,7 +25,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <li><a href="/status/branch">Branch Analytics</a></li>
-    <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
+    <li class="active">Week {{ $dr->fr->format('W')+0 }} - Week {{ $dr->to->format('W')+0 }}</li>
   </ol>
 
   <div>
@@ -47,7 +47,7 @@
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/status/branch', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/status/branch/week', 'method' => 'get', 'id'=>'dp-form']) !!}
             <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
             -->  
@@ -86,23 +86,35 @@
       
           <div class="btn-group pull-right clearfix dp-container" role="group">
             
-            <label class="btn btn-default" for="dp-date-fr">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            <select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">
+              @for($y=2015;$y<2021;$y++)
+                <option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>
+              @endfor
+            </select>
+            <select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">
+              @for($x=1;$x<=lastWeekOfYear($dr->fr->year);$x++)
+              <option value="{{$x}}" {{ $dr->fr->weekOfYear==$x?'selected':'' }}>{{$x}}</option>
+              @endfor
+            </select>
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
-            <label class="btn btn-default" for="dp-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
+            <select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">
+              @for($y=2015;$y<2021;$y++)
+                <option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>
+              @endfor
+            </select>
+            <select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">
+              @for($x=1;$x<=lastWeekOfYear($dr->to->year);$x++)
+                <option value="{{$x}}" {{ $dr->to->weekOfYear==$x?'selected':'' }}>{{$x}}</option>
+              @endfor
+            </select>
         
           </div><!-- end btn-grp -->
 
           <div class="btn-group pull-right clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
-                <a class="btn btn-link" id="date-type" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span id="date-type-name">Daily</span>
+                <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span id="date-type-name">Weekly</span>
                   <span class="caret"></span>
                 </a>
 
@@ -195,7 +207,7 @@
           <table class="table table-hover table-striped table-sort-data">
             <thead>
               <tr>
-                  <th>Date</th>
+                  <th>Week</th>
                   <th class="text-right">Sales</th>
                   <th class="text-right">Purchased</th>
                   <th class="text-right">Customers</th>
@@ -244,14 +256,18 @@
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
               ?>
 
-            <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
-              <td data-sort="{{$d->date->format('Y-m-d')}}">{{ $d->date->format('M j, D') }}</td>
+            <tr>
+              <td data-sort="{{$d->date->format('Y-m-d')}}">
+                <span data-toggle="tooltip" data-placement="right" 
+                title="{{ $d->date->copy()->startOfWeek()->format('M j, Y') }} - 
+                {{ $d->date->copy()->endOfWeek()->format('M j, Y') }}">
+                {{ $d->date->format('Y') }}-W{{ $d->date->format('W') }}
+              </span>
+              </td>
               @if(!is_null($d->dailysale))
               <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">{{ number_format($d->dailysale['sales'], 2) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
-                <a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch">
                   {{ number_format($d->dailysale['purchcost'], 2) }}
-                </a>
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
@@ -270,9 +286,18 @@
                 title="({{$d->dailysale['empcount']}}*{{$branch->mancost}})/{{$d->dailysale['sales']}} 
                 ={{(($d->dailysale['empcount']*$branch->mancost)/$d->dailysale['sales'])*100}} "
                 @endif
-                >{{ $d->dailysale['mancostpct'] }}</td>
+                >
+                {{ number_format((($d->dailysale['empcount']*$branch->mancost)/$d->dailysale['sales'])*100, 2)}}
+              </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
-              <td class="text-right" data-sort="{{ number_format($d->dailysale['tipspct'],2,'.','') }}">{{ number_format($d->dailysale['tipspct'], 2) }}</td>
+              <?php
+                $tipspct = ($d->dailysale['sales']!=0) 
+                  ? ($d->dailysale['tips']/$d->dailysale['sales'])*100
+                  : 0;
+              ?>
+              <td class="text-right" data-sort="{{ number_format($tipspct,2,'.','') }}">
+                {{ number_format($tipspct, 2) }}
+              </td>
               <?php
                 $tot_sales      += $d->dailysale['sales'];
                 $tot_purchcost  += $d->dailysale['purchcost'];
@@ -309,7 +334,7 @@
               <td>
                 <strong>
                 {{ count($dailysales) }}
-                {{ count($dailysales) > 1 ? 'days':'day' }}
+                {{ count($dailysales) > 1 ? 'weeks':'week' }}
                 </strong>
               </td>
               <td class="text-right">
@@ -430,7 +455,7 @@
           <tbody>
             @foreach($dailysales as $d)
             <tr>
-              <td>{{ $d->date->format('Y-m-d') }}</td>
+              <td>{{ $d->date->format('Y W') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
@@ -462,184 +487,7 @@
 </div><!-- end container-fluid -->
 
 
-<div class="modal fade" id="mdl-purchased" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Purchased <small></small></h4>
-      </div>
-      <div class="modal-body">
-        
-        <ul class="nav nav-pills" role="tablist">
-          <li role="presentation" class="active">
-            <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
-              <span class="gly gly-shopping-cart"></span>
-              <span class="hidden-xs hidden-sm">
-                Components
-              </span>
-            </a>
-          </li>
-          
-          <li role="presentation">
-            <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">
-              <span class="gly gly-charts"></span>
-              <span class="hidden-xs hidden-sm">
-                Stats
-              </span>
-            </a>
-          </li>
 
-          <li role="presentation">
-            <a href="#" id="link-download">
-              <span class="gly gly-disk-save"></span>
-              <span class="hidden-xs hidden-sm">
-              Download
-              </span>
-            </a>
-          </li>
-          <!--
-          <li role="presentation">
-            <a href="#" id="link-print" target="_blank">
-              <span class="glyphicon glyphicon-print"></span>
-              <span class="hidden-xs hidden-sm">
-              Printer Friendly
-              </span>
-            </a>
-          </li>
-          -->
-          <li role="presentation" style="float: right;">
-            <div>
-            Total Purchased Cost: 
-            <h3 id="tot-purch-cost" class="text-right" style="margin:0 0 10px 0;"></h3>
-            </div>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="items">
-            
-            <div class="table-responsive">
-              <table class="tb-purchase-data table table-condensed table-hover table-striped table-sort">
-                <thead>
-                  <tr>
-                    <th class="text-right">#</th>
-                    <th>Component</th>
-                    <th>Category</th>
-                    <th>UoM</th>
-                    <th class="text-right">Qty</th>
-                    <th class="text-right">Unit Cost</th>
-                    <th class="text-right">Total Cost</th>
-                    <th class="text-right">Supplier</th>
-                    <th class="text-right">Terms</th>
-                    <th class="text-right">VAT</th>
-                  </tr>
-                </thead>
-                <tbody class="tb-data">
-                </tbody>
-              </table>
-            </div><!-- end: .table-responsive -->
-            
-          </div><!-- end: #items.tab-pane -->
-          
-          <div role="tabpanel" class="tab-pane" id="stats">
-            
-            <div class="panel panel-default">
-              <div class="panel-heading">Category</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <table id="category-data" class="tb-category-data table table-condensed table-hover table-striped table-sort">
-                        <thead>
-                          <tr>
-                            <th class="text-right">#</th>
-                            <th>Category</th>
-                            <th style="display:none;">Cost</th>
-                            <th>Total Cost</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-6">
-                    <div class="graph-container pull-right">
-                      <div id="graph-pie-category" data-table="#category-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
-                </div><!-- end: .row -->
-              </div>
-            </div><!-- end: .panel.panel-default -->
-            <div class="panel panel-default">
-              <div class="panel-heading">Expense Code</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <table id="expense-data" class="tb-expense-data table table-condensed table-hover table-striped table-sort">
-                        <thead>
-                          <tr>
-                            <th class="text-right">#</th>
-                            <th>Expense Code</th>
-                            <th style="display:none;">Cost</th>
-                            <th>Total Cost</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-6">
-                    <div class="graph-container pull-right">
-                      <div id="graph-pie-expense" data-table="#expense-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
-                </div><!-- end: .row -->
-              </div>
-            </div><!-- end: .panel.panel-default -->
-            <div class="panel panel-default">
-              <div class="panel-heading">Supplier</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <table id="supplier-data" class="tb-supplier-data table table-condensed table-hover table-striped table-sort">
-                        <thead>
-                          <tr>
-                            <th class="text-right">#</th>
-                            <th>Supplier</th>
-                            <th style="display:none;">Cost</th>
-                            <th>Total Cost</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-6">
-                    <div class="graph-container pull-right">
-                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
-                </div><!-- end: .row -->
-              </div>
-            </div><!-- end: .panel.panel-default -->
-
-          </div><!-- end: .tab-pane --> 
-
-        </div><!-- end: .tab-content -->
-        
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 @endsection
 
 
@@ -827,220 +675,13 @@
     } /* end inidDatePicker */
 
 
-    var fetchPurchased = function(a){
-    var formData = a;
-    //console.log(formData);
-    return $.ajax({
-          type: 'GET',
-          contentType: 'application/x-www-form-urlencoded',
-          url: '/api/t/purchase',
-          data: formData,
-          //async: false,
-          success: function(d, textStatus, jqXHR){
-
-          },
-          error: function(jqXHR, textStatus, errorThrown){
-            alert('Error on fetching data...');
-          }
-      }); 
-    }
 
     $(document).ready(function(){
 
       initDatePicker();
 
-      var getOptions = function(to, table) {
-        var options = {
-          data: {
-            table: table,
-            startColumn: 1,
-            endColumn: 2,
-          },
-          chart: {
-            renderTo: to,
-            type: 'pie',
-            height: 300,
-            width: 300,
-            events: {
-              load: function (e) {
-                //console.log(e.target.series[0].data);
-              }
-            }
-          },
-          title: {
-              text: ''
-          },
-          style: {
-            fontFamily: "Helvetica"
-          },
-          tooltip: {
-            pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                  enabled: false
-              },
-              showInLegend: true,
-              point: {
-                events: {
-                  mouseOver: function(e) {    
-                    var orig = this.name;
-                    var tb = $(this.series.chart.container).parent().data('table');
-                    var tr = $(tb).children('tbody').children('tr');
-                     _.each(tr, function(tr, key, list){
-                      var text = $(tr).children('td:nth-child(2)').text();             
-                      if(text==orig){
-                        $(tr).children('td').addClass('bg-success');
-                      }
-                    });
-                  },
-                  mouseOut: function() {
-                    var orig = this.name;
-                    var tb = $(this.series.chart.container).parent().data('table');
-                    var tr = $(tb).children('tbody').children('tr');
-                     _.each(tr, function(tr, key, list){
-                        $(tr).children('td').removeClass('bg-success');
-                    });
-                  },
-                  click: function(event) {
-                    //console.log(this);
-                  }
-                }
-              }
-            }
-          },
-          
-          legend: {
-            enabled: false,
-            //layout: 'vertical',
-            //align: 'right',
-            //width: 400,
-            //verticalAlign: 'top',
-            borderWidth: 0,
-            useHTML: true,
-            labelFormatter: function() {
-              //total += this.y;
-              return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
-            },
-            title: {
-              text: null,
-            },
-              itemStyle: {
-              fontWeight: 'normal',
-              fontSize: '12px',
-              lineHeight: '12px'
-            }
-          },
-          
-          exporting: {
-            enabled: false
-          }
-        }
-        return options;
-      }
-
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-      }});
-
-    
-
-
-      $('.btn-purch').on('click', function(e){
-        e.preventDefault();
-        var data = {};
-        data.date = $(this).data('date');
-        data.branchid = "{{is_null($branch)?'':$branch->id}}";
-
-        fetchPurchased(data).success(function(d, textStatus, jqXHR){
-          //console.log(d);
-          if(d.code===200){
-            $('.modal-title small').text(moment(d.data.items.date).format('ddd MMM D, YYYY'));
-            renderToTable(d.data.items.data);  
-            renderTable(d.data.stats.categories, '.tb-category-data'); 
-            var categoryChart = new Highcharts.Chart(getOptions('graph-pie-category', 'category-data'));
-            renderTable(d.data.stats.expenses, '.tb-expense-data');  
-            var expenseChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
-            renderTable(d.data.stats.suppliers, '.tb-supplier-data');  
-            var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
-            $('#link-download')[0].href="/api/t/purchase?date="+moment(d.data.items.date).format('YYYY-MM-DD')+"&branchid={{is_null($branch)?'':$branch->id}}&download=1";
-            //$('#link-print')[0].href="/api/t/purchase?date="+moment(d.date).format('YYYY-MM-DD');
-            $('ul[role=tablist] a:first').tab('show');
-            $('#mdl-purchased').modal('show');
-          } else if(d.code===401) {
-            document.location.href = '/analytics';
-          } else if(d.code===300) {
-            alert(d.message);
-          } else {
-            alert('Error on fetching data. Kindly refresh your browser');
-          }
-        });
-
-      });
-
-
-      var renderToTable = function(data) {
-        var tr = '';
-        var ctr = 1;
-        var totcost = 0;
-        _.each(data, function(purchase, key, list){
-            //console.log(purchase);
-            tr += '<tr>';
-            tr += '<td class="text-right">'+ ctr +'</td>';
-            tr += '<td>'+ purchase.comp +'</td>';
-            tr += '<td>'+ purchase.catname +'</td>';
-            tr += '<td>'+ purchase.unit +'</td>';
-            tr += '<td class="text-right">'+ purchase.qty +'</td>';
-            tr += '<td class="text-right">'+ accounting.formatMoney(purchase.ucost, "", 2, ",", ".") +'</td>';
-            tr += '<td class="text-right">'+ accounting.formatMoney(purchase.tcost, "", 2, ",", ".") +'</td>';
-            tr += '<td class="text-right" data-toggle="tooltip" data-placement="top" title="'+ purchase.supname +'">'+ purchase.supno +'</td>';
-            tr += '<td class="text-right">'+ purchase.terms +'</td>';
-            tr += '<td class="text-right">'+ purchase.vat +'</td>';
-            tr +='</tr>';
-            ctr++;
-            totcost += parseFloat(purchase.tcost);
-        });
-        $('#tot-purch-cost').html(accounting.formatMoney(totcost, "", 2, ",", "."));
-        $('.tb-purchase-data .tb-data').html(tr);
-        $('.table-sort').trigger('update')
-                        .trigger('sorton', [[0,0]]);
-      }
-
-
-
-
-      var renderTable = function(data, table) {
-      var tr = '';
-      var ctr = 1;
-      var totcost = 0;
-      tr += '<tbody>';
-      _.each(data, function(value, key, list){
-          //console.log(key);
-          tr += '<tr>';
-          tr += '<td class="text-right">'+ ctr +'</td>';
-          tr += '<td>'+ key +'</td>';
-          tr += '<td style="display:none;">'+value +'</td>';
-          tr += '<td class="text-right">'+ accounting.formatMoney(value, "", 2, ",", ".") +'</td>';
-          tr +='</tr>';
-          ctr++;
-          totcost += parseFloat(value);
-      });
-      tr += '</tbody>';
-      //tr += '<tfoot><tr><td></td><td class="text-right"><strong>Total</strong></td>';
-      //tr += '<td class="text-right"><strong>'+accounting.formatMoney(totcost, "", 2, ",", ".")+'</strong></td></tr><tfoot>';
-
+      $('[data-toggle="tooltip"]').tooltip();
       
-      $(table+' tfoot').remove();
-      $(table+' tbody').remove();
-      $(table+' thead').after(tr);
-      $(table).tablesorter(); 
-      $(table).trigger('update');
-      }
-    
      
       
 
@@ -1069,7 +710,7 @@
           }
       });
 
-      var arr = [];
+      
 
       $('#container').highcharts({
         data: {
@@ -1093,40 +734,14 @@
         xAxis: [
           {
             gridLineColor: "#CCCCCC",
-            type: 'datetime',
-            //tickInterval: 24 * 3600 * 1000, // one week
+            type: 'category',
             tickWidth: 0,
             gridLineWidth: 0,
             lineColor: "#C0D0E0", // line on X axis
             labels: {
               align: 'center',
               x: 3,
-              y: 15,
-              formatter: function () {
-                //var date = new Date(this.value);
-                //console.log(date.getDay());
-                //console.log(date);
-                return Highcharts.dateFormat('%b %e', this.value);
-              }
-            },
-            plotLines: arr
-          },
-          { // slave axis
-            type: 'datetime',
-            linkedTo: 0,
-            opposite: true,
-            tickInterval: 7 * 24 * 3600 * 1000,
-            tickWidth: 0,
-            labels: {
-              formatter: function () {
-                arr.push({ // mark the weekend
-                  color: "#CCCCCC",
-                  width: 1,
-                  value: this.value-86400000,
-                  zIndex: 3
-                });
-                //return Highcharts.dateFormat('%a', (this.value-86400000));
-              }
+              y: 15
             }
           }
         ],

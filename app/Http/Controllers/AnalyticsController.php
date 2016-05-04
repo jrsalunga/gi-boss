@@ -29,8 +29,54 @@ class AnalyticsController extends Controller
   }
 
 
+  public function getDaysByWeekNo($weekno='', $year=''){
+    $weekno = (empty($weekno) || $weekno > 53) ? date('W', strtotime('now')) : $weekno;
+    $year = empty($year) ?  date('Y', strtotime('now')) : $year;
+        for($day=1; $day<=7; $day++) {
+            $arr[$day-1] = Carbon::parse(date('Y-m-d', strtotime($year."W".$this->weekNo($weekno).$day)));
+        }
+      return $arr;
+  }
+
   public function underConstruction(Request $request) {
     return 'Under Construction';
+    return $request->all();
+  }
+
+
+  public function getWeekly(Request $request) {
+    $bb = $this->bossBranch();
+    
+    // get /status/branch
+    if(is_null($request->input('branchid'))) {
+      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
+    } 
+    
+    if(!is_uuid($request->input('branchid'))
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    {
+      return redirect('/status/branch/week')->with('alert-warning', 'Please select a branch.');
+      //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
+    } 
+
+    //return 'success';
+
+    $res = $this->setDateRangeMode($request, 'weekly');
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
+    }
+
+    $dailysales = $this->ds
+                      ->pushCriteria(new BranchCriteria($branch))
+                      ->getWeek($request, $this->dr);
+
+    if(!$res)
+      $request->session()->flash('alert-warning', 'Max months reached! Adjusted to '.$this->dr->fr->format('M Y').' - '.$this->dr->to->format('M Y'));
+
+    return $this->setDailyViewVars('analytics.weekly', $dailysales, $bb,  $branch);
   }
 
 
@@ -51,14 +97,19 @@ class AnalyticsController extends Controller
 
   public function getDaily(Request $request) {
 
-    //$date = Carbon::parse('2015-12-27');
 
-    //return $date->weekOfYear;
+
+    /*
+    return date('W, M d D', strtotime('2016-12-28'));
+    $date = Carbon::parse(date('Y-m-d', strtotime("2015W130")));
+    return $date;
+
+    $date = Carbon::parse('2015-03-30');
+    return $date->weekOfYear;
+    */
 
     $bb = $this->bossBranch();
 
-
-    
     // get /status/branch
     if(is_null($request->input('branchid'))) {
       return $this->setDailyViewVars('analytics.branch', null, $bb, null);
@@ -149,6 +200,17 @@ class AnalyticsController extends Controller
         if ($to->lt($fr)) {
           $to = Carbon::now();
           $fr = $to->copy()->startOfMonth();
+        }
+        break;
+      case 'weekly':
+        $to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->endOfWeek();
+        $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subWeeks(5)->startOfWeek();
+        if ($to->lt($fr)) {
+          $to = Carbon::now()->endOfWeek();
+          $fr = $to->copy()->startOfWeek();
+        } else {
+          $to = $to->endOfWeek();
+          $fr = $fr->startOfWeek();
         }
         break;
       default:

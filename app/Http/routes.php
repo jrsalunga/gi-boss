@@ -37,7 +37,7 @@ Route::post('status/post-comparative', ['uses'=>'BranchController@postComparativ
 Route::get('status/comparative', ['uses'=>'BranchController@getComparative']);
 Route::get('status/branch', ['uses'=>'AnalyticsController@getDaily']);
 Route::get('status/branch/month', ['uses'=>'AnalyticsController@getMonth']);
-Route::get('status/branch/week', ['uses'=>'AnalyticsController@underConstruction']);
+Route::get('status/branch/week', ['uses'=>'AnalyticsController@getWeekly']);
 Route::get('status/branch/quarter', ['uses'=>'AnalyticsController@underConstruction']);
 Route::get('status/branch/year', ['uses'=>'AnalyticsController@underConstruction']);
 
@@ -69,6 +69,34 @@ get('branch', function () {
     		$query->select('code', 'descriptor', 'id');
     	}]);
     }])->get();
+
+    
+
+
+});
+
+
+
+get('getweek', function () {
+
+    return range(14, 17);
+
+
+    $arr = [];
+
+    for ($i=2008; $i < 2021; $i++) { 
+        $date = Carbon\Carbon::parse($i.'-08-27');
+        array_push($arr, [
+            'year' => $i,
+            'day'   => $date->endOfYear()->format('Y-m-d D'),
+            'week' => $date->endOfYear()->weekOfYear,
+            'wday' => $date->endOfYear()->dayOfWeek,
+            'lwoy' => lastWeekOfYear($i)
+        ]);
+    }
+
+
+    return $arr;
 
     
 

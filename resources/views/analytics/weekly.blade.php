@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch">Branch Analytics</a></li>
+    <li><a href="/status/branch/week">Branch Analytics</a></li>
     <li class="active">Week {{ $dr->fr->format('W')+0 }} - Week {{ $dr->to->format('W')+0 }}</li>
   </ol>
 
@@ -455,7 +455,7 @@
           <tbody>
             @foreach($dailysales as $d)
             <tr>
-              <td>{{ $d->date->format('Y W') }}</td>
+              <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
@@ -498,9 +498,14 @@
   
   <script>
 
-  moment.locale('en', { week : {
-    dow : 1 // Monday is the first day of the week.
-  }});
+    moment.locale('en', { week : {
+      dow : 1 // Monday is the first day of the week.
+    }});
+
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: ','
+    }});
 
     var initDatePicker = function(){
 
@@ -721,8 +726,7 @@
           height: 300,
           spacingRight: 0,
           marginTop: 40,
-          //marginRight: 20,
-          marginRight: 10,
+          marginRight: 25,    //      marginRight: 10,
           zoomType: 'x',
           panning: true,
           panKey: 'shift'
@@ -734,14 +738,23 @@
         xAxis: [
           {
             gridLineColor: "#CCCCCC",
-            type: 'category',
+            type: 'datetime',
+            //tickInterval: 24 * 3600 * 1000, // one week
             tickWidth: 0,
             gridLineWidth: 0,
             lineColor: "#C0D0E0", // line on X axis
             labels: {
               align: 'center',
               x: 3,
-              y: 15
+              y: 15,
+              formatter: function () {
+                //var date = new Date(this.value);
+                //console.log(date.getDay());
+                //console.log(date);
+                var date = moment(this.value);
+                return date.year()+' '+date.isoWeek();
+                return Highcharts.dateFormat('%W %e', this.value);
+              }
             }
           }
         ],
@@ -753,25 +766,26 @@
           labels: {
             align: 'left',
             x: 3,
-            y: 16,
+            y: 13,
             format: '{value:.,0f}'
           },
             showFirstLabel: false
           },
           { // right y axis
-          min: 0,
+            min: 0,
             title: {
               text: null
             },
             labels: {
               align: 'right',
-              x: -10,
-              y: 15,
+              x: -3,
+              y: 13,
               format: '{value:.,0f}'
             },
-              showFirstLabel: false,
-              opposite: true
-            }], 
+            showFirstLabel: false,
+            opposite: true
+          }
+        ], 
         legend: {
           align: 'left',
           verticalAlign: 'top',

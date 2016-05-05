@@ -650,9 +650,14 @@
   
   <script>
 
-  moment.locale('en', { week : {
-    dow : 1 // Monday is the first day of the week.
-  }});
+    moment.locale('en', { week : {
+      dow : 1 // Monday is the first day of the week.
+    }});
+
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: ','
+    }});
 
     var initDatePicker = function(){
 
@@ -1255,108 +1260,100 @@
         e.preventDefault();
 
         var type = $(this).data('date-type');
-       
           $('#date-type-name').text($(this)[0].text);
-    
-          
           $('.dp-container').html(getDatePickerLayout(type));
-
           initDatePicker();
-        
       });
 
-      
-
-
       var getDatePickerLayout = function(type) {
-      console.log(type);
-      var html = '';
-      switch (type) {
-        case 'weekly':
-          html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +' </select>'
-            +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<=lastWeekOfYear($dr->fr->year);$x++)
-              +'<option value="{{$x}}" {{ $dr->fr->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>'
-            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<=lastWeekOfYear($dr->to->year);$x++)
-                +'<option value="{{$x}}" {{ $dr->to->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>';
-            $('#dp-form').prop('action', '/status/branch/week');
-          break;
-        case 'monthly':
-          html = '<label class="btn btn-default" for="dp-m-date-fr">'
-            +'<span class="glyphicon glyphicon-calendar"></span>'
-            +'</label>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">'
-            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">'
-            +'<label class="btn btn-default" for="dp-m-date-to">'
-            +'<span class="glyphicon glyphicon-calendar"></span>'
-            +'</label>';
-            $('#dp-form').prop('action', '/status/branch/month');
-          break;
-        case 'quarterly':
-          html = '<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<5;$x++)
-              +'<option value="{{$x}}" {{ $dr->fr->quarter==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>'
-            +'<div class="btn btn-default dp-q-to" style="pointer-events: none;">-</div>'
-            +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<5;$x++)
-                +'<option value="{{$x}}" {{ $dr->to->quarter==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>';
-            $('#dp-form').prop('action', '/status/branch/quarter');
-          break;
-        case 'yearly':
-          html = '<label class="btn btn-default" for="dp-y-date-fr">'
-            +'<span class="glyphicon glyphicon-calendar"></span></label>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
-            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
-            +'<label class="btn btn-default" for="dp-y-date-to">'
-            +'<span class="glyphicon glyphicon-calendar"></span>'
-            +'</label>';
-          $('#dp-form').prop('action', '/status/branch/year');
-          break;
-        default:
-          html = '<label class="btn btn-default" for="dp-date-fr">'
-            +'<span class="glyphicon glyphicon-calendar"></span>'
-            +'</label>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">'
-            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">'
-            +'<label class="btn btn-default" for="dp-date-to">'
-            +'<span class="glyphicon glyphicon-calendar"></span>'
-            +'</label>';
-          $('#dp-form').prop('action', '/status/branch');
-      }
+        //console.log(type);
+        var html = '';
+        switch (type) {
+          case 'weekly':
+            html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +' </select>'
+              +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<=lastWeekOfYear($dr->fr->year);$x++)
+                +'<option value="{{$x}}" {{ $dr->fr->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>'
+              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+              +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">'
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +'</select>'
+              +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<=lastWeekOfYear($dr->to->year);$x++)
+                  +'<option value="{{$x}}" {{ $dr->to->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>';
+              $('#dp-form').prop('action', '/status/branch/week');
+            break;
+          case 'monthly':
+            html = '<label class="btn btn-default" for="dp-m-date-fr">'
+              +'<span class="glyphicon glyphicon-calendar"></span>'
+              +'</label>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">'
+              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">'
+              +'<label class="btn btn-default" for="dp-m-date-to">'
+              +'<span class="glyphicon glyphicon-calendar"></span>'
+              +'</label>';
+              $('#dp-form').prop('action', '/status/branch/month');
+            break;
+          case 'quarterly':
+            html = '<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +'</select>'
+              +'<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<5;$x++)
+                +'<option value="{{$x}}" {{ $dr->fr->quarter==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>'
+              +'<div class="btn btn-default dp-q-to" style="pointer-events: none;">-</div>'
+              +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +'</select>'
+              +'<select class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<5;$x++)
+                  +'<option value="{{$x}}" {{ $dr->to->quarter==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>';
+              $('#dp-form').prop('action', '/status/branch/quarter');
+            break;
+          case 'yearly':
+            html = '<label class="btn btn-default" for="dp-y-date-fr">'
+              +'<span class="glyphicon glyphicon-calendar"></span></label>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
+              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
+              +'<label class="btn btn-default" for="dp-y-date-to">'
+              +'<span class="glyphicon glyphicon-calendar"></span>'
+              +'</label>';
+            $('#dp-form').prop('action', '/status/branch/year');
+            break;
+          default:
+            html = '<label class="btn btn-default" for="dp-date-fr">'
+              +'<span class="glyphicon glyphicon-calendar"></span>'
+              +'</label>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">'
+              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+              +'<input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">'
+              +'<label class="btn btn-default" for="dp-date-to">'
+              +'<span class="glyphicon glyphicon-calendar"></span>'
+              +'</label>';
+            $('#dp-form').prop('action', '/status/branch');
+        }
 
-      return html;
+        return html;
       }
 
 

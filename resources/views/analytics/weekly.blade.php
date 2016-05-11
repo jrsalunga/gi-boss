@@ -287,7 +287,7 @@
                 ={{(($d->dailysale['empcount']*$branch->mancost)/1)*100}} "
                 @endif
                 >
-                {{ number_format((($d->dailysale['empcount']*$branch->mancost)/$d->dailysale['sales'])*100, 2)}}
+                {{ number_format((($d->dailysale['empcount']*$branch->mancost)/1)*100, 2)}}
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
               <?php

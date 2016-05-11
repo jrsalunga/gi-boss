@@ -289,7 +289,7 @@
                 {{ number_format((($d->dailysale['empcount']*$branch->mancost)/$d->dailysale['sales'])*100, 2)}}
                 @else
                 >
-                  0
+                  0.00
                 @endif
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>

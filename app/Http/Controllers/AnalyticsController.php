@@ -44,40 +44,7 @@ class AnalyticsController extends Controller
   }
 
 
-  public function getWeekly(Request $request) {
-    $bb = $this->bossBranch();
-    
-    // get /status/branch
-    if(is_null($request->input('branchid'))) {
-      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
-    } 
-    
-    if(!is_uuid($request->input('branchid'))
-    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
-    {
-      return redirect('/status/branch/week')->with('alert-warning', 'Please select a branch.');
-      //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
-    } 
-
-    //return 'success';
-
-    $res = $this->setDateRangeMode($request, 'weekly');
-
-    try {
-      $branch = $this->branch->find(strtolower($request->input('branchid')));
-    } catch (Exception $e) {
-      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
-    }
-
-    $dailysales = $this->ds
-                      ->pushCriteria(new BranchCriteria($branch))
-                      ->getWeek($request, $this->dr);
-
-    if(!$res)
-      $request->session()->flash('alert-warning', 'Max months reached! Adjusted to '.$this->dr->fr->format('M Y').' - '.$this->dr->to->format('M Y'));
-
-    return $this->setDailyViewVars('analytics.weekly', $dailysales, $bb,  $branch);
-  }
+  
 
 
   private function bossBranch(){
@@ -97,8 +64,6 @@ class AnalyticsController extends Controller
 
   public function getDaily(Request $request) {
 
-
-
     /*
     return date('W, M d D', strtotime('2016-12-28'));
     $date = Carbon::parse(date('Y-m-d', strtotime("2015W130")));
@@ -109,6 +74,7 @@ class AnalyticsController extends Controller
     */
 
     $bb = $this->bossBranch();
+    $res = $this->setDateRangeMode($request, 'daily');
 
     // get /status/branch
     if(is_null($request->input('branchid'))) {
@@ -122,7 +88,6 @@ class AnalyticsController extends Controller
       //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
     } 
 
-    $res = $this->setDateRangeMode($request, 'daily');
     
     try {
       $branch = $this->branch->find(strtolower($request->input('branchid')));
@@ -136,10 +101,44 @@ class AnalyticsController extends Controller
   }
 
 
+  public function getWeekly(Request $request) {
+    $bb = $this->bossBranch();
+    $res = $this->setDateRangeMode($request, 'weekly');
+    
+    // get /status/branch
+    if(is_null($request->input('branchid'))) {
+      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
+    } 
+    
+    if(!is_uuid($request->input('branchid'))
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    {
+      return redirect('/status/branch/week')->with('alert-warning', 'Please select a branch.');
+      //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
+    } 
 
+    //return 'success';
+
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return $this->setDailyViewVars('analytics.weekly', null, $bb, null);
+    }
+
+    $dailysales = $this->ds
+                      ->pushCriteria(new BranchCriteria($branch))
+                      ->getWeek($request, $this->dr);
+
+    if(!$res)
+      $request->session()->flash('alert-warning', 'Max months reached! Adjusted to '.$this->dr->fr->format('M Y').' - '.$this->dr->to->format('M Y'));
+
+    return $this->setDailyViewVars('analytics.weekly', $dailysales, $bb,  $branch);
+  }
 
   public function getMonth(Request $request) {
     $bb = $this->bossBranch();
+    $res = $this->setDateRangeMode($request, 'month');
 
     // get /status/branch
     if(is_null($request->input('branchid'))) {
@@ -155,7 +154,6 @@ class AnalyticsController extends Controller
 
     //return 'success';
 
-    $res = $this->setDateRangeMode($request, 'month');
 
     try {
       $branch = $this->branch->find(strtolower($request->input('branchid')));
@@ -176,19 +174,91 @@ class AnalyticsController extends Controller
   }
 
 
+  public function getQuarter(Request $request) {
+    $bb = $this->bossBranch();
+    $res = $this->setDateRangeMode($request, 'quarterly');
+
+    // get /status/branch
+    if(is_null($request->input('branchid'))) {
+      return $this->setDailyViewVars('analytics.quarter', null, $bb, null);
+    } 
+    
+    if(!is_uuid($request->input('branchid'))
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    {
+      return redirect('/status/branch/quarter')->with('alert-warning', 'Please select a branch.');
+      //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
+    } 
+
+    //return 'success';
+
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return $this->setDailyViewVars('analytics.quarter', null, $bb, null);
+    }
+
+    $dailysales = $this->ds
+                      ->pushCriteria(new BranchCriteria($branch))
+                      ->getQuarter($request, $this->dr);
+
+    if(!$res)
+      $request->session()->flash('alert-warning', 'Max months reached! Adjusted to '.$this->dr->fr->format('M Y').' - '.$this->dr->to->format('M Y'));
+
+    return $this->setDailyViewVars('analytics.quarter', $dailysales, $bb,  $branch);
+  }
+
+
+  public function getYear(Request $request) {
+
+    //return $request->all();
+
+    $bb = $this->bossBranch();
+    $res = $this->setDateRangeMode($request, 'yearly');
+
+    //return dd($this->dr);
+    // get /status/branch
+    if(is_null($request->input('branchid'))) {
+      return $this->setDailyViewVars('analytics.year', null, $bb, null);
+    } 
+    
+    if(!is_uuid($request->input('branchid'))
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    {
+      return redirect('/status/branch/year')->with('alert-warning', 'Please select a branch.');
+      //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
+    } 
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return $this->setDailyViewVars('analytics.year', null, $bb, null);
+    }
+
+    $dailysales = $this->ds
+                      ->pushCriteria(new BranchCriteria($branch))
+                      ->getYear($request, $this->dr);
+    if(!$res)
+      $request->session()->flash('alert-warning', 'Max months reached! Adjusted to '.$this->dr->fr->format('M Y').' - '.$this->dr->to->format('M Y'));
+
+    return $this->setDailyViewVars('analytics.year', $dailysales, $bb,  $branch);
+  }
+
+
 
 
 
   // modify the date on DateRange instanced based on the 'mode'
   private function setDateRangeMode(Request $request, $mode='day') { 
-
+    $y=false;
     switch ($mode) {
       case 'month':
         $to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->endOfMonth();
         $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subMonths(5)->startOfMonth();
         if ($to->lt($fr)) {
           $to = Carbon::now()->endOfMonth();
-          $fr = $to->copy()->startOfMonth();
+          $fr = $to->copy()->subMonths(5)->startOfMonth(); //$to->copy()->startOfMonth();
         } else {
           $to = $to->endOfMonth();
           $fr = $fr->startOfMonth();
@@ -207,10 +277,33 @@ class AnalyticsController extends Controller
         $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subWeeks(5)->startOfWeek();
         if ($to->lt($fr)) {
           $to = Carbon::now()->endOfWeek();
-          $fr = $to->copy()->startOfWeek();
+          $fr = $to->copy()->subWeeks(5)->startOfWeek(); //$to->copy()->startOfWeek();
         } else {
           $to = $to->endOfWeek();
           $fr = $fr->startOfWeek();
+        }
+        break;
+      case 'quarterly':
+        $to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->lastOfQuarter();
+        $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subMonths(11)->firstOfQuarter();
+        if ($to->lt($fr)) {
+          $to = Carbon::now()->lastOfQuarter();
+          $fr = $to->copy()->subMonths(12)->firstOfQuarter(); //$to->copy()->startOfWeek();
+        } else {
+          $to = $to->lastOfQuarter();
+          $fr = $fr->firstOfQuarter();
+        }
+        break;
+      case 'yearly':
+        $y=true;
+        $to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->lastOfYear();
+        $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subYear()->firstOfYear();
+        if ($to->lt($fr)) {
+          $to = Carbon::now()->lastOfYear();
+          $fr = $to->copy()->subYear()->firstOfYear(); //$to->copy()->startOfWeek();
+        } else {
+          $to = $to->lastOfYear();
+          $fr = $fr->firstOfYear();
         }
         break;
       default:
@@ -218,14 +311,19 @@ class AnalyticsController extends Controller
         $fr = $to->copy()->startOfMonth();
         break;
     }
+    
 
-    // if more than a year
-    if($fr->diffInDays($to, false)>=731) { // 730 = 2yrs
-      $this->dr->fr = $to->copy()->subDays(730)->startOfMonth();
-      $this->dr->to = $to;
-      $this->dr->date = $to;
-      return false;
+    if(!$y){
+      
+      // if more than a year
+      if($fr->diffInDays($to, false)>=731) { // 730 = 2yrs
+        $this->dr->fr = $to->copy()->subDays(730)->startOfMonth();
+        $this->dr->to = $to;
+        $this->dr->date = $to;
+        return false;
+      }
     }
+
 
     $this->dr->fr = $fr;
     $this->dr->to = $to;

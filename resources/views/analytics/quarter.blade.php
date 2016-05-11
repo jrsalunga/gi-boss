@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- By Month Analytics')
+@section('title', '- By Quarter Analytics')
 
-@section('body-class', 'analytics-month')
+@section('body-class', 'analytics-quarter')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -23,8 +23,8 @@
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch/month">Branch Analytics</a></li>
-    <li class="active">{{ $dr->fr->format('M Y') }} - {{ $dr->to->format('M Y') }}</li>
+    <li><a href="/status/branch/quarter">Branch Analytics</a></li>
+    <li class="active">{{ $dr->fr->format('Y') }} Q{{ $dr->fr->quarter }} - {{ $dr->to->format('Y') }} Q{{ $dr->to->quarter }}</li>
   </ol>
 
   <div>
@@ -46,7 +46,7 @@
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/status/branch/month', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/status/branch/quarter', 'method' => 'get', 'id'=>'dp-form']) !!}
             <button type="submit" class="btn btn-success btn-go" title="Go"   }}>
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
@@ -94,22 +94,34 @@
           -->
 
           <div class="btn-group pull-right clearfix dp-container" role="group">
-            <label class="btn btn-default" for="dp-date-fr">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+            <select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">
+              @for($y=2015;$y<2021;$y++)
+                <option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>
+              @endfor
+            </select>
+            <select id="fr-q" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">
+              @for($x=0;$x<4;$x++)
+              <option value="{{pad(($x*3)+1)}}-01" {{ $dr->fr->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>
+              @endfor
+            </select>
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">
-            <label class="btn btn-default" for="dp-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
+            <select id="to-y" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 3px 6px 12px">
+              @for($y=2015;$y<2021;$y++)
+                <option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>
+              @endfor
+            </select>
+            <select id="to-q" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">
+              @for($x=0;$x<4;$x++)
+                <option value="{{pad(($x*3)+1)}}-01" {{ $dr->to->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>
+              @endfor
+            </select>
           </div><!-- end btn-grp -->
 
           <div class="btn-group pull-right clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
                 <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span id="date-type-name">Monthly</span>
+                  <span id="date-type-name">Quarterly</span>
                   <span class="caret"></span>
                 </a>
 
@@ -253,7 +265,13 @@
 
 
               <tr>
-                <td data-sort="{{$d->date->format('Y-m-d')}}">{{ $d->date->format('M Y') }}</td>
+                <td data-sort="{{$d->date->format('Y-m-d')}}">
+                  <span data-toggle="tooltip" data-placement="right" style="cursor: help;"
+                title="{{ $d->date->firstOfQuarter()->format('M j, Y') }} -
+                {{ $d->date->lastOfQuarter()->format('M j, Y') }}">
+                  {{ $d->date->year }}-Q{{ $d->date->quarter }}
+                  </span>
+                </td>
                 @if(!is_null($d->dailysale))
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">
                   {{ number_format($d->dailysale['sales'], 2) }}
@@ -365,9 +383,9 @@
               <tr>
                 <td>
                   <strong>
-                  {{ $months }}
-                  {{ $months > 1 ? 'months':'month' }}
-                  </strong>
+                  {{ count($dailysales) }}
+                  {{ count($dailysales) > 1 ? 'Quarters':'Quarter' }}
+                </strong>
                 <td class="text-right">
                 <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
                 <div>
@@ -733,6 +751,7 @@
 
     initDatePicker();
 
+    $('[data-toggle="tooltip"]').tooltip();
 
     $('.br.dropdown-menu li a').on('click', function(e){
       e.preventDefault();
@@ -768,9 +787,9 @@
       chart: {
         type: 'line',
         height: 300,
-        //spacingRight: 20,
+        spacingRight: 0,
         marginTop: 40,
-        //marginRight: 20,
+        marginRight: 25,
         //marginRight: 20,
         zoomType: 'x',
         panning: true,
@@ -790,12 +809,14 @@
           lineColor: "#C0D0E0", // line on X axis
           labels: {
             align: 'center',
-            x: 3,
+            x: -10,
             y: 15,
             formatter: function () {
               //var date = new Date(this.value);
               //console.log(date.getDay());
               //console.log(date);
+              var date = moment(this.value);
+              return date.year()+' '+date.quarter();
               return Highcharts.dateFormat('%b %Y', this.value);
             }
           },

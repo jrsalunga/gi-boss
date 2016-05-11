@@ -14,12 +14,14 @@ use App\Repositories\Criterias\BranchDailySalesCriteria;
 use Illuminate\Http\Request;
 
 use App\Repositories\BranchRepository;
-use Illuminate\Support\Collection;
 
+use Prettus\Repository\Traits\CacheableRepository;
+use Prettus\Repository\Contracts\CacheableInterface;
 
+class DailySalesRepository extends BaseRepository implements CacheableInterface {
+//class DailySalesRepository extends BaseRepository {
 
-class DailySalesRepository extends BaseRepository {
-
+  use CacheableRepository;
 	
 	public $bossbranch;
 
@@ -262,6 +264,81 @@ class DailySalesRepository extends BaseRepository {
 
       $filtered = $data->filter(function ($item) use ($date){
         return $item->yearweak == $date->format('YW')
+          ? $item : null;
+      });
+
+      $obj = new StdClass;
+      $obj->date = $date;
+      $obj->dailysale = $filtered->first();
+      $arr[$key] = $obj;
+    }
+    return collect($arr);
+  }
+
+
+
+  private function getAggregateQuarterly($fr, $to) {
+
+    $sql = 'date, QUARTER(date) as quarter, YEAR(date) as year, SUM(sales) AS sales, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
+      return $query->select(DB::raw($sql))
+        ->whereBetween('date', [$fr, $to])
+        ->groupBy(DB::raw('QUARTER(date)'));
+        //->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+    });
+
+  }
+
+
+
+  public function getQuarter(Request $request, DateRange $dr) {
+    $arr = [];
+    $data = $this->getAggregateQuarterly($dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d'))->all();
+
+    foreach ($dr->quarterInterval() as $key => $date) {
+
+      $filtered = $data->filter(function ($item) use ($date){
+        return ($item->quarter == $date->quarter) && ($item->year == $date->year)
+          ? $item : null;
+      });
+
+      $obj = new StdClass;
+      $obj->date = $date;
+      $obj->dailysale = $filtered->first();
+      $arr[$key] = $obj;
+    }
+    return collect($arr);
+  }
+
+
+
+  private function getAggregateYearly($fr, $to) {
+
+    $sql = 'date, YEAR(date) as year, SUM(sales) AS sales, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
+      return $query->select(DB::raw($sql))
+        ->whereBetween('date', [$fr, $to])
+        ->groupBy(DB::raw('YEAR(date)'));
+        //->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+    });
+
+  }
+
+
+  public function getYear(Request $request, DateRange $dr) {
+    $arr = [];
+    $data = $this->getAggregateYearly($dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d'))->all();
+
+    foreach ($dr->yearInterval() as $key => $date) {
+
+      $filtered = $data->filter(function ($item) use ($date){
+        return ($item->year == $date->year)
           ? $item : null;
       });
 

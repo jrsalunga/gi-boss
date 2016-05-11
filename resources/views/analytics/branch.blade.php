@@ -244,8 +244,10 @@
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
               ?>
 
-            <tr {{ $d->date->dayOfWeek=='0' ? 'class=warning':''  }}>
-              <td data-sort="{{$d->date->format('Y-m-d')}}">{{ $d->date->format('M j, D') }}</td>
+            <tr>
+              <td data-sort="{{$d->date->format('Y-m-d')}}">
+                {{ $d->date->format('M j, D') }}
+              </td>
               @if(!is_null($d->dailysale))
               <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">{{ number_format($d->dailysale['sales'], 2) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
@@ -757,6 +759,7 @@
         viewMode: 'years'
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
         $('#dp-y-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
         if($('#to').data('to')==date)
@@ -828,6 +831,21 @@
         $('#to').val(day.format('YYYY-MM-DD'));
         
       });
+
+
+      /***** quarter *****/
+      $('.dp-q-fr').on('change', function(e){
+        var day = moment($('.dp-q-fr')[0].value+'-'+$('.dp-q-fr')[1].value);
+        console.log(day.format('YYYY-MM-DD'));
+        $('#fr').val(day.format('YYYY-MM-DD'));
+      });
+
+      $('.dp-q-to').on('change', function(e){
+        var day = moment($('.dp-q-to')[0].value+'-'+$('.dp-q-to')[1].value);
+        console.log(day.format('YYYY-MM-DD'));
+        $('#to').val(day.format('YYYY-MM-DD'));
+      });
+      /***** end:quarter *****/
 
     } /* end inidDatePicker */
 
@@ -1306,27 +1324,27 @@
               $('#dp-form').prop('action', '/status/branch/month');
             break;
           case 'quarterly':
-            html = '<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-                @for($y=2015;$y<2021;$y++)
-                  +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
-                @endfor
-              +'</select>'
-              +'<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-                @for($x=1;$x<5;$x++)
-                +'<option value="{{$x}}" {{ $dr->fr->quarter==$x?'selected':'' }}>{{$x}}</option>'
-                @endfor
-              +'</select>'
-              +'<div class="btn btn-default dp-q-to" style="pointer-events: none;">-</div>'
-              +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
-                @for($y=2015;$y<2021;$y++)
-                  +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
-                @endfor
-              +'</select>'
-              +'<select class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
-                @for($x=1;$x<5;$x++)
-                  +'<option value="{{$x}}" {{ $dr->to->quarter==$x?'selected':'' }}>{{$x}}</option>'
-                @endfor
-              +'</select>';
+            html = '<select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +'</select>'
+            +'<select id="fr-q" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=0;$x<4;$x++)
+              +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->fr->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
+              @endfor
+            +'</select>'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<select id="to-y" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 3px 6px 12px">'
+              @for($y=2015;$y<2021;$y++)
+                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
+              @endfor
+            +'</select>'
+            +'<select id="to-q" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=0;$x<4;$x++)
+                +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->to->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
+              @endfor
+            +'</select>';
               $('#dp-form').prop('action', '/status/branch/quarter');
             break;
           case 'yearly':

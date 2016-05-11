@@ -38,8 +38,8 @@ Route::get('status/comparative', ['uses'=>'BranchController@getComparative']);
 Route::get('status/branch', ['uses'=>'AnalyticsController@getDaily']);
 Route::get('status/branch/month', ['uses'=>'AnalyticsController@getMonth']);
 Route::get('status/branch/week', ['uses'=>'AnalyticsController@getWeekly']);
-Route::get('status/branch/quarter', ['uses'=>'AnalyticsController@underConstruction']);
-Route::get('status/branch/year', ['uses'=>'AnalyticsController@underConstruction']);
+Route::get('status/branch/quarter', ['uses'=>'AnalyticsController@getQuarter']);
+Route::get('status/branch/year', ['uses'=>'AnalyticsController@getYear']);
 
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);

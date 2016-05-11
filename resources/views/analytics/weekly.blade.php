@@ -258,11 +258,11 @@
 
             <tr>
               <td data-sort="{{$d->date->format('Y-m-d')}}">
-                <span data-toggle="tooltip" data-placement="right" 
+                <span data-toggle="tooltip" data-placement="right"  style="cursor: help;"
                 title="{{ $d->date->copy()->startOfWeek()->format('M j, Y') }} - 
-                {{ $d->date->copy()->endOfWeek()->format('M j, Y') }}">
-                {{ $d->date->format('Y') }}-W{{ $d->date->format('W') }}
-              </span>
+                  {{ $d->date->copy()->endOfWeek()->format('M j, Y') }}">
+                  {{ $d->date->format('Y') }}-W{{ $d->date->format('W') }}
+                </span>
               </td>
               @if(!is_null($d->dailysale))
               <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">{{ number_format($d->dailysale['sales'], 2) }}</td>
@@ -677,7 +677,23 @@
         
       });
 
-    } /* end inidDatePicker */
+
+      /***** quarter *****/
+      $('.dp-q-fr').on('change', function(e){
+        var day = moment($('.dp-q-fr')[0].value+'-'+$('.dp-q-fr')[1].value);
+        console.log(day.format('YYYY-MM-DD'));
+        $('#fr').val(day.format('YYYY-MM-DD'));
+      });
+
+      $('.dp-q-to').on('change', function(e){
+        var day = moment($('.dp-q-to')[0].value+'-'+$('.dp-q-to')[1].value);
+        console.log(day.format('YYYY-MM-DD'));
+        $('#to').val(day.format('YYYY-MM-DD'));
+      });
+      /***** end:quarter *****/
+
+
+    } /* end initDatePicker */
 
 
 
@@ -686,9 +702,6 @@
       initDatePicker();
 
       $('[data-toggle="tooltip"]').tooltip();
-      
-     
-      
 
       $('.br.dropdown-menu li a').on('click', function(e){
         e.preventDefault();
@@ -797,7 +810,7 @@
           shared: true,
           crosshairs: true
         },
-        plotOptions: {
+        plotOptions: { 
           series: {
             cursor: 'pointer',
             point: {
@@ -938,25 +951,25 @@
             $('#dp-form').prop('action', '/status/branch/month');
           break;
         case 'quarterly':
-          html = '<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
+          html = '<select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
               @for($y=2015;$y<2021;$y++)
                 +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
               @endfor
             +'</select>'
-            +'<select class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<5;$x++)
-              +'<option value="{{$x}}" {{ $dr->fr->quarter==$x?'selected':'' }}>{{$x}}</option>'
+            +'<select id="fr-q" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=0;$x<4;$x++)
+              +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->fr->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
               @endfor
             +'</select>'
-            +'<div class="btn btn-default dp-q-to" style="pointer-events: none;">-</div>'
-            +'<select class="btn btn-default" style="height:34px; padding: 6px 3px 6px 12px">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<select id="to-y" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 3px 6px 12px">'
               @for($y=2015;$y<2021;$y++)
                 +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
               @endfor
             +'</select>'
-            +'<select class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<5;$x++)
-                +'<option value="{{$x}}" {{ $dr->to->quarter==$x?'selected':'' }}>{{$x}}</option>'
+            +'<select id="to-q" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
+              @for($x=0;$x<4;$x++)
+                +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->to->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
               @endfor
             +'</select>';
             $('#dp-form').prop('action', '/status/branch/quarter');

@@ -19,6 +19,7 @@ class DailySales extends BaseModel {
     'headspend' => 'float',
     'tipspct' => 'float',
     'mancostpct' => 'float',
+    'mancost' => 'float',
     'cospct' => 'float',
     'purchcost' => 'float'
   ];

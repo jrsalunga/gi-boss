@@ -82,7 +82,20 @@
         </tr>
       </thead>
       <tbody>
+        <?php
+          $tot_sales = 0;
+          $tot_purchcost = 0;
+          $tot_custcount = 0;
+          $tot_headspend = 0;
+          $tot_empcount = 0;
+          $tot_sales_emp = 0;
+          $tot_mancost = 0;
+          $tot_mancostpct = 0;
+          $tot_tips = 0;
+          $tot_tipspct = 0;
+        ?>
         @foreach($dailysales as $key => $ds) 
+        
         <tr>
           <td>{{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span></td>
           @if(is_null($ds['ds']))
@@ -97,6 +110,18 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
           @else
+            <?php 
+              $tot_sales      += $ds['ds']->sales;
+              $tot_purchcost  += $ds['ds']->purchcost;
+              $tot_custcount  += $ds['ds']->custcount;
+              $tot_headspend  += $ds['ds']->headspend;
+              $tot_empcount   += $ds['ds']->empcount;
+              //$tot_sales_emp = 0;
+              $tot_mancost    += $ds['ds']->mancost;
+              $tot_mancostpct += $ds['ds']->mancostpct;
+              $tot_tips       += $ds['ds']->tips;
+              $tot_tipspct    += $ds['ds']->tipspct;
+            ?>
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
@@ -112,6 +137,51 @@
         </tr>
         @endforeach
       </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <strong>
+              {{ count($dailysales) }}
+              {{ count($dailysales) > 1 ? 'branches':'branch' }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_sales,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_purchcost,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_custcount,0) }}
+            </strong>
+          </td>
+          <td class="text-right"></td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_empcount,0) }}
+            </strong>
+          </td>
+          <td class="text-right"></td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_mancost,2) }}
+            </strong>
+          </td>
+          <td class="text-right"></td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_tips,2) }}
+            </strong>
+          </td>
+          <td class="text-right"></td>
+
+        </tr>
+      </tfoot>
     </table>
   </div>
     

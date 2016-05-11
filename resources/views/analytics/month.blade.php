@@ -94,13 +94,13 @@
           -->
 
           <div class="btn-group pull-right clearfix dp-container" role="group">
-            <label class="btn btn-default" for="dp-date-fr">
+            <label class="btn btn-default" for="dp-m-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
             <input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
             <input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">
-            <label class="btn btn-default" for="dp-date-to">
+            <label class="btn btn-default" for="dp-m-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
           </div><!-- end btn-grp -->
@@ -731,7 +731,7 @@
 
   $('document').ready(function(){
 
-    initDatePicker();
+    
 
 
     $('.br.dropdown-menu li a').on('click', function(e){

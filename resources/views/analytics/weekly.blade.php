@@ -281,7 +281,7 @@
                 $div_mancost+=($mancost!=0)?1:0; 
               ?>
               <td class="text-right" data-sort="{{ number_format($mancost,2,'.','') }}">{{ number_format($mancost,2) }}</td>
-              <td>0</td>
+              <td>a</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
               <?php
                 $tipspct = ($d->dailysale['sales']!=0) 

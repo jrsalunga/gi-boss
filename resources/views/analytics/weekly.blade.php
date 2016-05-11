@@ -291,7 +291,7 @@
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">{{ number_format($d->dailysale['tips'],2) }}</td>
               <?php
-                $tipspct = ($d->dailysale['sales']!=0) 
+                $tipspct = (($d->dailysale['sales']+0)!=0) 
                   ? ($d->dailysale['tips']/$d->dailysale['sales'])*100
                   : 0;
               ?>

@@ -185,11 +185,6 @@
     </table>
   </div>
     
-  
-    
-
-
-
 </div>
 @endsection
 

@@ -96,9 +96,9 @@
           <div class="btn-group pull-right clearfix dp-container" role="group">
             <label class="btn btn-default" for="dp-y-date-fr">
             <span class="glyphicon glyphicon-calendar"></span></label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
+            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
+            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">
             <label class="btn btn-default" for="dp-y-date-to">
             <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -256,7 +256,9 @@
                   <span data-toggle="tooltip" data-placement="right" style="cursor: help;"
                 title="{{ $d->date->firstOfQuarter()->format('M j, Y') }} -
                 {{ $d->date->lastOfQuarter()->format('M j, Y') }}">
+                  <a href="/status/branch/month?branchid={{$branch->lid()}}&fr={{$d->date->firstOfYear()->format('Y-m-d')}}&to={{$d->date->lastOfYear()->format('Y-m-d')}}">
                   {{ $d->date->year }}
+                  </a>
                   </span>
                 </td>
                 @if(!is_null($d->dailysale))

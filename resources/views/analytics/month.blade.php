@@ -253,7 +253,11 @@
 
 
               <tr>
-                <td data-sort="{{$d->date->format('Y-m-d')}}">{{ $d->date->format('M Y') }}</td>
+                <td data-sort="{{$d->date->format('Y-m-d')}}">
+                  <a href="/status/branch?branchid={{$branch->lid()}}&fr={{$d->date->firstOfMonth()->format('Y-m-d')}}&to={{$d->date->lastOfMonth()->format('Y-m-d')}}">
+                  {{ $d->date->format('M Y') }}
+                  </a>
+                </td>
                 @if(!is_null($d->dailysale))
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">
                   {{ number_format($d->dailysale['sales'], 2) }}

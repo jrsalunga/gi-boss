@@ -269,7 +269,9 @@
                   <span data-toggle="tooltip" data-placement="right" style="cursor: help;"
                 title="{{ $d->date->firstOfQuarter()->format('M j, Y') }} -
                 {{ $d->date->lastOfQuarter()->format('M j, Y') }}">
+                  <a href="/status/branch/month?branchid={{$branch->lid()}}&fr={{$d->date->firstOfQuarter()->format('Y-m-d')}}&to={{$d->date->lastOfQuarter()->format('Y-m-d')}}">
                   {{ $d->date->year }}-Q{{ $d->date->quarter }}
+                  </a>
                   </span>
                 </td>
                 @if(!is_null($d->dailysale))

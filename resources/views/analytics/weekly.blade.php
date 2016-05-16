@@ -261,7 +261,9 @@
                 <span data-toggle="tooltip" data-placement="right"  style="cursor: help;"
                 title="{{ $d->date->copy()->startOfWeek()->format('M j, Y') }} - 
                   {{ $d->date->copy()->endOfWeek()->format('M j, Y') }}">
+                  <a href="/status/branch?branchid={{$branch->lid()}}&fr={{$d->date->copy()->startOfWeek()->format('Y-m-d')}}&to={{$d->date->copy()->endOfWeek()->format('Y-m-d')}}">
                   {{ $d->date->format('Y') }}-W{{ $d->date->format('W') }}
+                  </a>
                 </span>
               </td>
               @if(!is_null($d->dailysale))

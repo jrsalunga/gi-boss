@@ -98,7 +98,7 @@
         
         <tr>
           <td>
-            <a href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
+            <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
             {{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span>
             </a>
           </td>

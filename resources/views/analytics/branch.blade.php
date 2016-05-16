@@ -148,7 +148,7 @@
         <span class="glyphicon glyphicon-phone-alt"></span> 
         <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9\s]/", "", $branch->phone).'">'.$branch->phone.'</a>' ?>
         / <span class="glyphicon glyphicon-phone"></span> 
-        <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9\s]/", "", $branch->mobile).'">'.$branch->mobile.'</a>' ?>
+        <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9]+/", "", $branch->mobile).'">'.$branch->mobile.'</a>' ?>
       </div>
       <div class="col-md-1 col-sm-2"  title="Seating Capacity">
         <span class="fa fa-group"></span> {{ is_null($branch)?'':$branch->seating}}

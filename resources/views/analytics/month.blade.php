@@ -735,7 +735,7 @@
 
   $('document').ready(function(){
 
-    
+    initDatePicker();
 
 
     $('.br.dropdown-menu li a').on('click', function(e){

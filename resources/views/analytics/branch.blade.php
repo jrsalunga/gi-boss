@@ -146,7 +146,7 @@
       </div>
       <div class="col-md-3 col-sm-4" title="Contact Nos.">
         <span class="glyphicon glyphicon-phone-alt"></span> 
-        <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9\s]/", "", $branch->phone).'">'.$branch->phone.'</a>' ?>
+        <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9]+/", "", $branch->phone).'">'.$branch->phone.'</a>' ?>
         / <span class="glyphicon glyphicon-phone"></span> 
         <?=is_null($branch)?'':'<a href="tel:'.preg_replace("/[^0-9]+/", "", $branch->mobile).'">'.$branch->mobile.'</a>' ?>
       </div>

@@ -34,7 +34,7 @@ class AuthLoginEventHandler
             'user' => $event->request->user()->name
         ];
 
-        \Mail::mail('emails.loggedin', $data, function ($message) {
+        \Mail::send('emails.loggedin', $data, function ($message) {
             $message->subject('User Logged In');
             $message->from('no-reply@giligansrestaurant.com', 'GI App - Boss');
             $message->to('giligans.app@gmail.com');

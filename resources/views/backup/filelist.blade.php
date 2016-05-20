@@ -166,7 +166,7 @@
 
 
 @section('js-external')
-  @parent
+  <script src="/js/vendors-common.min.js"></script>
   
   <script>
   

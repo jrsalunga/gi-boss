@@ -237,7 +237,11 @@ class BranchController extends Controller
 				array_push($arr[$b->code], $data);
 			}
 		}
-		return response()->json($arr);
+		//return response()->json($arr);
+		return response($arr)
+							->header('Content-Type', 'text/json')
+							->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 120))
+							->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 120));
 	}
 
 

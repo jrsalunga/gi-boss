@@ -737,7 +737,6 @@
 
     initDatePicker();
 
-
     $('.br.dropdown-menu li a').on('click', function(e){
       e.preventDefault();
       var el = $(e.currentTarget);

@@ -87,7 +87,7 @@
             <span class="hidden-xs">{{ $backup->uploaddate->format('m/d/Y h:i A') }}</span> 
             <em>
               <small>
-              <time class="timeago" datetime="{{ $backup->uploaddate->toIso8601String() }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
+              <time class="timeago" datetime="{{ $backup->uploaddate->format('Y-m-dTH:i:sZ') }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
                 {{ diffForHumans($backup->uploaddate) }} ago
               </time>
               </small>

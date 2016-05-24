@@ -209,7 +209,7 @@
                           <em>
                             <small>
                             <time class="timeago" datetime="{{ $delinquent['uploaddate']->toIso8601String() }}" title="uploaded: {{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                              {{ diffForHumans($delinquent['date']) }}
+                              {{ diffForHumans($delinquent['uploaddate']) }}
                             </time>
                             </small>
                           </em>

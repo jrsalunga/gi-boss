@@ -87,8 +87,8 @@
             <span class="hidden-xs">{{ $backup->uploaddate->format('m/d/Y h:i A') }}</span> 
             <em>
               <small>
-              <time class="timeago" datetime="{{ $backup->uploaddate->toRfc3339String() }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
-                {{ diffForHumans($backup->uploaddate) }}
+              <time class="_timeago" datetime="{{ $backup->uploaddate->toRfc3339String() }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
+                {{ diffForHumans($backup->uploaddate) }} ago
               </time>
               </small>
             </em>

@@ -88,7 +88,7 @@
             <em>
               <small>
               <time class="timeago" datetime="{{ $backup->uploaddate->format('Y-m-dTH:i:sZ') }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
-                {{ diffForHumans($backup->uploaddate) }} ago
+              {{ diffForHumans($backup->uploaddate) }} ago
               </time>
               </small>
             </em>

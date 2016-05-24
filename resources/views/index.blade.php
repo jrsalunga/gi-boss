@@ -166,7 +166,13 @@
                         <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
                         <td>{{ $delinquent['filename'] }}</td>
                         <td title="uploaded: {{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['date']) }}</small></em>
+                          <em>
+                            <small>
+                            <time class="_timeago" datetime="{{ $delinquent['uploaddate']->toIso8601String() }}" title="uploaded: {{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                              {{ diffForHumans($delinquent['date']) }}
+                            </time>
+                            </small>
+                          </em>
                         </td>
                       </tr>
                       @endforeach
@@ -200,7 +206,13 @@
                         <td title="{{ $delinquent['descriptor'] }}">{{ $delinquent['code'] }}</td>
                         <td>{{ $delinquent['filename'] }}</td>
                         <td title="{{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
-                          <em><small>{{ diffForHumans($delinquent['uploaddate']) }} ago</small></em>
+                          <em>
+                            <small>
+                            <time class="timeago" datetime="{{ $delinquent['uploaddate']->toIso8601String() }}" title="uploaded: {{ $delinquent['uploaddate']->format('D, M j, Y h:i A') }}">
+                              {{ diffForHumans($delinquent['date']) }}
+                            </time>
+                            </small>
+                          </em>
                         </td>
                       </tr>
                       @endforeach
@@ -272,7 +284,7 @@
 
 @section('js-external')
   
- 	<script src="/js/vendors-common.min.js"></script>
-
+  <script src="/js/vendors-common.min.js"></script>
+ 	
   
 @endsection

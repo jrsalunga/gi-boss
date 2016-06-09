@@ -84,7 +84,13 @@
           </td>
           <td>{{ $backup->filename }} </td>
           <td>
-            <span class="hidden-xs">{{ $backup->uploaddate->format('m/d/Y h:i A') }}</span> 
+            <span class="hidden-xs">
+            @if($backup->uploaddate->format('Y-m-d')==now())
+              {{ $backup->uploaddate->format('h:i A') }}
+            @else
+              {{ $backup->uploaddate->format('m/d/Y h:i A') }}
+            @endif
+            </span> 
             <em>
               <small>
               <time class="_timeago" datetime="{{ $backup->uploaddate->toRfc3339String() }}" title="uploaded: {{ $backup->uploaddate->format('D, M j, Y h:i A') }}">
@@ -96,11 +102,13 @@
           <td>{{ $backup->cashier }} </td>
           <td class="text-center"><span class="glyphicon glyphicon-{{ $backup->processed == '1' ? 'ok':'remove' }}"></span></td>
           <?php  $x = explode(':', $backup->remarks) ?>
-          <td class="hidden-xs hidden-sm">{{ $x['1'] }} </td>
+          <td class="hidden-xs hidden-sm">{{ $backup->remarks }} </td>
           <td class="hidden-xs hidden-sm">
+              {{ $backup->terminal }}
+            <!-- 
             <a href="https://www.google.com/maps/search/{{$backup->lat}},{{$backup->long}}/{{urldecode('%40')}}{{$backup->lat}},{{$backup->long}},18z" target="_blank">
-              {{ $backup->terminal }} 
             </a>
+            -->
           </td>
         </tr>
         @endforeach

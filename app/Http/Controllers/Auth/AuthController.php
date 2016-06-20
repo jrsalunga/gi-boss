@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Events\UserLoggedIn;
+use App\Events\UserLoggedFailed;
 
 class AuthController extends Controller
 {
@@ -127,6 +128,8 @@ class AuthController extends Controller
             $this->incrementLoginAttempts($request);
         }
 
+        //if (app()->environment()==='production')
+          event(new UserLoggedFailed($request));
 
         //return $this->loginUsername();
         return redirect($this->loginPath())

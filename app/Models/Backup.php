@@ -8,6 +8,7 @@ class Backup extends BaseModel {
 
 	protected $table = 'backup';
 	public $timestamps = false;
+  protected $dates = ['filedate'];
  	//protected $fillable = ['branchid', 'size', 'terminal', 'filename', 'remarks', 'userid', 'year', 'month', 'mimetype'];
 	protected $appends = ['date'];
 	protected $guarded = ['id'];
@@ -40,9 +41,10 @@ class Backup extends BaseModel {
 		$d = substr($f, 4, 2);
 		$y = '20'.substr($f, 6, 2);
 		
-		if(is_iso_date($y.'-'.$m.'-'.$d))
-			return Carbon::parse($y.'-'.$m.'-'.$d.' '.$this->uploaddate->format('H:i:s'));
-		else 
+		if(is_iso_date($y.'-'.$m.'-'.$d)) {
+      //return Carbon::parse($y.'-'.$m.'-'.$d.' '.$this->uploaddate->format('H:i:s'));
+      return Carbon::parse($y.'-'.$m.'-'.$d.' 00:00:00');
+    } else 
 			return null;
   }
  

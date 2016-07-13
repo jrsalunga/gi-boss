@@ -73,5 +73,51 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
 @if(app()->environment() == 'local')
 <?php echo $debugbarRenderer->render() ?>
 @endif
+
+
+<script src="https://js.pusher.com/3.1/pusher.min.js"></script>
+  <script>
+
+  @if(app()->environment() != 'production')
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+  @endif
+
+    var Notification = window.Notification || window.mozNotification || window.webkitNotification;
+    var pusher = new Pusher('f942a14fcafa46565a69', { encrypted: true });
+    var channel = {};
+    channel.cashier = pusher.subscribe('gi.cashier');
+    channel.backup = pusher.subscribe('gi.backup');
+
+    var notify = function(data) {
+
+      data.icon = data.icon || '/images/giligans-header.gif'; 
+      data.title = data.title || 'Notification';
+      data.message = data.message || '';
+
+      if (! ('Notification' in window)) {
+        console.log('Web Notification is not supported');
+        return;
+      }
+      
+      Notification.requestPermission(function(permission){
+
+        var notification = new Notification(data.title, {
+          body: data.message,
+          icon: data.icon
+
+        });
+        
+        window.setTimeout(function () {
+          notification.close();
+        }, 100000);
+
+      });
+    }
+    
+    channel.cashier.bind('auth', notify);
+    channel.cashier.bind('App\\Events\\UserLoggedIn', notify);
+    channel.backup.bind('App\\Events\\Backup\\ProcessSuccess', notify);
+  </script>
 </body>
 </html>

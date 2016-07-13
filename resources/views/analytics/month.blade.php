@@ -799,7 +799,7 @@
               //var date = new Date(this.value);
               //console.log(date.getDay());
               //console.log(date);
-              return Highcharts.dateFormat('%b %Y', this.value);
+              return Highcharts.dateFormat('%b %Y',  this.value-86400000);
             }
           },
           plotLines: arr
@@ -952,26 +952,26 @@
       switch (type) {
         case 'weekly':
           html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +' </select>'
-            +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<=lastWeekOfYear($dr->fr->year);$x++)
-              +'<option value="{{$x}}" {{ $dr->fr->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>'
-            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=1;$x<=lastWeekOfYear($dr->to->year);$x++)
-                +'<option value="{{$x}}" {{ $dr->to->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-              @endfor
-            +'</select>';
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->fr->copy()->startOfWeek()->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +' </select>'
+              +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<=lastWeekOfYear($dr->fr->copy()->startOfWeek()->year);$x++)
+                +'<option value="{{$x}}" {{ $dr->fr->copy()->startOfWeek()->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>'
+              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+              +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">'
+                @for($y=2015;$y<2021;$y++)
+                  +'<option value="{{$y}}" {{ $dr->to->copy()->endOfWeek()->year==$y?'selected':'' }}>{{$y}}</option>'
+                @endfor
+              +'</select>'
+              +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
+                @for($x=1;$x<=lastWeekOfYear($dr->to->copy()->endOfWeek()->year);$x++)
+                  +'<option value="{{$x}}" {{ $dr->to->copy()->endOfWeek()->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
+                @endfor
+              +'</select>';
             $('#dp-form').prop('action', '/status/branch/week');
           break;
         case 'monthly':

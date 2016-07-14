@@ -104,8 +104,8 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
 
         var notification = new Notification(data.title, {
           body: data.message,
-          icon: data.icon
-
+          icon: data.icon,
+          tag: 1
         });
         
         window.setTimeout(function () {

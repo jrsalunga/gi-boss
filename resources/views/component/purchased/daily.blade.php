@@ -565,12 +565,14 @@
       initDatePicker();
       branchSelector();
 
-      
+      @if(!is_null($purchases))
       var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
       var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
       var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
       var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
       var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+      @endif
+
 
       Highcharts.setOptions({
         lang: {

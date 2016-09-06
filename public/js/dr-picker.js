@@ -206,3 +206,73 @@ var branchSelector = function(){
     //console.log($('.btn-go').data('branchid'));
   });
 }
+
+var getOptions = function(to, table) {
+        var options = {
+          data: {
+            table: table,
+            startColumn: 0,
+            endColumn: 1,
+          },
+          chart: {
+            renderTo: to,
+            type: 'pie',
+            height: 300,
+            width: 300,
+            events: {
+              load: function (e) {
+                //console.log(e.target.series);
+              }
+            }
+          },
+          title: {
+              text: ''
+          },
+          style: {
+            fontFamily: "Helvetica"
+          },
+          tooltip: {
+            pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: false
+              },
+              showInLegend: true,
+              point: {
+                
+              }
+            }
+          },
+          
+          legend: {
+            enabled: false,
+            //layout: 'vertical',
+            //align: 'right',
+            //width: 400,
+            //verticalAlign: 'top',
+            borderWidth: 0,
+            useHTML: true,
+            labelFormatter: function() {
+              //total += this.y;
+              return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
+            },
+            title: {
+              text: null,
+            },
+              itemStyle: {
+              fontWeight: 'normal',
+              fontSize: '12px',
+              lineHeight: '12px'
+            }
+          },
+          
+          exporting: {
+            enabled: false
+          }
+        }
+        return options;
+      }

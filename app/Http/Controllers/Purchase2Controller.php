@@ -40,12 +40,18 @@ class Purchase2Controller extends Controller {
   }
 
 
-  private function setDailyViewVars($view, $purchases=null, $branches=null, $branch=null, $filter=null) {
+  private function setDailyViewVars($view, $purchases=null, $branches=null, $branch=null, $filter=null,
+    $components=null, $compcats=null, $expenses=null, $expscats=null, $suppliers=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('purchases', $purchases)
                 ->with('branches', $branches)
                 ->with('branch', $branch)
+                ->with('components', $components)
+                ->with('compcats', $compcats)
+                ->with('expenses', $expenses)
+                ->with('expscats', $expscats)
+                ->with('suppliers', $suppliers)
                 ->with('filter', $filter));
   }
 
@@ -82,7 +88,7 @@ class Purchase2Controller extends Controller {
 
     //if(!$request->has('branchid')) {
     if(is_null($request->input('branchid'))) {
-      return $this->setDailyViewVars('component.purchased.daily', null, $bb, null, $filter);
+      return $this->setDailyViewVars('component.purchased.daily', null, $bb, null, $filter, null, null, null, null);
     } 
 
     if(!is_uuid($request->input('branchid'))
@@ -94,7 +100,7 @@ class Purchase2Controller extends Controller {
     try {
       $branch = $this->branch->find(strtolower($request->input('branchid')));
     } catch (Exception $e) {
-      return $this->setDailyViewVars('component.purchased.daily', null, $bb, null, $filter);
+      return $this->setDailyViewVars('component.purchased.daily', null, $bb, null, $filter, null, null, null, null);
     }
 
 		$where['purchase.branchid'] = $branch->id;
@@ -102,8 +108,23 @@ class Purchase2Controller extends Controller {
     $purchases = $this->purchased
     								->branchByDR($branch, $this->dr)
     								->findWhere($where);
+    $components = $this->purchased
+                  ->brComponentByDR($this->dr)
+                  ->findWhere($where);
+    $compcats = $this->purchased
+                  ->brCompCatByDR($this->dr)
+                  ->findWhere($where);
+    $expenses = $this->purchased
+                  ->brExpenseByDR($this->dr)
+                  ->findWhere($where); 
+    $expscats = $this->purchased
+                  ->brExpsCatByDR($this->dr)
+                  ->findWhere($where);
+    $suppliers = $this->purchased
+                  ->brSupplierByDR($this->dr)
+                  ->findWhere($where);              
 
-    return $this->setDailyViewVars('component.purchased.daily', $purchases, $bb, $branch, $filter);
+    return $this->setDailyViewVars('component.purchased.daily', $purchases, $bb, $branch, $filter, $components, $compcats, $expenses, $expscats, $suppliers);
 	
 	}
 
@@ -238,28 +259,29 @@ class Purchase2Controller extends Controller {
 	  if($request->has('q')) {
 	  	
 	  	$q = $request->input('q');
+      $branchid = $request->input('branchid');
 	  	
-	  	$components = Component::where('descriptor', 'like', '%'.$q.'%')->get(['descriptor', 'id']);
+	  	$components = Component::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($components as $component) {
 	  		array_push($arr, ['table'=>'component', 'item'=>$component->descriptor, 'id'=>strtolower($component->id)]);
 	  	}
 
-	  	$compcats = Compcat::where('descriptor', 'like', '%'.$q.'%')->get(['descriptor', 'id']);
+	  	$compcats = Compcat::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($compcats as $compcat) {
 	  		array_push($arr, ['table'=>'compcat', 'item'=>$compcat->descriptor, 'id'=>strtolower($compcat->id)]);
 	  	}
 
-	  	$expenses = Expense::where('descriptor', 'like', '%'.$q.'%')->get(['descriptor', 'id']);
+	  	$expenses = Expense::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($expenses as $expense) {
 	  		array_push($arr, ['table'=>'expense', 'item'=>$expense->descriptor, 'id'=>strtolower($expense->id)]);
 	  	}
 
-	  	$expscats = Expscat::where('descriptor', 'like', '%'.$q.'%')->get(['descriptor', 'id']);
+	  	$expscats = Expscat::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($expscats as $expscat) {
 	  		array_push($arr, ['table'=>'expscat', 'item'=>$expscat->descriptor, 'id'=>strtolower($expscat->id)]);
 	  	}
 
-	  	$suppliers = Supplier::where('descriptor', 'like', '%'.$q.'%')->get(['descriptor', 'id']);
+	  	$suppliers = Supplier::where('descriptor', 'like', '%'.$q.'%')->where('branchid', $branchid)->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($suppliers as $supplier) {
 	  		array_push($arr, ['table'=>'supplier', 'item'=>$supplier->descriptor, 'id'=>strtolower($supplier->id)]);
 	  	}

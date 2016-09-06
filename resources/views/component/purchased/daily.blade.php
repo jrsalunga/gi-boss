@@ -136,59 +136,404 @@
 
 
     <div class="row">
+      <div>
+
+  <!-- Nav tabs -->
+<div>
+  
+</div>
+<div>
+  <!-- Tab panes -->
+  
+</div>
+
+</div>
     	@if(is_null($purchases))
 
       @else
+
+      <div class="col-md-12">
+        <ul class="nav nav-pills" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
+              <span class="gly gly-shopping-cart"></span>
+              <span class="hidden-xs hidden-sm">
+                Components
+              </span>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">
+              <span class="gly gly-charts"></span>
+              <span class="hidden-xs hidden-sm">
+                Stats
+              </span> 
+            </a>
+          </li>
+          <!--
+          <li role="presentation">
+            <a href="#download" aria-controls="download" role="tab" data-toggle="tab">
+              <span class="gly gly-disk-save"></span>
+              <span class="hidden-xs hidden-sm">
+              Download
+              </span>
+            </a>
+          </li>
+        -->
+          <li role="presentation" style="float: right;">
+            <div>
+            Total Purchased Cost: 
+            <h3 id="tot-purch-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+            </div>
+          </li>
+        </ul>
+      </div><!-- end: .col-md-12 -->
+
     	<div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped table-sort-data">
-            <thead>
-            	<tr>
-            		<th>Date</th>
-            		<th>Component</th>
-            		<th>Qty</th>
-            		<th class="text-right">Unit Cost</th>
-            		<th class="text-right" class="text-right">Total Cost</th>
-            		<th>Supplier</th>
-            		<th>Component Category</th>
-            		<th>Expense</th>
-            		<th></th>
-            	</tr>
-            </thead>
-            <tbody>
-            	@foreach($purchases as $purchase)
-            	<tr>
-            		<td style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}">
-            			{{ $purchase->date->format('Y-m-d') }}
-            		</td>
-            		<td>{{ $purchase->component }}</td>
-            		<td>{{ $purchase->qty }} 
-            			<small class="text-muted">
-            				{{ strtolower($purchase->uom)}}@if($purchase->qty>1)s
-            				@endif
-            			</small>
-            		</td>
-            		<td class="text-right">{{ number_format($purchase->ucost,2) }}</td>
-            		<td class="text-right">{{ number_format($purchase->tcost,2) }}</td>
-            		<td class="text-muted"><small>{{ $purchase->supplier }}</small></td>
-            		<td class="text-muted"><small>{{ $purchase->compcat }}</small></td>
-            		<td class="text-muted"><small>{{ $purchase->expense }}</small></td>
-            		<td>
-            			<span class="label 
-            		@if($purchase->expscatcode=='05')
-            			label-warning
-            		@elseif($purchase->expscatcode=='08')
-            			label-primary
-            		@else
-            			label-default
-            		@endif
-            		 pull-right" title="{{ $purchase->expscat }}" style="cursor: help;">{{ $purchase->expscatcode }}</span>
-            		</td>
-            	</tr>
-            	@endforeach
-            </tbody>
-				</div> <!-- end: .table-responsive -->
-			</div>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="items">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped table-sort-data" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Component</th>
+                    <th>Qty</th>
+                    <th class="text-right">Unit Cost</th>
+                    <th class="text-right" class="text-right">Total Cost</th>
+                    <th>Supplier</th>
+                    <th>Component Category</th>
+                    <th>Expense</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $totpurchcost = 0;
+                  ?>
+                  @foreach($purchases as $purchase)
+                  <tr>
+                    <td data-sort="{{ $purchase->date->format('Y-m-d') }}" style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}">
+                      {{ $purchase->date->format('Y-m-d') }}
+                    </td>
+                    <td data-sort="{{ strtolower($purchase->component) }}">{{ $purchase->component }}</td>
+                    <td data-sort="{{ number_format($purchase->qty, 2,'.','') }}">{{ number_format($purchase->qty, 2,'.','')+0 }} 
+                      <small class="text-muted">
+                        {{ strtolower($purchase->uom)}}@if($purchase->qty>1)s
+                        @endif
+                      </small>
+                    </td>
+                    <td class="text-right" data-sort="{{ number_format($purchase->ucost, 2,'.','') }}">{{ number_format($purchase->ucost,2) }}</td>
+                    <td class="text-right" data-sort="{{ number_format($purchase->tcost, 2,'.','') }}">{{ number_format($purchase->tcost,2) }}</td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small>{{ $purchase->supplier }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->compcat) }}"><small>{{ $purchase->compcat }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->expense) }}"><small>{{ $purchase->expense }}</small></td>
+                    <td data-sort="{{ $purchase->expscatcode+0 }}">
+                      <span class="label 
+                    @if($purchase->expscatcode=='05')
+                      label-warning
+                    @elseif($purchase->expscatcode=='08')
+                      label-primary
+                    @else
+                      label-default
+                    @endif
+                     pull-right" title="{{ $purchase->expscat }}" style="cursor: help;">{{ $purchase->expscatcode }}</span>
+                    </td>
+                  </tr>
+                  <?php
+                    $totpurchcost += $purchase->tcost;
+                  ?>
+                  @endforeach
+                </tbody>
+              </table>
+            </div> <!-- end: .table-responsive -->
+          </div>
+          <div role="tabpanel" class="tab-pane" id="stats">
+            <!-- Component Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Components</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="row">
+                    <div class="table-responsive">
+                      <div class="show less">
+                        <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
+                          <thead>
+                            <tr>
+                              <th>Component</th>
+                              <th class="text-right">Tran. Count</th>
+                              <th class="text-right">Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($components as $component)
+                              <tr>
+                                <td>{{ $component->component }}</td>
+                                <td class="text-right">{{ $component->tran_cnt }}</td>
+                                <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <span class="label label-info show toggle">show more</span>
+                      <table id="component-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Component</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($components as $component)
+                              <tr>
+                                <td>{{ $component->component }}</td>
+                                <td>{{ $component->tcost }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                  <div class="col-md-5">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-component" data-table="#component-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            <!-- Component Category Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Component Category</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="row">
+                    <div class="table-responsive">
+                      <div class="show less">
+                        <table class="tb-compcat-data table table-condensed table-hover table-striped table-sort">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th class="text-right">Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($compcats as $compcat)
+                              <tr>
+                                <td>{{ $compcat->compcat }}</td>
+                                <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <span class="label label-info show toggle">show more</span>
+                      <table id="compcat-data" style="display: none;">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($compcats as $compcat)
+                              <tr>
+                                <td>{{ $compcat->compcat }}</td>
+                                <td>{{ $compcat->tcost }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                  <div class="col-md-5">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-compcat" data-table="#compcat-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            <!-- Expenses Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Expense</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="row">
+                    <div class="table-responsive">
+                      <div class="show less">
+                        <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Expense</th>
+                              <th class="text-right">Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($expenses as $expense)
+                              <tr>
+                                <td>{{ $expense->expensecode }}</td>
+                                <td>{{ $expense->expense }}</td>
+                                <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <span class="label label-info show toggle">show more</span>
+                      <table id="expense-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Expense</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($expenses as $expense)
+                              <tr>
+                                <td>{{ $expense->expense }}</td>
+                                <td>{{ $expense->tcost }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                  <div class="col-md-5">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-expense" data-table="#expense-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            <!-- Expenses Category Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Expense Category</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="row">
+                    <div class="table-responsive">
+                      <div class="show less">
+                        <table class="tb-expscat-data table table-condensed table-hover table-striped table-sort">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Category</th>
+                              <th class="text-right">Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($expscats as $expscat)
+                              <tr>
+                                <td>{{ $expscat->expscatcode }}</td>
+                                <td>{{ $expscat->expscat }}</td>
+                                <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <!--
+                      <span class="label label-info show toggle">show more</span>
+                      -->
+                      <table id="expscat-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($expscats as $expscat)
+                              <tr>
+                                <td>{{ $expscat->expscat }}</td>
+                                <td>{{ $expscat->tcost}}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                  <div class="col-md-5">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-expscat" data-table="#expscat-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            <!-- Supplier Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Supplier</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-supplier-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Code</th>
+                                <th>Supplier</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($suppliers as $supplier)
+                                <tr>
+                                  <td>{{ $supplier->code }}</td>
+                                  <td>{{ $supplier->descriptor }}</td>
+                                  <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <span class="label label-info show toggle">show more</span>
+                        <table id="supplier-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Supplier</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($suppliers as $supplier)
+                                <tr>
+                                  <td>{{ $supplier->descriptor }}</td>
+                                  <td>{{ $supplier->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                  <div class="col-md-5">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+          </div>
+          <div role="tabpanel" class="tab-pane" id="download">Download</div>
+        </div>
+        
+      </div><!-- end: .col-md-12 -->
 			@endif
 		</div> <!-- end: .row table -->
 </div>
@@ -202,14 +547,16 @@
 	
 	<script>
 
+    $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
+    
     moment.locale('en', { week : {
       dow : 1 // Monday is the first day of the week.
     }});
 
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: ','
-    }});
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+      }});
 
 
     $(document).ready(function(){
@@ -217,36 +564,93 @@
       initDatePicker();
       branchSelector();
 
+      
+      var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
+      var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
+      var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
+      var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
+      var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
 
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+      }});
+      
+
+      
+     
+      
+
+      $('.show.toggle').on('click', function(){
+        var div = $(this).siblings('div.show');
+        if(div.hasClass('less')) {
+          div.removeClass('less');
+          div.addClass('more');
+          $(this).text('show less');
+        } else if(div.hasClass('more')) {
+          div.removeClass('more');
+          div.addClass('less');
+          $(this).text('show more');
+        }
+          
+
+      });
+
+      
+
+      $.widget("custom.autocomplete", $.ui.autocomplete, {
+        _create: function() {
+          this._super();
+          this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
+        },
+        _renderMenu: function(ul, items) {
+          var that = this,
+            currentCategory = "";
+          $.each(items, function(index, item) {
+            var li;
+            if (item.category != currentCategory) {
+              ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
+              currentCategory = item.category;
+            }
+            li = that._renderItemData(ul, item);
+            if (item.category) {
+              li.attr( "aria-label", item.category + " : " + item.label);
+            }
+          });
+        }
+      });
 
 
      	$(".searchfield").autocomplete({
        	source: function(request, response) {
+          var bid = $('#branchid').val();
         	$.ajax({
           	type: 'GET',
           	url: "/api/search/component",
             dataType: "json",
             data: {
               maxRows: 25,
-              q: request.term
+              q: request.term,
+              branchid : bid
             },
             success: function(data) {
               response($.map(data, function(item) {
                 return {
-                  label: item.item + ', ' + item.table,
+                  //label: item.item + ', ' + item.table,
+                  label: item.item,
                   value: item.item,
-                  table: item.table,
+                  category: item.table,
   								id: item.id
                 }
               }));
             }
-        });
-            },
-        minLength: 3,
+          });
+        },
+        minLength: 2,
         select: function(event, ui) {
     			//console.log(ui);
           //log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
-    			$("#table").val(ui.item.table); /* set the selected id */
+    			$("#table").val(ui.item.category); /* set the selected id */
     			$("#item").val(ui.item.value); /* set the selected id */
     			$("#itemid").val(ui.item.id); /* set the selected id */
         },

@@ -219,7 +219,7 @@
                     <td data-sort="{{ strtolower($purchase->component) }}">{{ $purchase->component }}</td>
                     <td data-sort="{{ number_format($purchase->qty, 2,'.','') }}">{{ number_format($purchase->qty, 2,'.','')+0 }} 
                       <small class="text-muted">
-                        {{ strtolower($purchase->uom)}}@if($purchase->qty>1)s
+                        {{ strtolower($purchase->uom)}}@if($purchase->qty>1 && substr(strtolower($purchase->uom), -1)!='s')s
                         @endif
                       </small>
                     </td>

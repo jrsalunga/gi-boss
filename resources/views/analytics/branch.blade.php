@@ -323,7 +323,11 @@
                 </div>
               </td>
               <td class="text-right">
-                <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
+                <strong id="f-tot-purch">
+                  <a class="text-primary" target="_blank" href="/component/purchases?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" >
+                  {{ number_format($tot_purchcost,2) }}
+                  </a>
+                </strong>
                 <div>
                 <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
                   {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}

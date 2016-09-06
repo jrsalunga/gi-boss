@@ -148,6 +148,9 @@
 </div>
 
 </div>
+      <?php
+        $totpurchcost = 0;
+      ?>
     	@if(is_null($purchases))
 
       @else
@@ -208,9 +211,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                    $totpurchcost = 0;
-                  ?>
                   @foreach($purchases as $purchase)
                   <tr>
                     <td data-sort="{{ $purchase->date->format('Y-m-d') }}" style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}">
@@ -546,6 +546,7 @@
   <script src="/js/dr-picker.js"> </script>
 	
 	<script>
+
 
     $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
     

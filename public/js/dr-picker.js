@@ -17,6 +17,23 @@ var initDatePicker = function(){
           $('.btn-go').prop('disabled', false);
       });
 
+      $('#mdl-dp-date-fr').datetimepicker({
+        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true,
+        //calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
+        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.mdl-btn-go').prop('disabled', true);
+        else
+          $('.mdl-btn-go').prop('disabled', false);
+      });
+
 
       $('#dp-date-to').datetimepicker({
        // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
@@ -33,6 +50,23 @@ var initDatePicker = function(){
           $('.btn-go').prop('disabled', true);
         else
           $('.btn-go').prop('disabled', false);
+      });
+
+      $('#mdl-dp-date-to').datetimepicker({
+       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true,
+        //calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.mdl-btn-go').prop('disabled', true);
+        else
+          $('.mdl-btn-go').prop('disabled', false);
       });
 
       $('#dp-m-date-fr').datetimepicker({
@@ -202,6 +236,27 @@ var branchSelector = function(){
       $('.btn-go').prop('disabled', true);
     else
       $('.btn-go').prop('disabled', false);
+    
+    //console.log($('.btn-go').data('branchid'));
+  });
+}
+
+
+var mdlBranchSelector = function(){
+
+  $('.modal .br.dropdown-menu li a').on('click', function(e){
+    e.preventDefault();
+    var el = $(e.currentTarget);
+    el.parent().siblings().children().css('background-color', '#fff');
+    el.css('background-color', '#d4d4d4');
+    $('.br-code').text(el.data('code'));
+    $('.br-desc').text('- '+el.data('desc'));
+    $('#branchid').val(el.data('branchid'));
+    //$('#dLabel').stop( true, true ).effect("highlight", {}, 1000);
+    if(el.data('branchid')==$('.btn-go').data('branchid'))
+      $('.mdl-btn-go').prop('disabled', true);
+    else
+      $('.mdl-btn-go').prop('disabled', false);
     
     //console.log($('.btn-go').data('branchid'));
   });

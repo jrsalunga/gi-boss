@@ -39,12 +39,40 @@
     <nav id="nav-action" class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-form">
-          <div class="btn-group" role="group">
+          <div class="btn-group pull-left" role="group">
             <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
               <span class="gly gly-unshare"></span>
-              <span class="hidden-xs hidden-sm">Back</span>
+              <span class="hidden-xs">Back</span>
             </a> 
           </div> <!-- end btn-grp -->
+          <div class="btn-group visible-xs-inline-block pull-left" role="group">
+            <div style="padding: 6px 12px;">
+              <span class="gly gly-shop"></span>
+              @if(is_null(($branch)))
+                -
+              @else
+                <span>{{ $branch->code }}</span>
+              @endif
+
+              @if(empty(($filter->item)))
+                
+              @else
+              <span class="label label-info" style="margin-left: 5px;">
+                {{ $filter->item }} 
+                <a href="/component/purchases?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" title="Remove filter">
+                <span style="color:#ccc; margin-right: 5px; border-radius: .25em;">x</span>
+                </a>
+              </span>
+              @endif
+
+              
+            </div>
+          </div>
+          <div class="btn-group visible-xs-inline-block pull-right" role="group">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mdl-form">
+              <span class="glyphicon glyphicon-option-vertical"></span>
+            </button>
+          </div>
           <!--
           <div class="btn-group" role="group">
             <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
@@ -53,8 +81,8 @@
             </a> 
           </div> <!-- end btn-grp -->
 
-          <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/component/purchases', 'method' => 'get', 'id'=>'dp-form']) !!}
+          <div class="btn-group btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
+            {!! Form::open(['url' => '/component/purchases', 'method' => 'get', 'id'=>'filter-form']) !!}
             <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
             -->  
@@ -71,7 +99,7 @@
             {!! Form::close() !!}
           </div> <!-- end btn-grp -->
 
-          <div class="btn-group" style="margin-left: 5px;">
+          <div class="btn-group hidden-xs" style="margin-left: 5px;">
             <div class="dropdown">
               <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="gly gly-shop"></span>
@@ -94,7 +122,7 @@
             </div> <!-- .dropdown -->
           </div>
       
-          <div class="btn-group pull-right clearfix dp-container" role="group">
+          <div class="btn-group pull-right clearfix dp-container hidden-xs" role="group">
             
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
@@ -108,7 +136,7 @@
         
           </div><!-- end btn-grp -->
 
-          <div class="btn-group" role="group">
+          <div class="btn-group hidden-xs" role="group">
           	<input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
           	<!--
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
@@ -162,7 +190,7 @@
           <li role="presentation" class="active">
             <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
               <span class="gly gly-shopping-cart"></span>
-              <span class="hidden-xs hidden-sm">
+              <span class="hidden-xs">
                 Components
               </span>
             </a>
@@ -170,7 +198,7 @@
           <li role="presentation">
             <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">
               <span class="gly gly-charts"></span>
-              <span class="hidden-xs hidden-sm">
+              <span class="hidden-xs">
                 Stats
               </span> 
             </a>
@@ -540,6 +568,70 @@
 		</div> <!-- end: .row table -->
 </div>
 
+<div class="modal fade" id="mdl-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mdl-formLabel">Filter Parameters</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="form-group">
+            <label>Branch:</label>
+            <div class="dropdown">
+              <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="gly gly-shop"></span>
+                @if(is_null(($branch)))
+                  <span class="br-code">Select Branch</span>
+                  <span class="br-desc"></span>
+                @else
+                  <span class="br-code">{{ $branch->code }}</span>
+                  <span class="br-desc">- {{ $branch->descriptor }}</span>
+                @endif
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu br" aria-labelledby="dLabel" style="max-height: 400px; overflow-y: scroll;">
+                @foreach($branches as $b)
+                <li>
+                  <a href="#" data-desc="{{ $b->descriptor }}" data-code="{{ $b->code }}" data-branchid="{{ $b->lid() }}">{{ $b->code }}</a>
+                </li>
+                @endforeach
+              </ul>
+            </div> <!-- .dropdown -->
+          </div>
+
+          <div class="form-group">
+            <label>Date Range:</label>
+            <div class="btn-group" role="group">
+            <label class="btn btn-default" for="mdl-dp-date-fr">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            
+            <div class="btn btn-default" style="pointer-events: none;">-</div>
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
+            <label class="btn btn-default" for="mdl-dp-date-to">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Filter:</label>
+            <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
+          </div>
+            
+        
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success pull-right  mdl-btn-go" data-dismiss="modal"><span class="gly gly-search"></span> Go </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Discard</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 
@@ -563,139 +655,135 @@
     }
   });
 
-  $('.btn-go').on('click', function(){
+  var load = function(){
     $('.backdrop').show();
     $('.loader').show();
+    return false;
+  }
+
+  $('.btn-go').on('click', function(){
+    load();
   });
 
+  $('.mdl-btn-go').on('click', function(){
+    load();
+    $('#filter-form').submit();
+  });
 
-
-    $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
+  $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
     
-    moment.locale('en', { week : {
-      dow : 1 // Monday is the first day of the week.
-    }});
+  moment.locale('en', { week : {
+    dow : 1 // Monday is the first day of the week.
+  }});
 
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-      }});
-
-
-    $(document).ready(function(){
-
-      initDatePicker();
-      branchSelector();
-
-      @if(!is_null($purchases))
-      var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
-      var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
-      var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
-      var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
-      var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
-      @endif
+  Highcharts.setOptions({
+    lang: {
+      thousandsSep: ','
+  }});
 
 
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-      }});
-      
+  $(document).ready(function(){
 
+    initDatePicker();
+    branchSelector();
+    mdlBranchSelector();
 
-      
-     
-      
+    @if(!is_null($purchases))
+    var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
+    var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
+    var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
+    var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
+    var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+    @endif
+    
 
-      $('.show.toggle').on('click', function(){
-        var div = $(this).siblings('div.show');
-        if(div.hasClass('less')) {
-          div.removeClass('less');
-          div.addClass('more');
-          $(this).text('show less');
-        } else if(div.hasClass('more')) {
-          div.removeClass('more');
-          div.addClass('less');
-          $(this).text('show more');
-        }
-          
-
-      });
-
-      
-
-      $.widget("custom.autocomplete", $.ui.autocomplete, {
-        _create: function() {
-          this._super();
-          this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
-        },
-        _renderMenu: function(ul, items) {
-          var that = this,
-            currentCategory = "";
-          $.each(items, function(index, item) {
-            var li;
-            if (item.category != currentCategory) {
-              ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
-              currentCategory = item.category;
-            }
-            li = that._renderItemData(ul, item);
-            if (item.category) {
-              li.attr( "aria-label", item.category + " : " + item.label);
-            }
-          });
-        }
-      });
-
-
-     	$(".searchfield").autocomplete({
-       	source: function(request, response) {
-          var bid = $('#branchid').val();
-        	$.ajax({
-          	type: 'GET',
-          	url: "/api/search/component",
-            dataType: "json",
-            data: {
-              maxRows: 25,
-              q: request.term,
-              branchid : bid
-            },
-            success: function(data) {
-              response($.map(data, function(item) {
-                return {
-                  //label: item.item + ', ' + item.table,
-                  label: item.item,
-                  value: item.item,
-                  category: item.table,
-  								id: item.id
-                }
-              }));
-            }
-          });
-        },
-        minLength: 2,
-        select: function(event, ui) {
-    			//console.log(ui);
-          //log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
-    			$("#table").val(ui.item.category); /* set the selected id */
-    			$("#item").val(ui.item.value); /* set the selected id */
-    			$("#itemid").val(ui.item.id); /* set the selected id */
-        },
-        open: function() {
-          $( this ).removeClass("ui-corner-all").addClass("ui-corner-top");
-    			$("#table").val(''); /* set the selected id */
-    			$("#item").val(''); /* set the selected id */
-    			$("#itemid").val(''); /* set the selected id */
-        },
-        close: function() {
-            $( this ).removeClass("ui-corner-top").addClass("ui-corner-all");
-        },
-      	messages: {
-        	noResults: '',
-        	results: function() {}
-      	}
-      });
-
+    $('.show.toggle').on('click', function(){
+      var div = $(this).siblings('div.show');
+      if(div.hasClass('less')) {
+        div.removeClass('less');
+        div.addClass('more');
+        $(this).text('show less');
+      } else if(div.hasClass('more')) {
+        div.removeClass('more');
+        div.addClass('less');
+        $(this).text('show more');
+      }
     });
+
+    
+
+    $.widget("custom.autocomplete", $.ui.autocomplete, {
+      _create: function() {
+        this._super();
+        this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
+      },
+      _renderMenu: function(ul, items) {
+        var that = this,
+          currentCategory = "";
+        $.each(items, function(index, item) {
+          var li;
+          if (item.category != currentCategory) {
+            ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
+            currentCategory = item.category;
+          }
+          li = that._renderItemData(ul, item);
+          if (item.category) {
+            li.attr( "aria-label", item.category + " : " + item.label);
+          }
+        });
+      }
+    });
+
+
+   	$(".searchfield").autocomplete({
+     	source: function(request, response) {
+        var bid = $('#branchid').val();
+      	$.ajax({
+        	type: 'GET',
+        	url: "/api/search/component",
+          dataType: "json",
+          data: {
+            maxRows: 25,
+            q: request.term,
+            branchid : bid
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                //label: item.item + ', ' + item.table,
+                label: item.item,
+                value: item.item,
+                category: item.table,
+								id: item.id
+              }
+            }));
+          }
+        });
+      },
+      minLength: 2,
+      select: function(event, ui) {
+  			//console.log(ui);
+        //log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+  			$("#table").val(ui.item.category); /* set the selected id */
+  			$("#item").val(ui.item.value); /* set the selected id */
+  			$("#itemid").val(ui.item.id); /* set the selected id */
+      },
+      open: function() {
+        $( this ).removeClass("ui-corner-all").addClass("ui-corner-top");
+  			$("#table").val(''); /* set the selected id */
+  			$("#item").val(''); /* set the selected id */
+  			$("#itemid").val(''); /* set the selected id */
+      },
+      close: function() {
+          $( this ).removeClass("ui-corner-top").addClass("ui-corner-all");
+      },
+    	messages: {
+      	noResults: '',
+      	results: function() {}
+    	}
+    });
+
+  });
 
   </script>
 

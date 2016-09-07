@@ -603,6 +603,7 @@
 
           <div class="form-group">
             <label>Date Range:</label>
+            <div>
             <div class="btn-group" role="group">
             <label class="btn btn-default" for="mdl-dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
@@ -615,6 +616,7 @@
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
             </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -622,11 +624,11 @@
             <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
           </div>
             
-        
+
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-right  mdl-btn-go" data-dismiss="modal"><span class="gly gly-search"></span> Go </button>
+        <button type="button" class="btn btn-success pull-right mdl-btn-go" data-dismiss="modal"><span class="gly gly-search"></span> Go </button>
         <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Discard</button>
       </div>
     </div>

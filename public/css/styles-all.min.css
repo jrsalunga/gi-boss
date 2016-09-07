@@ -86,3 +86,27 @@
 	left:-999em;
 }
 
+.loader {
+    display: inline-block;
+    margin: 0 auto;
+    z-index: 1050;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #fff;
+    opacity: .6;
+}
+

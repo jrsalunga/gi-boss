@@ -20,6 +20,8 @@
 @endsection
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 
   <ol class="breadcrumb">
@@ -107,7 +109,7 @@
           </div><!-- end btn-grp -->
 
           <div class="btn-group" role="group">
-          	<input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}">
+          	<input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
           	<!--
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
@@ -254,54 +256,54 @@
               <div class="panel-heading">Components</div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-7">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <div class="show less">
-                        <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
-                          <thead>
-                            <tr>
-                              <th>Component</th>
-                              <th class="text-right">Tran. Count</th>
-                              <th class="text-right">Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($components as $component)
-                              <tr>
-                                <td>{{ $component->component }}</td>
-                                <td class="text-right">{{ $component->tran_cnt }}</td>
-                                <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                      <span class="label label-info show toggle">show more</span>
-                      <table id="component-data" style="display:none;">
-                          <thead>
-                            <tr>
-                              <th>Component</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($components as $component)
-                              <tr>
-                                <td>{{ $component->component }}</td>
-                                <td>{{ $component->tcost }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-5">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
                       <div id="graph-pie-component" data-table="#component-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Component</th>
+                                <th class="text-right">Tran. Count</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($components as $component)
+                                <tr>
+                                  <td>{{ $component->component }}</td>
+                                  <td class="text-right">{{ $component->tran_cnt }}</td>
+                                  <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <span class="label label-info show toggle">show more</span>
+                        <table id="component-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Component</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($components as $component)
+                                <tr>
+                                  <td>{{ $component->component }}</td>
+                                  <td>{{ $component->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
@@ -310,52 +312,52 @@
               <div class="panel-heading">Component Category</div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-7">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <div class="show less">
-                        <table class="tb-compcat-data table table-condensed table-hover table-striped table-sort">
-                          <thead>
-                            <tr>
-                              <th>Category</th>
-                              <th class="text-right">Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($compcats as $compcat)
-                              <tr>
-                                <td>{{ $compcat->compcat }}</td>
-                                <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                      <span class="label label-info show toggle">show more</span>
-                      <table id="compcat-data" style="display: none;">
-                          <thead>
-                            <tr>
-                              <th>Category</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($compcats as $compcat)
-                              <tr>
-                                <td>{{ $compcat->compcat }}</td>
-                                <td>{{ $compcat->tcost }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-5">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
-                      <div id="graph-pie-compcat" data-table="#compcat-data"></div>
+                    <div id="graph-pie-compcat" data-table="#compcat-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-compcat-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($compcats as $compcat)
+                                <tr>
+                                  <td>{{ $compcat->compcat }}</td>
+                                  <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <span class="label label-info show toggle">show more</span>
+                        <table id="compcat-data" style="display: none;">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($compcats as $compcat)
+                                <tr>
+                                  <td>{{ $compcat->compcat }}</td>
+                                  <td>{{ $compcat->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
@@ -364,54 +366,54 @@
               <div class="panel-heading">Expense</div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-7">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <div class="show less">
-                        <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
-                          <thead>
-                            <tr>
-                              <th>Code</th>
-                              <th>Expense</th>
-                              <th class="text-right">Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($expenses as $expense)
-                              <tr>
-                                <td>{{ $expense->expensecode }}</td>
-                                <td>{{ $expense->expense }}</td>
-                                <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                      <span class="label label-info show toggle">show more</span>
-                      <table id="expense-data" style="display:none;">
-                          <thead>
-                            <tr>
-                              <th>Expense</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($expenses as $expense)
-                              <tr>
-                                <td>{{ $expense->expense }}</td>
-                                <td>{{ $expense->tcost }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-5">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
                       <div id="graph-pie-expense" data-table="#expense-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Code</th>
+                                <th>Expense</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($expenses as $expense)
+                                <tr>
+                                  <td>{{ $expense->expensecode }}</td>
+                                  <td>{{ $expense->expense }}</td>
+                                  <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <span class="label label-info show toggle">show more</span>
+                        <table id="expense-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Expense</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($expenses as $expense)
+                                <tr>
+                                  <td>{{ $expense->expense }}</td>
+                                  <td>{{ $expense->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
@@ -420,56 +422,56 @@
               <div class="panel-heading">Expense Category</div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-7">
-                    <div class="row">
-                    <div class="table-responsive">
-                      <div class="show less">
-                        <table class="tb-expscat-data table table-condensed table-hover table-striped table-sort">
-                          <thead>
-                            <tr>
-                              <th>Code</th>
-                              <th>Category</th>
-                              <th class="text-right">Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($expscats as $expscat)
-                              <tr>
-                                <td>{{ $expscat->expscatcode }}</td>
-                                <td>{{ $expscat->expscat }}</td>
-                                <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                      <!--
-                      <span class="label label-info show toggle">show more</span>
-                      -->
-                      <table id="expscat-data" style="display:none;">
-                          <thead>
-                            <tr>
-                              <th>Category</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($expscats as $expscat)
-                              <tr>
-                                <td>{{ $expscat->expscat }}</td>
-                                <td>{{ $expscat->tcost}}</td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                    </div><!-- end: .table-responsive -->
-                  </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                  <div class="col-md-5">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
                       <div id="graph-pie-expscat" data-table="#expscat-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-expscat-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Code</th>
+                                <th>Category</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($expscats as $expscat)
+                                <tr>
+                                  <td>{{ $expscat->expscatcode }}</td>
+                                  <td>{{ $expscat->expscat }}</td>
+                                  <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--
+                        <span class="label label-info show toggle">show more</span>
+                        -->
+                        <table id="expscat-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($expscats as $expscat)
+                                <tr>
+                                  <td>{{ $expscat->expscat }}</td>
+                                  <td>{{ $expscat->tcost}}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
@@ -478,7 +480,12 @@
               <div class="panel-heading">Supplier</div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-7">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
                     <div class="row">
                       <div class="table-responsive">
                         <div class="show less">
@@ -521,11 +528,6 @@
                       </div><!-- end: .table-responsive -->
                     </div><!-- end: .row -->
                   </div><!-- end: .col-md-7 -->
-                  <div class="col-md-5">
-                    <div class="graph-container pull-right">
-                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
@@ -537,6 +539,7 @@
 			@endif
 		</div> <!-- end: .row table -->
 </div>
+
 @endsection
 
 
@@ -546,6 +549,25 @@
   <script src="/js/dr-picker.js"> </script>
 	
 	<script>
+  
+  $(window).load(function(){
+    if($('.backdrop').length) {
+      setTimeout(function() {
+        $('.backdrop').fadeOut(500);
+      }, 10);
+    }
+    if($('.loader').length) {
+      setTimeout(function() {
+        $('.loader').fadeOut(500);
+      }, 10);
+    }
+  });
+
+  $('.btn-go').on('click', function(){
+    $('.backdrop').show();
+    $('.loader').show();
+  });
+
 
 
     $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
@@ -579,6 +601,7 @@
           thousandsSep: ','
       }});
       
+
 
       
      

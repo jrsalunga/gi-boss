@@ -74,7 +74,11 @@
       <tbody>
         @foreach($backups as $backup)
         <tr>
-          <td title="{{ $backup->branch->descriptor }}">{{ $backup->branch->code }}</td>
+          <td title="{{ $backup->branch->descriptor }}">
+            <a href="/storage/log?search={{strtolower($backup->branch->code)}}">
+            {{ $backup->branch->code }}
+            </a>
+          </td>
           <td class="hidden-xs hidden-sm">
             @if($backup->processed == '1')
             <a href="/download/{{$backup->branch->code}}/{{$backup->year}}/{{$backup->month}}/{{$backup->filename}}" target="_blank">

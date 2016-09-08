@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => 'http://gi-boss.dev',
+    'url' => env('APP_URL', 'http://gi-boss.dev'),
 
     /*
     |--------------------------------------------------------------------------
@@ -152,6 +152,7 @@ return [
         GrahamCampbell\Flysystem\FlysystemServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class
 
     ],
 

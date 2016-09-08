@@ -5,7 +5,7 @@ use App\Models\BaseModel;
 class Branch extends BaseModel {
 
   protected $connection = 'mysql-hr';
-	protected $table = 'branch';
+	protected $table = 'hr.branch';
  	protected $fillable = ['code', 'descriptor'];
  	public static $header = ['code', 'descriptor'];
 
@@ -19,6 +19,10 @@ class Branch extends BaseModel {
 
   public function dailysales() {
     return $this->hasMany('App\Models\DailySales', 'branchid');
+  }
+
+   public function company() {
+    return $this->belongsTo('App\Models\Company', 'companyid');
   }
 
 

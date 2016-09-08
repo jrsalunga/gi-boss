@@ -18,6 +18,7 @@ use Illuminate\Container\Container as App;
 
 
 
+
 class BackupController extends Controller 
 {
 
@@ -72,7 +73,7 @@ class BackupController extends Controller
 			})->all();
 		*/
 		$backups = $this->repository->scopeQuery(function($query){
-	   	 return $query->orderBy('uploaddate','desc');
+	   	return $query->orderBy('uploaddate','desc');
 			})->paginate(10, $columns = ['*']);
 		return view('backup.index')->with('backups', $backups);
 	}

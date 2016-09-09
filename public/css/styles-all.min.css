@@ -24,7 +24,13 @@
 }
 
 
+/* Medium devices (desktops, 768px and up) */
+@media (min-width: 768px) { 
+.table-responsive .table {
+	margin: 0px;
+}
 
+}
 
 
 

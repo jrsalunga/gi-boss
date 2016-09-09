@@ -45,7 +45,8 @@ Route::get('component', ['uses'=>'ComponentController@getIndex']);
 Route::get('component/purchases', ['uses'=>'Purchase2Controller@getDaily']);
 Route::get('api/search/component', ['uses'=>'Purchase2Controller@search']);
 
-Route::get('m/{table?}', ['uses'=>'MasterfilesController@getIndex']);
+Route::get('m/{table?}', ['uses'=>'MasterfilesController@getDatatableIndex']);
+Route::get('masterfiles/{table?}', ['uses'=>'MasterfilesController@getIndex']);
 Route::get('api/m/{table?}', ['uses'=>'MasterfilesController@getController']);
 Route::get('api/getdt', ['uses'=>'MasterfilesController@getDatatablesData']);
 

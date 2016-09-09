@@ -644,24 +644,7 @@
 	
 	<script>
   
-  $(window).load(function(){
-    if($('.backdrop').length) {
-      setTimeout(function() {
-        $('.backdrop').fadeOut(500);
-      }, 10);
-    }
-    if($('.loader').length) {
-      setTimeout(function() {
-        $('.loader').fadeOut(500);
-      }, 10);
-    }
-  });
-
-  var load = function(){
-    $('.backdrop').show();
-    $('.loader').show();
-    return false;
-  }
+  
 
   $('.btn-go').on('click', function(){
     load();

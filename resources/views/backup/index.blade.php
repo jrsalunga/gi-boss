@@ -75,7 +75,7 @@
         @foreach($backups as $backup)
         <tr>
           <td title="{{ $backup->branch->descriptor }}">
-            <a href="/storage/log?search={{strtolower($backup->branch->code)}}&amp;searchFields=branch.code">
+            <a title="filter by {{ $backup->branch->descriptor }}" href="/storage/log?search={{strtolower($backup->branch->code)}}&amp;searchFields=branch.code">
             {{ $backup->branch->code }}
             </a>
           </td>

@@ -1,3 +1,33 @@
+$(window).load(function(){
+    if($('.backdrop').length) {
+      setTimeout(function() {
+        $('.backdrop').fadeOut(500);
+      }, 10);
+    }
+    if($('.loader').length) {
+      setTimeout(function() {
+        $('.loader').fadeOut(500);
+      }, 10);
+    }
+  });
+
+  var load = function(){
+    $('.backdrop').show();
+    $('.loader').show();
+    return false;
+  }
+
+
+(function($){
+    $.fn.focusTextToEnd = function(){
+        this.focus();
+        var $thisVal = this.val();
+        this.val('').val($thisVal);
+        return this;
+    }
+}(jQuery));
+
+
 var initDatePicker = function(){
 
       $('#dp-date-fr').datetimepicker({

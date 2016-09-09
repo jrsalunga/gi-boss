@@ -6,18 +6,28 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
+use App\Repositories\Criterias\LimitCriteria;
 
 class MasterfilesController extends Controller {
 
 	protected $datatables_data;
+	protected $tables = ['branch','component'];
 
 	public function __construct() {
 		
 	}
 
-	private function validateToRepository($table=null) {
+	private function isValidTable($table=null) {
 		if(is_null($table))
-			return abort('404');
+			return false;
+		$tb = strtolower($table);
+		if(in_array($table, $this->tables))
+			return $tb;
+		else
+			return false;
+	} 
+
+	private function validateToRepository($table) {
 
 		$model = 'App\\Models\\'.ucwords($table);
 
@@ -39,8 +49,8 @@ class MasterfilesController extends Controller {
 		return $this->datatables_data;
 	}
 
-	public function getIndex(Request $request, $table=null) {
-		return view('masterfiles.index');
+	public function getDatatableIndex(Request $request, $table=null) {
+		return view('masterfiles.datatable');
 	}
 
 	public function getController(Request $request, $table=null) {
@@ -54,6 +64,38 @@ class MasterfilesController extends Controller {
 		return $this->getDatatablesData();
 	}
 
+
+	public function getIndex(Request $request, $table=null) {
+
+		$table = $this->isValidTable($table);
+		if(!$table)
+			return view('masterfiles.index')->with('tables', $this->tables);
+
+		$datas = $this->getRepositoryData($request, $table);
+
+		return view('masterfiles.'.$table, compact('datas'))->with('tables', $this->tables);
+	}
+
+	private function getRepositoryData(Request $request, $table) {
+
+		$repository = $this->validateToRepository($table);
+
+		$repository->orderBy('code', 'asc');
+		//$repository->skipCache(true);
+
+		return $repository->paginate($this->getLimit($request));
+	}
+
+	private function getLimit(Request $request, $limit = 10) {
+
+		if( $request->has('limit')
+		&& filter_var($request->input('limit'), FILTER_VALIDATE_INT, ['options'=>['min_range'=>1,'max_range' => 100]]) ) 
+		{
+			return $request->input('limit');
+		} else {
+			return $limit;
+		}
+	}
 
 
 

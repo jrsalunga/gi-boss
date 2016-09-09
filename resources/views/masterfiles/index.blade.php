@@ -1,73 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel DataTables Tutorial</title>
+@extends('master')
 
-        <!-- Bootstrap CSS -->
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/select/1.2.0/css/select.dataTables.min.css">
+@section('title', ' - Masterfiles')
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-        <style>
-            body {
-                padding-top: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="table-resposive">
-            <table class="table table-bordered" id="users-table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Descriptor</th>
-                        <th>Company</th>
-                        <th>Open Date</th>
-                        <th>Close Date</th>
-                    </tr>
-                </thead>
-            </table>
-            </div>
+@section('navbar-2')
+<ul class="nav navbar-nav navbar-right"> 
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <ul class="dropdown-menu">
+    	<li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
+    </ul>
+  </li>
+</ul>
+<p class="navbar-text navbar-right">{{ $name }}</p>
+@endsection
+
+
+@section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
+<div class="container-fluid">
+	
+  <ol class="breadcrumb">
+    <li><a href="/"><span class="gly gly-shop"></span></a></li>
+    <li class="active">Masterfiles</li>
+  </ol>
+
+   <div>
+    <nav id="nav-action" class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-form">
+          <div class="btn-group" role="group">
+            <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
+              <span class="gly gly-unshare"></span>
+              <span class="hidden-xs hidden-sm">Back</span>
+            </a> 
+          </div> <!-- end btn-grp -->
+          
         </div>
+      </div>
+    </nav>
 
-        <!-- jQuery -->
-        <script src="//code.jquery.com/jquery.js"></script>
-        <!-- DataTables -->
-        <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-        <script src="//editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
-        <!-- Bootstrap JavaScript -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <!-- App scripts -->
-        <script>
-        $(function() {
-            $('#users-table').DataTable({
-                                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: '/api/m/branch',
-                columns: [
-                    { data: 'code', name: 'code' },
-                    { data: 'descriptor', name: 'descriptor' },
-                    { data: 'company.descriptor', name: 'company', orderable: true, searchable: false},
-                    { data: 'opendate', name: 'opendate' },
-                    { data: 'closedate', name: 'closedate' }
-                ],
-                select: true,
+    @include('_partials.alerts')
+  </div>
+	
+  @foreach($tables as $table)
 
-            });
-        });
-        </script>
-    </body>
-</html>
+    <a href="/masterfiles/{{ $table }}" class="btn btn-primary">{{ ucwords($table) }}</a>
+  @endforeach
+  
+    
+  
+
+
+
+</div>
+@endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section('js-external')
+  <script src="/js/vendors-common.min.js"></script>
+  <script src="/js/dr-picker.js"> </script>
+
+@endsection

@@ -234,6 +234,7 @@
                     <th>Qty</th>
                     <th class="text-right">Unit Cost</th>
                     <th class="text-right" class="text-right">Total Cost</th>
+                    <th></th>
                     <th>Supplier</th>
                     <th>Component Category</th>
                     <th>Expense</th>
@@ -255,6 +256,18 @@
                     </td>
                     <td class="text-right" data-sort="{{ number_format($purchase->ucost, 2,'.','') }}">{{ number_format($purchase->ucost,2) }}</td>
                     <td class="text-right" data-sort="{{ number_format($purchase->tcost, 2,'.','') }}">{{ number_format($purchase->tcost,2) }}</td>
+                    <td class="text-center" data-sort="{{ $purchase->terms }}">
+                      <span 
+                      @if(strtolower($purchase->terms)=='c')
+                        class="label label-success" title="Cash"
+                      @elseif(strtolower($purchase->terms)=='k')
+                        class="label label-info" title="Check"
+                      @else
+                        class="label label-default" title=""
+                      @endif
+                      
+                      style="cursor: help;"><small>{{ $purchase->terms }}</small></span>
+                    </td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small>{{ $purchase->supplier }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->compcat) }}"><small>{{ $purchase->compcat }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->expense) }}"><small>{{ $purchase->expense }}</small></td>
@@ -503,6 +516,80 @@
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
+            <!-- Expenses Category Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Payment/Terms</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-payment" data-table="#payment-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-payment-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Code</th>
+                                <th>Mode of Payment</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($payments as $payment)
+                                <tr>
+                                  <td>{{ $payment->terms }}</td>
+                                  <td>
+                                  @if($payment->terms=='C')
+                                    Cash
+                                  @elseif($payment->terms=="K")
+                                    Check
+                                  @else
+                                    -
+                                  @endif
+                                  </td>
+                                  <td class="text-right">{{ number_format($payment->tcost, 2) }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--
+                        <span class="label label-info show toggle">show more</span>
+                        -->
+                        <table id="payment-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($payments as $payment)
+                                <tr>
+                                  <td>
+                                  @if($payment->terms=='C')
+                                    Cash
+                                  @elseif($payment->terms=="K")
+                                    Check
+                                  @else
+                                    -
+                                  @endif
+                                  </td>
+                                  <td>{{ $payment->tcost}}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
             <!-- Supplier Panel -->
             <div class="panel panel-default">
               <div class="panel-heading">Supplier</div>
@@ -679,6 +766,7 @@
     var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
     var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
     var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+    var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment', 'payment-data'));
     @endif
     
 

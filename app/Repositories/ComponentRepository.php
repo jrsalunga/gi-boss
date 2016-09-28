@@ -16,19 +16,27 @@ class ComponentRepository extends BaseRepository implements CacheableInterface
 {
   use CacheableRepository;
 
+  protected $fieldSearchable = [
+    'code'=>'like',
+    'descriptor'=>'like',
+    'compcat.descriptor'=>'like',
+    'cost'=>'like',
+    'uom'=>'like',
+  ];
+
 	public function __construct() {
       parent::__construct(app());
   }
 
-  
+  public function boot(){
+    $this->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+  }
 
 	public function model() {
     return 'App\\Models\\Component';
   }
 
-  protected $fieldSearchable = [
-    'descriptor'=>'like',
-  ];
+  
 
   
 

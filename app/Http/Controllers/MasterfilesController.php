@@ -80,7 +80,8 @@ class MasterfilesController extends Controller {
 
 		$repository = $this->validateToRepository($table);
 
-		$repository->orderBy('code', 'asc');
+		$repository->orderBy('code', 'asc')
+							->orderBy('descriptor', 'asc');
 		//$repository->skipCache(true);
 
 		return $repository->paginate($this->getLimit($request));

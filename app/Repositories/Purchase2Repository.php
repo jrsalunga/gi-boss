@@ -121,6 +121,21 @@ class Purchase2Repository extends BaseRepository
   }
 
 
+  public function brPaymentByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('purchase.date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    ->leftJoin('component', 'component.id', '=', 'purchase.componentid')
+                    ->leftJoin('supplier', 'supplier.id', '=', 'purchase.supplierid')
+                    ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
+                    ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
+                    ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
+                    ->select(DB::raw('purchase.terms, sum(purchase.tcost) as tcost'))
+                    ->groupBy('purchase.terms')
+                    ->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
+    });
+  }
+
+
 
 
 

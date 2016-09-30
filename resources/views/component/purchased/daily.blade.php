@@ -762,12 +762,12 @@
 
 
   $('.btn-go').on('click', function(){
-    load();
+    loader();
   });
 
   $('.mdl-btn-go').on('click', function(){
     console.log('mdl submit');
-    load();
+    loader();
     $('#filter-form').submit();
   });
 

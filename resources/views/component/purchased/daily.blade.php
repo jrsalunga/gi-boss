@@ -57,7 +57,7 @@
               @if(empty(($filter->item)))
                 
               @else
-              <span class="label label-info" style="margin-left: 5px;">
+              <span class="label label-info" style="margin-left: 5px;" data-toggle="loader">
                 {{ $filter->item }} 
                 <a href="/component/purchases?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" title="Remove filter">
                 <span style="color:#ccc; margin-right: 5px; border-radius: .25em;">x</span>

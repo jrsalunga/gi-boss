@@ -29,6 +29,10 @@ var loader = function() {
   $('.loader').show();
 }
 
+$('[data-toggle="loader"]').on('click', function(){
+  loader();
+});
+
 
 var initDatePicker = function(){
 

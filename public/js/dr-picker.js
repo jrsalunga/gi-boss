@@ -11,10 +11,7 @@ $(window).load(function(){
     }
   });
 
-var load = function(){
-  $('.backdrop').show();
-  $('.loader').show();
-}
+
 
 
 (function($){
@@ -25,6 +22,12 @@ var load = function(){
         return this;
     }
 }(jQuery));
+
+
+var loader = function() {
+  $('.backdrop').show();
+  $('.loader').show();
+}
 
 
 var initDatePicker = function(){

@@ -86,7 +86,7 @@
             <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
             -->  
-            <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">
+            <button type="submit" data-toggle="loader" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
@@ -715,7 +715,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-right mdl-btn-go" data-dismiss="modal"><span class="gly gly-search"></span> Go </button>
+        <button type="button" class="btn btn-success pull-right mdl-btn-go" data-dismiss="modal" data-toggle="loader"><span class="gly gly-search"></span> Go </button>
         <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Discard</button>
       </div>
     </div>
@@ -744,7 +744,6 @@
       thousandsSep: ','
   }});
 
-
   $(document).ready(function(){
 
   initDatePicker();
@@ -760,16 +759,17 @@
   var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment', 'payment-data'));
   @endif
 
-
+  /*
   $('.btn-go').on('click', function(){
     loader();
   });
-
+  */
+  
   $('.mdl-btn-go').on('click', function(){
-    console.log('mdl submit');
-    loader();
+    //loader();
     $('#filter-form').submit();
   });
+  
 
   $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
     

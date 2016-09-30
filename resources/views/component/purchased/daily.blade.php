@@ -733,16 +733,7 @@
   
   
 
-  $('.btn-go').on('click', function(){
-    load();
-  });
 
-  $('.mdl-btn-go').on('click', function(){
-    load();
-    $('#filter-form').submit();
-  });
-
-  $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
     
   moment.locale('en', { week : {
     dow : 1 // Monday is the first day of the week.
@@ -756,18 +747,31 @@
 
   $(document).ready(function(){
 
-    initDatePicker();
-    branchSelector();
-    mdlBranchSelector();
+  initDatePicker();
+  branchSelector();
+  mdlBranchSelector();
 
-    @if(!is_null($purchases))
-    var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
-    var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
-    var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
-    var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
-    var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
-    var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment', 'payment-data'));
-    @endif
+  @if(!is_null($purchases))
+  var componentChart = new Highcharts.Chart(getOptions('graph-pie-component', 'component-data'));
+  var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat', 'compcat-data'));
+  var expensetChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
+  var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
+  var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+  var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment', 'payment-data'));
+  @endif
+
+
+  $('.btn-go').on('click', function(){
+    load();
+  });
+
+  $('.mdl-btn-go').on('click', function(){
+    console.log('mdl submit');
+    load();
+    $('#filter-form').submit();
+  });
+
+  $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
     
 
     $('.show.toggle').on('click', function(){

@@ -11,11 +11,10 @@ $(window).load(function(){
     }
   });
 
-  var load = function(){
-    $('.backdrop').show();
-    $('.loader').show();
-    return false;
-  }
+var load = function(){
+  $('.backdrop').show();
+  $('.loader').show();
+}
 
 
 (function($){

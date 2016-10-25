@@ -86,7 +86,7 @@ class SettingsController extends Controller {
 		
 		event(new UserChangePassword($request));
 
-		return redirect('/settings/password')->with('alert-success', 'Password change!');
+		return redirect('/settings/password')->with('alert-success', 'Password changed!');
 		return view('settings.password');	
 	}
 

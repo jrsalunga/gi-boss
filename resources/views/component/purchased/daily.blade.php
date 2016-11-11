@@ -180,6 +180,7 @@
 </div>
       <?php
         $totpurchcost = 0;
+        $totqty = 0;
       ?>
     	@if(is_null($purchases))
 
@@ -285,9 +286,38 @@
                   </tr>
                   <?php
                     $totpurchcost += $purchase->tcost;
+                    $totqty += $purchase->qty;
                   ?>
                   @endforeach
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td title="Total Quantity">
+                      @if($_GET['table']==='component')
+                        <strong>{{ number_format($totqty, 2,'.','')+0 }}</strong>
+                        <small class="text-muted">
+                        {{ strtolower($purchase->uom)}}@if($totqty>1 && substr(strtolower($purchase->uom), -1)!='s')s
+                        @endif
+                      </small>
+                      @endif
+                    </td>
+                    <td class="text-right" title="Average Unit Cost">
+                      @if($_GET['table']==='component' && $totqty>0)
+                        <strong>{{ number_format($totpurchcost/$totqty, 2) }}</strong>
+                      @endif
+                    </td>
+                    <td class="text-right" title="Total Purchased Cost">
+                      <strong>{{ number_format($totpurchcost, 2) }}</strong>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </tfoot>
               </table>
             </div> <!-- end: .table-responsive -->
           </div>

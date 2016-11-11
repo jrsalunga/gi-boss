@@ -60,6 +60,8 @@ class Purchase2Controller extends Controller {
 
 	public function getDaily(Request $request) {
 
+    //return $request->all();
+
 		$where = [];
 		$fields = ['component', 'supplier', 'expense', 'expscat', 'compcat'];
 		

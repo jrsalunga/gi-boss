@@ -96,7 +96,7 @@ class BranchController extends Controller
 
 	public function getComparative(Request $request) {
 
-		$branches = $this->repository->all(['code', 'descriptor', 'mancost', 'id']);
+		$branches = $this->repository->skipCache()->all(['code', 'descriptor', 'mancost', 'id']);
 
 		return $this->setViewWithDR(view('status.comparative')
 								->with('branches', $branches)); 
@@ -225,6 +225,7 @@ class BranchController extends Controller
 					$data['tips']				= 0;
 					$data['tipspct']		= 0;
 					$data['salesemp']		= 0;
+					$data['purchcost']		= 0;
 				} else {
 					$data['sales'] 		= (float) $ds->sales;
 					$data['mancost'] 	= (float) number_format($ds->empcount*$b->mancost,2,'.','');
@@ -232,6 +233,7 @@ class BranchController extends Controller
 					$data['tips']	=	(float) $ds->tips;
 					$data['tipspct']	= (float) $ds->tipspct;
 					$data['salesemp'] = $ds->empcount=='0' ? (float) '0.00':(float) number_format(($ds->sales/$ds->empcount),2,'.','');
+					$data['purchcost']	= (float) $ds->purchcost;
 				}
 
 				array_push($arr[$b->code], $data);

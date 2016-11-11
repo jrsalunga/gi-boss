@@ -84,6 +84,9 @@
               <label class="btn btn-default stat">
                 <input type="radio" name="options" id="option4" autocomplete="off">Sales per Emp
               </label>
+              <label class="btn btn-default stat">
+                <input type="radio" name="options" id="option5" autocomplete="off">Purchased
+              </label>
             </div>
           </div>
         </div>
@@ -214,6 +217,8 @@
           return generateSeries2(ds,'tipspct','tips');
       } else if(data.stat === 4) {
           return generateSeries(ds,'salesemp');
+      } else if(data.stat === 5) {
+          return generateSeries(ds,'purchcost');
       } else {
           return generateSeries(ds,'sales');
       }
@@ -457,6 +462,8 @@
         return 3;
       else if ($('#option4').prop('checked') == true)
         return 4;
+      else if ($('#option5').prop('checked') == true)
+        return 5;
       else 
         return 1;
     }

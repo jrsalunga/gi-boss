@@ -116,7 +116,6 @@
             </a>
             -->
             </div><!-- end btn-grp -->
-            <div class="btn-group clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
                 <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color:#999;">
@@ -132,8 +131,7 @@
                   <li><a href="#" data-date-type="yearly">Yearly</a></li>
                 </ul>
               </div>
-            </div>
-          </div>
+            </div><!-- end btn-grp -->
           </div>
           <div class="col-sm-4">
             <div class="visible-xs">&nbsp;</div>

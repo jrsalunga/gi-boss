@@ -335,6 +335,7 @@
                   <div class="col-xs-12 col-md-7 col-md-pull-5">
                     <div class="row">
                       <div class="table-responsive">
+                        <span class="label label-info show toggle">show more</span>
                         <div class="show less">
                           <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
                             <thead>
@@ -355,7 +356,6 @@
                             </tbody>
                           </table>
                         </div>
-                        <span class="label label-info show toggle">show more</span>
                         <table id="component-data" style="display:none;">
                             <thead>
                               <tr>

@@ -295,7 +295,7 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td title="Total Quantity">
-                      @if($_GET['table']==='component')
+                      @if(isset($_GET['table']) && $_GET['table']==='component' && count($purchases)>0)
                         <strong>{{ number_format($totqty, 2,'.','')+0 }}</strong>
                         <small class="text-muted">
                         {{ strtolower($purchase->uom)}}@if($totqty>1 && substr(strtolower($purchase->uom), -1)!='s')s
@@ -304,7 +304,7 @@
                       @endif
                     </td>
                     <td class="text-right" title="Average Unit Cost">
-                      @if($_GET['table']==='component' && $totqty>0)
+                      @if(isset($_GET['table']) && $_GET['table']==='component' && $totqty>0 && count($purchases)>0)
                         <strong>{{ number_format($totpurchcost/$totqty, 2) }}</strong>
                       @endif
                     </td>
@@ -888,8 +888,23 @@
       	noResults: '',
       	results: function() {}
     	}
+    }).on('blur', function(e){
+      if ($(this).val().length==0) {
+        $( this ).removeClass("ui-corner-all").addClass("ui-corner-top");
+        $("#table").val(''); /* set the selected id */
+        $("#item").val(''); /* set the selected id */
+        $("#itemid").val(''); /* set the selected id */
+      }
+
+      //setTimeout(submitForm, 1000);
     });
 
+
+    var submitForm  = function(){
+      console.log('submit Form');
+      $('#filter-form').submit();
+    }
+ 
   });
 
   </script>

@@ -185,7 +185,7 @@
     }).on('dp.change', function(e){
       var date = e.date.format('YYYY-MM-DD');
       @if(!is_null(($branch)))
-      document.location.href = '/backup/checklist?branchid={{$branch->lid()}}&amp;date='+e.date.format('YYYY-MM-DD');
+      document.location.href = '/backup/checklist?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
       @endif
 
       $('#date').val(date);

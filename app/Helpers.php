@@ -186,3 +186,13 @@ function logAction($action, $log, $logfile=NULL) {
   fclose($handle);
 }	
 
+
+
+if (!function_exists('c')) {
+	function c($datetime=null) {
+		return is_null($datetime) 
+		? Carbon\Carbon::now()
+		: Carbon\Carbon::parse($datetime);
+	}
+}
+

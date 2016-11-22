@@ -22,6 +22,7 @@ Route::post('/settings/password',  ['uses'=>'SettingsController@changePassword']
 Route::post('/settings/bossbranch',  ['uses'=>'SettingsController@assignBranch']);
 
 Route::get('/backup',  ['uses'=>'BackupController@index']);
+Route::get('backup/checklist', ['uses'=>'BackupController@getChecklist']);
 Route::get('/storage/log',  ['uses'=>'BackupController@getHistory']);
 Route::get('/backup/delinquent',  ['uses'=>'BackupController@getDelinquent']);
 Route::get('/show/delinquent',  ['uses'=>'BackupController@delinquent']);

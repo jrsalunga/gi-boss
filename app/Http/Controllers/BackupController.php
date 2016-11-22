@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException as Http404;
 use App\Repositories\BranchRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Container\Container as App;
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 
 
 
@@ -190,5 +191,48 @@ class BackupController extends Controller
   	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
 	  return $response;
+  }
+
+
+
+
+
+  public function getChecklist(Request $request) {
+
+  	$bb = $this->branch
+  						->orderBy('code')
+  						->getByCriteria(new ActiveBranch)
+  						->all(['code', 'descriptor', 'id']);
+
+  	$date = carbonCheckorNow($request->input('date'));
+
+  	if(!$request->has('branchid') && !isset($_GET['branchid'])) {
+      return view('backup.checklist')
+  					->with('date', $date)
+  					->with('branches', $bb)
+  					->with('branch', null)
+  					->with('backups', null);
+    } 
+    
+    if(!is_uuid($request->input('branchid'))
+    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    {
+      return redirect('/backup/checklist')->with('alert-warning', 'Please select a branch.');
+    } 
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return redirect('/backup/checklist')->with('alert-warning', 'Please select a branch.');
+    }
+
+  	$backups = $this->repository->monthlyLogs($date, $branch);
+  	
+  	return view('backup.checklist')
+  					->with('date', $date)
+  					->with('branches', $bb)
+  					->with('branch', $branch)
+  					->with('backups', $backups);
+
   }
 }

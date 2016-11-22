@@ -60,26 +60,35 @@ class Purchase2Controller extends Controller {
 
 	public function getDaily(Request $request) {
 
-    //return $request->all();
 
 		$where = [];
 		$fields = ['component', 'supplier', 'expense', 'expscat', 'compcat'];
 		
 		$filter = new StdClass;
-		if($request->has('itemid') && $request->has('table')) {
+		if($request->has('itemid') && $request->has('table') && $request->has('item')) {
 			
 			$id = strtolower($request->input('itemid'));
 			$table = strtolower($request->input('table'));
-			$item = $request->input('item');
-			
-			if(is_uuid($id) && in_array($table, $fields))
-				$where[$table.'.id'] = $id;
-      else if($table==='payment')
-        $where['purchase.terms'] = $id;
 
-			$filter->table = $table;
-			$filter->id = $id;
-			$filter->item = $item;
+      $c = '\App\Models\\'.ucfirst($table);
+      $i = $c::find($id);
+
+      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
+        $item = $request->input('item');
+      
+        if(is_uuid($id) && in_array($table, $fields))
+          $where[$table.'.id'] = $id;
+        else if($table==='payment')
+          $where['purchase.terms'] = $id;
+
+        $filter->table = $table;
+        $filter->id = $id;
+        $filter->item = $item;
+      } else {
+        $filter->table = '';
+        $filter->id = '';
+        $filter->item = '';
+      }
 		} else {
 			$filter->table = '';
 			$filter->id = '';

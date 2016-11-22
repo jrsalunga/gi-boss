@@ -127,9 +127,13 @@
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs">Filing System</span>
             </a> 
+            <a href="/backup/checklist" class="btn btn-default btn-sm">
+              <span class="fa fa-calendar-check-o"></span> 
+              <span class="hidden-xs">Backup Checklist</span>
+            </a>
             <a href="/storage/log" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs">View All Logs</span>
+              <span class="hidden-xs">All Logs</span>
             </a>
             <!--
             <a href="/backup/delinquent" class="btn btn-default">

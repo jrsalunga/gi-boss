@@ -66,6 +66,8 @@
                 <option value="{{ $b->id }}" title="{{ $b->code }}"> {{ $b->code }} - {{ $b->descriptor }} </option>
                 @endforeach
             </select>
+            <input type="hidden" id="fr" value="">
+            <input type="hidden" id="to" value="">
           </div>
         </div>
         <div class="form-group">
@@ -101,14 +103,12 @@
             -->
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
-              <input type="hidden" id="fr" value="{{ $dr->fr->format('Y-m-d') }}">
             </label>
             <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
             <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
-              <input type="hidden" id="to" value="{{ $dr->to->format('Y-m-d') }}">
             </label>
             <!--
             <a href="/" class="btn btn-default" title="">
@@ -171,6 +171,28 @@
     lang: {
       thousandsSep: ','
   }});
+
+
+function getWeekNumber(d) {
+  // Copy date so don't modify original
+  d = new Date(+d);
+  d.setHours(0,0,0);
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  // Get first day of year
+  var yearStart = new Date(d.getFullYear(),0,1);
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7)
+  // Return array of year and week number
+  return [d.getFullYear(), weekNo];
+}
+
+function weeksInYear(year) {
+  var d = new Date(year, 11, 31);
+  var week = getWeekNumber(d)[1];
+  return week == 1? getWeekNumber(d.setDate(24))[1] : week;
+}
     
 
     $(document).ready(function(){
@@ -192,7 +214,6 @@
           $('#btn-go').prop('disabled', false);
       });
 
-
       $('#dp-date-to').datetimepicker({
         defaultDate: "{{ $dr->to->format('Y-m-d') }}",
         format: 'MM/DD/YYYY',
@@ -212,6 +233,14 @@
 
 
     });
+
+    var date = {};
+    date.fr = moment().startOf('month');
+    date.to = moment().endOf('day');
+    $('#fr').val(date.fr.format('YYYY-MM-DD'));
+    $('#to').val(date.to.format('YYYY-MM-DD'));
+    console.log(date.fr.format('YYYY-MM-DD'));
+    console.log(date.to.format('YYYY-MM-DD'));
 
     var data = {};
     var dataset = {}
@@ -510,149 +539,174 @@
       var formData = a;
       console.log(formData);
       return $.ajax({
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded',
-            url: '/api/json/comparative',
-            data: formData,
-            //async: false,
-            success: function(d, textStatus, jqXHR){
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        url: '/api/json/comparative',
+        data: formData,
+        //async: false,
+        success: function(d, textStatus, jqXHR){
 
-            },
-            error: function(jqXHR, textStatus, errorThrown){
-              alert('Failed on redering graph. Try refreshing your browser.');
-            }
-        }); 
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          alert('Failed on redering graph. Try refreshing your browser.');
+        }
+      }); 
     }
 
 
 
     $('.date-type-selector .dropdown-menu li a').on('click', function(e){
-      
-        e.preventDefault();
+      e.preventDefault();
 
+      var type = $(this).data('date-type');
+      $('#date-type-name').text($(this)[0].text);
+      console.log(type);
+      data.mode = type;
+      date.fr = moment().startOf('month');
+      date.to = moment().endOf('day');
+      console.log('fr: '+date.fr.format('YYYY-MM-DD'));
+      console.log('to: '+date.to.format('YYYY-MM-DD'));
+      if($('#fr').val()!=date.fr.format('YYYY-MM-DD'));
+        $('#fr').val(date.fr.format('YYYY-MM-DD'));
+      if($('#to').val()!=date.to.format('YYYY-MM-DD'));
+        $('#to').val(date.to.format('YYYY-MM-DD'));
+      $('.dp-container').html(getDatePickerLayout(type, date.fr, date.to));
+      initDatePicker();
 
+      //if(data.branches=='undefined' || data.branches==null)
+      //  return false;
 
-        var type = $(this).data('date-type');
-        $('#date-type-name').text($(this)[0].text);
-        console.log(type);
-        data.mode = type;
-        $('.dp-container').html(getDatePickerLayout(type));
-        initDatePicker();
-      });
+      $('#btn-go').prop('disabled', false);
+    });
 
-      var getDatePickerLayout = function(type) {
-        //console.log(type);
-        var html = '';
-        switch (type) {
-          case 'weekly':
-            html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-                @for($y=2015;$y<2021;$y++)
-                  +'<option value="{{$y}}" {{ $dr->fr->copy()->startOfWeek()->year==$y?'selected':'' }}>{{$y}}</option>'
-                @endfor
-              +' </select>'
-              +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-                @for($x=1;$x<=lastWeekOfYear($dr->fr->copy()->startOfWeek()->year);$x++)
-                +'<option value="{{$x}}" {{ $dr->fr->copy()->startOfWeek()->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-                @endfor
-              +'</select>'
-              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-              +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">'
-                @for($y=2015;$y<2021;$y++)
-                  +'<option value="{{$y}}" {{ $dr->to->copy()->endOfWeek()->year==$y?'selected':'' }}>{{$y}}</option>'
-                @endfor
-              +'</select>'
-              +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">'
-                @for($x=1;$x<=lastWeekOfYear($dr->to->copy()->endOfWeek()->year);$x++)
-                  +'<option value="{{$x}}" {{ $dr->to->copy()->endOfWeek()->weekOfYear==$x?'selected':'' }}>{{$x}}</option>'
-                @endfor
-              +'</select>';
-              $('#dp-form').prop('action', '/status/branch/week');
-            break;
-          case 'monthly':
-            html = '<label class="btn btn-default" for="dp-m-date-fr">'
-              +'<span class="glyphicon glyphicon-calendar"></span>'
-              +'</label>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">'
-              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">'
-              +'<label class="btn btn-default" for="dp-m-date-to">'
-              +'<span class="glyphicon glyphicon-calendar"></span>'
-              +'</label>';
-              $('#dp-form').prop('action', '/status/branch/month');
-            break;
-          case 'quarterly':
-            html = '<select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->fr->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select id="fr-q" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=0;$x<4;$x++)
-              +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->fr->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
-              @endfor
-            +'</select>'
+    var getDatePickerLayout = function(type, fr, to) {
+      //console.log(type);
+      console.log('fr: '+fr.format('YYYY-MM-DD'));
+      console.log('to: '+to.format('YYYY-MM-DD'));
+      var html = '';
+      switch (type) {
+        case 'weekly':
+          html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">';
+              for(var y=2015;y<2021;y++)
+                if(y==fr.startOf('week').year())
+                  html += '<option value="'+y+'" selected>'+y+'</option>';
+                else
+                  html += '<option value="'+y+'">'+y+'</option>';
+          html +=' </select>'
+            +'<select id="fr-week" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 0px 6px 12px">';
+              for(var x=1; x<=weeksInYear(fr.isoWeek()); x++)
+                if(x==fr.isoWeek())
+                  html += '<option value="'+x+'" selected>'+x+'</option>';
+                else
+                  html += '<option value="'+x+'">'+x+'</option>';
+          html += '</select>'
             +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-            +'<select id="to-y" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 3px 6px 12px">'
-              @for($y=2015;$y<2021;$y++)
-                +'<option value="{{$y}}" {{ $dr->to->year==$y?'selected':'' }}>{{$y}}</option>'
-              @endfor
-            +'</select>'
-            +'<select id="to-q" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
-              @for($x=0;$x<4;$x++)
-                +'<option value="{{pad(($x*3)+1)}}-01" {{ $dr->to->quarter==$x+1?'selected':'' }}>{{$x+1}}</option>'
-              @endfor
-            +'</select>';
-              $('#dp-form').prop('action', '/status/branch/quarter');
-            break;
-          case 'yearly':
-            html = '<label class="btn btn-default" for="dp-y-date-fr">'
-              +'<span class="glyphicon glyphicon-calendar"></span></label>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
-              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
-              +'<label class="btn btn-default" for="dp-y-date-to">'
-              +'<span class="glyphicon glyphicon-calendar"></span>'
-              +'</label>';
-            $('#dp-form').prop('action', '/status/branch/year');
-            break;
-          default:
-            html = '<label class="btn btn-default" for="dp-date-fr">'
-              +'<span class="glyphicon glyphicon-calendar"></span>'
-              +'</label>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">'
-              +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
-              +'<input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">'
-              +'<label class="btn btn-default" for="dp-date-to">'
-              +'<span class="glyphicon glyphicon-calendar"></span>'
-              +'</label>';
-            $('#dp-form').prop('action', '/status/branch');
-        }
-
-        return html;
+            +'<select id="to-year" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 3px 6px 12px">';
+              for(var y=2015; y<2021; y++)
+                if(y==to.endOf('week').year())
+                  html += '<option value="'+y+'" selected>'+y+'</option>';
+                else
+                  html += '<option value="'+y+'">'+y+'</option>';
+          html += '</select>'
+            +'<select id="to-week" class="btn btn-default dp-w-to" style="height:34px; padding: 6px 0px 6px 12px">';
+              for(var x=1; x<=weeksInYear(to.isoWeek()); x++)
+                if(x==to.isoWeek())
+                  html += '<option value="'+x+'" selected>'+x+'</option>';
+                else
+                  html += '<option value="'+x+'">'+x+'</option>';
+          html +='</select>';
+          break;
+        case 'monthly':
+          html = '<label class="btn btn-default" for="dp-m-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="'+fr.format('MM/YYYY')+'" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="'+to.format('MM/YYYY')+'" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-m-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
+          break;
+        case 'quarterly':
+          html = '<select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">';
+              for(var y=2015;y<2021;y++)
+                if(y==fr.startOf('quarter').year())
+                  html += '<option value="'+y+'" selected>'+y+'</option>';
+                else
+                  html += '<option value="'+y+'">'+y+'</option>';
+          html +=' </select>'
+          +'<select id="fr-q" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 0px 6px 12px">';
+            for(var x=0; x<4; x++)
+              if((x+1)==fr.quarter())
+                html += '<option value="'+ ('00'+((x*3)+1)).slice(-2) +'-01" selected>'+ (x+1) +'</option>';
+              else
+                html += '<option value="'+ ('00'+((x*3)+1)).slice(-2) +'-01">'+ (x+1) +'</option>';
+          html +='</select>'
+          +'<div class="btn btn-default" style="pointer-events: none;">-</div>';
+          html += '<select id="to-y" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 3px 6px 12px">';
+            for(var y=2015;y<2021;y++)
+              if(y==to.endOf('quarter').year())
+                html += '<option value="'+y+'" selected>'+y+'</option>';
+              else
+                html += '<option value="'+y+'">'+y+'</option>';
+          html +=' </select>'
+          +'<select id="to-q" class="btn btn-default dp-q-to" style="height:34px; padding: 6px 0px 6px 12px">'
+           for(var x=0; x<4; x++)
+              if((x+1)==to.quarter())
+                html += '<option value="'+ ('00'+((x*3)+1)).slice(-2) +'-01" selected>'+ (x+1) +'</option>';
+              else
+                html += '<option value="'+ ('00'+((x*3)+1)).slice(-2) +'-01">'+ (x+1) +'</option>';
+          html +='</select>';
+          break;
+        case 'yearly':
+          html = '<label class="btn btn-default" for="dp-y-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span></label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-y-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
+          break;
+        default:
+          html = '<label class="btn btn-default" for="dp-date-fr">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">'
+            +'<div class="btn btn-default" style="pointer-events: none;">-</div>'
+            +'<input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">'
+            +'<label class="btn btn-default" for="dp-date-to">'
+            +'<span class="glyphicon glyphicon-calendar"></span>'
+            +'</label>';
       }
 
-      var initDatePicker = function(){
+      return html;
+    }
+
+
+    var initDatePicker = function(){
 
       $('#dp-date-fr').datetimepicker({
-        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        defaultDate: date.fr,
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         ignoreReadonly: true,
         //calendarWeeks: true,
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
+        var odate = e.oldDate.format('YYYY-MM-DD');
         console.log(date);
         $('#dp-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
-        if($('#fr').data('fr')==date)
-          $('.btn-go').prop('disabled', true);
+        if(odate==date)
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
-
+        
       $('#dp-date-to').datetimepicker({
-       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        defaultDate: date.to,
         format: 'MM/DD/YYYY',
         showTodayButton: true,
         useCurrent: false,
@@ -660,16 +714,19 @@
         //calendarWeeks: true,
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
+        var odate = e.oldDate.format('YYYY-MM-DD');
+        console.log(date);
         $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
-        if($('#to').data('to')==date)
-          $('.btn-go').prop('disabled', true);
+        if(odate==date)
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
+
       $('#dp-m-date-fr').datetimepicker({
-        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        defaultDate: date.fr,
         format: 'MM/YYYY',
         showTodayButton: true,
         ignoreReadonly: true,
@@ -680,14 +737,13 @@
         $('#dp-m-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)
-          $('.btn-go').prop('disabled', true);
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
-
       $('#dp-m-date-to').datetimepicker({
-       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        defaultDate: date.to,
         format: 'MM/YYYY',
         showTodayButton: true,
         useCurrent: false,
@@ -695,16 +751,18 @@
         viewMode: 'months'
       }).on('dp.change', function(e){
         var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
         $('#dp-m-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
         if($('#to').data('to')==date)
-          $('.btn-go').prop('disabled', true);
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
 
       $('#dp-y-date-fr').datetimepicker({
+        defaultDate: date.fr,
         format: 'YYYY',
         showTodayButton: true,
         ignoreReadonly: true,
@@ -715,13 +773,13 @@
         $('#dp-y-date-to').data("DateTimePicker").minDate(e.date);
         $('#fr').val(date);
         if($('#fr').data('fr')==date)
-          $('.btn-go').prop('disabled', true);
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
-
       $('#dp-y-date-to').datetimepicker({
+        defaultDate: date.to,
         format: 'YYYY',
         showTodayButton: true,
         useCurrent: false,
@@ -733,9 +791,9 @@
         $('#dp-y-date-fr').data("DateTimePicker").maxDate(e.date);
         $('#to').val(date);
         if($('#to').data('to')==date)
-          $('.btn-go').prop('disabled', true);
+          $('#btn-go').prop('disabled', true);
         else
-          $('.btn-go').prop('disabled', false);
+          $('#btn-go').prop('disabled', false);
       });
 
 
@@ -785,10 +843,8 @@
 
         var day = moment($('.dp-w-fr')[0].value+'-08-27').startOf('week').isoWeek($('.dp-w-fr')[1].value);
         console.log(day.format('YYYY-MM-DD'));
-
         $('#fr').val(day.format('YYYY-MM-DD'));
-        //console.log(moment().startOf('week').week($('.dp-w-fr')[1].value));
-        //console.log(moment($('.dp-w-fr')[0].value+'W0'+$('.dp-w-fr')[1].value+'1'));
+        $('#btn-go').prop('disabled', false);
       });
 
 
@@ -799,7 +855,7 @@
         var day = moment($('.dp-w-to')[0].value+'-08-27').startOf('week').isoWeek($('.dp-w-to')[1].value);
         console.log(day.add(6, 'days').format('YYYY-MM-DD'));
         $('#to').val(day.format('YYYY-MM-DD'));
-        
+        $('#btn-go').prop('disabled', false);
       });
 
 
@@ -808,16 +864,23 @@
         var day = moment($('.dp-q-fr')[0].value+'-'+$('.dp-q-fr')[1].value);
         console.log(day.format('YYYY-MM-DD'));
         $('#fr').val(day.format('YYYY-MM-DD'));
+        $('#btn-go').prop('disabled', false);
       });
 
       $('.dp-q-to').on('change', function(e){
         var day = moment($('.dp-q-to')[0].value+'-'+$('.dp-q-to')[1].value);
         console.log(day.format('YYYY-MM-DD'));
         $('#to').val(day.format('YYYY-MM-DD'));
+        $('#btn-go').prop('disabled', false);
       });
       /***** end:quarter *****/
 
+      
+
     } /* end inidDatePicker */
+
+
+    
 
     
 

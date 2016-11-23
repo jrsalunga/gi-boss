@@ -118,7 +118,7 @@
         @foreach($backups as $key => $b)
          <?php
           $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d')
-            ?'class="bg-success"'
+            ?'class=bg-success'
             :'';
         ?> 
         <tr>

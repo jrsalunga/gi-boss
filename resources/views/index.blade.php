@@ -133,7 +133,7 @@
             </a>
             <a href="/storage/log" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs">All Logs</span>
+              <span class="hidden-xs">Backup Logs</span>
             </a>
             <!--
             <a href="/backup/delinquent" class="btn btn-default">

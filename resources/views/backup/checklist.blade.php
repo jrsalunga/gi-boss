@@ -116,8 +116,8 @@
       </thead>
       <tbody>
         @foreach($backups as $key => $b) 
-        <tr <?=c()->format('Y-m-d')==$b['date']->format('Y-m-d')?'class="bg-success"':""?>>
-        <td>{{ $b['date']->format('M j, D') }}</td>
+        <tr>
+        <td <?=c()->format('Y-m-d')==$b['date']->format('Y-m-d')?'class="bg-success"':""?>>{{ $b['date']->format('M j, D') }}</td>
           @if(is_null($b['backup']))
             <td>-</td>
             <td>-</td>

@@ -508,7 +508,7 @@ function weeksInYear(year) {
         setDates();
         assignBranch(data).success(function(dt, textStatus, jqXHR) {
           dataset.data = dt;
-          console.log(dt);
+          //console.log(dt);
           var l = loadData(dt);
           render(l);
         });

@@ -116,7 +116,7 @@
       </thead>
       <tbody>
         @foreach($backups as $key => $b)
-         <?php
+        <?php
           $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d')
             ?'class=bg-success'
             :'';

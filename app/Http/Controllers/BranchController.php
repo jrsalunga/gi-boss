@@ -189,7 +189,7 @@ class BranchController extends Controller
 
 		$branches = $this->repository->findWhereIn('id', $request->input('branches'), ['code', 'descriptor', 'mancost', 'id']);
 
-		$dss = $this->ds->with(['branch'=>function($query){
+		$dss = $this->ds->skipCache()->with(['branch'=>function($query){
 						$query->select(['code', 'descriptor', 'mancost', 'id']);
 					}])
 					->scopeQuery(function($query) use ($request) {

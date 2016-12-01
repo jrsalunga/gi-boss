@@ -73,7 +73,7 @@ class BackupController extends Controller
 	   	 return $query->orderBy('uploaddate','desc');
 			})->all();
 		*/
-		$backups = $this->repository->scopeQuery(function($query){
+		$backups = $this->repository->skipCache()->scopeQuery(function($query){
 	   	return $query->orderBy('uploaddate','desc');
 			})->paginate(10, $columns = ['*']);
 		return view('backup.index')->with('backups', $backups);

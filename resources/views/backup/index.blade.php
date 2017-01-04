@@ -57,7 +57,7 @@
 
     @include('_partials.alerts')
 
-    
+    <div class="table-responsive">
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -67,8 +67,8 @@
           <th>Uploaded</th>
           <th>Cashier</th>
           <th>Processed</th>
-          <th class="hidden-xs hidden-sm">Remarks</th>
-          <th class="hidden-xs hidden-sm">IP Address</th>
+          <th>Remarks</th>
+          <th>IP Address</th>
         </tr>
       </thead>
       <tbody>
@@ -106,12 +106,16 @@
           <td>{{ $backup->cashier }} </td>
           <td class="text-center"><span class="glyphicon glyphicon-{{ $backup->processed == '1' ? 'ok':'remove' }}"></span></td>
           <?php  $x = explode(':', $backup->remarks) ?>
-          <td class="hidden-xs hidden-sm">{{ $backup->remarks }} </td>
-          <td class="hidden-xs hidden-sm">
+          <td>{{ $backup->remarks }} </td>
+          <td>
               {{ $backup->terminal }}
 
               @if($backup->lat == '1')
                 <span class="gly gly-certificate"></span>
+              @endif
+
+              @if($backup->long == '1')
+                <span class="gly gly-address-book"></span>
               @endif
             <!-- 
             <a href="https://www.google.com/maps/search/{{$backup->lat}},{{$backup->long}}/{{urldecode('%40')}}{{$backup->lat}},{{$backup->long}},18z" target="_blank">
@@ -122,6 +126,7 @@
         @endforeach
       </tbody>
     </table>  
+    </div>
     {!! $backups->render() !!}     
   </div>
 </div><!-- end container-fluid -->

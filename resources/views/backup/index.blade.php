@@ -62,7 +62,7 @@
       <thead>
         <tr>
           <th>Br Code</th>
-          <th class="hidden-xs hidden-sm"></th>
+          <th></th>
           <th>Filename</th>
           <th>Uploaded</th>
           <th>Cashier</th>
@@ -79,9 +79,9 @@
             {{ $backup->branch->code }}
             </a>
           </td>
-          <td class="hidden-xs hidden-sm">
+          <td>
             @if($backup->processed == '1')
-            <a href="/download/{{$backup->branch->code}}/{{$backup->year}}/{{$backup->month}}/{{$backup->filename}}" target="_blank">
+            <a href="/download/{{$backup->branch->code}}/{{$backup->year}}/{{pad($backup->month)}}/{{$backup->filename}}" target="_blank">
               <span class="glyphicon glyphicon-download-alt"></span>
             </a>
             @endif

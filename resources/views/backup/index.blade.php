@@ -80,7 +80,7 @@
             </a>
           </td>
           <td>
-            @if($backup->lat == '1' && $backup->processed == '1')
+            @if($backup->long != '1' && $backup->processed == '1')
             <a href="/download/{{$backup->branch->code}}/{{$backup->year}}/{{pad($backup->month)}}/{{$backup->filename}}" target="_blank">
               <span class="glyphicon glyphicon-download-alt"></span>
             </a>

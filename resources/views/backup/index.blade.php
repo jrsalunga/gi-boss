@@ -109,6 +109,10 @@
           <td class="hidden-xs hidden-sm">{{ $backup->remarks }} </td>
           <td class="hidden-xs hidden-sm">
               {{ $backup->terminal }}
+
+              @if($backup->lat == '1')
+                <span class="gly gly-certificate"></span>
+              @endif
             <!-- 
             <a href="https://www.google.com/maps/search/{{$backup->lat}},{{$backup->long}}/{{urldecode('%40')}}{{$backup->lat}},{{$backup->long}},18z" target="_blank">
             </a>

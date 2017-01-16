@@ -88,6 +88,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
     var channel = {};
     channel.cashier = pusher.subscribe('gi.cashier');
     channel.backup = pusher.subscribe('gi.backup');
+    channel.upload = pusher.subscribe('gi.upload');
 
     var notify = function(data) {
 
@@ -118,6 +119,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
     channel.cashier.bind('auth', notify);
     channel.cashier.bind('App\\Events\\UserLoggedIn', notify);
     channel.backup.bind('App\\Events\\Backup\\ProcessSuccess', notify);
+    channel.upload.bind('App\\Events\\Upload\\Depslp', notify);
   </script>
 </body>
 </html>

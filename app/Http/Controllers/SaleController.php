@@ -8,6 +8,7 @@ use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
 use App\Repositories\SalesmtdRepository as SalesmtdRepo;
 use App\Repositories\BossBranchRepository as BBRepo;
+use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\BranchRepository;
 
@@ -16,12 +17,14 @@ class SaleController extends Controller {
 
 	protected $sale;
   protected $dr;
+  protected $ds;
   protected $bb;
 
-  public function __construct(SalesmtdRepo $sale, BBRepo $bbrepo, DateRange $dr) {
+  public function __construct(SalesmtdRepo $sale, BBRepo $bbrepo, DateRange $dr, DSRepo $ds) {
     $this->sale = $sale;
     $this->dr = $dr;
     $this->bb = $bbrepo;
+    $this->ds = $ds;
     $this->bb->pushCriteria(new BossBranchCriteria);
     $this->branch = new BranchRepository;
   }
@@ -94,26 +97,49 @@ class SaleController extends Controller {
     $where['salesmtd.branch_id'] = $branch->id;
 
     $sales = $this->sale
-                ->skipCache()
+                //->skipCache()
                 ->byDateRange($this->dr)
                 ->findWhere($where);
 
+    $ds = $this->ds
+          //->skipCache()
+          ->sumByDateRange($this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d'))
+          ->findWhere(['branchid'=>$branch->id])->all();
+    
+    $products = $this->sale
+          ->skipCache()
+          ->brProductByDR($this->dr)
+          ->findWhere($where);
 
+    $prodcats = $this->sale
+          ->skipCache()
+          ->brProdcatByDR($this->dr)
+          ->findWhere($where);
 
+    $menucats = $this->sale
+          ->skipCache()
+          ->brMenucatByDR($this->dr)
+          ->findWhere($where);
+
+   
     
 
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats);
   }
 
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null) {
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
                 ->with('branches', $branches)
                 ->with('filter', $filter)
-                ->with('sales', $sales));
+                ->with('sales', $sales)
+                ->with('ds', $ds)
+                ->with('products', $products)
+                ->with('prodcats', $prodcats)
+                ->with('menucats', $menucats));
   }
 
 

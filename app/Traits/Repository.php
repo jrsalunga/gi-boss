@@ -2,17 +2,30 @@
 
 trait Repository {
 
-  public function order($order=null, $asc='asc'){
+  protected $skipOrder = false;
 
-    if(!is_null($order)) {
-      if (is_array($order)) 
-        foreach ($order as $key => $field) 
+  public function skipOrder($value=true) {
+    $this->skipOrder = $value;
+    return $this;
+  }
+
+  public function checkSkipOrder(){
+    return $this->skipOrder;
+  }
+
+  public function order($order=null, $asc='asc'){
+    if($this->checkSkipOrder()) {
+
+      if(!is_null($order)) {
+        if (is_array($order)) 
+          foreach ($order as $key => $field) 
+            $this->orderBy($field, $asc);
+        else 
           $this->orderBy($field, $asc);
-      else 
-        $this->orderBy($field, $asc);
-    } else {
-      if (property_exists($this, 'order'))
-        $this->order($this->order);
+      } else {
+        if (property_exists($this, 'order'))
+          $this->order($this->order);
+      }
     }
     return $this;
   }

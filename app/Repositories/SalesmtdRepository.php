@@ -1,5 +1,5 @@
 <?php namespace App\Repositories;
-
+use DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
@@ -32,7 +32,50 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                         'menucat.code as menucatcode', 'menucat.descriptor as menucat');
     })->order($this->order);
   }
+
+
+  public function brProductByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                   ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
+                    ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
+                    ->select(DB::raw('product.descriptor as product, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                        sum(salesmtd.netamt) as netamt, prodcat.descriptor as prodcat, menucat.descriptor as menucat'))
+                    ->groupBy('salesmtd.product_id')
+                    //->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
+                    ->orderBy(DB::raw('ordtime'), 'asc');
+    })->skipOrder();
+  }
+
+  public function brProdcatByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                   ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
+                    ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
+                    ->select(DB::raw('prodcat.descriptor as prodcat, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                        sum(salesmtd.netamt) as netamt, menucat.descriptor as menucat'))
+                    ->groupBy('product.prodcat_id')
+                    ->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
+    })->skipOrder();
+  }
+
+  public function brMenucatByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                   ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
+                    ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
+                    ->select(DB::raw('menucat.descriptor as menucat, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                        sum(salesmtd.netamt) as netamt'))
+                    ->groupBy('product.prodcat_id')
+                    ->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
+    })->skipOrder();
+  }
   
+
+
 	
 
 }

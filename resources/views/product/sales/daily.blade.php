@@ -166,7 +166,7 @@
           <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
             <span class="gly gly-shopping-cart"></span>
             <span class="hidden-xs">
-              Products
+              Ordered Products
             </span>
           </a>
         </li>
@@ -180,9 +180,17 @@
         </li>
         <li role="presentation" style="float: right;">
           <div>
-          Gross Sales: 
+          Total Gross Amount: 
           <h3 id="tot-sales-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+          <div class="diff text-right" style="font-size:12px; margin-top:-10px;"></div>
           </div>
+        </li>
+        <li role="presentation" style="float: right;margin-right:20px;">
+          <div>
+          Sales on Cash Audit 
+          <h3 id="tot-salesmtd-cost" class="text-right" style="margin:0 0 20px 0;">{{ number_format($ds->sales,2) }}</h3>
+          </div>
+          
         </li>
       </ul>
     </div><!-- end: .col-md-12 -->
@@ -237,7 +245,179 @@
 
         </div><!-- end: #items -->
         <div role="tabpanel" class="tab-pane" id="stats">
-          stats
+          
+          <!-- Product Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Ordered Products</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-product" data-table="#product-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div class="show less">
+                        <table class="tb-product-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th class="text-right">Quantity</th>
+                              <th class="text-right">Sales</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($products as $product)
+                              <tr>
+                                <td>{{ $product->product }}</td>
+                                <td class="text-right">{{ $product->qty }}</td>
+                                <td class="text-right">{{ number_format($product->netamt, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <span class="label label-info show toggle" style="margin-left:3px;">show more</span>
+                      
+                      <table id="product-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($products as $product)
+                              <tr>
+                                <td>{{ $product->product }}</td>
+                                <td>{{ $product->netamt }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+          <!-- Prodcat Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Product Category</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-prodcat" data-table="#prodcat-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                        <table class="tb-prodcat-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th class="text-right">Quantity</th>
+                              <th class="text-right">Sales</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($prodcats as $prodcat)
+                              <tr>
+                                <td>{{ $prodcat->prodcat }}</td>
+                                <td class="text-right">{{ $prodcat->qty }}</td>
+                                <td class="text-right">{{ number_format($prodcat->netamt, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                      <table id="prodcat-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($prodcats as $prodcat)
+                              <tr>
+                                <td>{{ $prodcat->prodcat }}</td>
+                                <td>{{ $prodcat->netamt }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+          <!-- Menucat Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Menu Category</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-menucat" data-table="#menucat-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                        <table class="tb-menucat-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th class="text-right">Quantity</th>
+                              <th class="text-right">Sales</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($menucats as $menucat)
+                              <tr>
+                                <td>{{ $menucat->menucat }}</td>
+                                <td class="text-right">{{ $menucat->qty }}</td>
+                                <td class="text-right">{{ number_format($menucat->netamt, 2) }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                      <table id="menucat-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>menucat</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($menucats as $menucat)
+                              <tr>
+                                <td>{{ $menucat->menucat }}</td>
+                                <td>{{ $menucat->netamt }}</td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
         </div><!-- end: #stats -->
       </div>
     </div><!-- end: .col-md-12 -->
@@ -250,25 +430,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @section('js-external')
+@section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/hc-all.js"> </script>
   <script src="/js/dr-picker.js"> </script>
@@ -276,6 +438,15 @@
   <script>
 
   $('#tot-sales-cost').text('{{ number_format($totsales, 2) }}');
+
+  <?php
+    $diff = $totsales-$ds->sales;
+    $c = $diff>0 ? 'success':'danger';
+    $d = $diff>0 ? 'up':'down';
+
+    $v = '<span class="text-'.$c.'"><span class="glyphicon glyphicon-arrow-'.$d.'"></span><b> '.number_format($diff,2).'</b></span>';
+  ?>
+  $('.diff').html('{!!$v!!}');
 
   moment.locale('en', { week : {
     dow : 1 // Monday is the first day of the week.
@@ -287,7 +458,41 @@
     initDatePicker();
     branchSelector();
 
+
+    $('.show.toggle').on('click', function(){
+      var div = $(this).siblings('div.show');
+      if(div.hasClass('less')) {
+        div.removeClass('less');
+        div.addClass('more');
+        $(this).text('show less');
+      } else if(div.hasClass('more')) {
+        div.removeClass('more');
+        div.addClass('less');
+        $(this).text('show more');
+      }
+    });
+
+
+    $('.tb-product-data').tablesorter({
+
+      sortList: [[2,1]],
+     
+    });
+
+
+    @if(!is_null($sales))
+      var productChart = new Highcharts.Chart(getOptions('graph-pie-product', 'product-data'));
+      var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
+      var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));
+    @endif
   });
   </script>
+
+  <style type="text/css">
+  .show.less {
+      max-height: 500px;
+      overflow: hidden;
+  }
+  </style>
 
 @endsection

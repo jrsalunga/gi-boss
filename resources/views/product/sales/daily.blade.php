@@ -477,11 +477,11 @@
     });
 
 
-    $('.tb-product-data').tablesorter({
+    $('.tb-product-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-prodcat-data').tablesorter({sortList: [[1,1]]});
+    $('.tb-menucat-data').tablesorter({sortList: [[1,1]]});
 
-      sortList: [[2,1]],
-     
-    });
+   
 
 
     @if(!is_null($sales))

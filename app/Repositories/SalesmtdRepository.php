@@ -40,7 +40,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
                     ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
-                    ->select(DB::raw('product.descriptor as product, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                    ->select(DB::raw('product.descriptor as product, sum(salesmtd.qty) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
                         sum(salesmtd.netamt) as netamt, prodcat.descriptor as prodcat, menucat.descriptor as menucat'))
                     ->groupBy('salesmtd.product_id')
                     //->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
@@ -54,7 +54,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
                     ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
-                    ->select(DB::raw('prodcat.descriptor as prodcat, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                    ->select(DB::raw('prodcat.descriptor as prodcat, count(salesmtd.qty) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
                         sum(salesmtd.netamt) as netamt, menucat.descriptor as menucat'))
                     ->groupBy('prodcat.descriptor')
                     ->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
@@ -67,7 +67,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->leftJoin('prodcat', 'prodcat.id', '=', 'product.prodcat_id')
                     ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
-                    ->select(DB::raw('menucat.descriptor as menucat, count(salesmtd.product_id) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
+                    ->select(DB::raw('menucat.descriptor as menucat, count(salesmtd.qty) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
                         sum(salesmtd.netamt) as netamt'))
                     ->groupBy('menucat.descriptor')
                     ->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');

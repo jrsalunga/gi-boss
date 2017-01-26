@@ -440,11 +440,15 @@
   $('#tot-sales-cost').text('{{ number_format($totsales, 2) }}');
 
   <?php
-    $diff = $totsales-$ds->sales;
-    $c = $diff>0 ? 'success':'danger';
-    $d = $diff>0 ? 'up':'down';
+    $v = ''
+    if (!is_null($sales)) {
 
-    $v = '<span class="text-'.$c.'"><span class="glyphicon glyphicon-arrow-'.$d.'"></span><b> '.number_format($diff,2).'</b></span>';
+      $diff = $totsales-$ds->sales;
+      $c = $diff>0 ? 'success':'danger';
+      $d = $diff>0 ? 'up':'down';
+
+      $v = '<span class="text-'.$c.'"><span class="glyphicon glyphicon-arrow-'.$d.'"></span><b> '.number_format($diff,2).'</b></span>';
+    } 
   ?>
   $('.diff').html('{!!$v!!}');
 

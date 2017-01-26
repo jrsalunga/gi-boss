@@ -440,7 +440,7 @@
   $('#tot-sales-cost').text('{{ number_format($totsales, 2) }}');
 
   <?php
-    $v = ''
+    $v = '';
     if (!is_null($sales)) {
 
       $diff = $totsales-$ds->sales;

@@ -68,7 +68,14 @@ class SaleController extends Controller {
         $filter->id = '';
         $filter->item = '';
       }
+
+       $sales = $this->sale
+                //->skipCache()
+                ->byDateRange($this->dr)
+                ->findWhere($where);
+
 		} else {
+      $sales = null;
 			$filter->table = '';
 			$filter->id = '';
 			$filter->item = '';
@@ -96,10 +103,7 @@ class SaleController extends Controller {
 
     $where['salesmtd.branch_id'] = $branch->id;
 
-    $sales = $this->sale
-                //->skipCache()
-                ->byDateRange($this->dr)
-                ->findWhere($where);
+   
 
     $ds = $this->ds
           //->skipCache()
@@ -112,12 +116,12 @@ class SaleController extends Controller {
           ->findWhere($where);
 
     $prodcats = $this->sale
-          ->skipCache()
+          //->skipCache()
           ->brProdcatByDR($this->dr)
           ->findWhere($where);
 
     $menucats = $this->sale
-          ->skipCache()
+          //->skipCache()
           ->brMenucatByDR($this->dr)
           ->findWhere($where);
 

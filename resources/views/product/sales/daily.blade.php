@@ -123,25 +123,6 @@
 
           <div class="btn-group hidden-xs" role="group">
             <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
-            
-            <!--
-            <div class="btn-group date-type-selector" style="margin-left: 5px;">
-              <div class="dropdown">
-                <a class="btn btn-link" id="date-type" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span id="date-type-name">Daily</span>
-                  <span class="caret"></span>
-                </a>
-
-                <ul class="dropdown-menu" aria-labelledby="date-type">
-                  <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
-                  <li><a href="#" data-date-type="monthly">Monthly</a></li>
-                  <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
-                  <li><a href="#" data-date-type="yearly">Yearly</a></li>
-                </ul>
-              </div>
-            </div>
-            -->
           </div>
           
         </div>
@@ -151,18 +132,17 @@
   
   @include('_partials.alerts')
 
-
   <?php
     $totsales = 0;
     $totqty = 0;
   ?>
 
-  @if(is_null($sales))
+  @if(is_null($products))
 
   @else
     <div class="col-md-12">
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active">
+        <li role="presentation">
           <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
             <span class="gly gly-shopping-cart"></span>
             <span class="hidden-xs">
@@ -170,7 +150,7 @@
             </span>
           </a>
         </li>
-        <li role="presentation">
+        <li role="presentation" class="active">
           <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">
             <span class="gly gly-charts"></span>
             <span class="hidden-xs">
@@ -197,8 +177,11 @@
 
     <div class="col-md-12">
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="items">
+        <div role="tabpanel" class="tab-pane" id="items">
           
+          @if(is_null($sales))
+
+          @else
           <div class="table-responsive">
               <table class="table table-hover table-striped table-sort-data" style="margin-top: 0;">
                 <thead>
@@ -241,10 +224,11 @@
                   </tr>
                 </tfoot>
               </table>
-          </div><!-- end: .table-responsive -->         
+          </div><!-- end: .table-responsive -->   
+          @endif      
 
         </div><!-- end: #items -->
-        <div role="tabpanel" class="tab-pane" id="stats">
+        <div role="tabpanel" class="tab-pane active" id="stats">
           
           <!-- Product Panel -->
           <div class="panel panel-default">
@@ -271,7 +255,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?> 
+                            <?php $prodtot=0; ?> 
                             @foreach($products as $product) 
                               <tr>
                                 <td>{{ $product->product }}</td>
@@ -280,10 +264,10 @@
                                 <td><small>{{ $product->prodcat }}</small></td>
                                 <td><small>{{ $product->menucat }}</small></td>
                               </tr>
-                            <?php $t+=$product->netamt; ?> 
+                            <?php $prodtot+=$product->netamt; ?> 
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td><td></td><td></td></tr></tfoot>
+                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($prodtot,2)}}</b></td><td></td><td></td></tr></tfoot>
                         </table>
                       </div>
                       <span class="label label-info show toggle" style="margin-left:3px;">show more</span>
@@ -450,11 +434,11 @@
   
   <script>
 
-  $('#tot-sales-cost').text('{{ number_format($totsales, 2) }}');
+  $('#tot-sales-cost').text('{{ number_format($prodtot, 2) }}');
 
   <?php
     $v = '';
-    if (!is_null($sales)) {
+    if (!is_null($products)) {
 
       $diff = $totsales-$ds->sales;
       $c = $diff>0 ? 'success':'danger';
@@ -497,7 +481,7 @@
    
 
 
-    @if(!is_null($sales))
+    @if(!is_null($products))
       var productChart = new Highcharts.Chart(getOptions('graph-pie-product', 'product-data'));
       var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
       var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));

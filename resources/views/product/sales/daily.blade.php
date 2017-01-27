@@ -142,20 +142,20 @@
   @else
     <div class="col-md-12">
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation">
-          <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
-            <span class="gly gly-shopping-cart"></span>
-            <span class="hidden-xs">
-              Ordered Products
-            </span>
-          </a>
-        </li>
         <li role="presentation" class="active">
           <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">
             <span class="gly gly-charts"></span>
             <span class="hidden-xs">
               Stats
             </span> 
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
+            <span class="gly gly-shopping-cart"></span>
+            <span class="hidden-xs">
+              Ordered Products
+            </span>
           </a>
         </li>
         <li role="presentation" style="float: right;">

@@ -259,7 +259,7 @@
                             @foreach($products as $product) 
                               <tr>
                                 <td>{{ $product->product }}</td>
-                                <td class="text-right">{{ number_format($product->qty+0,2) }}</td>
+                                <td class="text-right"><small>{{ number_format($product->qty+0,2) }}</small></td>
                                 <td class="text-right">{{ number_format($product->netamt, 2) }}</td>
                                 <td><small>{{ $product->prodcat }}</small></td>
                                 <td><small>{{ $product->menucat }}</small></td>
@@ -440,7 +440,7 @@
     $v = '';
     if (!is_null($products)) {
 
-      $diff = $totsales-$ds->sales;
+      $diff = $prodtot-$ds->sales;
       $c = $diff>0 ? 'success':'danger';
       $d = $diff>0 ? 'up':'down';
 

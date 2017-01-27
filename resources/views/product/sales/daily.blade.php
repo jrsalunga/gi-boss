@@ -259,7 +259,7 @@
                             @foreach($products as $product) 
                               <tr>
                                 <td>{{ $product->product }}</td>
-                                <td class="text-right">{{ number_format($product->qty,2)+0 }}</td>
+                                <td class="text-right">{{ number_format($product->qty+0,2) }}</td>
                                 <td class="text-right">{{ number_format($product->netamt, 2) }}</td>
                                 <td><small>{{ $product->prodcat }}</small></td>
                                 <td><small>{{ $product->menucat }}</small></td>

@@ -140,6 +140,8 @@
   @if(is_null($products))
 
   @else
+  <div class="row" id="stage">
+
     <div class="col-md-12">
       <ul class="nav nav-pills" role="tablist">
         <li role="presentation" class="active">
@@ -150,6 +152,7 @@
             </span> 
           </a>
         </li>
+        @if(!is_null($sales))
         <li role="presentation">
           <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
             <span class="gly gly-shopping-cart"></span>
@@ -158,6 +161,7 @@
             </span>
           </a>
         </li>
+        @endif
         <li role="presentation" style="float: right;">
           <div>
           Total Gross Amount: 
@@ -249,7 +253,7 @@
                             <tr>
                               <th>Product</th>
                               <th class="text-right">Quantity</th>
-                              <th class="text-right">Sales</th>
+                              <th class="text-right">Amount</th>
                               <th>Category</th>
                               <th>Menu Category</th>
                             </tr>
@@ -259,10 +263,10 @@
                             @foreach($products as $product) 
                               <tr>
                                 <td>{{ $product->product }}</td>
-                                <td class="text-right"><small>{{ number_format($product->qty+0,2) }}</small></td>
+                                <td class="text-right"><small class="text-muted">{{ number_format($product->qty, 0) }}</small></td>
                                 <td class="text-right">{{ number_format($product->netamt, 2) }}</td>
-                                <td><small>{{ $product->prodcat }}</small></td>
-                                <td><small>{{ $product->menucat }}</small></td>
+                                <td><small class="text-muted">{{ $product->prodcat }}</small></td>
+                                <td><small class="text-muted">{{ $product->menucat }}</small></td>
                               </tr>
                             <?php $prodtot+=$product->netamt; ?> 
                             @endforeach
@@ -314,7 +318,7 @@
                             <tr>
                               <th>Product</th>
                               <th class="text-right"></th>
-                              <th class="text-right">Sales</th>
+                              <th class="text-right">Amount</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -374,7 +378,7 @@
                             <tr>
                               <th>Product</th>
                               <th class="text-right"></th>
-                              <th class="text-right">Sales</th>
+                              <th class="text-right">Amount</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -418,6 +422,7 @@
         </div><!-- end: #stats -->
       </div>
     </div><!-- end: .col-md-12 -->
+  </div>
   @endif
 
 
@@ -431,7 +436,9 @@
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/hc-all.js"> </script>
   <script src="/js/dr-picker.js"> </script>
-  
+  <!--
+  <script src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"> </script>
+  -->
   <script>
 
   $('#tot-sales-cost').text('{{ number_format($prodtot, 2) }}');
@@ -453,8 +460,13 @@
     dow : 1 // Monday is the first day of the week.
   }});
 
+  
+
 
   $(document).ready(function() {
+
+    
+    
 
     initDatePicker();
     branchSelector();

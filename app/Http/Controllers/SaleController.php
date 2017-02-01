@@ -39,15 +39,21 @@ class SaleController extends Controller {
 
   public function getDaily(Request $request) {
 
+    $this->dr->setDateRangeMode($request, 'daily');
+    
+    $day1 = c('2017-01-01');
+    
+    //if($day1->)
 
-  	$where = [];
-		$fields = ['menucat', 'prodcat', 'product'];
-		
-		$filter = new StdClass;
-		if($request->has('itemid') && $request->has('table') && $request->has('item')) {
-			
-			$id = strtolower($request->input('itemid'));
-			$table = strtolower($request->input('table'));
+
+    $where = [];
+    $fields = ['menucat', 'prodcat', 'product'];
+    
+    $filter = new StdClass;
+    if($request->has('itemid') && $request->has('table') && $request->has('item')) {
+      
+      $id = strtolower($request->input('itemid'));
+      $table = strtolower($request->input('table'));
 
       $c = '\App\Models\\'.ucfirst($table);
       $i = $c::find($id);
@@ -74,16 +80,15 @@ class SaleController extends Controller {
                 ->byDateRange($this->dr)
                 ->findWhere($where);
 
-		} else {
+    } else {
       $sales = null;
-			$filter->table = '';
-			$filter->id = '';
-			$filter->item = '';
-		}
+      $filter->table = '';
+      $filter->id = '';
+      $filter->item = '';
+    }
 
 
-  	$bb = $this->bossBranch();
-    $this->dr->setDateRangeMode($request, 'daily');
+    $bb = $this->bossBranch();
 
     if(is_null($request->input('branchid'))) {
       return $this->setDailyViewVars('product.sales.daily', null, $bb, $filter);
@@ -155,6 +160,70 @@ class SaleController extends Controller {
     $response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
     return $response;
   }
+
+
+
+
+  public function ajaxSales(Request $request, $id) {
+    $data = $this->modalSalesData($request, $id);
+
+    return response()->view('analytics.modal.mdl-sales', compact('data'))
+                  ->header('Content-Type', 'text/html');
+   // return view('analytics.modal.mdl-sales');
+  }
+
+  private function modalSalesData(Request $request, $id) {
+
+    $this->dr->setDateRangeMode($request, 'daily');
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return false;
+    }
+
+    $where['salesmtd.branch_id'] = $branch->id;
+
+    $ds = $this->ds
+    ->skipCache()
+    ->find($id);
+
+    $sales = $this->sale
+          ->skipCache()
+          ->byDateRange($this->dr)
+          ->orderBy('ordtime')
+          ->findWhere($where);
+
+    $products = $this->sale
+          ->skipCache()
+          ->brProductByDR($this->dr)
+          ->findWhere($where);
+
+    $prodcats = $this->sale
+          ->skipCache()
+          ->brProdcatByDR($this->dr)
+          ->findWhere($where);
+
+    $menucats = $this->sale
+          ->skipCache()
+          ->brMenucatByDR($this->dr)
+          ->findWhere($where);
+
+
+    $data = [
+      'ds' => $ds,
+      'sales' => $sales,
+      'products' => $products,
+      'prodcats' => $prodcats,
+      'menucats' => $menucats
+    ];
+
+    return $data;
+  }
+
+
+
+
 
 
 

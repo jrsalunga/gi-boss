@@ -474,6 +474,104 @@
     initDatePicker();
     branchSelector();
 
+    var getOptions = function(to, table) {
+        var options = {
+          data: {
+            table: table,
+            startColumn: 1,
+            endColumn: 2,
+          },
+          chart: {
+            renderTo: to,
+            type: 'pie',
+            height: 300,
+            width: 300,
+            events: {
+              load: function (e) {
+                //console.log(e.target.series[0].data);
+              }
+            }
+          },
+          title: {
+              text: ''
+          },
+          style: {
+            fontFamily: "Helvetica"
+          },
+          tooltip: {
+            pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: false
+              },
+              showInLegend: true,
+              point: {
+                events: {
+                  mouseOver: function(e) {    
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                      var text = $(tr).children('td:nth-child(2)').text();             
+                      if(text==orig){
+                        $(tr).children('td').addClass('bg-success');
+                      }
+                    });
+                  },
+                  mouseOut: function() {
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                        $(tr).children('td').removeClass('bg-success');
+                    });
+                  },
+                  click: function(event) {
+                    //console.log(this);
+                  }
+                }
+              }
+            }
+          },
+          
+          legend: {
+            enabled: false,
+            //layout: 'vertical',
+            //align: 'right',
+            //width: 400,
+            //verticalAlign: 'top',
+            borderWidth: 0,
+            useHTML: true,
+            labelFormatter: function() {
+              //total += this.y;
+              return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
+            },
+            title: {
+              text: null,
+            },
+              itemStyle: {
+              fontWeight: 'normal',
+              fontSize: '12px',
+              lineHeight: '12px'
+            }
+          },
+          
+          exporting: {
+            enabled: false
+          }
+        }
+        return options;
+      }
+
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+      }});
+
 
     $('.show.toggle').on('click', function(){
       var div = $(this).siblings('div.show');

@@ -47,6 +47,7 @@ Route::get('m/{table?}', ['uses'=>'MasterfilesController@getDatatableIndex']);
 Route::get('masterfiles/{table?}', ['uses'=>'MasterfilesController@getIndex']);
 Route::get('api/m/{table?}', ['uses'=>'MasterfilesController@getController']);
 Route::get('api/getdt', ['uses'=>'MasterfilesController@getDatatablesData']);
+Route::get('api/mdl/sales/{id}', ['uses'=>'SaleController@ajaxSales']);
 
 
 

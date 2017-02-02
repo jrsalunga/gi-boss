@@ -104,7 +104,7 @@
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
                   <div class="graph-container pull-right">
-                    <div id="graph-pie-product" data-table="#product-data"></div>
+                    <div id="graph-pie-product-sale" data-table="#product-data"></div>
                   </div>
                 </div><!-- end: .col-md-5 -->
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
@@ -139,7 +139,7 @@
                       </div>
                       <span class="label label-info show toggle" style="margin-left:3px;">show more</span>
                       
-                      <table id="product-data" style="display:none;">
+                      <table id="product-sale-data" style="display:none;">
                           <thead>
                             <tr>
                               <th>Product</th>
@@ -169,7 +169,7 @@
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
                   <div class="graph-container pull-right">
-                    <div id="graph-pie-prodcat" data-table="#prodcat-data"></div>
+                    <div id="graph-pie-prodcat-sale" data-table="#prodcat-data"></div>
                   </div>
                 </div><!-- end: .col-md-5 -->
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
@@ -199,7 +199,7 @@
                         </table>
                       </div>
                       
-                      <table id="prodcat-data" style="display:none;">
+                      <table id="prodcat-sale-data" style="display:none;">
                           <thead>
                             <tr>
                               <th>Product</th>
@@ -229,7 +229,7 @@
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
                   <div class="graph-container pull-right">
-                    <div id="graph-pie-menucat" data-table="#menucat-data"></div>
+                    <div id="graph-pie-menucat-sale" data-table="#menucat-data"></div>
                   </div>
                 </div><!-- end: .col-md-5 -->
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
@@ -259,7 +259,7 @@
                         </table>
                       </div>
                       
-                      <table id="menucat-data" style="display:none;">
+                      <table id="menucat-sale-data" style="display:none;">
                           <thead>
                             <tr>
                               <th>menucat</th>

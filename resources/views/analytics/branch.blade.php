@@ -778,6 +778,99 @@
         return options;
       }
 
+    var getOptions2 = function(to, table) {
+        var options = {
+          data: {
+            table: table,
+            startColumn: 1,
+            endColumn: 2,
+          },
+          chart: {
+            renderTo: to,
+            type: 'pie',
+            height: 300,
+            width: 300,
+            events: {
+              load: function (e) {
+                //console.log(e.target.series[0].data);
+              }
+            }
+          },
+          title: {
+              text: ''
+          },
+          style: {
+            fontFamily: "Helvetica"
+          },
+          tooltip: {
+            pointFormat: '{point.y:.2f}  <b>({point.percentage:.2f}%)</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: false
+              },
+              showInLegend: true,
+              point: {
+                events: {
+                  mouseOver: function(e) {    
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                      var text = $(tr).children('td:nth-child(2)').text();             
+                      if(text==orig){
+                        $(tr).children('td').addClass('bg-success');
+                      }
+                    });
+                  },
+                  mouseOut: function() {
+                    var orig = this.name;
+                    var tb = $(this.series.chart.container).parent().data('table');
+                    var tr = $(tb).children('tbody').children('tr');
+                     _.each(tr, function(tr, key, list){
+                        $(tr).children('td').removeClass('bg-success');
+                    });
+                  },
+                  click: function(event) {
+                    //console.log(this);
+                  }
+                }
+              }
+            }
+          },
+          
+          legend: {
+            enabled: false,
+            //layout: 'vertical',
+            //align: 'right',
+            //width: 400,
+            //verticalAlign: 'top',
+            borderWidth: 0,
+            useHTML: true,
+            labelFormatter: function() {
+              //total += this.y;
+              return '<div style="width:400px"><span style="float: left; width: 250px;">' + this.name + '</span><span style="float: left; width: 100px; text-align: right;">' + this.percentage.toFixed(2) + '%</span></div>';
+            },
+            title: {
+              text: null,
+            },
+              itemStyle: {
+              fontWeight: 'normal',
+              fontSize: '12px',
+              lineHeight: '12px'
+            }
+          },
+          
+          exporting: {
+            enabled: false
+          }
+        }
+        return options;
+      }
+
     Highcharts.setOptions({
       lang: {
         thousandsSep: ','
@@ -1025,16 +1118,16 @@
         data.branchid = "{{is_null($branch)?'':$branch->id}}";
 
         fetchPurchased(data).success(function(d, textStatus, jqXHR){
-          //console.log(d);
+          console.log(d);
           if(d.code===200){
             $('.modal-title small').text(moment(d.data.items.date).format('ddd MMM D, YYYY'));
             renderToTable(d.data.items.data);  
             renderTable(d.data.stats.categories, '.tb-category-data'); 
-            var categoryChart = new Highcharts.Chart(getOptions('graph-pie-category', 'category-data'));
+            var categoryChart = new Highcharts.Chart(getOptions2('graph-pie-category', 'category-data'));
             renderTable(d.data.stats.expenses, '.tb-expense-data');  
-            var expenseChart = new Highcharts.Chart(getOptions('graph-pie-expense', 'expense-data'));
+            var expenseChart = new Highcharts.Chart(getOptions2('graph-pie-expense', 'expense-data'));
             renderTable(d.data.stats.suppliers, '.tb-supplier-data');  
-            var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
+            var supplierChart = new Highcharts.Chart(getOptions2('graph-pie-supplier', 'supplier-data'));
             $('#link-download')[0].href="/api/t/purchase?date="+moment(d.data.items.date).format('YYYY-MM-DD')+"&branchid={{is_null($branch)?'':$branch->id}}&download=1";
             //$('#link-print')[0].href="/api/t/purchase?date="+moment(d.date).format('YYYY-MM-DD');
             $('ul[role=tablist] a:first').tab('show');
@@ -1091,9 +1184,9 @@
               $('.tb-prodcat-data').tablesorter({sortList: [[2,1]]});
               $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
 
-              var productChart = new Highcharts.Chart(getOptions('graph-pie-product', 'product-data'));
-              var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
-              var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));
+              var productChart = new Highcharts.Chart(getOptions('graph-pie-product-sale', 'product-sale-data'));
+              var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat-sale', 'prodcat-sale-data'));
+              var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat-sale', 'menucat-sale-data'));
 
              
             },

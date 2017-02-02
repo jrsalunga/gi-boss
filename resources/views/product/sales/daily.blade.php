@@ -385,7 +385,7 @@
                           <thead>
                             <tr>
                               <th>Menu Category</th>
-                              <th class="text-right">Product Category</th>
+                              <th>Product Category</th>
                               <th class="text-right">Amount</th>
                             </tr>
                           </thead>
@@ -597,7 +597,7 @@
 
     $('.tb-product-data').tablesorter({sortList: [[2,1]]});
     $('.tb-prodcat-data').tablesorter({sortList: [[1,1]]});
-    $('.tb-menucat-data').tablesorter({sortList: [[1,1]]});
+    $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
 
    
 

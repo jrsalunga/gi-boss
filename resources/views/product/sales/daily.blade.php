@@ -164,7 +164,7 @@
         @endif
         <li role="presentation" style="float: right;">
           <div>
-          Total Gross Amount: 
+          Gross Amount: 
           <h3 id="tot-sales-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
           @if(!request()->has('table'))
             <div class="diff text-right" style="font-size:12px; margin-top:-10px;"></div>
@@ -309,7 +309,7 @@
 
           <!-- Prodcat Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Product Category</div>
+            <div class="panel-heading">Product Category Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -369,7 +369,7 @@
 
           <!-- Menucat Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Menu Category</div>
+            <div class="panel-heading">Menu Category Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -385,7 +385,7 @@
                           <thead>
                             <tr>
                               <th>Menu Category</th>
-                              <th class="text-right"></th>
+                              <th class="text-right">Product Category</th>
                               <th class="text-right">Amount</th>
                             </tr>
                           </thead>
@@ -394,7 +394,7 @@
                             @foreach($menucats as $menucat)
                               <tr>
                                 <td>{{ $menucat->menucat }}</td>
-                                <td class="text-right"></td>
+                                <td>{{ $menucat->prodcat }}</td>
                                 <td class="text-right">{{ number_format($menucat->netamt, 2) }}</td>
                               </tr>
                             <?php $t+=$menucat->netamt; ?>

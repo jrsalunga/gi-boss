@@ -20,15 +20,15 @@
         </li>
         <li role="presentation">
           <a href="#products" aria-controls="products" role="tab" data-toggle="tab">
-            <span class="gly gly-shopping-cart"></span>
+            <span class="gly gly-cutlery"></span>
               <span class="hidden-xs hidden-sm">
-                Ordered Products
+                Sales
               </span>
           </a>
         </li>
         <li role="presentation" style="float: right;">
           <div>
-            Total Gross Amount: 
+            Gross Sales: 
             <h3 id="tot-sales-cost" class="text-right" style="margin:0 0 10px 0;">{{number_format($data['ds']->slsmtd_totgrs,2)}}</h3>
             <div class="diff text-right" style="font-size:12px; margin-top:-10px;">
             <?php
@@ -49,7 +49,7 @@
         </li>
         <li role="presentation" style="float: right;margin-right:20px;">
           <div>
-            Sales on Cash Audit 
+            Net Sales: 
           <h3 id="tot-salesmtd-cost" class="text-right" style="margin:0 0 20px 0;">{{number_format($data['ds']->sales,2)}}</h3>
           </div>
         </li>
@@ -67,7 +67,7 @@
                   <th>Product</th>
                   <th class="text-right">Qty</th>
                   <th class="text-right">Price</th>
-                  <th class="text-right">Grs Amount</th>
+                  <th class="text-right">Gross</th>
                   <th>Product Category</th>
                   <th>Menu Category</th>
                 </tr>
@@ -99,7 +99,7 @@
 
           <!-- Product Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Ordered Products</div>
+            <div class="panel-heading">Product Sales Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -164,7 +164,7 @@
 
           <!-- Prodcat Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Product Category</div>
+            <div class="panel-heading">Product Category Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -224,7 +224,7 @@
 
           <!-- Menucat Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Menu Category</div>
+            <div class="panel-heading">Menu Category Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">

@@ -323,7 +323,9 @@
                 </strong>
               </td>
               <td class="text-right">
-                <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
+                <a class="text-primary" target="_blank" href="/product/sales?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" >
+                  <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
+                </a>
                 <div>
                 <em><small title="{{$tot_sales}}/{{$div_sales}}">
                   {{ $div_sales!=0?number_format($tot_sales/$div_sales,2):0 }}
@@ -1154,7 +1156,6 @@
           console.log('same last id'); 
           $('#mdl-generic').modal('show');
         } else {
-          console.log('slsmtd_totgrs');
           $('#mdl-generic').modal('show');
           lastId=id;
 
@@ -1176,7 +1177,7 @@
               
             },
             success: function(data, textStatus, jqXHR) {
-              console.log('success');
+              
               $('#mdl-generic .modal-content').html(data);
               $('.tb-sales-data').tablesorter(); 
 

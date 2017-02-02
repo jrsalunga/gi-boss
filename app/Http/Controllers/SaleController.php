@@ -11,6 +11,10 @@ use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\BranchRepository;
+use App\Models\Product;
+use App\Models\Prodcat;
+use App\Models\Menucat;
+
 
 
 class SaleController extends Controller { 
@@ -220,6 +224,49 @@ class SaleController extends Controller {
 
     return $data;
   }
+
+
+
+
+
+  public function search(Request $request) {
+
+
+    $arr = [];
+
+    if($request->has('q')) {
+      
+      $q = $request->input('q');
+      $branchid = $request->input('branchid');
+      
+      $products = Product::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
+      foreach ($products as $product) {
+        array_push($arr, ['table'=>'product', 'item'=>$product->descriptor, 'id'=>strtolower($product->id)]);
+      }
+
+      $prodcats = Prodcat::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
+      foreach ($prodcats as $prodcat) {
+        array_push($arr, ['table'=>'prodcat', 'item'=>$prodcat->descriptor, 'id'=>strtolower($prodcat->id)]);
+      }
+
+      $menucats = Menucat::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
+      foreach ($menucats as $menucat) {
+        array_push($arr, ['table'=>'menucat', 'item'=>$menucat->descriptor, 'id'=>strtolower($menucat->id)]);
+      }
+
+      
+
+    }
+
+    return $arr;
+
+
+    if($request->ajax())
+      return $arr;
+    else
+      return abort('404');
+
+   }
 
 
 

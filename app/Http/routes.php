@@ -40,6 +40,7 @@ Route::get('status/branch/year', ['uses'=>'AnalyticsController@getYear']);
 Route::get('component', ['uses'=>'ComponentController@getIndex']);
 Route::get('component/purchases', ['uses'=>'Purchase2Controller@getDaily']);
 Route::get('api/search/component', ['uses'=>'Purchase2Controller@search']);
+Route::get('api/s/product/sales', ['uses'=>'SaleController@search']);
 
 Route::get('product/sales', ['uses'=>'SaleController@getDaily']);
 

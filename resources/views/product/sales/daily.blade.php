@@ -155,9 +155,9 @@
         @if(!is_null($sales))
         <li role="presentation">
           <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
-            <span class="gly gly-shopping-cart"></span>
+            <span class="gly gly-cutlery"></span>
             <span class="hidden-xs">
-              Ordered Products
+              Sales History
             </span>
           </a>
         </li>
@@ -166,16 +166,20 @@
           <div>
           Total Gross Amount: 
           <h3 id="tot-sales-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
-          <div class="diff text-right" style="font-size:12px; margin-top:-10px;"></div>
+          @if(!request()->has('table'))
+            <div class="diff text-right" style="font-size:12px; margin-top:-10px;"></div>
+          @endif
           </div>
         </li>
+        @if(!request()->has('table'))
         <li role="presentation" style="float: right;margin-right:20px;">
           <div>
-          Sales on Cash Audit 
+          Net Amount:
           <h3 id="tot-salesmtd-cost" class="text-right" style="margin:0 0 20px 0;">{{ number_format($ds->sales,2) }}</h3>
           </div>
           
         </li>
+        @endif
       </ul>
     </div><!-- end: .col-md-12 -->
 
@@ -202,13 +206,17 @@
                 <tbody>
                   @foreach($sales as $sale)
                     <tr>
-                      <td>{{ $sale->orddate->format('Y-m-d') }}</td>
+                      <td>
+                        <small class="text-muted" title="{{ $sale->ordtime->format('D M d, Y h:i:s A') }}" data-toggle="tooltip">
+                          {{ $sale->orddate->format('Y-m-d') }}
+                        </small>
+                      </td>
                       <td data-id="{{$sale->lid()}}">{{ $sale->product }}</td>
                       <td>{{ number_format($sale->qty, 2)+0 }}</td>
                       <td class="text-right">{{ number_format($sale->uprice, 2) }}</td>
                       <td class="text-right">{{ number_format($sale->grsamt, 2) }}</td>
-                      <td>{{ $sale->prodcat }}</td>
-                      <td>{{ $sale->menucat }}</td>
+                      <td><small class="text-muted">{{ $sale->prodcat }}</small></td>
+                      <td><small class="text-muted">{{ $sale->menucat }}</small></td>
                     </tr>
                     <?php
                       $totsales +=$sale->grsamt;
@@ -236,7 +244,7 @@
           
           <!-- Product Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Ordered Products</div>
+            <div class="panel-heading">Product Sales Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -316,7 +324,7 @@
                         <table class="tb-prodcat-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Product</th>
+                              <th>Product Category</th>
                               <th class="text-right"></th>
                               <th class="text-right">Amount</th>
                             </tr>
@@ -376,7 +384,7 @@
                         <table class="tb-menucat-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Product</th>
+                              <th>Menu Category</th>
                               <th class="text-right"></th>
                               <th class="text-right">Amount</th>
                             </tr>
@@ -469,7 +477,7 @@
   $(document).ready(function() {
 
     
-    
+    $('[data-toggle="tooltip"]').tooltip();
 
     initDatePicker();
     branchSelector();
@@ -478,8 +486,8 @@
         var options = {
           data: {
             table: table,
-            startColumn: 1,
-            endColumn: 2,
+            startColumn: 0,
+            endColumn: 1,
           },
           chart: {
             renderTo: to,
@@ -598,7 +606,91 @@
       var productChart = new Highcharts.Chart(getOptions('graph-pie-product', 'product-data'));
       var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
       var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));
+      
     @endif
+
+
+
+    $.widget("custom.autocomplete", $.ui.autocomplete, {
+      _create: function() {
+        this._super();
+        this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
+      },
+      _renderMenu: function(ul, items) {
+        var that = this,
+          currentCategory = "";
+        $.each(items, function(index, item) {
+          var li;
+          if (item.category != currentCategory) {
+            ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
+            currentCategory = item.category;
+          }
+          li = that._renderItemData(ul, item);
+          if (item.category) {
+            li.attr( "aria-label", item.category + " : " + item.label);
+          }
+        });
+      }
+    });
+
+
+    $(".searchfield").autocomplete({
+      source: function(request, response) {
+        var bid = $('#branchid').val();
+        $.ajax({
+          type: 'GET',
+          url: "/api/s/product/sales",
+          dataType: "json",
+          data: {
+            maxRows: 25,
+            q: request.term,
+            branchid : bid
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                //label: item.item + ', ' + item.table,
+                label: item.item,
+                value: item.item,
+                category: item.table,
+                id: item.id
+              }
+            }));
+          }
+        });
+      },
+      minLength: 2,
+      select: function(event, ui) {
+        //console.log(ui);
+        //log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+        $("#table").val(ui.item.category); /* set the selected id */
+        $("#item").val(ui.item.value); /* set the selected id */
+        $("#itemid").val(ui.item.id); /* set the selected id */
+      },
+      open: function() {
+        $( this ).removeClass("ui-corner-all").addClass("ui-corner-top");
+        $("#table").val(''); /* set the selected id */
+        $("#item").val(''); /* set the selected id */
+        $("#itemid").val(''); /* set the selected id */
+      },
+      close: function() {
+          $( this ).removeClass("ui-corner-top").addClass("ui-corner-all");
+      },
+      messages: {
+        noResults: '',
+        results: function() {}
+      }
+    }).on('blur', function(e){
+      if ($(this).val().length==0) {
+        $( this ).removeClass("ui-corner-all").addClass("ui-corner-top");
+        $("#table").val(''); /* set the selected id */
+        $("#item").val(''); /* set the selected id */
+        $("#itemid").val(''); /* set the selected id */
+      }
+
+      //setTimeout(submitForm, 1000);
+    });
+
   });
   </script>
 

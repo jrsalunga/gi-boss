@@ -394,7 +394,7 @@
                             @foreach($menucats as $menucat)
                               <tr>
                                 <td>{{ $menucat->menucat }}</td>
-                                <td>{{ $menucat->prodcat }}</td>
+                                <td><small class="text-muted">{{ $menucat->prodcat }}</small></td>
                                 <td class="text-right">{{ number_format($menucat->netamt, 2) }}</td>
                               </tr>
                             <?php $t+=$menucat->netamt; ?>

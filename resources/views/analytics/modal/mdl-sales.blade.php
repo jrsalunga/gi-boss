@@ -68,7 +68,7 @@
                   <th class="text-right">Qty</th>
                   <th class="text-right">Price</th>
                   <th class="text-right">Gross</th>
-                  <th>Product Category</th>
+                  <th>Category</th>
                   <th>Menu Category</th>
                 </tr>
               </thead>
@@ -78,7 +78,7 @@
                     <td title="{{ $sale->ordtime->format('D M j, Y h:i A') }}">
                       <small class="text-muted">{{ $sale->ordtime->format('h:i A') }}</small>
                     </td>
-                    <td>{{ $sale->product }}</td>
+                    <td>{{ $sale->product }} <small><span class="label label-primary">{{ $sale->group }}</span></small></td>
                     <td class="text-right">{{ number_format($sale->qty, 2)+0 }}</td>
                     <td class="text-right">{{ number_format($sale->uprice,2) }}</td>
                     <td class="text-right">{{ number_format($sale->grsamt,2) }}</td>
@@ -179,7 +179,7 @@
                         <table class="tb-prodcat-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Product</th>
+                              <th>Product Category</th>
                               <th class="text-right"></th>
                               <th class="text-right">Amount</th>
                             </tr>
@@ -235,11 +235,11 @@
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
                   <div class="row">
                     <div class="table-responsive">
-                      <div>
+                      <div class="show less">
                         <table class="tb-menucat-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Product</th>
+                              <th>Menu Category</th>
                               <th class="text-right"></th>
                               <th class="text-right">Amount</th>
                             </tr>
@@ -258,7 +258,8 @@
                           <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
                         </table>
                       </div>
-                      
+                      <span class="label label-info show toggle" style="margin-left:3px;">show more</span>
+
                       <table id="menucat-sale-data" style="display:none;">
                           <thead>
                             <tr>

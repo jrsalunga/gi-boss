@@ -1582,8 +1582,10 @@
 
   <style type="text/css">
   .show.less {
-      max-height: 500px;
+      max-height: 310px;
       overflow: hidden;
   }
+
+  
   </style>
 @endsection

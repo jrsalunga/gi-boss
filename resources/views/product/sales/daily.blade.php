@@ -106,9 +106,8 @@
               </ul>
             </div> <!-- .dropdown -->
           </div>
-      
+        
           <div class="btn-group pull-right clearfix dp-container hidden-xs" role="group">
-            
             <label class="btn btn-default" for="dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -118,13 +117,12 @@
             <label class="btn btn-default" for="dp-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-        
           </div><!-- end btn-grp -->
-
+          <!--
           <div class="btn-group hidden-xs" role="group">
             <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search filter">
           </div>
-          
+          -->
         </div>
       </div>
     </nav>

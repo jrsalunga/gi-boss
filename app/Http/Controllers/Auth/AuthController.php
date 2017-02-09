@@ -1,17 +1,15 @@
-<?php
-
-namespace App\Http\Controllers\Auth;
+<?php namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use App\Events\UserLoggedIn;
+use Illuminate\Http\Request;
+use App\Events\UserLoggedFailed;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use App\Events\UserLoggedIn;
-use App\Events\UserLoggedFailed;
 
 class AuthController extends Controller
 {
@@ -117,7 +115,8 @@ class AuthController extends Controller
         //$credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            event(new UserLoggedIn($request));
+            if (app()->environment()==='production')
+                event(new UserLoggedIn($request));
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -128,7 +127,7 @@ class AuthController extends Controller
             $this->incrementLoginAttempts($request);
         }
 
-        //if (app()->environment()==='production')
+        if (app()->environment()==='production')
           event(new UserLoggedFailed($request));
 
         //return $this->loginUsername();

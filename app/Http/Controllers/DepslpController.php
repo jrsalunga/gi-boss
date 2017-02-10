@@ -70,7 +70,7 @@ class DepslpController extends Controller {
       return redirect('/backup/checklist')->with('alert-warning', 'Please select a branch.');
     }
 
-  	$depslips = $this->depslip->skipCache()->monthlyLogs($date, strtoupper($branch->code)	);
+  	$depslips = $this->depslip->skipCache()->monthlyLogs($date, $branch);
 
   	if($request->has('debug'))
   		return $depslips;

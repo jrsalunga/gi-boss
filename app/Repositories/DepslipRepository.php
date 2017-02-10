@@ -25,13 +25,14 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
 
 
 
-  private function aggregateDailyLogs(Carbon $fr, Carbon $to) {
-  	return $this->scopeQuery(function($query) use ($fr, $to) {
+  private function aggregateDailyLogs(Carbon $fr, Carbon $to, $branchid) {
+  	return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
     	return $query
     						->select(DB::raw('*, count(*) as count'))
     						->whereBetween('date', 
     							[$fr->format('Y-m-d').' 00:00:00', $to->format('Y-m-d').' 23:59:59']
     							)
+                ->where('branch_id', $branchid)
     						->groupBy(DB::raw('DAY(date)'))
     						->orderBy('created_at', 'DESC');
     						//->orderBy('filedate', 'DESC');
@@ -41,12 +42,12 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
 
 
 
-	public function monthlyLogs(Carbon $date, $brcode) {
+	public function monthlyLogs(Carbon $date, $branch) {
   	$arr = [];
   	$fr = $date->firstOfMonth();
   	$to = $date->copy()->lastOfMonth();
 
-  	$data = $this->aggregateDailyLogs($fr, $to);
+  	$data = $this->aggregateDailyLogs($fr, $to, $branch->id);
 
   	for ($i=0; $i < $date->daysInMonth; $i++) { 
 
@@ -60,8 +61,8 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
   		$b = $filtered->first();
 
   		if(!is_null($b)) {
-    		$e = file_exists(config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.$brcode.DS.$b->date->format('m').DS.$b->filename);
-        $path = config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.$brcode.DS.$b->date->format('m').DS.$b->filename;
+    		$e = file_exists(config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.strtoupper($branch->code).DS.$b->date->format('m').DS.$b->filename);
+        $path = config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.strtoupper($branch->code).DS.$b->date->format('m').DS.$b->filename;
       }
       else {
         $path = '';

@@ -16,7 +16,7 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
   protected $order = ['created_at'];
 
   public function boot(){
-    $this->pushCriteria(new ByBranch2(request()));
+    //$this->pushCriteria(new ByBranch2(request()));
   }
   
   public function model() {

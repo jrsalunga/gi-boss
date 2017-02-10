@@ -50,9 +50,6 @@ Route::get('api/m/{table?}', ['uses'=>'MasterfilesController@getController']);
 Route::get('api/getdt', ['uses'=>'MasterfilesController@getDatatablesData']);
 Route::get('api/mdl/sales/{id}', ['uses'=>'SaleController@ajaxSales']);
 
-
-
-
 Route::get('dashboard', ['uses'=>'DashboardController@getIndex']);
 Route::get('sales', ['uses'=>'DashboardController@getSales']);
 Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);
@@ -61,6 +58,14 @@ Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
 Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);
+
+/** Depslip **/
+Route::get('depslp/log', ['uses'=>'DepslpController@getHistory']);
+Route::get('depslp/checklist', ['uses'=>'DepslpController@getChecklist']);
+Route::get('depslp/{id?}/{action?}', ['uses'=>'DepslpController@getAction']);
+Route::get('images/depslp/{id?}', ['uses'=>'DepslpController@getImage']);
+Route::put('put/depslp', ['uses'=>'DepslpController@put']);
+Route::post('delete/depslp', ['uses'=>'DepslpController@delete']);
 
 
 /******************* API  *************************************************/

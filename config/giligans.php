@@ -20,6 +20,17 @@ return [
 			'production' => '/home/server-admin/Public/maindepot/TEST_POS_BACKUP/'
 		],
 
+	'path' => [
+		'pos' => [
+			'local' => '../../gi-cashier/TEST_POS_BACKUP/',
+			'production' => '/home/server-admin/Public/maindepot/TEST_POS_BACKUP/'
+		],
+		'files' => [
+			'local' => '../../gi-cashier/TEST_FILES_BACKUP/',
+			'production' => '/home/server-admin/Public/maindepot/TEST_FILES_BACKUP/'
+		]
+	],
+
 	'cookie' => [
 		'expiry' => 120
 	]

@@ -59,6 +59,17 @@ return [
             ]
         ],
 
+        'files'=>[
+            'local'=>[
+                'driver' => 'local',
+                'root'   => '../../gi-cashier/TEST_FILES_BACKUP/'
+            ],
+            'production'=>[
+                'driver' => 'local',
+                'root'   => '/home/server-admin/Public/maindepot/TEST_FILES_BACKUP/'
+            ]
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

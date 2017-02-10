@@ -8,9 +8,9 @@
 <div class="container-fluid">
 
   <ol class="breadcrumb">
-    <li><span class="gly gly-shop"></span> <a href="/"></a></li>
-    <li><a href="/storage/log">Backup</a></li>
-    <li><a href="/backup/checklist">Checklist</a></li>
+    <li><a href="/"><span class="gly gly-shop"></span></a></li>
+    <li><a href="/depslp/log">Deposit Slip</a></li>
+    <li><a href="/depslp/checklist">Checklist</a></li>
     <li class="active">{{ $date->format('M Y') }}</li>
   </ol>
 
@@ -23,14 +23,14 @@
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
-            <a href="/storage/log" class="btn btn-default" title="Backup Logs">
-              <span class="fa fa-file-archive-o"></span>
+            <a href="/depslp/log" class="btn btn-default" title="Deposit Slip Logs">
+              <span class="fa fa-bank"></span>
               <span class="hidden-xs hidden-sm">Logs</span>
             </a> 
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/backup/checklist', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/depslp/checklist', 'method' => 'get', 'id'=>'dp-form']) !!}
             <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
             -->  
@@ -71,7 +71,7 @@
           @if(is_null(($branch)))
 
           @else
-          <a href="/backup/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
+          <a href="/depslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
           @endif
@@ -80,7 +80,7 @@
           @if(is_null(($branch)))
 
           @else
-          <a href="/backup/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
+          <a href="/depslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
           @endif
@@ -94,40 +94,37 @@
     @include('_partials.alerts')
 
 
-    @if(is_null($backups))
+    @if(is_null($depslips))
 
     @else
-
     <div class="table-responsive">
     <table class="table table-hover table-striped">
       <thead>
         <tr>
-          <th>Backup Date</th>
+          <th>Deposit Date</th>
           <th>Filename</th>
           <th>
             <span style="cursor: help;" title="Shows only the lastest uploader of the same backup.">
               Cashier
             </span>
           </th>
+          <th>Upload Date</th>
+          <th>Log Count</th>
           <th>
             <span style="cursor: help;" title="Tells whether the actual physical backup file is in the server's file system.">
               File in Server?
             </span>
           </th>
-          <th>Upload Date</th>
-          <th>Log Count</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($backups as $key => $b)
+        @foreach($depslips as $key => $b) 
         <?php
-          $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d')
-            ?'class=bg-success'
-            :'';
-        ?> 
+          $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d') ? 'class=bg-success':'';
+        ?>
         <tr>
-        <td {{ $class }}>{{ $b['date']->format('M j, D') }}</td>
-          @if(is_null($b['backup']))
+          <td {{ $class }}>{{ $b['date']->format('M j, D') }}</td>
+          @if(is_null($b['item']) || !$b['exist'])
             <td {{ $class }}>-</td>
             <td {{ $class }}>-</td>
             <td {{ $class }}>-</td>
@@ -135,10 +132,31 @@
             <td {{ $class }}>-</td>
           @else
             <td {{ $class }}>
-              {{ $b['backup']->filename }}
+              {{ $b['item']->filename }}
             </td>
             <td title="Shows only the lastest uploader of the same backup." {{ $class }}>
-              {{ $b['backup']->cashier }}
+              {{ $b['item']->cashier }}
+            </td>
+            <td {{ $class }}>
+              <small>
+                <em>
+                  <span class="hidden-xs">
+                    @if($b['item']->created_at->format('Y-m-d')==now())
+                      {{ $b['item']->created_at->format('h:i A') }}
+                    @else
+                      {{ $b['item']->created_at->format('D M j') }}
+                    @endif
+                  </span> 
+                  <em>
+                    <small class="text-muted">
+                    {{ diffForHumans($b['item']->created_at) }}
+                    </small>
+                  </em>
+                </em>
+              </small>
+            </td>
+            <td {{ $class }}>
+              <span class="badge">{{ $b['item']->count }}</span>
             </td>
             <td {{ $class }}>
               @if($b['exist'])
@@ -147,15 +165,6 @@
                 <span class="glyphicon glyphicon-remove text-danger"></span>
               @endif
             </td>
-            <td {{ $class }}>
-              <small><em>
-              {{ $b['backup']->uploaddate->format('Y-m-d h:m:i A') }}
-              </em>
-              </small>
-            </td>
-            <td {{ $class }}>
-              <span class="badge">{{ $b['backup']->count }}</span>
-            </td>
           @endif
           
         </tr>
@@ -163,7 +172,6 @@
       </tbody>
     </table>
     </div>
-
     @endif
     
    
@@ -179,11 +187,7 @@
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   <script type="text/javascript">
-
-
-
   $(document).ready(function(){
-
 
     $('#dp-date').datetimepicker({
       //defaultDate: "2016-06-01",
@@ -194,10 +198,8 @@
     }).on('dp.change', function(e){
       var date = e.date.format('YYYY-MM-DD');
       @if(!is_null(($branch)))
-      document.location.href = '/backup/checklist?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
+      document.location.href = '/depslp/checklist?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
       @endif
-
-      $('#date').val(date);
     });
 
 
@@ -217,8 +219,6 @@
       
       //console.log($('.btn-go').data('branchid'));
     });
-      
   });
-  
   </script>
 @endsection

@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li class="active">Backup</li>
+    <li class="active">Delinquent Backup</li>
   </ol>
 
   <div>
@@ -46,10 +46,29 @@
               <span class="gly gly-hdd"></span>
               <span class="hidden-xs hidden-sm">Filing System</span>
             </a> 
-            <a href="/storage/log" class="btn btn-default" title="Back to Main Menu">
-              <span class="glyphicon glyphicon-th-list"></span> 
-              <span class="hidden-xs hidden-sm">Logs</span>
-            </a> 
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa fa-calendar-check-o"></span>
+                <span class="hidden-xs hidden-sm">Checklist</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
+                <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-th-list"></span>
+                <span class="hidden-xs hidden-sm">Logs</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/storage/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
+                <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+              </ul>
+            </div> 
             <button type="button" class="btn btn-default active">
               <span class="gly gly-disk-remove"></span> 
               <span class="hidden-xs hidden-sm">Delinquent</span>
@@ -101,9 +120,29 @@
 
 
 @section('js-external')
-  @parent
+  <script src="/js/vendors-common.min.js"></script>
   
   <script>
+
+  $(document).ready(function(){
+    $('.br.dropdown-menu li a').on('click', function(e){
+      e.preventDefault();
+      var el = $(e.currentTarget);
+      el.parent().siblings().children().css('background-color', '#fff');
+      el.css('background-color', '#d4d4d4');
+      $('.br-code').text(el.data('code'));
+      $('.br-desc').text('- '+el.data('desc'));
+      $('#branchid').val(el.data('branchid'));
+      //$('#dLabel').stop( true, true ).effect("highlight", {}, 1000);
+      if(el.data('branchid')==$('.btn-go').data('branchid'))
+        $('.btn-go').prop('disabled', true);
+      else
+        $('.btn-go').prop('disabled', false);
+      
+      //console.log($('.btn-go').data('branchid'));
+    });
+
+  });
   
     
  

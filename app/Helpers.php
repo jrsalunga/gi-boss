@@ -196,3 +196,11 @@ if (!function_exists('c')) {
 	}
 }
 
+if (!function_exists('back_btn')) {
+	function back_btn($url) {
+		return empty(URL::previous())
+		? $url
+		: URL::previous();
+	}
+}
+

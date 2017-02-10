@@ -71,6 +71,9 @@ class DepslpController extends Controller {
     }
 
   	$depslips = $this->depslip->skipCache()->monthlyLogs($date, strtoupper($branch->code)	);
+
+  	if($request->has('debug'))
+  		return $depslips;
   	
   	return view('docu.depslp.checklist')
   					->with('date', $date)

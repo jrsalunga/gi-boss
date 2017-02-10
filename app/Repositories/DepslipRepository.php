@@ -59,15 +59,20 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
 
   		$b = $filtered->first();
 
-  		if(!is_null($b))
+  		if(!is_null($b)) {
     		$e = file_exists(config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.$brcode.DS.$b->date->format('m').DS.$b->filename);
-    	else
-    		$e = 0;
-  		
+        $path = config('giligans.path.files.'.app()->environment()).'DEPSLP'.DS.$b->date->format('Y').DS.$brcode.DS.$b->date->format('m').DS.$b->filename;
+      }
+      else {
+        $path = '';
+        $e = 0;
+      }
+
   		array_push($arr, [ 
       		'date'=>$date,
       		'item'=>$b,
-      		'exist'=>$e]
+          'exist'=>$e,
+      		'path'=>$path]
       );
   	}
 

@@ -11,6 +11,7 @@ use App\Handlers\Events\AuthLoginErrorEventHandler;
 use App\Events\UserChangePassword;
 use App\Events\UserLoggedIn;
 use App\Events\UserLoggedFailed;
+use App\Listeners\DepslpEventListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class EventServiceProvider extends ServiceProvider
         UserLoggedFailed::class => [
             AuthLoginErrorEventHandler::class,
         ]
+    ];
+
+    protected $subscribe = [
+        DepslpEventListener::class,
     ];
 
     /**

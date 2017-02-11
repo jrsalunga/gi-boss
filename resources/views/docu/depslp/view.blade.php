@@ -1,15 +1,30 @@
-@extends('index')
+@extends('master')
 
 @section('title', '- View Deposit Slip')
 
 @section('body-class', 'depslp-view')
 
+@section('navbar-2')
+<ul class="nav navbar-nav navbar-right"> 
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
+    </ul>
+  </li>
+</ul>
+<p class="navbar-text navbar-right">{{ $name }}</p>
+@endsection
+
 @section('container-body')
 <div class="container-fluid">
 
   <ol class="breadcrumb">
-    <li><span class="gly gly-shop"></span> <a href="/">{{ $branch }}</a></li>
-    <li><a href="/{{brcode()}}/depslp/log">Deposit Slip</a></li>
+    <li><a href="/"><span class="gly gly-shop"></span> </a></li>
+    <li><a href="/depslp/log">Deposit Slip</a></li>
     <li class="active">{{ $depslp->fileUpload->filename }}</li>
   </ol>
 
@@ -22,7 +37,7 @@
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
-            <a href="/backups" class="btn btn-default">
+            <a href="/storage" class="btn btn-default">
               <span class="fa fa-archive"></span>
               <span class="hidden-xs hidden-sm">Filing System</span>
             </a>
@@ -34,8 +49,8 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="/backups/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
-                <li><a href="/{{brcode()}}/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
+                <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
               </ul>
             </div>
 
@@ -46,18 +61,17 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="/backups/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
-                <li><a href="/{{brcode()}}/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/storage/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
+                <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
               </ul>
             </div>
             
+            <a href="/backup/delinquent" class="btn btn-default">
+              <span class="gly gly-disk-remove"></span> 
+              <span class="hidden-xs hidden-sm">Delinquent</span>
+            </a> 
           </div> <!-- end btn-grp -->
-          <div class="btn-group" role="group">
-            <a href="/{{brcode()}}/uploader" class="btn btn-default">
-              <span class="glyphicon glyphicon-cloud-upload"></span>
-              <span class="hidden-xs hidden-sm">DropBox</span>
-            </a>
-          </div>
+          
         </div>
       </div>
     </nav>
@@ -99,18 +113,20 @@
           </div>
           <div class="panel-footer">
             @if($depslp->verified || $depslp->matched)
-              <a href="/{{brcode()}}/depslp/log" class="btn btn-link"><span class="gly gly-unshare"></span> Back</a>
+              <a href="/depslp/log" class="btn btn-link"><span class="gly gly-unshare"></span> Back</a>
             @else
-              <a href="/{{brcode()}}/depslp/{{$depslp->lid()}}/edit" class="btn btn-primary">Edit</a>
+              <a href="/depslp/{{$depslp->lid()}}/edit" class="btn btn-primary" title="Edit the information">Edit</a>
               <button class="btn btn-default" data-toggle="modal" data-target=".mdl-delete">Delete</button>
-              <a href="/{{brcode()}}/depslp/log" class="btn btn-link">Cancel</a>
+              <a href="/depslp/log" class="btn btn-link">Cancel</a>
+              <!--<a href="/depslp/{{$depslp->lid()}}/verify" class="btn btn-success pull-right" title="Verify the encoded informations are correct">Verify</a>-->
+              <a href="/depslp/{{$depslp->lid()}}?verify=true&user_id={{strtolower(session('user.id'))}}" class="btn btn-success pull-right" title="Verify the encoded informations are correct">Verify</a>
             @endif
           </div>
         </div><!-- end: .panel -->
       </div>
       <div class="col-md-6">
         <?php
-          $src = '/'.brcode().'/images/depslp/'.$depslp->lid().'.'.strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION));
+          $src = '/images/depslp/'.$depslp->lid().'.'.strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION));
         ?>
         @if(strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))==='pdf')
             <iframe style="width: 100%; height: 500px;" src="{{$src}}"></iframe>
@@ -139,6 +155,7 @@
 
 
 <div class="modal fade mdl-delete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+  {!! Form::open(['method'=>'POST', 'url'=>'delete/depslp', 'id'=>'form-file', 'class'=>'form-horizontal', 'enctype'=>'multipart/form-data']) !!}
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -147,19 +164,23 @@
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete <strong>{{ $depslp->fileUpload->filename }}</strong>? This this is irreversible transaction. Please be careful on deleting records. </p>
+        <p></p>
+        <p class="text-muted"><small>Reasons for deletion:</small></p>
+        <p>
+          <textarea name="reason" required style="min-width: 100%; max-width: 100%;"></textarea>
+        </p>
       </div>
       <div class="modal-footer">
         <div class="pull-right">
-          {!! Form::open(['method'=>'POST', 'url'=>'delete/depslp', 'id'=>'form-file', 'class'=>'form-horizontal', 'enctype'=>'multipart/form-data']) !!}
         
           <button type="submit" class="btn btn-primary">Yes</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
           <input type="hidden" name="id" value="{{ $depslp->id }}">
-          {!! Form::close() !!}
         </div>
       </div>
     </div><!-- end: .modal-content  -->
   </div>
+  {!! Form::close() !!}
 </div>
 @endsection
 
@@ -169,25 +190,7 @@
 
 
 @section('js-external')
-  @parent
+  <script src="/js/vendors-common.min.js"></script>
 
-
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- gi- -->
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-
-  $(document).ready(function(){
-
-  @if($depslp->isDeletable())
-    $('.peso').on('dblclick', function(e){
-      e.preventDefault();
-      document.location.href='{{request()->fullUrl()}}?verified=true';
-    });
-  @endif
-
-  });
-</script>
 
 @endsection

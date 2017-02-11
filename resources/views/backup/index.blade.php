@@ -2,7 +2,7 @@
 
 @section('title', '- Backups History')
 
-@section('body-class', 'generate-dtr')
+@section('body-class', 'backup-log')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 

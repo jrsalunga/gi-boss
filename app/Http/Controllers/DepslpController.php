@@ -84,9 +84,9 @@ class DepslpController extends Controller {
 		
 	}
 
-	public function getAction($brcode, $id=null, $action=null) {
-		if(!is_uuid($id) || $brcode!==strtolower(session('user.branchcode')))
-			return redirect($brcode.'/depslp/log');
+	public function getAction($id=null, $action=null) {
+		if(!is_uuid($id))
+			return redirect('/depslp/log');
 
 		if (strtolower($action)==='edit')
 			return $this->editDepslp($id);
@@ -131,19 +131,25 @@ class DepslpController extends Controller {
 
 	private function editDepslp($id) {
 		$depslp = $this->depslip->find($id);
-		if($depslp->verified || $depslp->matched)
+		
+		if(($depslp->verified || $depslp->matched) && (!request()->has('edit')))
 			return $this->viewDepslp($id);
 		return view('docu.depslp.edit', compact('depslp'));
 	}
 
-	public function getImage(Request $request, $brcode, $filename) {
+	public function getImage(Request $request, $filename) {
 
 		$id = explode('.', $filename);
 
-		if(!is_uuid($id[0]) || $brcode!==strtolower(session('user.branchcode')))
+		if(!is_uuid($id[0]))
 			return abort(404);
 
-		$d = $this->depslip->find($id[0]);
+		$d = $this->depslip
+				->skipCache()
+				->with(['branch'=>function($query){
+        	$query->select(['code', 'descriptor', 'id']);
+      	}])
+				->find($id[0]);
 
 		$path = $this->getPath($d);
 
@@ -162,7 +168,7 @@ class DepslpController extends Controller {
 	}
 
 	public function put(Request $request) {
-
+		//return $request->all();
 		$rules = [
 			'date'				=> 'required|date',
 			'time'				=> 'required',
@@ -195,7 +201,7 @@ class DepslpController extends Controller {
 			if (app()->environment()==='production')
 				event(new DepslpChange($old_depslip, $d, $arr));
 
-			return redirect(brcode().'/depslp/'.$d->lid())
+			return redirect('/depslp/'.$d->lid())
 							->with('alert-success', 'Deposit slip is updated!');
 		}
 
@@ -205,7 +211,7 @@ class DepslpController extends Controller {
 
 
 	private function getPath($d) {
-		return 'DEPSLP'.DS.$d->date->format('Y').DS.session('user.branchcode').DS.$d->date->format('m').DS.$d->filename;
+		return 'DEPSLP'.DS.$d->date->format('Y').DS.strtoupper($d->branch->code).DS.$d->date->format('m').DS.$d->filename;
 	}
 
 	public function delete(Request $request) {

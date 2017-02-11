@@ -1,16 +1,46 @@
-@extends('index')
+@extends('master')
 
 @section('title', '- Edit Deposit Slip')
 
 @section('body-class', 'depslp-edit')
 
+@section('navbar-2')
+<ul class="nav navbar-nav navbar-right"> 
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
+    </ul>
+  </li>
+</ul>
+<p class="navbar-text navbar-right">{{ $name }}</p>
+@endsection
+
+@section('navbar-2')
+<ul class="nav navbar-nav navbar-right"> 
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>     
+    </ul>
+  </li>
+</ul>
+<p class="navbar-text navbar-right">{{ $name }}</p>
+@endsection
+
 @section('container-body')
 <div class="container-fluid">
 
   <ol class="breadcrumb">
-    <li><span class="gly gly-shop"></span> <a href="/">{{ $branch }}</a></li>
-    <li><a href="/{{brcode()}}/depslp/log">Deposit Slip</a></li>
-    <li><a href="/{{brcode()}}/depslp/{{$depslp->lid()}}">{{ $depslp->fileUpload->filename }}</a></li>
+    <li><a href="/"><span class="gly gly-shop"></span></a></li>
+    <li><a href="/depslp/log">Deposit Slip</a></li>
+    <li><a href="/depslp/{{$depslp->lid()}}">{{ $depslp->fileUpload->filename }}</a></li>
     <li class="active">Edit</li>
   </ol>
 
@@ -19,7 +49,7 @@
       <div class="container-fluid">
         <div class="navbar-form">
           <div class="btn-group" role="group">
-            <a href="/{{brcode()}}/depslp/log" class="btn btn-default" title="Back to Deposit Slip Log">
+            <a href="/depslp/log" class="btn btn-default" title="Back to Deposit Slip Log">
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
@@ -36,7 +66,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li><a href="/backups/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
-                <li><a href="/{{brcode()}}/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
               </ul>
             </div>
 
@@ -48,17 +78,16 @@
               </button>
               <ul class="dropdown-menu">
                 <li><a href="/backups/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
-                <li><a href="/{{brcode()}}/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
               </ul>
             </div>
             
+            <a href="/backup/delinquent" class="btn btn-default">
+              <span class="gly gly-disk-remove"></span> 
+              <span class="hidden-xs hidden-sm">Delinquent</span>
+            </a> 
           </div> <!-- end btn-grp -->
-          <div class="btn-group" role="group">
-            <a href="/{{brcode()}}/uploader" class="btn btn-default">
-              <span class="glyphicon glyphicon-cloud-upload"></span>
-              <span class="hidden-xs hidden-sm">DropBox</span>
-            </a>
-          </div>
+          
         </div>
       </div>
     </nav>
@@ -148,12 +177,12 @@
             <h6><span class="glyphicon glyphicon-cloud-upload"></span> {{ $depslp->created_at->format('D M j h:i:s A') }} <small>{{ diffForHumans($depslp->created_at) }}</small></h6>
           </div>
           <div class="panel-footer">
-            @if($depslp->verified || $depslp->matched)
-              <a href="/{{brcode()}}/depslp/log" class="btn btn-link"><span class="gly gly-unshare"></span> Back</a>
+            @if(($depslp->verified || $depslp->matched) && (!request()->has('edit')))
+              <a href="/depslp/log" class="btn btn-link"><span class="gly gly-unshare"></span> Back</a>
             @else
               <input type="hidden" name="id" value="{{$depslp->id}}">
               <button type="submit" id="btn-save" data-loading-text="Saving..." class="btn btn-primary" autocomplete="off">Save</button>
-              <a href="/{{brcode()}}/depslp/{{$depslp->lid()}}" class="btn btn-link">Cancel</a>
+              <a href="/depslp/{{$depslp->lid()}}" class="btn btn-link">Cancel</a>
             @endif
           </div>
         </div><!-- end: .panel -->
@@ -161,13 +190,13 @@
       </div>
       <div class="col-md-6">
         <?php
-          $src = '/'.brcode().'/images/depslp/'.$depslp->lid().'.'.strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION));
+          $src = '/images/depslp/'.$depslp->lid().'.'.strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION));
         ?>
         @if(strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))==='pdf')
-          <iframe style="width: 100%; height: 500px;" src="/{{brcode()}}/images/depslp/{{$depslp->lid()}}.{{strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))}}"></iframe>
+          <iframe style="width: 100%; height: 500px;" src="/images/depslp/{{$depslp->lid()}}.{{strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))}}"></iframe>
         @else
         <a href="{{$src}}" target="_blank">
-          <img class="img-responsive" src="/{{brcode()}}/images/depslp/{{$depslp->lid()}}.{{strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))}}">
+          <img class="img-responsive" src="/images/depslp/{{$depslp->lid()}}.{{strtolower(pathinfo($depslp->filename, PATHINFO_EXTENSION))}}">
         </a>
         @endif
         <a href="{{$src}}" target="_blank" style="text-decoration:none;"><span class="fa fa-clone"></span> <small>view</small></a>
@@ -196,7 +225,7 @@
 
 
 @section('js-external')
-  @parent
+  <script src="/js/vendors-common.min.js"></script>
 
 
   <script type="text/javascript">
@@ -224,10 +253,6 @@
   });
   </script>
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
 @endsection

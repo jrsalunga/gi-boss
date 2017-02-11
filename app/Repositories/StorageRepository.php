@@ -121,7 +121,7 @@ class StorageRepository {
   }
 
   public function realFullPath($path){
-    return config('giligans.'.$this->type).$path;
+    return config('giligans.path.'.$this->type).$path;
   }
 
   /**

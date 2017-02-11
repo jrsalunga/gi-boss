@@ -96,7 +96,11 @@
       <tbody>
         @foreach($depslips as $depslip)
         <tr>
-          <td>{{ $depslip->branch->code }}</td>
+          <td title="{{ $depslip->branch->descriptor }}">
+            <a title="filter by {{ $depslip->branch->descriptor }}" href="/depslp/log?search={{strtolower($depslip->branch->code)}}&amp;searchFields=branch.code">
+            {{ $depslip->branch->code }}
+            </a>
+          </td>
           <td>
             <a href="/depslp/{{$depslip->lid()}}">{{ $depslip->fileUpload->filename }}</a>
             @if($depslip->verified and $depslip->matched)
@@ -126,11 +130,13 @@
           <td>
             
             <span class="hidden-xs" data-toggle="tooltip" title="{{ $depslip->deposit_date->format('D m/d/Y h:i A') }}">
+              <a title="filter by {{ $depslip->deposit_date->format('D m/d/Y') }}" href="/depslp/log?search=date:{{$depslip->date->format('Y-m-d')}}">
               @if($depslip->deposit_date->format('Y-m-d')==now())
                 {{ $depslip->deposit_date->format('h:i A') }}
               @else
                 {{ $depslip->deposit_date->format('D M j') }}
               @endif
+              </a>
             </span> 
             <em>
               <small class="text-muted">
@@ -157,7 +163,11 @@
             </em>
             </div>
           </td>
-          <td>{{ $depslip->fileUpload->terminal }}</td>
+          <td>
+            <a title="filter by {{ $depslip->fileUpload->terminal }}" href="/depslp/log?search=fileUpload.terminal:{{$depslip->fileUpload->terminal}}">
+            {{ $depslip->fileUpload->terminal }}
+            </a>
+          </td>
           
         </tr>
         @endforeach

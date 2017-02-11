@@ -8,6 +8,7 @@ use Prettus\Repository\Contracts\CacheableInterface;
 use App\Traits\Repository as RepoTrait;
 use App\Repositories\Criterias\ByBranch2;
 
+
 class DepslipRepository extends BaseRepository implements CacheableInterface
 //class MenucatRepository extends BaseRepository 
 {
@@ -17,11 +18,21 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
 
   public function boot(){
     //$this->pushCriteria(new ByBranch2(request()));
+    $this->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
   }
   
   public function model() {
     return 'App\\Models\\Depslip';
   }
+
+  protected $fieldSearchable = [
+    'branch.code'=>'like',
+    'branch.descriptor'=>'like',
+    'filename'=>'like',
+    'cashier'=>'like',
+    'date',
+    'fileUpload.terminal',
+  ];
 
 
 

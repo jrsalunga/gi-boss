@@ -26,7 +26,7 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
   }
 
   protected $fieldSearchable = [
-    'branch.code'=>'like',
+    'branch.code',
     'branch.descriptor'=>'like',
     'filename'=>'like',
     'cashier'=>'like',

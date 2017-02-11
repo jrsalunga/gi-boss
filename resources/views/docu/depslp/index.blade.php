@@ -97,7 +97,7 @@
         @foreach($depslips as $depslip)
         <tr>
           <td title="{{ $depslip->branch->descriptor }}">
-            <a title="filter by {{ $depslip->branch->descriptor }}" href="/depslp/log?search={{strtolower($depslip->branch->code)}}&amp;searchFields=branch.code">
+            <a title="filter by {{ $depslip->branch->descriptor }}" href="/depslp/log?search=branch.code:{{strtolower($depslip->branch->code)}}">
             {{ $depslip->branch->code }}
             </a>
           </td>

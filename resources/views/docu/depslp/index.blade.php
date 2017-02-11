@@ -102,7 +102,10 @@
             </a>
           </td>
           <td>
-            <a href="/depslp/{{$depslip->lid()}}">{{ $depslip->fileUpload->filename }}</a>
+            <a href="/depslp/{{$depslip->lid()}}">
+            <small>
+              {{ $depslip->fileUpload->filename }}</a>
+            </small>
             @if($depslip->verified and $depslip->matched)
               <span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Matched by {{ $depslip->user->name }}"></span>
             @elseif($depslip->verified and !$depslip->matched)

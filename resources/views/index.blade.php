@@ -124,11 +124,12 @@
 
           <div style="margin-bottom: 10px;">
             
+            <!--
             <a href="/storage" class="btn btn-default btn-sm">
               <span class="gly gly-hdd"></span> 
               <span class="hidden-xs">Filing System</span>
             </a> 
-            <!--
+
             <a href="/backup/checklist" class="btn btn-default btn-sm">
               <span class="fa fa-calendar-check-o"></span> 
               <span class="hidden-xs">Backup Checklist</span>
@@ -138,6 +139,18 @@
               <span class="hidden-xs">Backup Logs</span>
             </a>
             -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="gly gly-hdd"></span>
+                <span class="hidden-xs">Filing System</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/storage"><span class="fa fa-file-archive-o"></span> Backup</a></li>
+                <li><a href="/depslp"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+              </ul>
+            </div>
+
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-calendar-check-o"></span>

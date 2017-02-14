@@ -2,6 +2,7 @@
 use URL;
 use Event;
 use StdClass;
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\DateRange;
@@ -84,14 +85,209 @@ class DepslpController extends Controller {
 		
 	}
 
-	public function getAction($id=null, $action=null) {
-		if(!is_uuid($id))
-			return redirect('/depslp/log');
+	public function getAction($id=null, $action=null, $p=null) {
+		//if(!is_uuid($id))
+		//	return redirect('/depslp/log');
+		
 
-		if (strtolower($action)==='edit')
+		if (strtolower($action)==='edit' && is_uuid($id) && is_null($p))
 			return $this->editDepslp($id);
-		else
+		elseif (is_uuid($id) && is_null($action) && is_null($p))
 			return $this->viewDepslp($id);
+		//elseif (strlen($id)==3)
+		else
+			return $this->getDepslpFileSystem($id, $action, $p);
+		//else
+		//	abort('404');
+	}
+
+	private function getDepslpFileSystem($id, $action, $p) { 
+
+		$paths = [];
+		$r = $this->files->folderInfo('DEPSLP');
+		foreach ($r['subfolders'] as $path => $folder) {
+			$s = $this->files->folderInfo($path);
+			foreach ($s['subfolders'] as $key => $value) {
+				$paths[$key] = $value;
+				//array_push($paths, $value);
+			}
+		}
+
+		
+
+
+		if (is_null($id) && is_null($action) && is_null($p))  {
+
+			$z = array_unique($paths);
+			asort($z);
+
+			$data = [
+				'folder' 			=> "/DEPSLP",
+				'folderName' 	=> 'DEPSLP',
+				'breadcrumbs' => [
+					'/' 				=> "Storage",
+				],
+				'subfolders'	=> $z,
+				'files'				=> []
+			];
+		
+		} elseif ((!is_null($id) && is_null($action) && is_null($p)) && in_array(strtoupper($id), $paths))  {
+
+			$dirs = [];
+
+			foreach ($r['subfolders'] as $path => $folder) {
+				if($this->files->exists($path.DS.strtoupper($id)))
+					$dirs[$path] = $folder;
+			}
+
+			$data = [
+				'folder' 			=> "/DEPSLP/".strtoupper($id),
+				'folderName' 	=> strtoupper($id),
+				'breadcrumbs' => [
+					'/' 				=> "Storage",
+					'/DEPSLP'		=> "DEPSLP",
+				],
+				'subfolders'	=> $dirs,
+				'files'				=> []
+			];
+
+
+		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && is_null($p))  {
+
+			$root = $this->files->folderInfo('DEPSLP/'.$action.'/'.strtoupper($id));
+			$data = [
+				'folder' 			=> "/DEPSLP/".strtoupper($id).'/'.$action,
+				'folderName' 	=> $action,
+				'breadcrumbs' => [
+					'/' 				=> "Storage",
+					'/DEPSLP'		=> "DEPSLP",
+					'/DEPSLP/'.strtoupper($id) 	=> strtoupper($id),
+				],
+				'subfolders'	=> $root['subfolders'],
+				'files'				=> $root['files']
+			];
+
+		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && (!is_null($p) && is_month($p)))  {
+
+			$root = $this->files->folderInfo('DEPSLP/'.$action.'/'.strtoupper($id).'/'.$p);
+			$data = [
+				'folder' 			=> "/DEPSLP/".strtoupper($id).'/'.$action.'/'.$p,
+				'folderName' 	=> $p,
+				'breadcrumbs' => [
+					'/' 				=> "Storage",
+					'/DEPSLP'		=> "DEPSLP",
+					'/DEPSLP/'.strtoupper($id) 	=> strtoupper($id),
+					'/DEPSLP/'.strtoupper($id).'/'.$action 	=> $action,
+				],
+				'subfolders'	=> $root['subfolders'],
+				'files'				=> $root['files']
+			];
+			
+			
+
+		} else {
+
+		}
+
+
+		//return $data;
+		return view('docu.depslp.filelist')->with('data', $data);
+
+	}
+
+	private function getDepslpFileSystems($id, $action, $p) {
+		$branch = $this->branch->findWhere(['code'=>$id])->first();
+
+			$paths = [];
+		if (is_null($branch) && is_null($action) && is_null($p))  {
+
+				//if (is_null($branch) && !is_null($id)) // with $brancid but no record found
+				//	return abort('404');
+	
+			$depslp_root = $this->files->folderInfo('DEPSLP');
+			foreach ($depslp_root['subfolders'] as $path => $folder) {
+				$x = $this->files->folderInfo($path);
+				foreach ($x['subfolders'] as $key => $value) {
+					$paths[$key] = $value;
+					//array_push($paths, $value);
+				}
+			}
+
+			$z = array_unique($paths);
+			asort($z);
+
+			$data = [
+				'folder' 			=> "/DEPSLP",
+				'folderName' 	=> 'DEPSLP',
+				'breadcrumbs' => [
+					'/' 				=> "Storage",
+				],
+				'subfolders'	=> $z,
+				'files'				=> []
+			];
+
+		} else {
+
+
+			$dirs = [];
+
+			foreach ($depslp_root['subfolders'] as $path => $folder) {
+				if($this->files->exists($path.DS.strtoupper($branch->code)))
+					$dirs[$path] = $folder;
+
+					$x = $this->files->folderInfo($path);
+					array_push($paths, $x['subfolders']);
+			}
+
+
+			if (!is_null($id) && is_null($action) && is_null($action))	{
+				$data = [
+					'folder' 			=> "/DEPSLP/".$branch->code,
+					'folderName' 	=> $branch->code,
+					'breadcrumbs' => [
+						'/' 				=> "Storage",
+						'/DEPSLP'		=> "DEPSLP",
+					],
+					'subfolders'	=> $dirs,
+					'files'				=> []
+				];
+				//return $data = $this->files->folderInfo($branch->code);
+			}	else if (in_array($action, $dirs) && is_null($p)) {
+				$d = $this->files->folderInfo(array_search($action, $dirs).'/'.$branch->code);
+				$data = [
+					'folder' 			=> "/DEPSLP/".$branch->code."/".$action,
+					'folderName'  => $action,
+					'breadcrumbs' => [
+						'/' 				=> "Storage",
+						'/DEPSLP'   => "DEPSLP",
+						'/DEPSLP/'.$branch->code => $branch->code,
+					],
+					'subfolders' 	=> $d['subfolders'],
+					'files' 			=> $d['files']
+				];
+			}	elseif (in_array($action, $dirs) && is_month($p)) {
+				$d = $this->files->folderInfo(array_search($action, $dirs).'/'.$branch->code.'/'.$p);
+				$data = [
+					'folder' 			=> "/DEPSLP/".$branch->code."/".$action."/".$p,
+					'folderName'  => $p,
+					'breadcrumbs' => [
+						'/' 				=> "Storage",
+						'/DEPSLP' 	=> "DEPSLP",
+						'/DEPSLP/'.$branch->code => $branch->code,
+						'/DEPSLP/'.$branch->code.'/'.$action => $action,
+					],
+					'subfolders' 	=> $d['subfolders'],
+					'files' 			=> $d['files']
+				];
+			} else {
+				return 'fasfa';// abort('404');
+			}
+
+		}
+
+		//return $data;
+		
+		return view('docu.depslp.filelist')->with('data', $data);
 	}
 
 
@@ -243,6 +439,32 @@ class DepslpController extends Controller {
 		}
 		return redirect()->back()->withErrors('Error while deleting record!');
 	}
+
+
+	public function getDownload(Request $request, $p1=NULL, $p2=NULL, $p3=NULL, $p4=NULL){
+   
+    if(is_null($p2) || is_null($p2) || is_null($p3) || is_null($p4)){
+    	return abort('404');
+    }
+
+    $path = 'DEPSLP/'.$p1.'/'.$p2.'/'.$p3.'/'.$p4;
+
+		logAction('backup:download', 'user:'.$request->user()->username.' '.$path);
+
+		try {
+		
+			$file = $this->files->get($path);
+			$mimetype = $this->files->fileMimeType($path);
+
+	    $response = \Response::make($file, 200);
+		 	$response->header('Content-Type', $mimetype);
+	  	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
+
+		  return $response;
+		} catch (\Exception $e) {
+			return abort('404');
+		}
+  }
 
 
 

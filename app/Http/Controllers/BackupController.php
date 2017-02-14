@@ -23,7 +23,7 @@ use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 class BackupController extends Controller 
 {
 
-	protected $files;
+	protected $file;
 	protected $pos;
 	protected $fs;
 	protected $branch;
@@ -35,6 +35,7 @@ class BackupController extends Controller
 	public function __construct(Request $request, PhpRepository $mimeDetect, BackupRepository $backuprepository){
 
 		$this->disk = new StorageRepository($mimeDetect, 'backup.'.app()->environment());
+		$this->file = new StorageRepository($mimeDetect, 'files.'.app()->environment());
 		$this->repository = $backuprepository;
 		$this->branch = new BranchRepository(app(), new Collection);
 	
@@ -61,6 +62,13 @@ class BackupController extends Controller
 		
 		return dd($this->disk);
 		return $request->all();
+	}
+
+	public function getFileStorage(Request $request, $p1=NULL, $p2=NULL, $p3=NULL) {
+		$folder = $p1.'/'.$p2.'/'.$p3;
+
+		$data = $this->file->folderInfo($folder);
+
 	}
 
 

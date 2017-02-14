@@ -22,7 +22,6 @@ Route::get('/storage/log',  ['uses'=>'BackupController@getHistory']);
 Route::get('/backup/delinquent',  ['uses'=>'BackupController@getDelinquent']);
 Route::get('/show/delinquent',  ['uses'=>'BackupController@delinquent']);
 Route::get('/storage/{param1?}/{param2?}/{param3?}',  ['uses'=>'BackupController@getStorage']);
-Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
 /*
 Route::get('status/branch/{branchid?}', ['uses'=>'BranchController@getStatus'])
@@ -62,10 +61,12 @@ Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSO
 /** Depslip **/
 Route::get('depslp/log', ['uses'=>'DepslpController@getHistory']);
 Route::get('depslp/checklist', ['uses'=>'DepslpController@getChecklist']);
-Route::get('depslp/{id?}/{action?}', ['uses'=>'DepslpController@getAction']);
+Route::get('depslp/{id?}/{action?}/{p?}', ['uses'=>'DepslpController@getAction']);
 Route::get('images/depslp/{id?}', ['uses'=>'DepslpController@getImage']);
 Route::put('put/depslp', ['uses'=>'DepslpController@put']);
 Route::post('delete/depslp', ['uses'=>'DepslpController@delete']);
+Route::get('download/DEPSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'DepslpController@getDownload']);
+Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
 
 /******************* API  *************************************************/

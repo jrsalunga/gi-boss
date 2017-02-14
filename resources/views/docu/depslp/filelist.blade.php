@@ -162,7 +162,7 @@
                   <span class="fa fa-file-archive-o"></span>
                 @elseif($file['type']=='img')
                   <span class="fa fa-file-image-o"></span>
-                @elseif($file['type']=='img')
+                @elseif($file['type']=='file')
                   <span class="fa fa-file-pdf-o"></span>
                 @else
                   <span class="fa file-o"></span>

@@ -1113,7 +1113,7 @@
 
     
 
-      $('.btn-purch').on('click', function(e){
+      $('.btn-purch-x').on('click', function(e){
         e.preventDefault();
         var data = {};
         data.date = $(this).data('date');

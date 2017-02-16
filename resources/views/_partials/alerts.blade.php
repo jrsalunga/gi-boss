@@ -40,3 +40,12 @@
     </button>
   </div>
 @endif
+
+@if(session()->has('depslp.delete'))
+  <div class="alert alert-success {{ session()->has('alert-important') ? 'alert-important':'' }}" style="margin-bottom: 0;">
+   The record of <b>{{ session('depslp.delete')->fileUpload->filename }}</b> was deleted and removed from the server!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+@endif

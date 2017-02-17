@@ -84,7 +84,8 @@
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
                   <td class="text-right">
-                    {{ number_format($ds->today->sales,2) }} 
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}">
+                      {{ number_format($ds->today->sales,2) }}</a>
                     @if($ds->today->sign=='+')
                       <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
                     @elseif($ds->today->sign=='-')
@@ -94,7 +95,8 @@
                     @endif
                   </td>
                   <td class="text-right">
-                    {{ number_format($ds->yesterday->sales,2) }} 
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}">
+                      {{ number_format($ds->yesterday->sales,2) }}</a>
                     @if($ds->yesterday->sign=='+')
                       <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
                     @elseif($ds->yesterday->sign=='-')
@@ -103,7 +105,10 @@
 
                     @endif
                   </td>
-                  <td class="text-right  hidden-xs">{{ number_format($ds->otherday->sales,2) }}</td>
+                  <td class="text-right  hidden-xs">
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}">
+                      {{ number_format($ds->otherday->sales,2) }}</a>
+                  </td>
                 </tr>
               @endforeach
             </tbody>

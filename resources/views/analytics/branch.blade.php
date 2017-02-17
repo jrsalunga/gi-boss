@@ -244,7 +244,7 @@
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
               ?>
 
-            <tr>
+            <tr data-dailysalesid="{{strtolower($d->dailysale['id'])}}">
               <td data-sort="{{$d->date->format('Y-m-d')}}">
                 {{ $d->date->format('M j, D') }}
               </td>
@@ -1113,7 +1113,7 @@
 
     
 
-      $('.btn-purch').on('click', function(e){
+      $('.btn-purchx').on('click', function(e){
         e.preventDefault();
         var data = {};
         data.date = $(this).data('date');
@@ -1145,11 +1145,70 @@
 
       });
 
-      $('.btn-purch-x').on('click', function(e){
+      var ghtml = '<div class="modal-header">'
+                +'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                +'<h4 class="modal-title" id="myModalLabel">Loading</h4></div>'
+                +'<div class="modal-body"><p class="text-center"><img src="/images/spinner_google.gif"></p><p class="text-center">Loading content...</p></div>';
+
+      var module = 0;
+      $('.btn-purch').on('click', function(e){
         e.preventDefault();
-        fetchPurchasedView()
+        fetchPurchasedView($(this).parent().parent().data('dailysalesid'), $(this).data('date'));
       });
 
+      var pLastId = 0;
+      var fetchPurchasedView = function(id, date) {
+        var m = 1;
+        if (pLastId===id && module==m) {
+          $('#mdl-generic').modal('show');
+        } else {
+          $('#mdl-generic').modal('show');
+          $('#mdl-generic .modal-content').html(ghtml);
+          pLastId=id;
+          module = 1;
+
+          return $.ajax({
+            method: 'GET',
+            url: '/api/mdl/purchases/'+id,
+            dataType: 'html',
+            data: {
+              branchid: $('#branchid').val(),
+              fr: date,
+              to: date
+            },
+            beforeSend: function(jqXHR, obj) {
+              
+              $('#mdl-generic .modal-content').html(ghtml);
+              
+            },
+            success: function(data, textStatus, jqXHR) {
+              
+              $('#mdl-generic .modal-content').html(data);
+
+              $('.tb-component-data').tablesorter({sortList: [[3,1]]});
+              $('.tb-compcat-data').tablesorter({sortList: [[3,1]]});
+              $('.tb-expense-data').tablesorter({sortList: [[3,1]]});
+              $('.tb-expscat-data').tablesorter({sortList: [[3,1]]});
+              $('.tb-payment-data').tablesorter({sortList: [[3,1]]});
+              $('.tb-supplier-data').tablesorter({sortList: [[3,1]]});
+              var componentChart = new Highcharts.Chart(getOptions('graph-pie-component-sale', 'component-purch-data'));
+              var compcatChart = new Highcharts.Chart(getOptions('graph-pie-compcat-sale', 'compcat-purch-data'));
+              var expenseChart = new Highcharts.Chart(getOptions('graph-pie-expense-sale', 'expense-purch-data'));
+              var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat-sale', 'expscat-purch-data'));
+              var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment-sale', 'payment-purch-data'));
+              var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier-sale', 'supplier-purch-data'));
+
+             
+            },
+            error: function(data, textStatus, jqXHR) {
+              console.log('error');
+              console.log(data);
+              console.log(textStatus);
+              console.log(jqXHR);
+            }
+          })
+        }
+      }
 
       $('.btn-slsmtd-totgrs').on('click', function(e){
         e.preventDefault();
@@ -1157,12 +1216,14 @@
       });
 
       var fetchSalesView = function(id, date) {
-        if (lastId===id) {
-          console.log('same last id'); 
+        var m = 2;
+        if (lastId===id && module==m) {
           $('#mdl-generic').modal('show');
         } else {
           $('#mdl-generic').modal('show');
           lastId=id;
+          module=2;
+
 
           return $.ajax({
             method: 'GET',
@@ -1174,11 +1235,8 @@
               to: date
             },
             beforeSend: function(jqXHR, obj) {
-              var html = '<div class="modal-header">'
-                +'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                +'<h4 class="modal-title" id="myModalLabel">Loading</h4></div>'
-                +'<div class="modal-body"><p class="text-center"><img src="/images/spinner_google.gif"></p><p class="text-center">Loading content...</p></div>';
-              $('#mdl-generic .modal-content').html(html);
+              
+              $('#mdl-generic .modal-content').html(ghtml);
               
             },
             success: function(data, textStatus, jqXHR) {

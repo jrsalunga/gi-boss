@@ -64,6 +64,7 @@
               <thead>
                 <tr>
                   <th>Order Time</th>
+                  <th>Slip No</th>
                   <th>Product</th>
                   <th class="text-right">Qty</th>
                   <th class="text-right">Price</th>
@@ -73,14 +74,25 @@
                 </tr>
               </thead>
               <tbody>
+                <?php
+                  $last_slip = 1;
+                ?>
                 @foreach($data['sales'] as $sale)
+                  <?php
+                    if ($last_slip!=$sale->cslipno) {
+                      $last_slip = $sale->cslipno;
+                      //$color = rand_color();
+                      $color = sprintf("#%06x",rand(0,16777215));
+                    }
+                  ?>
                   <tr>
                     <td title="{{ $sale->ordtime->format('D M j, Y h:i A') }}">
                       <small class="text-muted">{{ $sale->ordtime->format('h:i A') }}</small>
                     </td>
+                    <td><small class="text-muted" style="color: {{$color}};">{{ $sale->cslipno }}</small></td>
                     <td>{{ $sale->product }} <small><span class="label label-primary">{{ $sale->group }}</span></small></td>
-                    <td class="text-right">{{ number_format($sale->qty, 2)+0 }}</td>
-                    <td class="text-right">{{ number_format($sale->uprice,2) }}</td>
+                    <td class="text-right"><small class="text-muted">{{ number_format($sale->qty, 2)+0 }}</small></td>
+                    <td class="text-right"><small class="text-muted">{{ number_format($sale->uprice,2) }}</small></td>
                     <td class="text-right">{{ number_format($sale->grsamt,2) }}</td>
                     <td><small class="text-muted">{{ $sale->prodcat }}</small></td>
                     <td><small class="text-muted">{{ $sale->menucat }}</small></td>

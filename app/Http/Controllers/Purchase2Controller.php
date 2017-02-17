@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Purchase2Repository as PurchaseRepo;
 use App\Http\Requests\GetComponentPurchasedRequest;
 use App\Repositories\BossBranchRepository as BBRepo;
+use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\BranchRepository;
 use App\Models\Component;
@@ -22,11 +23,14 @@ class Purchase2Controller extends Controller {
 
 	protected $purchased;
   protected $dr;
+  protected $ds;
   protected $bb;
+  protected $branch;
 
-  public function __construct(PurchaseRepo $purchased, BBRepo $bbrepo, DateRange $dr) {
+  public function __construct(PurchaseRepo $purchased, BBRepo $bbrepo, DateRange $dr, DSRepo $ds) {
     $this->purchased = $purchased;
     $this->dr = $dr;
+    $this->ds = $ds;
     $this->bb = $bbrepo;
     $this->bb->pushCriteria(new BossBranchCriteria);
     $this->branch = new BranchRepository;
@@ -145,6 +149,66 @@ class Purchase2Controller extends Controller {
 	
 	}
 
+
+
+  public function ajaxPurchases(Request $request, $id) {
+
+    ///if($request->ajax()) {
+      $data = $this->modalPurchasesData($request, $id);
+      return response()->view('analytics.modal.mdl-purchases', compact('data'))->header('Content-Type', 'text/html');
+    //} else
+    //  return abort('404');
+  }
+
+  public function modalPurchasesData(Request $request, $id) {
+    
+    $this->dr->setDateRangeMode($request, 'daily');
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')), ['code', 'id']);
+    } catch (Exception $e) {
+      return false;
+    }
+
+    $where['purchase.branchid'] = $branch->id;
+
+    $ds = $this->ds
+    ->skipCache()
+    ->find($id);
+
+    $purchases = $this->purchased
+                    ->branchByDR($branch, $this->dr)
+                    ->findWhere($where);
+    $components = $this->purchased
+                  ->brComponentByDR($this->dr)
+                  ->findWhere($where);
+    $compcats = $this->purchased
+                  ->brCompCatByDR($this->dr)
+                  ->findWhere($where);
+    $expenses = $this->purchased
+                  ->brExpenseByDR($this->dr)
+                  ->findWhere($where); 
+    $expscats = $this->purchased
+                  ->brExpsCatByDR($this->dr)
+                  ->findWhere($where);
+    $suppliers = $this->purchased
+                  ->brSupplierByDR($this->dr)
+                  ->findWhere($where); 
+    $payments = $this->purchased
+                  ->brPaymentByDR($this->dr)
+                  ->findWhere($where); 
+
+    return [
+      'ds' => $ds,
+      'purchases' => $purchases,
+      'components' => $components,
+      'compcats' => $compcats,
+      'expenses' => $expenses,
+      'expscats' => $expscats,
+      'suppliers' => $suppliers,
+      'payments' => $payments
+    ];    
+  }
 
 
 

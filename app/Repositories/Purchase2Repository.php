@@ -60,7 +60,8 @@ class Purchase2Repository extends BaseRepository
                     ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
                     ->select(DB::raw('component.descriptor as component, count(purchase.componentid) as tran_cnt, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost'))
                     ->groupBy('purchase.componentid')
-                    ->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
+                    ->orderBy('purchase.date', 'asc');
+                    //->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
     });
   }
 

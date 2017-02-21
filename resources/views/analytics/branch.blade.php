@@ -259,9 +259,16 @@
                 @endif
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
-                <a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch">
+
+                 @if($d->dailysale['purchcost']>0)
+                  <a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch">
                   {{ number_format($d->dailysale['purchcost'], 2) }}
-                </a>
+                  </a>
+                @else
+                  {{ number_format($d->dailysale['purchcost'], 2) }}
+                @endif
+
+                
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
@@ -1247,10 +1254,12 @@
               $('.tb-product-data').tablesorter({sortList: [[2,1]]});
               $('.tb-prodcat-data').tablesorter({sortList: [[2,1]]});
               $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
+              $('.tb-groupies-data').tablesorter({sortList: [[0,0]]});
 
               var productChart = new Highcharts.Chart(getOptions('graph-pie-product-sale', 'product-sale-data'));
               var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat-sale', 'prodcat-sale-data'));
               var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat-sale', 'menucat-sale-data'));
+              var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
 
              
             },

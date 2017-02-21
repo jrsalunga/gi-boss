@@ -16,7 +16,6 @@ use App\Models\Prodcat;
 use App\Models\Menucat;
 
 
-
 class SaleController extends Controller { 
 
 	protected $sale;
@@ -79,16 +78,15 @@ class SaleController extends Controller {
         $filter->item = '';
       }
 
-       $sales = $this->sale
-                //->skipCache()
-                ->byDateRange($this->dr)
-                ->findWhere($where);
+      //$sales = $this->sale->byDateRange($this->dr)->findWhere($where);
 
     } else {
-      $sales = null;
       $filter->table = '';
       $filter->id = '';
       $filter->item = '';
+      
+
+      
     }
 
 
@@ -112,12 +110,16 @@ class SaleController extends Controller {
 
     $where['salesmtd.branch_id'] = $branch->id;
 
-   
+    $sales = null;
+    if ($this->dr->fr->eq($this->dr->to))
+        $sales = $this->sale->skipCache()->byDateRange($this->dr)->findWhere($where);
 
     $ds = $this->ds
           //->skipCache()
           ->sumByDateRange($this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d'))
           ->findWhere(['branchid'=>$branch->id])->all();
+
+    $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
     
     $products = $this->sale
           ->skipCache()
@@ -137,12 +139,30 @@ class SaleController extends Controller {
    
     
 
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies);
+  }
+
+
+  private function aggregateGroupies($grps) {
+    $arr = [];
+
+    foreach ($grps as $key => $value) {
+      if(array_key_exists($value['group'], $arr)) {
+        $arr[$value['group']]['qty'] += $value['qty'];
+        $arr[$value['group']]['grsamt'] += $value['grsamt'];
+      } else {
+        $arr[$value['group']]['group'] = $value['group'];
+        $arr[$value['group']]['qty'] = $value['qty'];
+        $arr[$value['group']]['grsamt'] = $value['grsamt'];
+      }
+    }
+
+    return $arr;
   }
 
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null) {
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
@@ -152,6 +172,7 @@ class SaleController extends Controller {
                 ->with('ds', $ds)
                 ->with('products', $products)
                 ->with('prodcats', $prodcats)
+                ->with('groupies', $groupies)
                 ->with('menucats', $menucats));
   }
 
@@ -213,12 +234,15 @@ class SaleController extends Controller {
           ->brMenucatByDR($this->dr)
           ->findWhere($where);
 
+    $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
+
 
     $data = [
       'ds' => $ds,
       'sales' => $sales,
       'products' => $products,
       'prodcats' => $prodcats,
+      'groupies' => $groupies,
       'menucats' => $menucats
     ];
 

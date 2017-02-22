@@ -231,7 +231,7 @@
                       </td>
                       <td><small><span class="label label-primary">{{ $sale->group }}</span></small></td>
                       <td data-id="{{$sale->lid()}}">{{ $sale->product }}</td>
-                      <td><small class="text-muted">{{ number_format($sale->qty, 2) }} d</small></td>
+                      <td><small class="text-muted">{{ number_format($sale->qty, 2) }}</small></td>
                       <td class="text-right"><small class="text-muted">{{ number_format($sale->uprice, 2) }}</small></td>
                       <td class="text-right">{{ number_format($sale->grsamt, 2) }}</td>
                       <td><small class="text-muted">{{ $sale->prodcat }}</small></td>
@@ -545,7 +545,7 @@
                                 <td>{{ $key }}</td>
                                 <td>{{ $mp['product'] }}</td>
                                 <td>{{ number_format($mp['qty'], 2) }}</td>
-                                <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
+                                <td class="text-right">{{ number_format($mp['grsamt'], 0) }}</td>
                               </tr>
                             <?php $t+=$mp['grsamt']; ?>
                             @endforeach

@@ -505,7 +505,9 @@ class DepslpController extends Controller {
 
 	    $response = \Response::make($file, 200);
 		 	$response->header('Content-Type', $mimetype);
-	  	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
+	  	
+	  	if ($request->has('download') && $request->input('download')=='true')
+	  		$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
 		  return $response;
 		} catch (\Exception $e) {

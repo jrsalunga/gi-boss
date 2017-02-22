@@ -171,7 +171,16 @@
 
                 {{ $file['name'] }}</td>
                 
-                <td><a href="/download{{ $file['fullPath'] }}"><span class="glyphicon glyphicon-download-alt"></span></a></td>
+                <td>
+                  
+                  <a style="text-decoration: none; margin-right: 10px;" href="/download{{ $file['fullPath'] }}" target="SingleSecondaryWindowName" 
+                    onclick="openRequestedSinglePopup(this.href); return false;" title="View">
+                    <span class="fa fa-clone"></span>
+                  </a>
+                  
+                  <a href="/download{{ $file['fullPath'] }}?download=true" title="Download"><span class="glyphicon glyphicon-download-alt"></span></a>
+
+                </td>
                 
                 <td>{{ human_filesize($file['size']) }}</td>
                 <td class="hidden-xs hidden-sm">{{ $file['type'] or 'Unknown' }}</td>
@@ -197,9 +206,29 @@
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   
-  <script>
-  
-    
- 
+  <script type="text/javascript">
+    var strWindowFeatures = "top=200,left=400,width=800,height=500,resizable,scrollbars=yes,status=no,location=no,menubar=no";
+    var windowObjectReference = null; // global variable
+    var PreviousUrl; /* global variable which will store the
+                        url currently in the secondary window */
+
+    function openRequestedSinglePopup(strUrl) {
+      if(windowObjectReference == null || windowObjectReference.closed) {
+        windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
+             strWindowFeatures);
+      } else if(PreviousUrl != strUrl) {
+        windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName", strWindowFeatures);
+        /* if the resource to load is different,
+           then we load it in the already opened secondary window and then
+           we bring such window back on top/in front of its parent window. */
+        windowObjectReference.focus();
+      } else {
+        windowObjectReference.focus();
+      };
+
+      PreviousUrl = strUrl;
+      /* explanation: we store the current url in order to compare url
+         in the event of another call of this function. */
+    }
   </script>
 @endsection

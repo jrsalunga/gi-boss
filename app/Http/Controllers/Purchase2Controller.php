@@ -153,11 +153,11 @@ class Purchase2Controller extends Controller {
 
   public function ajaxPurchases(Request $request, $id) {
 
-    ///if($request->ajax()) {
+    if($request->ajax()) {
       $data = $this->modalPurchasesData($request, $id);
       return response()->view('analytics.modal.mdl-purchases', compact('data'))->header('Content-Type', 'text/html');
-    //} else
-    //  return abort('404');
+    }
+    return abort('404');
   }
 
   public function modalPurchasesData(Request $request, $id) {

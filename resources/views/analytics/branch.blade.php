@@ -260,14 +260,13 @@
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
 
-                 @if($d->dailysale['purchcost']>0)
+                @if($d->dailysale['purchcost']>0)
                   <a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch">
                   {{ number_format($d->dailysale['purchcost'], 2) }}
                   </a>
                 @else
                   {{ number_format($d->dailysale['purchcost'], 2) }}
                 @endif
-
                 
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>

@@ -544,7 +544,7 @@
                               <tr>
                                 <td>{{ $key }}</td>
                                 <td>{{ $mp['product'] }}</td>
-                                <td>{{ number_format($mp['qty'], 2)+0 }}</td>
+                                <td>{{ number_format($mp['qty'], 2) }}</td>
                                 <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
                               </tr>
                             <?php $t+=$mp['grsamt']; ?>
@@ -571,7 +571,7 @@
                             <?php $t+=$mp['grsamt']; ?>
                             @endforeach
                               <tr>
-                                <td>Sales of not Groupies</td>
+                                <td>Sales of not Meal Promo</td>
                                 <td>{{ $ds->sales-$t }}</td>
                               </tr>
                           </tbody>

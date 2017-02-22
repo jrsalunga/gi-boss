@@ -153,11 +153,11 @@ class SaleController extends Controller {
 
     foreach ($grps as $key => $value) {
       if(array_key_exists($value['group'], $arr)) {
-        $arr[$value['group']]['qty'] += $value['qty'];
+        $arr[$value['group']]['qty']    += $value['qty'];
         $arr[$value['group']]['grsamt'] += $value['grsamt'];
       } else {
-        $arr[$value['group']]['group'] = $value['group'];
-        $arr[$value['group']]['qty'] = $value['qty'];
+        $arr[$value['group']]['group']  = $value['group'];
+        $arr[$value['group']]['qty']    = $value['qty'];
         $arr[$value['group']]['grsamt'] = $value['grsamt'];
       }
     }

@@ -120,7 +120,12 @@ class SaleController extends Controller {
           ->findWhere(['branchid'=>$branch->id])->all();
 
     $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
-    $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, '614D4411BDF211E6978200FF18C615EC')->findWhere($where));
+
+    $menucatid = (app()->environment()==='production') 
+      ? 'E83A9DAEBC3711E6856EC3CDBB4216A7'
+      : '614D4411BDF211E6978200FF18C615EC';
+
+    $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, $menucatid)->findWhere($where));
 
     
     $products = $this->sale

@@ -475,7 +475,7 @@
                             @foreach($groupies as $key => $groupie)
                               <tr>
                                 <td>{{ $key }}</td>
-                                <td>{{ number_format($groupie['qty'], 2)+0 }}</td>
+                                <td>{{ number_format($groupie['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($groupie['grsamt'], 2) }}</td>
                               </tr>
                             <?php $t+=$groupie['grsamt']; ?>

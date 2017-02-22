@@ -120,6 +120,8 @@ class SaleController extends Controller {
           ->findWhere(['branchid'=>$branch->id])->all();
 
     $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
+    $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, '614D4411BDF211E6978200FF18C615EC')->findWhere($where));
+
     
     $products = $this->sale
           ->skipCache()
@@ -139,7 +141,7 @@ class SaleController extends Controller {
    
     
 
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps);
   }
 
 
@@ -160,9 +162,34 @@ class SaleController extends Controller {
     return $arr;
   }
 
+  private function aggregateMPs($mps) {
+    $arr['ordered'] = [];
+    $arr['cancelled'] = [];
+
+    foreach ($mps as $key => $value) {
+
+      if ($value['grsamt'] > 0 && $value['qty'] > 0) {
+        
+        if(array_key_exists($value['productcode'],  $arr['ordered'])) {
+          $arr['ordered'][$value['productcode']]['qty'] += $value['qty'];
+          $arr['ordered'][$value['productcode']]['grsamt'] += $value['grsamt'];
+        } else {
+          $arr['ordered'][$value['productcode']]['productcode'] = $value['productcode'];
+          $arr['ordered'][$value['productcode']]['product'] = $value['product'];
+          $arr['ordered'][$value['productcode']]['qty'] = $value['qty'];
+          $arr['ordered'][$value['productcode']]['grsamt'] = $value['grsamt'];
+        }
+      } else {
+        array_push($arr['cancelled'], $value);
+      }
+    }
+
+    return $arr;
+  }
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null) {
+
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
@@ -173,6 +200,7 @@ class SaleController extends Controller {
                 ->with('products', $products)
                 ->with('prodcats', $prodcats)
                 ->with('groupies', $groupies)
+                ->with('mps', $mps)
                 ->with('menucats', $menucats));
   }
 
@@ -190,11 +218,13 @@ class SaleController extends Controller {
 
 
   public function ajaxSales(Request $request, $id) {
-    $data = $this->modalSalesData($request, $id);
 
-    return response()->view('analytics.modal.mdl-sales', compact('data'))
+    if ($request->ajax()) {
+      $data = $this->modalSalesData($request, $id);
+      return response()->view('analytics.modal.mdl-sales', compact('data'))
                   ->header('Content-Type', 'text/html');
-   // return view('analytics.modal.mdl-sales');
+    }
+    return abort('404');
   }
 
   private function modalSalesData(Request $request, $id) {
@@ -235,7 +265,7 @@ class SaleController extends Controller {
           ->findWhere($where);
 
     $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
-
+    $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, '614D4411BDF211E6978200FF18C615EC')->findWhere($where));
 
     $data = [
       'ds' => $ds,
@@ -243,6 +273,7 @@ class SaleController extends Controller {
       'products' => $products,
       'prodcats' => $prodcats,
       'groupies' => $groupies,
+      'mps' => $mps,
       'menucats' => $menucats
     ];
 

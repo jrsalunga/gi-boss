@@ -1254,11 +1254,14 @@
               $('.tb-prodcat-data').tablesorter({sortList: [[2,1]]});
               $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
               $('.tb-groupies-data').tablesorter({sortList: [[0,0]]});
+              $('.tb-mp-data').tablesorter({sortList: [[1,0]]});
 
               var productChart = new Highcharts.Chart(getOptions('graph-pie-product-sale', 'product-sale-data'));
               var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat-sale', 'prodcat-sale-data'));
               var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat-sale', 'menucat-sale-data'));
               var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
+              var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
+              var mpChart = new Highcharts.Chart(getOptions('graph-pie-mp', 'mp-data'));
 
              
             },

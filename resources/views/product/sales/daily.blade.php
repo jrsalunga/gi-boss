@@ -515,6 +515,75 @@
             </div>
           </div><!-- end: .panel.panel-default -->
 
+          <!-- Meal Promo Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Meal Promo Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-mp" data-table="#mp-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                        <table class="tb-mp-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Meal Promo</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($mps['ordered'] as $key => $mp)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $mp['product'] }}</td>
+                                <td>{{ number_format($mp['qty'], 2)+0 }}</td>
+                                <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
+                              </tr>
+                            <?php $t+=$mp['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      <table id="mp-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Meal Promo</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $t=0; ?>
+                            @foreach($mps['ordered'] as $mp)
+                              <tr>
+                                <td>{{ $mp['product'] }}</td>
+                                <td>{{ $mp['grsamt'] }}</td>
+                              </tr>
+                            <?php $t+=$mp['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of not Groupies</td>
+                                <td>{{ $ds->sales-$t }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
         </div><!-- end: #stats -->
       </div>
     </div><!-- end: .col-md-12 -->
@@ -754,6 +823,7 @@
     $('.tb-prodcat-data').tablesorter({sortList: [[1,1]]});
     $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
     $('.tb-groupies-data').tablesorter({sortList: [[0,0]]});
+    $('.tb-mp-data').tablesorter({sortList: [[1,0]]});
    
 
 
@@ -762,6 +832,7 @@
       var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
       var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));
       var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
+      var mpChart = new Highcharts.Chart(getOptions('graph-pie-mp', 'mp-data'));
     @endif
 
 

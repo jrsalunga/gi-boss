@@ -24,6 +24,7 @@ class BackupController extends Controller
 {
 
 	protected $file;
+	protected $disk;
 	protected $pos;
 	protected $fs;
 	protected $branch;
@@ -190,12 +191,13 @@ class BackupController extends Controller
     $path = $p1.'/'.$p2.'/'.$p3.'/'.$p4;
 
 		logAction('backup:download', 'user:'.$request->user()->username.' '.$path);
-
+		//return dd($this->disk->realFullPath(''));
 		$file = $this->disk->get($path);
 		$mimetype = $this->disk->fileMimeType($path);
 
+
     $response = \Response::make($file, 200);
-	 	$response->header('Content-Type', $mimetype);
+	$response->header('Content-Type', $mimetype);
   	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
 	  return $response;

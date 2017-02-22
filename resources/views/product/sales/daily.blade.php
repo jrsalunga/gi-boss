@@ -544,8 +544,8 @@
                               <tr>
                                 <td>{{ $key }}</td>
                                 <td>{{ $mp['product'] }}</td>
-                                <td>{{ number_format($mp['qty'], 2) }}</td>
-                                <td class="text-right">{{ number_format($mp['grsamt'], 0) }}</td>
+                                <td>{{ number_format($mp['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
                               </tr>
                             <?php $t+=$mp['grsamt']; ?>
                             @endforeach

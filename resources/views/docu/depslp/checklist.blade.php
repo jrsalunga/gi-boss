@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Backup Checklist')
+@section('title', '- Depslip Checklist')
 
-@section('body-class', 'backup-checklist')
+@section('body-class', 'depslip-checklist')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 

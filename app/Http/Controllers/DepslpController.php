@@ -496,23 +496,24 @@ class DepslpController extends Controller {
 
     $path = 'DEPSLP/'.$p1.'/'.$p2.'/'.$p3.'/'.$p4;
 
+    if (!in_array($request->user()->username, ['jrsalunga', 'admin']))
 		logAction('backup:download', 'user:'.$request->user()->username.' '.$path);
 
-		try {
-		
-			$file = $this->files->get($path);
-			$mimetype = $this->files->fileMimeType($path);
+	try {
+	
+		$file = $this->files->get($path);
+		$mimetype = $this->files->fileMimeType($path);
 
-	    $response = \Response::make($file, 200);
-		 	$response->header('Content-Type', $mimetype);
-	  	
-	  	if ($request->has('download') && $request->input('download')=='true')
-	  		$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
+    $response = \Response::make($file, 200);
+	 	$response->header('Content-Type', $mimetype);
+  	
+  	if ($request->has('download') && $request->input('download')=='true')
+  		$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
-		  return $response;
-		} catch (\Exception $e) {
-			return abort('404');
-		}
+	  return $response;
+	} catch (\Exception $e) {
+		return abort('404');
+	}
   }
 
 

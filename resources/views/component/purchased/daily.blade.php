@@ -1,4 +1,4 @@
-f@extends('master')
+@extends('master')
 
 @section('title', '- Daily Purchases')
 

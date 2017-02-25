@@ -32,7 +32,6 @@ class BackupRepository extends BaseRepository implements CacheableInterface
   protected $fieldSearchable = [
     'branch.code'=>'like',
     'filename'=>'like',
-    'filename'=>'like',
     'cashier'=>'like',
   ];
 

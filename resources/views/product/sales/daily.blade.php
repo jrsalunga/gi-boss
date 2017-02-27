@@ -283,6 +283,7 @@
                               <th>Product</th>
                               <th class="text-right">Quantity</th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">Gross Sales %</th>
                               <th>Category</th>
                               <th>Menu Category</th>
                             </tr>
@@ -293,11 +294,12 @@
                               <tr>
                                 <td>{{ $product->product }}</td>
                                 <td class="text-right"><small class="text-muted">{{ number_format($product->qty, 0) }}</small></td>
-                                <td class="text-right">{{ number_format($product->netamt, 2) }}</td>
+                                <td class="text-right">{{ number_format($product->grsamt, 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($product->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
                                 <td><small class="text-muted">{{ $product->prodcat }}</small></td>
                                 <td><small class="text-muted">{{ $product->menucat }}</small></td>
                               </tr>
-                            <?php $prodtot+=$product->netamt; ?> 
+                            <?php $prodtot+=$product->grsamt; ?> 
                             @endforeach
                           </tbody>
                           <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($prodtot,2)}}</b></td><td></td><td></td></tr></tfoot>
@@ -316,7 +318,7 @@
                             @foreach($products as $product)
                               <tr>
                                 <td>{{ $product->product }}</td>
-                                <td>{{ $product->netamt }}</td>
+                                <td>{{ $product->grsamt }}</td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -346,8 +348,8 @@
                           <thead>
                             <tr>
                               <th>Product Category</th>
-                              <th class="text-right"></th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">Gross Sales %</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -355,13 +357,13 @@
                             @foreach($prodcats as $prodcat)
                               <tr>
                                 <td>{{ $prodcat->prodcat }}</td>
-                                <td class="text-right"></td>
-                                <td class="text-right">{{ number_format($prodcat->netamt, 2) }}</td>
+                                <td class="text-right">{{ number_format($prodcat->grsamt, 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($prodcat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
                               </tr>
-                            <?php $t+=$prodcat->netamt; ?> 
+                            <?php $t+=$prodcat->grsamt; ?> 
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
+                          <tfoot><tr><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td><td></td></tr></tfoot>
                         </table>
                       </div>
                       
@@ -376,7 +378,7 @@
                             @foreach($prodcats as $prodcat)
                               <tr>
                                 <td>{{ $prodcat->prodcat }}</td>
-                                <td>{{ $prodcat->netamt }}</td>
+                                <td>{{ $prodcat->grsamt }}</td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -408,6 +410,7 @@
                               <th>Menu Category</th>
                               <th>Product Category</th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">Gross Sales %</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -416,12 +419,13 @@
                               <tr>
                                 <td>{{ $menucat->menucat }}</td>
                                 <td><small class="text-muted">{{ $menucat->prodcat }}</small></td>
-                                <td class="text-right">{{ number_format($menucat->netamt, 2) }}</td>
+                                <td class="text-right">{{ number_format($menucat->grsamt, 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($menucat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
                               </tr>
-                            <?php $t+=$menucat->netamt; ?>
+                            <?php $t+=$menucat->grsamt; ?>
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
+                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td><td></td></tr></tfoot>
                         </table>
                       </div>
                       
@@ -436,7 +440,7 @@
                             @foreach($menucats as $menucat)
                               <tr>
                                 <td>{{ $menucat->menucat }}</td>
-                                <td>{{ $menucat->netamt }}</td>
+                                <td>{{ $menucat->grsamt }}</td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -462,12 +466,37 @@
                   <div class="row">
                     <div class="table-responsive">
                       <div>
+                        <table id="groupies-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Group</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tg=0; ?>
+                            @foreach($groupies as $groupie)
+                              <tr>
+                                <td>{{ $groupie['group'] }}</td>
+                                <td>{{ $groupie['grsamt'] }}</td>
+                              </tr>
+                            <?php $tg+=$groupie['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of not Groupies</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tg }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
                         <table class="tb-groupies-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
                               <th>Groupies</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">Groupies Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -477,36 +506,24 @@
                                 <td>{{ $key }}</td>
                                 <td>{{ number_format($groupie['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($groupie['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$tg)*100,2)}}%</small></td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
                               </tr>
                             <?php $t+=$groupie['grsamt']; ?>
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
+                          <tfoot>
+                            <tr>
+                              <td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                              <td></td>
+                              <td class="text-right">
+                              <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              </td>
+                            </tr>
+                          </tfoot>
                         </table>
                       </div>
                       
-                      <table id="groupies-data" style="display:none;">
-                          <thead>
-                            <tr>
-                              <th>Group</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          <?php $t=0; ?>
-                            @foreach($groupies as $groupie)
-                              <tr>
-                                <td>{{ $groupie['group'] }}</td>
-                                <td>{{ $groupie['grsamt'] }}</td>
-                              </tr>
-                            <?php $t+=$groupie['grsamt']; ?>
-                            @endforeach
-                              <tr>
-                                <td>Sales of not Groupies</td>
-                                <td>{{ $ds->sales-$t }}</td>
-                              </tr>
-                          </tbody>
-                        </table>
                       
                     </div><!-- end: .table-responsive -->
                   </div><!-- end: .row -->
@@ -529,6 +546,29 @@
                   <div class="row">
                     <div class="table-responsive">
                       <div>
+                      <table id="mp-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Meal Promo</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tm=0; ?>
+                            @foreach($mps['ordered'] as $mp)
+                              <tr>
+                                <td>{{ $mp['product'] }}</td>
+                                <td>{{ $mp['grsamt'] }}</td>
+                              </tr>
+                            <?php $tm+=$mp['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of not Meal Promo</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
                         <table class="tb-mp-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
@@ -536,6 +576,8 @@
                               <th>Meal Promo</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">MP's Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -546,36 +588,23 @@
                                 <td>{{ $mp['product'] }}</td>
                                 <td>{{ number_format($mp['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($mp['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($mp['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
                               </tr>
                             <?php $t+=$mp['grsamt']; ?>
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td></tr></tfoot>
+                          <tfoot>
+                            <tr>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
+                              <td class="text-right">
+                              <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              </td>
+                          </tr></tfoot>
                         </table>
                       </div>
                       
-                      <table id="mp-data" style="display:none;">
-                          <thead>
-                            <tr>
-                              <th>Meal Promo</th>
-                              <th>Total Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          <?php $t=0; ?>
-                            @foreach($mps['ordered'] as $mp)
-                              <tr>
-                                <td>{{ $mp['product'] }}</td>
-                                <td>{{ $mp['grsamt'] }}</td>
-                              </tr>
-                            <?php $t+=$mp['grsamt']; ?>
-                            @endforeach
-                              <tr>
-                                <td>Sales of not Meal Promo</td>
-                                <td>{{ $ds->sales-$t }}</td>
-                              </tr>
-                          </tbody>
-                        </table>
                       
                     </div><!-- end: .table-responsive -->
                   </div><!-- end: .row -->

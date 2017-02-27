@@ -170,17 +170,16 @@ class SaleController extends Controller {
     $arr['cancelled'] = [];
 
     foreach ($mps as $key => $value) {
-
         
-        if(array_key_exists($value['productcode'],  $arr['ordered'])) {
-          $arr['ordered'][$value['productcode']]['qty']     += $value['qty'];
-          $arr['ordered'][$value['productcode']]['grsamt']  += $value['grsamt'];
-        } else {
-          $arr['ordered'][$value['productcode']]['productcode'] = $value['productcode'];
-          $arr['ordered'][$value['productcode']]['product']     = $value['product'];
-          $arr['ordered'][$value['productcode']]['qty']         = $value['qty'];
-          $arr['ordered'][$value['productcode']]['grsamt']      = $value['grsamt'];
-        }
+      if(array_key_exists($value['productcode'],  $arr['ordered'])) {
+        $arr['ordered'][$value['productcode']]['qty']     += $value['qty'];
+        $arr['ordered'][$value['productcode']]['grsamt']  += $value['grsamt'];
+      } else {
+        $arr['ordered'][$value['productcode']]['productcode'] = $value['productcode'];
+        $arr['ordered'][$value['productcode']]['product']     = $value['product'];
+        $arr['ordered'][$value['productcode']]['qty']         = $value['qty'];
+        $arr['ordered'][$value['productcode']]['grsamt']      = $value['grsamt'];
+      }
       
       if ($value['grsamt'] > 0 && $value['qty'] > 0) {
         continue;

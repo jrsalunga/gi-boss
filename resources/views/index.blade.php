@@ -19,6 +19,8 @@
 
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 	
   <ol class="breadcrumb">
@@ -84,7 +86,7 @@
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
                   <td class="text-right">
-                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}">
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->today->sales,2) }}</a>
                     @if($ds->today->sign=='+')
                       <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
@@ -95,7 +97,7 @@
                     @endif
                   </td>
                   <td class="text-right">
-                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}">
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->yesterday->sales,2) }}</a>
                     @if($ds->yesterday->sign=='+')
                       <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
@@ -106,7 +108,7 @@
                     @endif
                   </td>
                   <td class="text-right  hidden-xs">
-                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}">
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->otherday->sales,2) }}</a>
                   </td>
                 </tr>
@@ -333,6 +335,6 @@
 @section('js-external')
   
   <script src="/js/vendors-common.min.js"></script>
- 	
+ 	<script src="/js/dr-picker.js"></script>
   
 @endsection

@@ -171,7 +171,6 @@ class SaleController extends Controller {
 
     foreach ($mps as $key => $value) {
 
-      if ($value['grsamt'] > 0 && $value['qty'] > 0) {
         
         if(array_key_exists($value['productcode'],  $arr['ordered'])) {
           $arr['ordered'][$value['productcode']]['qty']     += $value['qty'];
@@ -182,6 +181,9 @@ class SaleController extends Controller {
           $arr['ordered'][$value['productcode']]['qty']         = $value['qty'];
           $arr['ordered'][$value['productcode']]['grsamt']      = $value['grsamt'];
         }
+      
+      if ($value['grsamt'] > 0 && $value['qty'] > 0) {
+        continue;
       } else {
         array_push($arr['cancelled'], $value);
       }
@@ -226,7 +228,7 @@ class SaleController extends Controller {
       $data = $this->modalSalesData($request, $id);
       if (!$data)
         return 'Branch not found!';
-      
+
       return response()->view('analytics.modal.mdl-sales', compact('data'))
                   ->header('Content-Type', 'text/html');
     }

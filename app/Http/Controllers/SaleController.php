@@ -224,6 +224,9 @@ class SaleController extends Controller {
 
     if ($request->ajax()) {
       $data = $this->modalSalesData($request, $id);
+      if (!$data)
+        return 'Branch not found!';
+      
       return response()->view('analytics.modal.mdl-sales', compact('data'))
                   ->header('Content-Type', 'text/html');
     }

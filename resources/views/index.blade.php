@@ -86,30 +86,42 @@
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
                   <td class="text-right">
-                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}" data-toggle="loader">
-                      {{ number_format($ds->today->sales,2) }}</a>
-                    @if($ds->today->sign=='+')
-                      <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
-                    @elseif($ds->today->sign=='-')
-                      <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
-                    @else
+                    @if($ds->today->slsmtd_grsamt>0)
+                      <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}" data-toggle="loader">
+                        {{ number_format($ds->today->sales,2) }}</a>
+                      @if($ds->today->sign=='+')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      @elseif($ds->today->sign=='-')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      @else
 
+                      @endif
+                    @else 
+                      {{ number_format($ds->today->sales,2) }}
                     @endif
                   </td>
                   <td class="text-right">
-                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}" data-toggle="loader">
-                      {{ number_format($ds->yesterday->sales,2) }}</a>
-                    @if($ds->yesterday->sign=='+')
-                      <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
-                    @elseif($ds->yesterday->sign=='-')
-                      <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
-                    @else
+                    @if($ds->yesterday->slsmtd_grsamt>0)
+                      <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}" data-toggle="loader">
+                        {{ number_format($ds->yesterday->sales,2) }}</a>
+                      @if($ds->yesterday->sign=='+')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      @elseif($ds->yesterday->sign=='-')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      @else
 
+                      @endif
+                    @else 
+                      {{ number_format($ds->yesterday->sales,2) }}
                     @endif
                   </td>
                   <td class="text-right  hidden-xs">
+                    @if($ds->otherday->slsmtd_grsamt>0)
                     <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->otherday->sales,2) }}</a>
+                    @else 
+                      {{ number_format($ds->otherday->sales,2) }}
+                    @endif
                   </td>
                 </tr>
               @endforeach

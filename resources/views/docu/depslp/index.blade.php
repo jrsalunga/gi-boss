@@ -91,7 +91,7 @@
           
           <th>Br Code</th>
           <th>Uploaded Filename</th>
-          <th>Size</th>
+          <!--<th>Size</th>-->
           <th class="text-right">Amount</th>
           <th>Deposit Date/Time</th>
           <th>Cashier</th>
@@ -120,12 +120,9 @@
             @else
 
             @endif
-            <td>
-              
-            <small class="text-muted">{{ human_filesize($depslip->fileUpload->size) }}</small>
-            </td>
           </td>  
           <!--
+          <td><small class="text-muted">{{ human_filesize($depslip->fileUpload->size) }}</small></td>
           <td style="padding: 8px 0 8px 0;">
             @if($depslip->verified and $depslip->matched)
 

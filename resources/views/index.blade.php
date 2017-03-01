@@ -86,7 +86,7 @@
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
                   <td class="text-right">
-                    @if($ds->today->slsmtd_grsamt>0)
+                    @if($ds->today->slsmtd_totgrs>0)
                       <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}" data-toggle="loader">
                         {{ number_format($ds->today->sales,2) }}</a>
                       @if($ds->today->sign=='+')
@@ -101,7 +101,7 @@
                     @endif
                   </td>
                   <td class="text-right">
-                    @if($ds->yesterday->slsmtd_grsamt>0)
+                    @if($ds->yesterday->slsmtd_totgrs>0)
                       <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}" data-toggle="loader">
                         {{ number_format($ds->yesterday->sales,2) }}</a>
                       @if($ds->yesterday->sign=='+')
@@ -116,7 +116,7 @@
                     @endif
                   </td>
                   <td class="text-right  hidden-xs">
-                    @if($ds->otherday->slsmtd_grsamt>0)
+                    @if($ds->otherday->slsmtd_totgrs>0)
                     <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->otherday->sales,2) }}</a>
                     @else 

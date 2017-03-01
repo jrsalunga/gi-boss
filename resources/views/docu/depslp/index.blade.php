@@ -91,7 +91,7 @@
           
           <th>Br Code</th>
           <th>Uploaded Filename</th>
-          <!--<th></th>-->
+          <th>Size</th>
           <th class="text-right">Amount</th>
           <th>Deposit Date/Time</th>
           <th>Cashier</th>
@@ -111,7 +111,7 @@
           <td>
             <a href="/depslp/{{$depslip->lid()}}">
             <small>
-              {{ $depslip->fileUpload->filename }}</a>
+              {{ $depslip->fileUpload->filename }}</a> 
             </small>
             @if($depslip->verified and $depslip->matched)
               <span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Matched by {{ $depslip->user->name }}"></span>
@@ -120,6 +120,10 @@
             @else
 
             @endif
+            <td>
+              
+            <small class="text-muted">{{ human_filesize($depslip->fileUpload->size) }}</small>
+            </td>
           </td>  
           <!--
           <td style="padding: 8px 0 8px 0;">

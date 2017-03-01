@@ -32,7 +32,7 @@ class DepslpController extends Controller {
 		$depslips = $this->depslip
 			->skipCache()
 			->with(['fileUpload'=>function($query){
-        $query->select(['filename', 'terminal', 'id']);
+        $query->select(['filename', 'size', 'terminal', 'id']);
       },'branch'=>function($query){
         $query->select(['code', 'descriptor', 'id']);
       }])

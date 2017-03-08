@@ -137,7 +137,13 @@
                             <label class="btn btn-default" for="dp-date">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </label>
-                            <input readonly="" type="text" class="btn btn-default dp" id="dp-date" style="max-width: 110px;">
+                            <input readonly type="text" class="btn btn-default dp" id="dp-date" style="max-width: 110px;"
+                              @if(session()->has('date'))
+                                value="{{ session('date')->format('Y-m-d') }}"
+                              @else
+                                value="{{ c()->format('Y-m-d') }}"
+                              @endif
+                            >
                             <input type="hidden" id="date" name="date">
                           </div>
                         </div>
@@ -186,7 +192,7 @@
   $('#date').val(moment().format('YYYY-MM-DD'));
   
   $('#dp-date').datetimepicker({
-    defaultDate: moment(),
+    //defaultDate: moment(),
     format: 'YYYY-MM-DD',
     showTodayButton: true,
     ignoreReadonly: true,

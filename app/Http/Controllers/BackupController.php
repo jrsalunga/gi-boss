@@ -304,6 +304,7 @@ class BackupController extends Controller
 			return redirect('/storage/batch-download')
 						->with('file', $date->format('Ymd').'.ZIP')
 						->with('branches', $branches)
+						->with('date', $date)
 						->with('count', $ctr);
 		} else {
 			return redirect('/storage/batch-download')

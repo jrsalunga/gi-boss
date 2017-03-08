@@ -252,7 +252,7 @@ class BackupController extends Controller
   }
   public function postBatchDownload(Request $request) {
 
-  	$branches = $this->branch->active()->all(['code'])->pluck('code')->toArray();
+  	$branches = $this->branch->skipCache()->active()->all(['code'])->pluck('code')->toArray();
 
   	$date = c($request->input('date'));
   	$path = public_path('downloads/'.$date->format('Ymd').'.ZIP');
@@ -288,6 +288,8 @@ class BackupController extends Controller
 			}
 
 		}
+
+
 
 		if ($res === true && $ctr>=1) {
 		  $zip->addFromString('info.txt', $filename .' backups downloaded from Giligan\'s Boss Module. ' .session('user.fullname').' - '.c()->format('Y-m-d H:i:s'));

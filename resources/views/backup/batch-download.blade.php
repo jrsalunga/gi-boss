@@ -122,34 +122,53 @@
       <div class="file-explorer tab-content">
         <div role="tabpanel" class="tab-pane active" >
           <div style="height: 10px;"></div>
-          <div class="navbar-form"  style="padding:0; margin: 8px 15px; border-top: 0;">
-          <form action="/storage/batch-download" method="POST" enctype="multipart/form-data">
-          {{ csrf_field() }}
          
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="file" style="display: block;">Select Backup Date:</label>
-                <div class="btn-group dp-container" role="group">
-                  <label class="btn btn-default" for="dp-date">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </label>
-                  <input readonly="" type="text" class="btn btn-default dp" id="dp-date" style="max-width: 110px;">
-                  <input type="hidden" id="date" name="date">
-                </div>
-              </div>
-            </div>
-          </div><!-- end: .row -->
-          <div class="row" style="margin-top: 20px;">
-            <div class="col-md-4">
-              <button type="submit" id="btn-submit" class="btn btn-primary">
-                <span class="gly gly-ok"></span> Submit
-              </button>
-            </div>
-          </div><!-- end: .row -->
-
-          
-        </form>
+              <div class="row">
+                <div class="col-sm-6 col-md-4">
+                  
+                  <div class="navbar-form"  style="padding:0; margin: 8px 15px; border-top: 0;">
+                  <form action="/storage/batch-download" method="POST" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="file" style="display: block;">Select Backup Date:</label>
+                          <div class="btn-group dp-container" role="group">
+                            <label class="btn btn-default" for="dp-date">
+                              <span class="glyphicon glyphicon-calendar"></span>
+                            </label>
+                            <input readonly="" type="text" class="btn btn-default dp" id="dp-date" style="max-width: 110px;">
+                            <input type="hidden" id="date" name="date">
+                          </div>
+                        </div>
+                      </div>
+                    </div><!-- end: .row -->
+                    <div class="row" style="margin-top: 20px;">
+                      <div class="col-md-12">
+                        <button type="submit" id="btn-submit" class="btn btn-primary">
+                          <span class="gly gly-ok"></span> Submit
+                        </button>
+                      </div>
+                    </div><!-- end: .row -->
+                  </form>
+                  </div><!-- end: .navbar-form -->
+                </div><!-- end: .col-sm-6.col-md-4 -->
+                <div class="col-sm-6 col-md-8">
+                  @if(session()->has('branches'))
+                    <p class="text-info">{{ count(session('branches')) }}
+                      @if(count(session('branches'))>1)
+                        branches
+                      @else
+                        branch
+                      @endif
+                        no backup.
+                    </p>
+                    @foreach(session('branches') as $branch)
+                      <span class="btn">{{ $branch }}</span>
+                    @endforeach
+                  @endif
+                </div><!-- end: .col-sm-6.col-md-8 -->
+              </div><!-- end: .row -->
           </div>
         </div>
       </div>

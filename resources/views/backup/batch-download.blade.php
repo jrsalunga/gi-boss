@@ -157,7 +157,7 @@
                     </div><!-- end: .row -->
                     <div class="row" style="margin-top: 20px;">
                       <div class="col-md-12">
-                        <button type="submit" id="btn-submit" class="btn btn-primary"  data-loading-text="<span class='gly gly-ok'></span> Submitting..." autocomplete="off">
+                        <button type="submit" id="btn-submit" class="btn btn-primary"  data-loading-text="<span class='fa fa-hourglass-half'></span> Processing..." autocomplete="off">
                           <span class="gly gly-ok"></span> Submit
                         </button>
                       </div>

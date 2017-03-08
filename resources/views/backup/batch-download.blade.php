@@ -195,7 +195,7 @@
   
   <script>
   
-  $('#date').val(moment().format('YYYY-MM-DD'));
+  //$('#date').val(moment().format('YYYY-MM-DD'));
   
   $('#dp-date').datetimepicker({
     //defaultDate: moment(),

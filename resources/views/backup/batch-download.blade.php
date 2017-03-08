@@ -157,7 +157,7 @@
                     </div><!-- end: .row -->
                     <div class="row" style="margin-top: 20px;">
                       <div class="col-md-12">
-                        <button type="submit" id="btn-submit" class="btn btn-primary">
+                        <button type="submit" id="btn-submit" class="btn btn-primary"  data-loading-text="<span class='gly gly-ok'></span> Submitting..." autocomplete="off">
                           <span class="gly gly-ok"></span> Submit
                         </button>
                       </div>
@@ -167,6 +167,7 @@
                 </div><!-- end: .col-sm-6.col-md-4 -->
                 <div class="col-sm-6 col-md-8">
                   @if(session()->has('branches'))
+                    <div class="br">
                     <p class="text-info">{{ count(session('branches')) }}
                       @if(count(session('branches'))>1)
                         branches
@@ -178,6 +179,7 @@
                     @foreach(session('branches') as $branch)
                       <span class="btn">{{ $branch }}</span>
                     @endforeach
+                    </div>
                   @endif
                 </div><!-- end: .col-sm-6.col-md-8 -->
               </div><!-- end: .row -->
@@ -211,6 +213,9 @@
   $(document).ready(function () {
     $('#btn-submit').on('click', function (e) {
       $('.alert').remove();
+      $('.br').remove();
+      var $btn = $(this).button('loading');
+      //$btn.button('reset')
     });
   })
 

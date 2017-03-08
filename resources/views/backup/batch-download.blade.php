@@ -174,7 +174,7 @@
                       @else
                         branch
                       @endif
-                        no backup on this day.
+                        has no backup on this day.
                     </p>
                     @foreach(session('branches') as $branch)
                       <span class="btn">{{ $branch }}</span>

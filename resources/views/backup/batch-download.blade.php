@@ -208,6 +208,12 @@
     $('#date').val(date);
   });
 
+  $(document).ready(function () {
+    $('#btn-submit').on('click', function (e) {
+      $('.alert').remove();
+    });
+  })
+
  
   </script>
 @endsection

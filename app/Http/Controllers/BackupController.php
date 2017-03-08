@@ -252,7 +252,7 @@ class BackupController extends Controller
   }
   public function postBatchDownload(Request $request) {
 
-  	$branches = $this->branch->active()->all(['code'])->pluck('code')->toArray();
+  	$branches = $this->branch->skipCache()->active()->all(['code'])->pluck('code')->toArray();
 
   	//$branches = ['MOA', 'ANG', 'GLV'];
 

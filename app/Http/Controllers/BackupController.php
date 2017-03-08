@@ -252,7 +252,9 @@ class BackupController extends Controller
   }
   public function postBatchDownload(Request $request) {
 
-  	$branches = $this->branch->skipCache()->active()->all(['code'])->pluck('code')->toArray();
+  	//$branches = $this->branch->skipCache()->active()->all(['code'])->pluck('code')->toArray();
+
+  	$branches = ['MOA', 'ANG', 'GLV'];
 
   	$date = c($request->input('date'));
   	$path = public_path('downloads/'.$date->format('Ymd').'.ZIP');
@@ -278,7 +280,8 @@ class BackupController extends Controller
 			if ($this->disk->exists($file)) {
 				$paths[$folder] = $file;
 				$ctr++;
-				array_forget($branches, $folder);
+				//array_forget($branches, $folder);
+				unset($branches[array_search($folder, $branches)]);
 				//if (file_exists($this->disk->realFullPath($file)))
 				//$paths[$folder] = $this->disk->realFullPath($file);
 			}
@@ -289,6 +292,7 @@ class BackupController extends Controller
 
 		}
 
+		
 
 
 		if ($res === true && $ctr>=1) {

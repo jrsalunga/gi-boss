@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Backups')
+@section('title', '- Batch Downloads')
 
-@section('body-class', 'generate-dtr')
+@section('body-class', 'batch-downloads')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -24,20 +24,8 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
+    <li>Batch Downloads</li>
     
-    @if(count($data['breadcrumbs'])>0)
-      <?php 
-        $temp = $data['breadcrumbs'];
-        array_shift($temp) 
-      ?>
-      <li><a href="/storage">Filing System</a></li>
-      @foreach($temp as $path => $folder)
-        <li><a href="/storage{{ $path }}">{{ $folder }}</a></li>
-      @endforeach
-      <li class="active">{{ $data['folderName'] }}</li>
-    @else 
-      <li class="active">Filing System</li>
-    @endif
   </ol>
 
   <div>
@@ -102,96 +90,70 @@
 
     @include('_partials.alerts')
 
-    
+    @if(session()->has('file'))
+      <div class="alert alert-success alert-important">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+         {{ session('count') }} backup(s) found! 
+         <a href="/downloads/{{ session('file') }}">
+          <strong><span class="glyphicon glyphicon-save"></span> {{ session('file') }}</strong>
+         </a>
+      </div>
+    @endif
+
+
     <div>
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active">
-        <a href="/storage" aria-controls="pos" role="tab">
-          Backup Archive
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="/storage/batch-download" aria-controls="pos" role="tab">
-          Batch Downloads
-        </a>
-      </li>
-    </ul>
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+          <a href="/storage" aria-controls="pos" role="tab">
+            Backup Archive
+          </a>
+        </li>
+        <li role="presentation" class="active">
+          <a href="/backups" aria-controls="pos" role="tab">
+            Batch Downloads
+          </a>
+        </li>
+      </ul>
 
-    <!-- Tab panes -->
-    <div class="file-explorer tab-content">
-      <div role="tabpanel" class="tab-pane active" >
+      <!-- Tab panes -->
+      <div class="file-explorer tab-content">
+        <div role="tabpanel" class="tab-pane active" >
+          <div style="height: 10px;"></div>
+          <div class="navbar-form"  style="padding:0; margin: 8px 15px; border-top: 0;">
+          <form action="/storage/batch-download" method="POST" enctype="multipart/form-data">
+          {{ csrf_field() }}
+         
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="file" style="display: block;">Select Backup Date:</label>
+                <div class="btn-group dp-container" role="group">
+                  <label class="btn btn-default" for="dp-date">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </label>
+                  <input readonly="" type="text" class="btn btn-default dp" id="dp-date" style="max-width: 110px;">
+                  <input type="hidden" id="date" name="date">
+                </div>
+              </div>
+            </div>
+          </div><!-- end: .row -->
+          <div class="row" style="margin-top: 20px;">
+            <div class="col-md-4">
+              <button type="submit" id="btn-submit" class="btn btn-primary">
+                <span class="gly gly-ok"></span> Submit
+              </button>
+            </div>
+          </div><!-- end: .row -->
+
           
-
-        <div style="height: 10px;"></div>
-        <div class="navbar-form"  style="padding:0; margin: 8px 15px; border-top: 0;">
-        @if(count($data['breadcrumbs'])>0)
-        <a href="/storage{{ endKey($data['breadcrumbs']) }}" class="btn btn-default" title="Back">
-          <span class="gly gly-unshare"></span>
-          <span class="gly gly-hdd"></span>{{ endKey($data['breadcrumbs']) }}
-        </a>
-        @else
-
-        <!--
-        <button class="btn btn-default" type="button">
-          <span class="glyphicon glyphicon-cloud"></span>
-          backups
-        </button> 
-        -->
-        @endif
+        </form>
+          </div>
         </div>
-
-        <table id="tb-backups" class="table table-hover">
-          <!--
-          <thead>
-            <tr>
-              <th>File/Folder</th><th>Size</th><th>Type</th><th>Date Modified</th>
-            </tr>
-          </thead>
-        -->
-          <tbody>
-          @if(count($data['subfolders'])>0)
-            @foreach($data['subfolders'] as $path => $folder)
-            <tr>
-              <td colspan="4"><a href="/storage{{ $path }}"><span class="fa fa-folder-o"></span> {{ $folder }}</a></td>
-            </tr>
-            @endforeach
-          @endif
-
-
-          @if(count($data['files'])>0)
-            @foreach($data['files'] as $path => $file)
-            <tr>
-              <td>
-                @if($file['type']=='zip')
-                  <span class="fa fa-file-archive-o"></span>
-                @elseif($file['type']=='img')
-                  <span class="fa fa-file-image-o"></span>
-                @else
-                  <span class="fa file-o"></span>
-
-                @endif 
-
-                {{ $file['name'] }}</td>
-                
-                <td><a href="/download{{ $file['fullPath'] }}" target="_blank"><span class="glyphicon glyphicon-download-alt"></span></a></td>
-                
-                <td>{{ human_filesize($file['size']) }}</td>
-                <td class="hidden-xs hidden-sm">{{ $file['type'] or 'Unknown' }}</td>
-                <td class="hidden-xs">{{ $file['modified']->format('D, M j, Y g:i A') }}</td>
-            </tr>
-            @endforeach
-          @endif
-          </tbody>
-        </table>
       </div>
-    </div>
-
-  </div>   
-
-    
-      
-  
+    </div>   
   </div>
 </div><!-- end container-fluid -->
 @endsection
@@ -202,7 +164,19 @@
   
   <script>
   
-    
+  $('#date').val(moment().format('YYYY-MM-DD'));
+  
+  $('#dp-date').datetimepicker({
+    defaultDate: moment(),
+    format: 'YYYY-MM-DD',
+    showTodayButton: true,
+    ignoreReadonly: true,
+  }).on('dp.change', function(e){
+    var date = e.date.format('YYYY-MM-DD');
+    console.log(date);
+    $('#date').val(date);
+  });
+
  
   </script>
 @endsection

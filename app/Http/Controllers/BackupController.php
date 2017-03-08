@@ -16,7 +16,7 @@ use App\Repositories\BranchRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Container\Container as App;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
-
+use ZipArchive;
 
 
 
@@ -39,8 +39,6 @@ class BackupController extends Controller
 		$this->file = new StorageRepository($mimeDetect, 'files.'.app()->environment());
 		$this->repository = $backuprepository;
 		$this->branch = new BranchRepository(app(), new Collection);
-	
-		
 	}
 
 	
@@ -244,5 +242,62 @@ class BackupController extends Controller
   					->with('branch', $branch)
   					->with('backups', $backups);
 
+  }
+
+
+  public function getBatchDownload(Request $request) {
+
+
+  	return view('backup.batch-download');
+  }
+  public function postBatchDownload(Request $request) {
+
+  	$date = c($request->input('date'));
+  	$path = public_path('downloads/'.$date->format('Ymd').'.ZIP');
+
+  	//$zip = new ZipArchive;
+		//$res = $zip->open($path, ZipArchive::CREATE);
+		//$zip->addFromString('test.txt', 'file content goes here');
+		//$zip->addFile('data.txt', 'entryname.txt');
+		//$zip->close();
+		//return 1;
+
+		$zip = new ZipArchive;
+		$res = $zip->open($path, ZipArchive::CREATE);
+  	
+	  $ctr=0;
+
+	  $paths = [];
+		$r = $this->disk->folderInfo('.');
+		foreach ($r['subfolders'] as $path => $folder) {
+			$filename = 'GC'.$date->format('mdy').'.ZIP';
+			$file = $folder.DS.$date->format('Y').DS.$date->format('m').DS.$filename;
+			
+			if ($this->disk->exists($file)) {
+				$paths[$folder] = $file;
+				$ctr++;
+				//if (file_exists($this->disk->realFullPath($file)))
+				//$paths[$folder] = $this->disk->realFullPath($file);
+			}
+
+			if ($res == true && $ctr>=1) {
+    			$zip->addFile($this->disk->realFullPath($file), $folder.DS.$filename);
+			}
+
+		}
+
+		if ($res === true && $ctr>=1) {
+		  $zip->addFromString('info.txt', $filename .' backups downloaded from Giligan\'s Boss Module. ' .session('user.fullname').' - '.c()->format('Y-m-d H:i:s'));
+		  $zip->close();
+			return redirect('/storage/batch-download')
+						->with('file', $date->format('Ymd').'.ZIP')
+						->with('count', $ctr);
+		} else {
+			return redirect('/storage/batch-download')
+						->withErrors('No backups found on this date!');
+			
+		}
+
+	
   }
 }

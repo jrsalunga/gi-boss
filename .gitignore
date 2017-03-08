@@ -6,3 +6,4 @@ Homestead.json
 .env
 /logs
 /database/migrations
+/public/downloads

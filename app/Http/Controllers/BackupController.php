@@ -209,8 +209,8 @@ class BackupController extends Controller
 
   	$bb = $this->branch
   						->orderBy('code')
-  						->getByCriteria(new ActiveBranch)
-  						->all(['code', 'descriptor', 'id']);
+  						->getByCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
+  						//->all(['code', 'descriptor', 'id']);
 
   	$date = carbonCheckorNow($request->input('date'));
 
@@ -252,29 +252,18 @@ class BackupController extends Controller
   public function postBatchDownload(Request $request) {
 
   	$branches = $this->branch
-  						->skipCache()
-  						->getByCriteria(new ActiveBranch)
+  						->getByCriteria(new ActiveBranch(['code']))
   						->pluck('code')
   						->toArray();
 
-  	//$branches = ['MOA', 'ANG', 'GLV'];
-
+	  $ctr=0;
   	$date = c($request->input('date'));
   	$path = public_path('downloads/'.$date->format('Ymd').'.ZIP');
-
-  	//$zip = new ZipArchive;
-		//$res = $zip->open($path, ZipArchive::CREATE);
-		//$zip->addFromString('test.txt', 'file content goes here');
-		//$zip->addFile('data.txt', 'entryname.txt');
-		//$zip->close();
-		//return 1;
-
 		$zip = new ZipArchive;
 		$res = $zip->open($path, ZipArchive::CREATE);
-  	
-	  $ctr=0;
-
 	  $paths = [];
+  	
+
 		$r = $this->disk->folderInfo('.');
 		foreach ($r['subfolders'] as $path => $folder) {
 			$filename = 'GC'.$date->format('mdy').'.ZIP';

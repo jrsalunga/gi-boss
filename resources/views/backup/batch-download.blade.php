@@ -144,7 +144,13 @@
                                 value="{{ c()->format('Y-m-d') }}"
                               @endif
                             >
-                            <input type="hidden" id="date" name="date">
+                            <input type="hidden" id="date" name="date"
+                              @if(session()->has('date'))
+                                value="{{ session('date')->format('Y-m-d') }}"
+                              @else
+                                value="{{ c()->format('Y-m-d') }}"
+                              @endif
+                            >
                           </div>
                         </div>
                       </div>

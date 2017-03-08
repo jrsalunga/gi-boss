@@ -281,13 +281,13 @@ class BackupController extends Controller
 				$paths[$folder] = $file;
 				$ctr++;
 				//array_forget($branches, $folder);
-				unset($branches[array_search($folder, $branches)]);
 				//if (file_exists($this->disk->realFullPath($file)))
 				//$paths[$folder] = $this->disk->realFullPath($file);
 			}
 
 			if ($res == true && $ctr>=1) {
-    			$zip->addFile($this->disk->realFullPath($file), $folder.DS.$filename);
+    		$zip->addFile($this->disk->realFullPath($file), $folder.DS.$filename);
+				unset($branches[array_search($folder, $branches)]);
 			}
 
 		}

@@ -517,7 +517,9 @@
                               <td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
                               <td></td>
                               <td class="text-right">
-                              <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @if($ds->slsmtd_totgrs>0)
+                                <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
                               </td>
                             </tr>
                           </tfoot>
@@ -599,7 +601,9 @@
                             <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
-                              <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @if($ds->slsmtd_totgrs>0)
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
                               </td>
                           </tr></tfoot>
                         </table>

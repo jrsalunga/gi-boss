@@ -131,7 +131,17 @@
             </em>
           </td>
           <td>{{ $backup->cashier }} </td>
-          <td class="text-center"><span class="glyphicon glyphicon-{{ $backup->processed == '1' ? 'ok':'remove' }}"></span></td>
+          <td class="text-center">
+            @if($backup->processed=='0')
+              <span class="glyphicon glyphicon-remove"></span>
+            @elseif($backup->processed=='1')
+              <span class="glyphicon glyphicon-ok"></span>
+            @elseif($backup->processed=='2')
+              <span class="fa fa-envelope-o" title="Sent to HR" data-toggle="tooltip"></span>
+            @else
+
+            @endif
+          </td>
           <?php  $x = explode(':', $backup->remarks) ?>
           <td>{{ $backup->remarks }} </td>
           <td>
@@ -143,6 +153,10 @@
 
               @if($backup->long == '1')
                 <span class="gly gly-address-book"></span>
+              @endif
+
+              @if($backup->long == '2')
+                <span class="fa fa-file-powerpoint-o" title="GI PAY Payroll Backup"></span>
               @endif
             <!-- 
             <a href="https://www.google.com/maps/search/{{$backup->lat}},{{$backup->long}}/{{urldecode('%40')}}{{$backup->lat}},{{$backup->long}},18z" target="_blank">

@@ -18,7 +18,7 @@ class Backup extends BaseModel {
     'month' => 'integer',
     'lat' => 'float',
     'long' => 'float',
-    'processed' => 'boolean',
+    'processed' => 'integer',
   ];
 
 

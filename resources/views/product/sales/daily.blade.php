@@ -210,7 +210,7 @@
                   ?>
                   @foreach($sales as $sale)
                   <?php
-                    if ($last_slip!=$sale->cslipno && !empty($sale->cslipno)) {
+                    if ($last_slip!=$sale->cslipno) {
                       $last_slip = $sale->cslipno;
                       //$color = rand_color();
                       $color = sprintf("#%06x",rand(0,16777215));
@@ -228,7 +228,7 @@
                       <td>
                         <small>
                           <span class="label"  style="background-color: {{$color}}; color:#fff;">
-                            {{ $sale->cslipno }}
+                            {{ $last_slip }}
                           </span>
                         </small>
                       </td>

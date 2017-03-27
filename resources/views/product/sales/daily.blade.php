@@ -210,7 +210,7 @@
                   ?>
                   @foreach($sales as $sale)
                   <?php
-                    if ($last_slip!=$sale->cslipno) {
+                    if ($last_slip!=$sale->cslipno && !empty($sale->cslipno)) {
                       $last_slip = $sale->cslipno;
                       //$color = rand_color();
                       $color = sprintf("#%06x",rand(0,16777215));

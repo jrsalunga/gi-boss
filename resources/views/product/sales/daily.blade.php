@@ -205,7 +205,7 @@
                 </thead>
                 <tbody>
                    <?php
-                    $last_slip = 1;
+                    $last_slip = '';
                     $totsales = 0;
                   ?>
                   @foreach($sales as $sale)
@@ -214,8 +214,10 @@
                       $last_slip = $sale->cslipno;
                       //$color = rand_color();
                       $color = sprintf("#%06x",rand(0,16777215));
-                    } else 
+                    } else {
+                      $last_slip = '';
                       $color = '#ccc';
+                    }
                   ?>
                    <tr>
                       <td>

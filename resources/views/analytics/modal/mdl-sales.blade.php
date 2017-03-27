@@ -75,7 +75,7 @@
               </thead>
               <tbody>
                 <?php
-                  $last_slip = 1;
+                  $last_slip = '';
                 ?>
                 @foreach($data['sales'] as $sale)
                   <?php
@@ -83,8 +83,10 @@
                       $last_slip = $sale->cslipno;
                       //$color = rand_color();
                       $color = sprintf("#%06x",rand(0,16777215));
-                    } else
+                    } else {
+                      $last_slip = '';
                       $color = '#ccc';
+                    }
                   ?>
                   <tr>
                     <td title="{{ $sale->ordtime->format('D M j, Y h:i A') }}">

@@ -83,7 +83,8 @@
                       $last_slip = $sale->cslipno;
                       //$color = rand_color();
                       $color = sprintf("#%06x",rand(0,16777215));
-                    }
+                    } else
+                      $color = '#ccc';
                   ?>
                   <tr>
                     <td title="{{ $sale->ordtime->format('D M j, Y h:i A') }}">

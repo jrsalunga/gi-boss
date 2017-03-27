@@ -228,7 +228,7 @@
                       <td>
                         <small>
                           <span class="label"  style="background-color: {{$color}}; color:#fff;">
-                            {{ $last_slip }}
+                            {{ $sale->cslipno }}
                           </span>
                         </small>
                       </td>

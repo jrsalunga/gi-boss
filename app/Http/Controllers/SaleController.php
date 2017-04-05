@@ -14,7 +14,7 @@ use App\Repositories\BranchRepository;
 use App\Models\Product;
 use App\Models\Prodcat;
 use App\Models\Menucat;
-
+use App\Helpers\Locator;
 
 class SaleController extends Controller { 
 
@@ -110,14 +110,19 @@ class SaleController extends Controller {
 
     $where['salesmtd.branch_id'] = $branch->id;
 
-    $sales = null;
-    if ($this->dr->fr->eq($this->dr->to))
-        $sales = $this->sale->skipCache()->byDateRange($this->dr)->findWhere($where);
-
     $ds = $this->ds
           //->skipCache()
           ->sumByDateRange($this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d'))
           ->findWhere(['branchid'=>$branch->id])->all();
+
+    $customers = null;
+    $backups = null;
+    $sales = null;
+    if ($this->dr->fr->eq($this->dr->to)) {
+        $sales = $this->sale->skipCache()->byDateRange($this->dr)->findWhere($where);
+        $customers = $this->getCustomers($sales, $branch->id);
+    }
+    $backups = $this->checkBackups($this->dr, $branch->code);
 
     $groupies = $this->aggregateGroupies($this->sale->brGroupies($this->dr)->findWhere($where));
 
@@ -141,12 +146,63 @@ class SaleController extends Controller {
           ->brMenucatByDR($this->dr)
           ->findWhere($where);
 
-   
-    
-
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps, $backups, $customers);
   }
 
+
+  private function checkBackups($dr, $brcode) {
+
+    $backups = [];
+    $locator = new Locator('backup');
+
+    foreach ($dr->dateInterval() as $key => $date) {
+      $path = strtoupper($brcode).DS.$date->format('Y').DS.$date->format('m').DS.'GC'.$date->format('mdy').'.ZIP';
+      if (!$locator->exists($path) && c(now())->gt($date))
+        array_push($backups, $date);
+    }
+    return $backups;
+  }
+
+  private function getCustomers($sales, $branchid) {
+    $dr = new DateRange(request());
+    $customers = [];
+    $customers['totcust'] = 0;
+    $customers['sales'] = 0;
+    $customers['hours'] = [];
+    $ds = \App\Models\DailySales::where(['date'=>$dr->fr->format('Y-m-d'), 'branchid'=>$branchid])->first(['opened_at', 'closed_at', 'custcount']);
+    //return $ds = $this->ds->findwhere(['date'=>$dr->fr->format('Y-m-d')], ['opened_at', 'closed_at', 'custcount']);
+
+    if (is_null($ds) && count($ds)>0)
+      return null;
+    
+    if (!isset($ds->opened_at) || !isset($ds->closed_at))
+      return null;
+
+    $dr->fr = $ds->opened_at;
+    $dr->to = $ds->closed_at;
+    
+    if ($dr->fr->gte($dr->to))
+     return null;
+
+    foreach ($dr->hourInterval() as $k => $date) {
+      foreach ($sales as $key => $sale) {
+        if ($sale->ordtime->format('H')==$date->format('H')) {
+          if (!array_key_exists($date->format('H'), $customers['hours'])) {
+            $customers['hours'][$date->format('H')]['date'] = $date; 
+            $customers['hours'][$date->format('H')]['custcount'] = $sale->custcount; 
+            $customers['hours'][$date->format('H')]['sales'] = $sale->grsamt; 
+          } else {
+            $customers['hours'][$date->format('H')]['custcount'] += $sale->custcount; 
+            $customers['hours'][$date->format('H')]['sales'] += $sale->grsamt; 
+          }
+          $customers['totcust'] += $sale->custcount;
+          $customers['sales'] += $sale->grsamt;
+          #unset($sales[$key]);
+        }
+      }
+    }
+    return $customers;
+  }
 
   private function aggregateGroupies($grps) {
     $arr = [];
@@ -193,7 +249,7 @@ class SaleController extends Controller {
 
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null) {
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null, $backups=null, $customers=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
@@ -205,6 +261,8 @@ class SaleController extends Controller {
                 ->with('prodcats', $prodcats)
                 ->with('groupies', $groupies)
                 ->with('mps', $mps)
+                ->with('backups', $backups)
+                ->with('customers', $customers)
                 ->with('menucats', $menucats));
   }
 

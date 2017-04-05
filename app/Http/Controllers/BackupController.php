@@ -195,7 +195,7 @@ class BackupController extends Controller
 
 
     $response = \Response::make($file, 200);
-	$response->header('Content-Type', $mimetype);
+		$response->header('Content-Type', $mimetype);
   	$response->header('Content-Disposition', 'attachment; filename="'.$p4.'"');
 
 	  return $response;

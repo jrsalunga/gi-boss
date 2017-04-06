@@ -106,6 +106,7 @@
 
             @if(!is_null($ds['ds']) && ($ds['ds']->sales+0)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
               <span class="pull-right glyphicon glyphicon-exclamation-sign"></span>
+              {{ ($ds['ds']->sales+0) }}
             @endif
           </td>
           @if(is_null($ds['ds']))

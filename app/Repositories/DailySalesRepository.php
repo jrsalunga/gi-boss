@@ -54,7 +54,9 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
    */
   public function branchByDate(Carbon $date) {
   	$ads = []; // array of dailysales
-  	$bb = $this->bossbranch->with([
+  	$bb = $this->bossbranch
+      ->skipCache()
+      ->with([
   			'branch'=>function($q){
   				$q->select(['code', 'descriptor', 'mancost', 'id']);
   			}

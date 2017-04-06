@@ -96,7 +96,7 @@ class SettingsController extends Controller {
 
 		$arr = [];
 
-		$bb = $this->repository->all(['branchid']);
+		$bb = $this->repository->skipCache()->all(['branchid']);
 		//return $bb;
 		
 		$branchs = $this->branch->all(['code', 'descriptor', 'id']);

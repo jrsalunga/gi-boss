@@ -69,7 +69,8 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-right">Sales</th>
+          <th class="text-right">Gross</th>
+          <th class="text-right">Net</th>
           <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>
@@ -84,6 +85,7 @@
       <tbody>
         <?php
           $tot_sales = 0;
+          $tot_gross = 0;
           $tot_purchcost = 0;
           $tot_custcount = 0;
           $tot_headspend = 0;
@@ -113,9 +115,11 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
             <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @else
             <?php 
               $tot_sales      += $ds['ds']->sales;
+              $tot_gross      += $ds['ds']->slsmtd_totgrs;
               $tot_purchcost  += $ds['ds']->purchcost;
               $tot_custcount  += $ds['ds']->custcount;
               $tot_headspend  += $ds['ds']->headspend;
@@ -126,6 +130,7 @@
               $tot_tips       += $ds['ds']->tips;
               $tot_tipspct    += $ds['ds']->tipspct;
             ?>
+            <td class="text-right">{{ number_format($ds['ds']->slsmtd_totgrs,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
@@ -147,6 +152,11 @@
             <strong>
               {{ count($dailysales) }}
               {{ count($dailysales) > 1 ? 'branches':'branch' }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_gross,2) }}
             </strong>
           </td>
           <td class="text-right">

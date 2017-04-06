@@ -103,6 +103,10 @@
             <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
             {{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span>
             </a>
+
+            @if(!is_null($ds['ds']) && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
+              <span class="pull-right glyphicon glyphicon-exclamation-sign"></span>
+            @endif
           </td>
           @if(is_null($ds['ds']))
             <td class="text-right">-</td>

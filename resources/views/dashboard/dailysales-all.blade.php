@@ -104,7 +104,7 @@
             {{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span>
             </a>
 
-            @if(!is_null($ds['ds']) && $ds['ds']->sales!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
+            @if(!is_null($ds['ds']) && intval($ds['ds']->sales)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
               <span class="pull-right glyphicon glyphicon-exclamation-sign"></span>
             @endif
           </td>

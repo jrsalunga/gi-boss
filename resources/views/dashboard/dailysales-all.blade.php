@@ -134,13 +134,15 @@
               $tot_tips       += $ds['ds']->tips;
               $tot_tipspct    += $ds['ds']->tipspct;
             ?>
-            <td class="text-right">@if($ds['ds']->slsmtd_totgrs>0)
+            <td class="text-right">
+            @if($ds['ds']->slsmtd_totgrs>0)
               <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
               {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
               </a>
             @else
               {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
-            @endif</td>
+            @endif
+            </td>
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
@@ -228,7 +230,7 @@
 @section('js-external')
   
 <script src="/js/vendors-common.min.js"></script>
-
+<script src="/js/dr-picker.js"></script>
 
 <script>
     

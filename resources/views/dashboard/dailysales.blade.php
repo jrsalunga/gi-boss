@@ -108,7 +108,15 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
           @else
-            <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
+            <td class="text-right">
+              @if($ds['ds']->slsmtd_totgrs>0)
+              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
+              </a>
+            @else
+              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
+            @endif
+            </td>
             <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->headspend,2) }}</td>
@@ -152,6 +160,7 @@
 <script src="/js/vendors-common.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
+<script src="/js/dr-picker.js"></script>
 
 <script>
   $(document).ready(function(){

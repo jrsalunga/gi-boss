@@ -95,6 +95,10 @@
             <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
             {{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span>
             </a>
+
+            @if(!is_null($ds['ds']) && ($ds['ds']->slsmtd_totgrs+0)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
+              <span class="pull-right glyphicon glyphicon-exclamation-sign text-warning" title="Warning: Net Sales is greater than Gross Sales" data-toggle="tooltip"></span>
+            @endif
           </td>
           @if(is_null($ds['ds']))
             <td class="text-right">-</td>

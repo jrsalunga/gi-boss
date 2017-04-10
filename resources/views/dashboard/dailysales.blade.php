@@ -124,7 +124,15 @@
             @endif
             </td>
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
-            <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
+            <td class="text-right">
+              @if($ds['ds']->purchcost>0)
+                <a href="/component/purchases?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+                {{ number_format($ds['ds']->purchcost,2) }}
+                </a>
+              @else
+                {{ number_format($ds['ds']->purchcost,2) }}
+              @endif
+            </td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->headspend,2) }}</td>
             <td class="text-right">{{ $ds['ds']->empcount }}</td>

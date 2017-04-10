@@ -105,7 +105,7 @@
             </a>
 
             @if(!is_null($ds['ds']) && ($ds['ds']->slsmtd_totgrs+0)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
-              <span class="pull-right glyphicon glyphicon-exclamation-sign"></span>
+              <span class="pull-right glyphicon glyphicon-exclamation-sign text-warning" title="Warning: Net Sales is greater than Gross Sales" data-toggle="tooltip"></span>
             @endif
           </td>
           @if(is_null($ds['ds']))
@@ -134,7 +134,13 @@
               $tot_tips       += $ds['ds']->tips;
               $tot_tipspct    += $ds['ds']->tipspct;
             ?>
-            <td class="text-right">{{ number_format($ds['ds']->slsmtd_totgrs,2) }}</td>
+            <td class="text-right">@if($ds['ds']->slsmtd_totgrs>0)
+              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
+              </a>
+            @else
+              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
+            @endif</td>
             <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->purchcost,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>

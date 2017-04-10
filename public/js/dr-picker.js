@@ -33,6 +33,7 @@ $('[data-toggle="loader"]').on('click', function(){
   loader();
 });
 
+$('[data-toggle="tooltip"]').tooltip();
 
 var initDatePicker = function(){
 

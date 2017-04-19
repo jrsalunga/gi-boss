@@ -24,6 +24,8 @@ class DailySales extends BaseModel {
     'cospct' => 'float',
     'purchcost' => 'float',
     'mancost' => 'float',
+    'crew_kit' => 'integer',
+    'crew_din' => 'integer',
     'salesemp' => 'float',
     'chrg_total' => 'float',
     'chrg_csh' => 'float',

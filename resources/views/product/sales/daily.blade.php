@@ -1054,11 +1054,11 @@
         name: 'On Duty',
         data: [{
             name: 'Kitchen Crew',
-            y: {{ $ds->crew_kit || 0 }},
+            y: {{ $ds->crew_kit }},
             color: '#B09ADB' 
         }, {
             name: 'Dining Crew',
-            y: {{ $ds->crew_din || 0 }},
+            y: {{ $ds->crew_din }},
             color: '#15C0C2' 
         }],
         center: [120, 40],

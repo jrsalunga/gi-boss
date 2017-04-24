@@ -631,7 +631,11 @@
                                 <td>{{ number_format($mp['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
                                 <td class="text-right"><small class="text-muted">{{ number_format(($mp['grsamt']/$tm)*100,2)}}%</small></td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($mp['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($mp['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
                               </tr>
                             <?php $t+=$mp['grsamt']; ?>
                             @endforeach

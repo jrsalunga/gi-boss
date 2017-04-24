@@ -382,7 +382,11 @@
                               <tr>
                                 <td>{{ $prodcat->prodcat }}</td>
                                 <td class="text-right">{{ number_format($prodcat->grsamt, 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($prodcat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                  @if($ds->slsmtd_totgrs>0)
+                                  <small class="text-muted">{{ number_format(($prodcat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                  @endif
+                                </td>
                               </tr>
                             <?php $t+=$prodcat->grsamt; ?> 
                             @endforeach
@@ -444,7 +448,11 @@
                                 <td>{{ $menucat->menucat }}</td>
                                 <td><small class="text-muted">{{ $menucat->prodcat }}</small></td>
                                 <td class="text-right">{{ number_format($menucat->grsamt, 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($menucat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                  @if($ds->slsmtd_totgrs>0)
+                                  <small class="text-muted">{{ number_format(($menucat->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                  @endif
+                                </td>
                               </tr>
                             <?php $t+=$menucat->grsamt; ?>
                             @endforeach
@@ -531,7 +539,11 @@
                                 <td>{{ number_format($groupie['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($groupie['grsamt'], 2) }}</td>
                                 <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$tg)*100,2)}}%</small></td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                  @if($ds->slsmtd_totgrs>0)
+                                  <small class="text-muted">{{ number_format(($groupie['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                  @endif
+                                </td>
                               </tr>
                             <?php $t+=$groupie['grsamt']; ?>
                             @endforeach

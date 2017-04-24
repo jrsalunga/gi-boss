@@ -319,7 +319,11 @@
                                 <td>{{ $product->product }}</td>
                                 <td class="text-right"><small class="text-muted">{{ number_format($product->qty, 0) }}</small></td>
                                 <td class="text-right">{{ number_format($product->grsamt, 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($product->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                  <small class="text-muted">{{ number_format(($product->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
                                 <td><small class="text-muted">{{ $product->prodcat }}</small></td>
                                 <td><small class="text-muted">{{ $product->menucat }}</small></td>
                               </tr>

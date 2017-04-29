@@ -956,6 +956,7 @@
       //console.log(type);
       var html = '';
       switch (type) {
+        case 'weekly':
         html = '<select id="fr-year" class="btn btn-default dp-w-fr" style="height:34px; padding: 6px 3px 6px 12px">'
                 @for($y=2015;$y<2021;$y++)
                   +'<option value="{{$y}}" {{ $dr->fr->copy()->startOfWeek()->year==$y?'selected':'' }}>{{$y}}</option>'

@@ -50,6 +50,22 @@ class Purchase2Repository extends BaseRepository
   }
 
 
+  public function branchGroupByDrPlain(Branch $branch, DateRange $dr) {
+    return $dss = $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('purchase.date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    ->orderBy('purchase.date', 'asc');
+    });
+  }
+
+  public function branchGroupByDr(Branch $branch, DateRange $dr) {
+    return $dss = $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    ->select(DB::raw('date, sum(qty) as qty, sum(tcost) as tcost'))
+                    ->groupBy('date');
+    });
+  }
+
+
   public function brComponentByDR(DateRange $dr) {
     return $this->scopeQuery(function($query) use ($dr) {
       return $query->whereBetween('purchase.date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])

@@ -13,19 +13,31 @@ use App\Repositories\Criterias\BossBranchCriteria;
 use App\Repositories\BranchRepository;
 use App\Repositories\Criterias\ByBranchCriteria;
 use App\Repositories\Criterias\BranchCriteria;
+use App\Repositories\ComponentRepository as CompRepo;
+use App\Repositories\ProductRepository as ProdRepo;
+use App\Repositories\Purchase2Repository as PurchRepo;
+use App\Repositories\SalesmtdRepository as SalesRepo;
 
 class AnalyticsController extends Controller
 {
   protected $ds;
   protected $dr;
   protected $bb;
+  protected $compRepo;
+  protected $prodRepo;
+  protected $purchRepo;
+  protected $salesRepo;
 
-  public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr) {
+  public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr, CompRepo $compRepo, ProdRepo $prodRepo, PurchRepo $purchRepo, SalesRepo $salesRepo) {
     $this->ds = $dsrepo;
     $this->dr = $dr;
     $this->bb = $bbrepo;
     $this->bb->pushCriteria(new BossBranchCriteria);
     $this->branch = new BranchRepository;
+    $this->compRepo = $compRepo;
+    $this->prodRepo = $prodRepo;
+    $this->purchRepo = $purchRepo;
+    $this->salesRepo = $salesRepo;
   }
 
 
@@ -253,7 +265,7 @@ class AnalyticsController extends Controller
   private function setDateRangeMode(Request $request, $mode='day') { 
     $y=false;
     switch ($mode) {
-      case 'month':
+      case 'monthly':
         $to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->endOfMonth();
         $fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $to->copy()->subMonths(5)->startOfMonth();
         if ($to->lt($fr)) {
@@ -324,7 +336,7 @@ class AnalyticsController extends Controller
       }
     }
 
-
+    $this->dr->setMode($mode);
     $this->dr->fr = $fr;
     $this->dr->to = $to;
     $this->dr->date = $to;
@@ -342,5 +354,135 @@ class AnalyticsController extends Controller
     $response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
     $response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
     return $response;
+  }
+
+
+  public function getCompPurch(Request $request) {
+    $where = [];
+    $bb = $this->bossBranch();
+    $d = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
+    $res = $this->setDateRangeMode($request, in_array($request->input('mode'),$d) ? $request->input('mode') : 'daily');
+
+    $comps = $this->compRepo
+              //->skipCache()
+              ->scopeQuery(function($query){
+                return $query->orderBy('descriptor');
+              })
+              ->all(['descriptor', 'id']);
+
+    $prods = $this->prodRepo
+              //->skipCache()
+              ->scopeQuery(function($query){
+                return $query->whereNotIn('prodcat_id', ['E841F22BBC3711E6856EC3CDBB4216A7'])
+                          ->where('descriptor', '<>', '')
+                          ->orderBy('descriptor');
+              })
+              ->all(['descriptor', 'id']);
+    
+
+    $component = null;
+    if ($request->has('componentid') && is_uuid($request->input('componentid'))) {
+      try {
+        $component = $this->compRepo->find($request->input('componentid'), ['code', 'descriptor', 'id']);
+      } catch (Exception $e) {
+        $component = null;
+      }
+    }
+
+    $product = null;
+    if ($request->has('productid') && is_uuid($request->input('productid'))) {
+      try {
+        $product = $this->prodRepo->find($request->input('productid'), ['code', 'descriptor', 'id']);
+      } catch (Exception $e) {
+        $product = null;
+      }
+    }
+
+
+    if(is_null($request->input('branchid'))) 
+      return $this->setViewWithDR(view('layouts.br-dr')
+        ->with('branches', $bb)
+        ->with('branch', null)
+        ->with('datas', null)
+        ->with('comps', $comps)
+        ->with('prods', $prods)
+        ->with('includes', 'layouts.ldr'));
+    
+
+
+    try {
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    } catch (Exception $e) {
+      return $this->setViewWithDR(view('layouts.br-dr')
+        ->with('branches', $bb)
+        ->with('branch', null)
+        ->with('datas', null)
+        ->with('comps', $comps)
+        ->with('prods', $prods)
+        ->with('includes', 'layouts.ldr'));
+    }
+
+    $datas = [];
+    
+    $purchases = null;
+    if (!is_null($component)) {
+      $purchases = $this->purchRepo
+                      ->branchGroupByDr($branch, $this->dr)
+                      ->findWhere(['branchid' => $branch->id, 'componentid'=>$component->id], ['date', 'qty', 'tcost']);
+    }
+
+    $sales = null;
+    if (!is_null($product)) {
+      $sales = $this->salesRepo
+            ->skipCache()
+            ->groupByDateDr($this->dr)
+            ->findWhere(['branch_id'=>$branch->id, 'product_id'=>$product->id], ['orddate', 'ordtime', 'grsamt', 'qty']);
+    }
+
+    //return $sales;
+
+    foreach ($this->dr->dateInterval() as $key => $date) {
+      
+      $datas[$date->format('Ymd')]['date'] = $date;
+      
+      if ($sales) {
+        $datas[$date->format('Ymd')]['product'] = $sales->filter(function ($item) use ($date) {
+          if ($item->orddate->format('Y-m-d') == $date->format('Y-m-d')) 
+              return $item;
+        })->first();
+      } else {
+        $datas[$date->format('Ymd')]['product'] = null;
+      }
+
+      if ($purchases) {
+        $datas[$date->format('Ymd')]['component'] = $purchases->filter(function ($item) use ($date) {
+          if ($item->date->format('Y-m-d') == $date->format('Y-m-d')) 
+              return $item;
+        })->first();
+      } else {
+        $datas[$date->format('Ymd')]['component'] = null;
+      }
+    }
+
+
+    //return $datas;
+
+
+
+
+
+
+    
+
+
+    return $this->setViewWithDR(view('layouts.br-dr')
+      ->with('datas', $datas)
+      ->with('branches', $bb)
+      ->with('branch', $branch)
+      ->with('includes', 'layouts.ldr')
+      ->with('component', $component)
+      ->with('product', $product)
+      ->with('comps', $comps)
+      ->with('prods', $prods));
   }
 }

@@ -38,6 +38,9 @@ Route::get('status/branch/week', ['uses'=>'AnalyticsController@getWeekly']);
 Route::get('status/branch/quarter', ['uses'=>'AnalyticsController@getQuarter']);
 Route::get('status/branch/year', ['uses'=>'AnalyticsController@getYear']);
 
+Route::get('report/comp-purch', ['uses'=>'AnalyticsController@getCompPurch']);
+
+
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);
 Route::get('component/purchases', ['uses'=>'Purchase2Controller@getDaily']);
 Route::get('api/search/component', ['uses'=>'Purchase2Controller@search']);

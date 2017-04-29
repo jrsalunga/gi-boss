@@ -53,11 +53,6 @@
               @else
                 <span>{{ $branch->code }}</span>
               @endif
-
-             
-             
-
-              
             </div>
           </div>
           <div class="btn-group visible-xs-inline-block pull-right" role="group">
@@ -67,7 +62,7 @@
           </div>
           
 
-          <div class="btn-group btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
+          <div class="btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
             {!! Form::open(['url' => '/product/sales', 'method' => 'get', 'id'=>'filter-form']) !!}
             
             <button type="submit" data-toggle="loader" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">

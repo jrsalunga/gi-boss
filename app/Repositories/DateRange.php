@@ -23,6 +23,18 @@ class DateRange {
   	$this->now = Carbon::now();
   }
 
+  public function getMode() {
+    return $this->mode;
+  }
+
+   public function setMode($mode=null) {
+    return $this->mode = $mode;
+  }
+
+  public function getModes() {
+    return $this->modes;
+  }
+
   private function checkDates(Request $request) {
   	
   	try {

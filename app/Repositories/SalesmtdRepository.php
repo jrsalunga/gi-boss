@@ -48,6 +48,14 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
     })->skipOrder();
   }
 
+  public function groupByDateDr(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+            ->select(DB::raw('orddate, sum(qty) as qty, sum(grsamt) as grsamt'))
+            ->groupBy('orddate');
+    });
+  }
+
   public function brProdcatByDR(DateRange $dr) {
     return $this->scopeQuery(function($query) use ($dr) {
       return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])

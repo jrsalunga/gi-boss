@@ -9,12 +9,15 @@ use Illuminate\Container\Container as App;
 use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Traits\Repository as RepoTrait;
 
 
 class ComponentRepository extends BaseRepository implements CacheableInterface
 //class ComponentRepository extends BaseRepository 
 {
-  use CacheableRepository;
+  use CacheableRepository, RepoTrait;
+
+  protected $order = ['descriptor', 'code'];
 
   protected $fieldSearchable = [
     'code'=>'like',

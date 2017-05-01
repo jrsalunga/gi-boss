@@ -9,6 +9,9 @@
 <form action="{{ request()->url() }}" method="GET" accept-charset="UTF-8" id="filter-form">
 	
 
+	<input type="hidden" name="a[]" value="1">
+	<input type="hidden" name="a[]" value="2">
+	<input type="hidden" name="a[]" value="3">
 	<input type="hidden" id="componentid" name="componentid" value="{{ $component->id or ''}}">
 	<input type="hidden" id="productid" name="productid" value="{{ $product->id or ''}}">
 	<input type="hidden" id="mode" name="mode" value="{{ $dr->getMode() }}">
@@ -27,7 +30,7 @@
 	-->
 		<select class="form-control" id="scomp">
 			<option value=""></option>
-			@foreach($comps as $comp)
+			@foreach ($comps as $comp)
 				@if (request()->has('componentid') && strtolower(request()->input('componentid'))==$comp->lid())
 					<option selected value="{{ $comp->lid() }}">{{ $comp->descriptor }}</option>
 				@else
@@ -44,9 +47,9 @@
 			<option value=""></option>
 			@foreach($prods as $prod)
 				@if (request()->has('productid') && strtolower(request()->input('productid'))==$prod->lid())
-					<option selected value="{{ $prod->lid() }}">{{ $prod->descriptor }}</option>
+					<option selected value="{{ $prod->lid() }}">{{ $prod->code }} - {{ $prod->descriptor }}</option>
 				@else
-					<option value="{{ $prod->lid() }}">{{ $prod->descriptor }}</option>
+					<option value="{{ $prod->lid() }}">{{ $prod->code }} - {{ $prod->descriptor }}</option>
 				@endif
 				
 			@endforeach

@@ -358,6 +358,8 @@ class AnalyticsController extends Controller
 
 
   public function getCompPurch(Request $request) {
+
+
     $where = [];
     $bb = $this->bossBranch();
     $d = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly'];
@@ -368,7 +370,7 @@ class AnalyticsController extends Controller
               ->scopeQuery(function($query){
                 return $query->orderBy('descriptor');
               })
-              ->all(['descriptor', 'id']);
+              ->all(['code', 'descriptor', 'id']);
 
     $prods = $this->prodRepo
               //->skipCache()
@@ -377,7 +379,7 @@ class AnalyticsController extends Controller
                           ->where('descriptor', '<>', '')
                           ->orderBy('descriptor');
               })
-              ->all(['descriptor', 'id']);
+              ->all(['code', 'descriptor', 'id']);
     
 
     $component = null;
@@ -439,6 +441,7 @@ class AnalyticsController extends Controller
             ->findWhere(['branch_id'=>$branch->id, 'product_id'=>$product->id], ['orddate', 'ordtime', 'grsamt', 'qty']);
     }
 
+    //return $request->all();
     //return $sales;
 
     foreach ($this->dr->dateInterval() as $key => $date) {

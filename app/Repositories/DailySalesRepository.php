@@ -123,7 +123,11 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $ds_null = false;
     $current_day_zero_sales = false;
 
-    $ds = DailySales::where('date', $date->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
+    $ds = DailySales::where('date', $date->format('Y-m-d'))
+                ->where('sales', '>', 0)
+                ->orderBy('sales', 'DESC')
+                ->take($limit)
+                ->get();
     
     
 

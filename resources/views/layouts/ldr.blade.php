@@ -9,9 +9,6 @@
 <form action="{{ request()->url() }}" method="GET" accept-charset="UTF-8" id="filter-form">
 	
 
-	<input type="hidden" name="a[]" value="1">
-	<input type="hidden" name="a[]" value="2">
-	<input type="hidden" name="a[]" value="3">
 	<input type="hidden" id="componentid" name="componentid" value="{{ $component->id or ''}}">
 	<input type="hidden" id="productid" name="productid" value="{{ $product->id or ''}}">
 	<input type="hidden" id="mode" name="mode" value="{{ $dr->getMode() }}">

@@ -117,9 +117,9 @@
             $nd = c($backup->filedate->copy()->addDay()->format('Y-m-d').' 12:00:00'); 
             $nn = c($backup->filedate->copy()->addDays(2)->format('Y-m-d').' 12:00:00'); 
 
-            if ($nd->lt($backup->uploaddate) && $nn->lt($backup->uploaddate))
+            if ($nd->lt($backup->uploaddate) && $nn->lt($backup->uploaddate) && $backup->processed)
               $flag = 'text-danger';
-            else if (($nd->lt($backup->uploaddate) && $nn->gt($backup->uploaddate)))
+            else if ($nd->lt($backup->uploaddate) && $nn->gt($backup->uploaddate) && $backup->processed)
               $flag = 'text-warning';
             else
               $flag = '';

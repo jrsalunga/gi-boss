@@ -113,8 +113,19 @@
             </a>
             @endif
           </td>
-          <td>{{ $backup->filename }} </td>
-          <td>
+          <?php
+            $nd = c($backup->filedate->copy()->addDay()->format('Y-m-d').' 12:00:00'); 
+            $nn = c($backup->filedate->copy()->addDays(2)->format('Y-m-d').' 12:00:00'); 
+
+            if ($nd->lt($backup->uploaddate) && $nn->lt($backup->uploaddate))
+              $flag = 'text-danger';
+            else if (($nd->lt($backup->uploaddate) && $nn->gt($backup->uploaddate)))
+              $flag = 'text-warning';
+            else
+              $flag = '';
+          ?>
+          <td>{{ $backup->filename }}</td>
+          <td class="{{$flag}}">
             <span class="hidden-xs">
             @if($backup->uploaddate->format('Y-m-d')==now())
               {{ $backup->uploaddate->format('h:i A') }}

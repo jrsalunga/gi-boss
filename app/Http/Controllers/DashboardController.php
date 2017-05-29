@@ -58,6 +58,7 @@ class DashboardController extends Controller
 		foreach ($branchs as $key => $branch) {
 			$backup = Backup::where('branchid', $branch->id)
 									->where('processed', 1)
+									->where('filename', 'like', 'GC%')
 									->orderBy('year', 'DESC')
 									->orderBy('month', 'DESC')
 									->orderBy('filename', 'DESC')

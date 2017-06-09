@@ -163,29 +163,27 @@
     </div>
     @endif  
 
-    <div class="row">
       
-      @if(is_null($dailysales))
+    @if(is_null($dailysales))
 
-      @else
-
+    @else
+    <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Sales</p>
         <h3 id="h-tot-sales" style="margin:0">0</h3>
+      </div>
+      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+        <p style="margin-bottom:0">Total Food Cost</p>
+        <h3 id="h-tot-mancost" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Purchased</p>
         <h3 id="h-tot-purch" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Manpower Cost</p>
-        <h3 id="h-tot-mancost" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Sales per Employee</p>
         <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
-
     </div>
     <div class="row">
 
@@ -196,7 +194,6 @@
       </div>
     </div>
     <div class="row">
-
       <div class="col-md-12">
         <div class="table-responsive">
           <table class="table table-hover table-striped table-sort-data">
@@ -204,19 +201,25 @@
               <tr>
                   <th>Month</th>
                   <th class="text-right">Sales</th>
-                  <th class="text-right">Purchased</th>
+                  <th class="text-right">Food Cost %</th>
+                  <th class="text-right">OpEx %</th>
+                  <th class="text-right">Purchased %</th>
                   <th class="text-right">Customers</th>
                   <th class="text-right">Head Spend</th>
+                  <th class="text-right">Trans</th>
+                  <th class="text-right">Sales/Receipt</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-right">Sales per Emp</th>
+                  <th class="text-right">Sales/Emp</th>
+                  <!--
                   <th class="text-right">
                     <div style="font-weight: normal; font-size: 11px; cursor: help;">
                       <em title="Branch Mancost">{{is_null($branch)?'0.00':$branch->mancost}}</em>
                     </div>
                     Man Cost
                   </th>
-                  <th class="text-right">Man Cost %</th>
                   <th class="text-right">Tips</th>
+                  -->
+                  <th class="text-right">Mancost %</th>
                   <th class="text-right">Tips %</th>
               </tr>
             </thead>
@@ -232,6 +235,10 @@
                 $tot_sales_emp = 0;
                 $tot_mancostpct = 0;
                 $tot_tipspct = 0;
+                $tot_cos = 0;
+                $tot_opex = 0;
+                $tot_receipt = 0;
+                $tot_trans = 0;
 
                 $div_sales = 0;
                 $div_purchcost = 0;
@@ -240,6 +247,10 @@
                 $div_mancost = 0;
                 $div_tips = 0;
                 $div_headspend = 0;
+                $div_cos = 0;
+                $div_opex = 0;
+                $div_receipt = 0;
+                $div_trans = 0;
               ?>
               @foreach($dailysales as $d)
               <?php
@@ -249,9 +260,14 @@
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0;
+                $div_cos+=($d->dailysale['cos']!=0)?1:0;
+                $div_opex+=($d->opex!=0)?1:0;
+                $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
+                $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
+
+                $fr = $d->date->copy()->firstOfMonth();
+                $to = $d->date->copy()->lastOfMonth();
               ?>
-
-
               <tr>
                 <td data-sort="{{$d->date->format('Y-m-d')}}">
                   <a href="/status/branch?branchid={{$branch->lid()}}&fr={{$d->date->firstOfMonth()->format('Y-m-d')}}&to={{$d->date->lastOfMonth()->format('Y-m-d')}}">
@@ -260,18 +276,39 @@
                 </td>
                 @if(!is_null($d->dailysale))
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">
-                  {{ number_format($d->dailysale['sales'], 2) }}
-                </td>
-                <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
-                    {{ number_format($d->dailysale['purchcost'], 2) }}
-                  @if($d->dailysale['purchcost']==0) 
-                    
+                  @if(number_format($d->dailysale['sales'], 2)=='0.00')
+                      {{ number_format($d->dailysale['sales'], 2) }}
                   @else
-                  <!--
-                  <a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch">
-                    {{ number_format($d->dailysale['purchcost'], 2) }}
-                  </a>
-                  -->
+                    <a class="text-primary" target="_blank" href="/product/sales?branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}">
+                      {{ number_format($d->dailysale['sales'], 2) }}
+                    </a>
+                  @endif
+                </td>
+                <td class="text-right" data-sort="{{ $d->dailysale->get_cospct() }}">
+                  @if($d->dailysale->get_cospct()=='0.00')
+                      {{ $d->dailysale->get_cospct() }}
+                  @else
+                    <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale['cos'], 2) }}" href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
+                      {{ $d->dailysale->get_cospct() }}
+                    </a>
+                  @endif
+                </td>
+                <td class="text-right" data-sort="{{ $d->dailysale->get_opexpct() }}">
+                  @if($d->dailysale->get_opexpct()=='0.00')
+                      {{ $d->dailysale->get_opexpct() }}
+                  @else
+                    <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale->getOpex(),2) }}" href="/component/purchases?table=expscat&item=Operations+and+Administration&itemid=8a1c2ff95cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
+                      {{ $d->dailysale->get_opexpct() }}
+                    </a>
+                  @endif
+                </td>
+                <td class="text-right" data-sort="{{ $d->dailysale->get_purchcostpct() }}">
+                  @if($d->dailysale->get_purchcostpct()=='0.00')
+                      {{ $d->dailysale->get_purchcostpct() }}
+                  @else
+                    <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale['purchcost'], 2) }}" href="/component/purchases?branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank"">
+                      {{ $d->dailysale->get_purchcostpct() }}
+                    </a>
                   @endif
                 </td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">
@@ -280,6 +317,8 @@
                 <!--- head speand -->
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
                 <!--- end: head speand -->
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['trans_cnt'], 0,'.','') }}">{{ number_format($d->dailysale['trans_cnt'], 0) }}</td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale->get_receipt_ave(false), 2,'.','') }}">{{ $d->dailysale->get_receipt_ave() }}</td>
                 <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">
                   {{ number_format($d->dailysale['empcount'], 0) }}
                 </td>
@@ -299,9 +338,11 @@
                   $div_mancost+=($mancost!=0)?1:0; 
               
                 ?>
+                <!--
                 <td class="text-right" data-sort="{{ number_format($mancost,2,'.','') }}">
                   {{ number_format($mancost,2) }}
                 </td>
+                -->
                 <!--- mancostpct -->
                 @if($d->dailysale['sales']==0)
                   <td class="text-right" data-sort="0.00">
@@ -314,21 +355,25 @@
                   <td class="text-right" data-sort="{{ number_format($mancostpct, 2,'.','') }}"
                     title="(({{$d->dailysale['empcount']}}*{{$branch->mancost}}/{{$d->dailysale['sales']}})*100 ={{$mancostpct}}"
                   >
-                    {{ number_format($mancostpct, 2) }}
+                    <span data-toggle="tooltip" title="{{ number_format($mancost,2) }}" class="help">
+                      {{ number_format($mancostpct, 2) }}
+                    </span>
                   </td>
                 @endif
-                <!--- end: mancostpct -->
+                <!--- 
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">
                   {{ number_format($d->dailysale['tips'],2) }}
                 </td>
-                <!--- sales per emp -->
+                 -->
                 @if($d->dailysale['sales']==0)
                   <td class="text-right" data-sort="0.00">
                     -
                   </td>
                 @else
                   <td class="text-right" data-sort="{{ number_format(($d->dailysale['tips']/$d->dailysale['sales'])*100, 2,'.','') }}">
-                    {{ number_format(($d->dailysale['tips']/$d->dailysale['sales'])*100, 2) }}
+                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale['tips'],2) }}" class="help">
+                      {{ number_format(($d->dailysale['tips']/$d->dailysale['sales'])*100, 2) }}
+                    </span>
                   </td>
                 @endif
                 <!--- end: sales per emp -->
@@ -348,19 +393,29 @@
                   $tot_mancostpct += $d->dailysale['mancostpct'];
                   $tot_tips       += $d->dailysale['tips'];
                   $tot_tipspct    += $d->dailysale['tipspct'];
+                  $tot_cos        += $d->dailysale['cos'];
+                  $tot_opex       += $d->dailysale->getOpex();
+                  $tot_trans      += $d->dailysale['trans_cnt'];
+                  $tot_receipt    += $d->dailysale->get_receipt_ave();
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
+                <!--
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
+                -->
                 @endif
               </tr>
               @endforeach
@@ -372,105 +427,189 @@
                   {{ $months }}
                   {{ $months > 1 ? 'months':'month' }}
                   </strong>
+                  <div class="text-right">
+                    <small style="color: #ccc;">Average</small>
+                  </div>
+                  <div class="text-right">
+                    <small style="color: #ccc;">% on Total Sales</small>
+                  </div>
+                </td>
                 <td class="text-right">
-                <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
-                <div>
-                <em><small title="{{$tot_sales}}/{{$div_sales}}">
-                  {{ $div_sales!=0?number_format($tot_sales/$div_sales,2):0 }}
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
-                <div>
-                <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
-                  {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>{{ number_format($tot_custcount, 0) }}</strong>
-                <div>
-                <em><small title="{{$tot_custcount}}/{{$div_custcount}}">
-                  {{ $div_custcount!=0?number_format($tot_custcount/$div_custcount,2):0 }}
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>&nbsp;</strong>
-                <div>
-                <em><small title="{{$tot_headspend}}/{{$div_headspend}}">
-                  {{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>{{ number_format($tot_empcount,0) }}</strong>
-                <div>
-                <em><small title="{{$tot_empcount}}/{{$div_empcount}}">
-                  {{ $div_empcount!=0?number_format($tot_empcount/$div_empcount,2):0 }}
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>&nbsp;</strong>
-                <div>
-                <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}" >
-                  @if($tot_empcount!='0')
-                    {{ number_format($tot_sales/$tot_empcount,2) }}
-                    <!--
-                    {{ number_format($tot_sales-($tot_purchcost+$tot_mancost),2) }}
-                    -->
-                  @else
-                    0
-                  @endif
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong id="f-tot-mancost">{{ number_format($tot_mancost,2) }}</strong>
-                <div>
-                <em><small title="{{$tot_mancost}}/{{$div_mancost}}">
-                  @if($div_mancost!='0')
-                  {{ number_format($tot_mancost/$div_mancost,2) }}
-                   @else
-                    0
-                  @endif
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>&nbsp;</strong>
-                <div>
-                <em><small title="(({{$tot_empcount}}*{{$branch->mancost}})/{{$tot_sales}})*100">
-                  @if($tot_sales!='0')
-                  {{ number_format((($tot_empcount*$branch->mancost)/$tot_sales)*100,2) }}%
-                  @else
-                    0
-                  @endif
-                </small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>{{ number_format($tot_tips,2) }}</strong>
-                <div>
-                <em><small title="{{$tot_tips}}/{{$div_tips}}">
-                  {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}</small></em>
-                </div>
-              </td>
-              <td class="text-right">
-                <strong>&nbsp; </strong>
-                <div>
-                <em><small title="({{$tot_tips}}/{{$tot_sales}})*100 ">
-                  @if($tot_sales!='0')
-                  {{ number_format(($tot_tips/$tot_sales)*100,2) }}%
-                  @else
-                    0
-                  @endif
-                </small></em>
-                </div>
-              </td>
-            </tr>
+                  <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_sales}}/{{$div_sales}}">
+                    {{ $div_sales!=0?number_format($tot_sales/$div_sales,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong id="f-tot-mancost">{{ number_format($tot_cos, 2) }}</strong>
+                  <div>
+                    <em><small title="{{$tot_cos}}/{{$div_cos}}">
+                      {{ $div_cos!=0?number_format($tot_cos/$div_cos,2):0 }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_cos}}/{{$tot_sales}})*100">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_cos/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>{{ number_format($tot_opex, 2) }}</strong>
+                  <div>
+                    <em><small title="{{$tot_opex}}/{{$div_opex}}">
+                      {{ $div_opex!=0?number_format($tot_opex/$div_opex,2):0 }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_opex}}/{{$tot_sales}})*100">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_opex/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
+                  <div>
+                    <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
+                      {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_purchcost}}/{{$tot_sales}})*100">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_purchcost/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>{{ number_format($tot_custcount, 0) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_custcount}}/{{$div_custcount}}">
+                    {{ $div_custcount!=0?number_format($tot_custcount/$div_custcount,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>&nbsp;</strong>
+                  <div>
+                  <em><small title="{{$tot_headspend}}/{{$div_headspend}}">
+                    {{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>{{ number_format($tot_trans, 0) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_trans}}/{{$div_trans}}">
+                    {{ $div_trans!=0?number_format($tot_trans/$div_trans,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>&nbsp;</strong>
+                  <div>
+                  <em><small title="{{$tot_receipt}}/{{$div_receipt}}">
+                    {{ $div_receipt!=0?number_format($tot_receipt/$div_receipt,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>{{ number_format($tot_empcount,0) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_empcount}}/{{$div_empcount}}">
+                    {{ $div_empcount!=0?number_format($tot_empcount/$div_empcount,2):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong>&nbsp;</strong>
+                  <div>
+                  <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}" >
+                    @if($tot_empcount!='0')
+                      {{ number_format($tot_sales/$tot_empcount,2) }}
+                      <!--
+                      {{ number_format($tot_sales-($tot_purchcost+$tot_mancost),2) }}
+                      -->
+                    @else
+                      0
+                    @endif
+                  </small></em>
+                  </div>
+                </td>
+                <!--
+                <td class="text-right">
+                  <strong id="f-tot-mancost">{{ number_format($tot_mancost,2) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_mancost}}/{{$div_mancost}}">
+                    @if($div_mancost!='0')
+                    {{ number_format($tot_mancost/$div_mancost,2) }}
+                     @else
+                      0
+                    @endif
+                  </small></em>
+                  </div>
+                </td>
+                -->
+                <td class="text-right">
+                  <strong>{{ number_format($tot_mancost,2) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_mancost}}/{{$div_mancost}}">
+                    @if($div_mancost!='0')
+                    {{ number_format($tot_mancost/$div_mancost,2) }}
+                     @else
+                      0
+                    @endif
+                  </small></em>
+                  </div>
+                  <div>
+                    <em><small title="(({{$tot_empcount}}*{{$branch->mancost}})/{{$tot_sales}})*100">
+                      @if($tot_sales!='0')
+                      {{ number_format((($tot_empcount*$branch->mancost)/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                <!--
+                <td class="text-right">
+                  <strong>{{ number_format($tot_tips,2) }}</strong>
+                  <div>
+                  <em><small title="{{$tot_tips}}/{{$div_tips}}">
+                    {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}</small></em>
+                  </div>
+                </td>
+                -->
+                <td class="text-right">
+                  <strong>{{ number_format($tot_tips,2) }}</strong>
+                  <div>
+                    <em><small title="{{$tot_tips}}/{{$div_tips}}">
+                      {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_tips}}/{{$tot_sales}})*100 ">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_tips/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+              </tr>
             </tfoot>  
           </table>
 
@@ -479,11 +618,12 @@
             <tr>
                 <th>Date</th>
                 <th>Sales</th>
+                <th>Food Cost</th>
+                <th>OpEx</th>
                 <th>Purchased</th>
                 <th>Emp Count</th>
-           
-                <th>Tips</th>
                 <th>Man Cost</th>
+                <th>Tips</th>
                 <th>Sales per Emp</th>
             </tr>
           </thead>
@@ -493,14 +633,16 @@
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
+              <td>{{ $d->dailysale['cos'] }}</td>
+              <td>{{ $d->opex }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
-              
               <td>{{ $d->dailysale['mancost'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
               @else 
-           
+              <td>0</td>
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -514,12 +656,12 @@
         </table>
       </div><!--  end: table-responsive -->
       </div>
-          @endif
     </div>
+    <p>&nbsp;</p>
+    @endif <!-- end: if DS is NULL  -->
+  
+
   </div>
-
-
-
 </div><!-- end .container-fluid -->
 
 
@@ -915,18 +1057,26 @@
           yAxis: 0
         }, {
           type: 'line',
+          yAxis: 0
+        }, {
+          type: 'line',
+          yAxis: 0
+        }, {
+          type: 'line',
           dashStyle: 'shortdot',
           yAxis: 1
         }, {
           type: 'line',
-          //dashStyle: 'shortdot',
-          yAxis: 0
+          yAxis: 0,
+          visible: false
         }, {
           type: 'line',
-          yAxis: 0
+          yAxis: 0,
+          visible: false
         }, {
           type: 'line',
-          yAxis: 0
+          yAxis: 0,
+          visible: false
         }
       ]
     });

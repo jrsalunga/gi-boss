@@ -150,7 +150,7 @@ class AnalyticsController extends Controller
 
   public function getMonth(Request $request) {
     $bb = $this->bossBranch();
-    $res = $this->setDateRangeMode($request, 'month');
+    $res = $this->setDateRangeMode($request, 'monthly');
 
     // get /status/branch
     if(is_null($request->input('branchid'))) {
@@ -164,7 +164,7 @@ class AnalyticsController extends Controller
       //return $this->setDailyViewVars('status.branch', null, $bb, null)->withError('dadada');
     } 
 
-    //return 'success';
+    //return dd($this->dr);
 
 
     try {

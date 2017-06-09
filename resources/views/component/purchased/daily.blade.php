@@ -396,6 +396,7 @@
                             <thead>
                               <tr>
                                 <th>Category</th>
+                                <th>Expense Code</th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
@@ -403,6 +404,7 @@
                               @foreach($compcats as $compcat)
                                 <tr>
                                   <td>{{ $compcat->compcat }}</td>
+                                  <td>{{ $compcat->expensecode }}</td>
                                   <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
                                 </tr>
                               @endforeach
@@ -451,6 +453,7 @@
                               <tr>
                                 <th>Code</th>
                                 <th>Expense</th>
+                                <th></th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
@@ -459,6 +462,15 @@
                                 <tr>
                                   <td>{{ $expense->expensecode }}</td>
                                   <td>{{ $expense->expense }}</td>
+                                  <td>
+                                    @if($expense->expscatcode=='05')
+                                      <span class="label label-warning">{{ $expense->expscatcode }}</span>
+                                    @elseif($expense->expscatcode=='08')
+                                      <span class="label label-primary">{{ $expense->expscatcode }}</span>
+                                    @else
+                                      {{ $expense->expscatcode }}
+                                    @endif
+                                  </td>
                                   <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
                                 </tr>
                               @endforeach
@@ -513,7 +525,15 @@
                             <tbody>
                               @foreach($expscats as $expscat)
                                 <tr>
-                                  <td>{{ $expscat->expscatcode }}</td>
+                                  <td>
+                                    @if($expscat->expscatcode=='05')
+                                      <span class="label label-warning">{{ $expscat->expscatcode }}</span>
+                                    @elseif($expscat->expscatcode=='08')
+                                      <span class="label label-primary">{{ $expscat->expscatcode }}</span>
+                                    @else
+                                      {{ $expscat->expscatcode }}
+                                    @endif
+                                  </td>
                                   <td>{{ $expscat->expscat }}</td>
                                   <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
                                 </tr>

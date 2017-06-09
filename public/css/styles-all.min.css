@@ -116,3 +116,7 @@
     opacity: .6;
 }
 
+.help {
+	cursor: help;
+}
+

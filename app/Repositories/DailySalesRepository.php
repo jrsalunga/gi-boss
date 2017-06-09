@@ -199,6 +199,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $obj = new StdClass;
       $obj->date = $date;
       $obj->dailysale = $filtered->first();
+      $obj->opex = is_null($filtered->first()) ? 0 : $filtered->first()->getOpex();
       $arr[$key] = $obj;
     }
 
@@ -209,7 +210,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
   private function getAggregateByDateRange($fr, $to) {
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
-    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -235,6 +236,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $obj = new StdClass;
       $obj->date = $date;
       $obj->dailysale = $filtered->first();
+      $obj->opex = is_null($filtered->first()) ? 0 : $filtered->first()->getOpex();
       $arr[$key] = $obj;
     }
     return collect($arr);
@@ -246,7 +248,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
     $sql .= 'WEEKOFYEAR(date) as week, YEARWEEK(date, 3) AS yearweak, ';
-    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -276,6 +278,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $obj = new StdClass;
       $obj->date = $date;
       $obj->dailysale = $filtered->first();
+      $obj->opex = is_null($filtered->first()) ? 0 : $filtered->first()->getOpex();
       $arr[$key] = $obj;
     }
     return collect($arr);
@@ -286,7 +289,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
   private function getAggregateQuarterly($fr, $to) {
 
     $sql = 'date, QUARTER(date) as quarter, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
-    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -314,6 +317,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $obj = new StdClass;
       $obj->date = $date;
       $obj->dailysale = $filtered->first();
+      $obj->opex = is_null($filtered->first()) ? 0 : $filtered->first()->getOpex();
       $arr[$key] = $obj;
     }
     return collect($arr);
@@ -324,7 +328,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
   private function getAggregateYearly($fr, $to) {
 
     $sql = 'date, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
-    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -351,6 +355,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $obj = new StdClass;
       $obj->date = $date;
       $obj->dailysale = $filtered->first();
+      $obj->opex = is_null($filtered->first()) ? 0 : $filtered->first()->getOpex();
       $arr[$key] = $obj;
     }
     return collect($arr);
@@ -362,7 +367,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
   public function sumByDateRange($fr, $to) {
 
     $sql = 'SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(crew_kit) AS crew_kit, SUM(crew_din) AS crew_din, ';
-    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {

@@ -816,8 +816,7 @@
             formatter: function () {
               //var date = new Date(this.value);
               //console.log(date.getDay());
-              //console.log(date);
-              var date = moment(this.value);
+              var date = moment(this.value).subtract(1, 'day');
               return date.year()+' '+date.quarter();
               return Highcharts.dateFormat('%b %Y', this.value);
             }

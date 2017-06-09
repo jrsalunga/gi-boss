@@ -89,7 +89,7 @@ class Purchase2Repository extends BaseRepository
                     ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
                     ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
                     ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
-                    ->select(DB::raw('compcat.descriptor as compcat, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost'))
+                    ->select(DB::raw('compcat.descriptor as compcat, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, expense.code as expensecode'))
                     ->groupBy('compcat.id')
                     ->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
     });
@@ -103,7 +103,7 @@ class Purchase2Repository extends BaseRepository
                     ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
                     ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
                     ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
-                    ->select(DB::raw('expense.code as expensecode, expense.descriptor as expense, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost'))
+                    ->select(DB::raw('expense.code as expensecode, expense.descriptor as expense, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, expscat.code as expscatcode'))
                     ->groupBy('expense.id')
                     ->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
     });

@@ -69,15 +69,17 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-right">Gross</th>
-          <th class="text-right">Net</th>
+          <th class="text-right">Sales</th>
+          <th class="text-right">Food Cost</th>
           <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>
+          <th class="text-right">Trans</th>
+          <th class="text-right">Sales/Receipt</th>
           <th class="text-right">Emp Count</th>
           <th class="text-right">Sales/Emp</th>
-          <th class="text-right">Man Cost</th>
-          <th class="text-right">Man Cost %</th>
+          <th class="text-right">Mancost</th>
+          <th class="text-right">Mancost %</th>
           <th class="text-right">Tips</th>
           <th class="text-right">Tips %</th>
         </tr>
@@ -95,6 +97,8 @@
           $tot_mancostpct = 0;
           $tot_tips = 0;
           $tot_tipspct = 0;
+          $tot_cos = 0;
+          $tot_trans = 0;
         ?>
         @foreach($dailysales as $key => $ds) 
         
@@ -120,6 +124,8 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
             <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           @else
             <?php 
               $tot_sales      += $ds['ds']->sales;
@@ -133,17 +139,27 @@
               $tot_mancostpct += $ds['ds']->mancostpct;
               $tot_tips       += $ds['ds']->tips;
               $tot_tipspct    += $ds['ds']->tipspct;
+              $tot_cos        += $ds['ds']->cos;
+              $tot_trans      += $ds['ds']->trans_cnt;
             ?>
             <td class="text-right">
-            @if($ds['ds']->slsmtd_totgrs>0)
-              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
-              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
-              </a>
+            @if(number_format($ds['ds']->sales,2)=='0.00')
+              {{ number_format($ds['ds']->sales,2)  }}
             @else
-              {{ number_format($ds['ds']->slsmtd_totgrs,2) }}
+              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              {{ number_format($ds['ds']->sales,2) }}
+              </a>
             @endif
             </td>
-            <td class="text-right">{{ number_format($ds['ds']->sales,2) }}</td>
+            <td class="text-right">
+              @if(number_format($ds['ds']->cos,2)=='0.00')
+                {{ number_format($ds['ds']->cos,2) }}
+              @else
+                <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+                  {{ number_format($ds['ds']->cos,2) }}
+                </a>
+              @endif
+            </td>
             <td class="text-right">
             @if($ds['ds']->purchcost>0)
               <a href="/component/purchases?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
@@ -155,6 +171,8 @@
             </td>
             <td class="text-right">{{ number_format($ds['ds']->custcount,0) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->headspend,2) }}</td>
+            <td class="text-right">{{ $ds['ds']->trans_cnt }}</td>
+            <td class="text-right">{{ $ds['ds']->get_receipt_ave() }}</td>
             <td class="text-right">{{ $ds['ds']->empcount }}</td>
             <td class="text-right">{{ $ds['ds']->empcount=='0' ? '0.00':number_format(($ds['ds']->sales/$ds['ds']->empcount),2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->mancost,2) }}</td>
@@ -176,12 +194,12 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_gross,2) }}
+              {{ number_format($tot_sales,2) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_sales,2) }}
+              {{ number_format($tot_cos,2) }}
             </strong>
           </td>
           <td class="text-right">
@@ -192,6 +210,12 @@
           <td class="text-right">
             <strong>
               {{ number_format($tot_custcount,0) }}
+            </strong>
+          </td>
+          <td class="text-right"></td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_trans,0) }}
             </strong>
           </td>
           <td class="text-right"></td>

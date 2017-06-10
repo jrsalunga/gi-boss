@@ -26,6 +26,7 @@ class Purchase2Controller extends Controller {
   protected $ds;
   protected $bb;
   protected $branch;
+  protected $ab; // AM's Branches
 
   public function __construct(PurchaseRepo $purchased, BBRepo $bbrepo, DateRange $dr, DSRepo $ds) {
     $this->purchased = $purchased;
@@ -34,6 +35,21 @@ class Purchase2Controller extends Controller {
     $this->bb = $bbrepo;
     $this->bb->pushCriteria(new BossBranchCriteria);
     $this->branch = new BranchRepository;
+
+    $this->ab = $this->getAMbranches();
+  }
+
+  private function getAMbranches() {
+
+    $bb = $this->bb
+      ->skipCache()
+      ->with([
+        'branch'=>function($q){
+          $q->select(['code', 'descriptor', 'mancost', 'id']);
+        }
+      ])->all();
+
+    return collect($bb->pluck('branch')->sortBy('code')->values()->all());
   }
 
   private function bossBranch(){
@@ -60,7 +76,43 @@ class Purchase2Controller extends Controller {
                 ->with('filter', $filter));
   }
 
+  private function getFilter(Request $request, $tables) {
+    $filter = new StdClass;
+    $table = strtolower($request->input('table'));
+    if($request->has('itemid') && $request->has('table') && $request->has('item') && in_array($table, $tables)) {
+      
+      $id = strtolower($request->input('itemid'));
 
+      $c = '\App\Models\\'.ucfirst($table);
+      $i = $c::find($id);
+
+      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
+        $item = $request->input('item');
+        /*
+        if(is_uuid($id) && in_array($table, $tables))
+          $where[$table.'.id'] = $id;
+        else if($table==='payment')
+          $where['purchase.terms'] = $id;
+        */
+        $filter->table = $table;
+        $filter->id = $id;
+        $filter->item = $item;
+        $filter->isset = true;
+      } else {
+        $filter->table = '';
+        $filter->id = '';
+        $filter->item = '';
+        $filter->isset = false;
+      }
+    } else {
+      $filter->table = '';
+      $filter->id = '';
+      $filter->item = '';
+      $filter->isset = false;
+    }
+
+    return $filter;
+  }
 
 	public function getDaily(Request $request) {
 
@@ -148,6 +200,53 @@ class Purchase2Controller extends Controller {
     return $this->setDailyViewVars('component.purchased.daily', $purchases, $bb, $branch, $filter, $components, $compcats, $expenses, $expscats, $suppliers, $payments);
 	
 	}
+
+
+  public function componentComparative(Request $request) {
+    //return dd($this->ab);
+    $filter = $this->getFilter($request, ['component']);
+    $components = null;
+    $datas = [];
+    $graphs = [];
+
+    if ($filter->isset) {
+
+    $components = $this->purchased
+                  //->skipCache()
+                  ->skipCriteria()
+                  ->componentAverageByDR($this->dr)
+                  ->findWhere(['purchase.componentid' => $filter->id]);
+
+      foreach ($components as $key => $component) {
+        $datas[$key]['component'] = $component;
+        $datas[$key]['last'] = $this->purchased
+                    ->skipCriteria()
+                    ->with('supplier')
+                    ->scopeQuery(function($query) use ($component, $filter){
+                        return $query->where('branchid', $component->branchid)
+                                    ->where('componentid', $filter->id)
+                                    ->orderBy('date', 'desc');
+                    })
+                    ->all()
+                    ->first();
+        
+        if (in_array($component->code, $this->ab->pluck('code')->toArray())) {
+          $k = array_search($component->code, $this->ab->pluck('code')->toArray());
+          $graphs[$k]['component'] = $datas[$key]['component'];
+          $graphs[$k]['last'] = $datas[$key]['last'];
+        }
+      }
+    }
+    
+    //return $graphs;
+
+    return $this->setViewWithDR(view('component.price.daily')
+                ->with('filter', $filter)
+                ->with('bb', $this->ab)
+                ->with('components', $components)
+                ->with('graphs', $graphs)
+                ->with('datas', $datas));
+  }
 
 
 

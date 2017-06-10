@@ -690,10 +690,13 @@
             
           </div><!-- end: .col-md-4 -->
           <div class="col-md-8">
-            <div class="graph-container pull-right">
-              <div id="graph-line-customer" data-table="#customer-data"></div>
+            <div class="row">
+              
+              <div class="graph-container">
+                <div id="graph-line-customer" data-table="#customer-data"></div>
 
-              <div id="graph-line-customer2" data-table="#customer-data"></div>
+                <div id="graph-line-customer2" data-table="#customer-data"></div>
+              </div>
             </div>
           </div><!-- end: .col-md-8 -->
         </div><!-- end: .row -->

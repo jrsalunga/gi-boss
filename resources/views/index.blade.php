@@ -57,6 +57,10 @@
               <span class="gly gly-stats"></span> 
               <span class="hidden-xs">Comparative Analytics</span>
             </a>
+            <a href="/component/price/comparative" class="btn btn-default btn-sm">
+              <span class="fa fa-line-chart"></span> 
+              <span><span class="hidden-xs">Component Cost</span> <small><span class="label label-success">new</span></small></span>
+            </a>
           </p> 
           <table class="table table-striped table-hover">
             <thead>

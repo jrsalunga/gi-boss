@@ -101,7 +101,7 @@
           <div class="btn-group pull-right clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
-                <a class="btn btn-link" id="date-type" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span id="date-type-name">Daily</span>
                   <span class="caret"></span>
                 </a>

@@ -258,7 +258,7 @@
         @if(is_null($graph))
           0,
         @else
-          {{ $graph->grsamt }}, 
+          {{ $graph->grsamt/($dr->diffInDays()+1) }}, 
         @endif
       @endforeach
     ];
@@ -268,7 +268,7 @@
         @if(is_null($graph))
           0,
         @else
-          {{ $graph->qty }}, 
+          {{ $graph->qty/($dr->diffInDays()+1) }}, 
         @endif
       @endforeach
     ];
@@ -337,7 +337,7 @@
         series: [
           {
             type: 'column',
-            name: 'Sales',
+            name: 'Ave. Sales',
             yAxis: 1,
             inverted: true,
             opposite: true,
@@ -345,7 +345,7 @@
           },
           { 
             type: 'spline',
-            name: 'Quantity',
+            name: 'Ave. Quantity',
             data: powerData 
            }
         ]

@@ -53,7 +53,7 @@
                 <span class="glyphicon glyphicon-search"></span>
                 <span>{{ $filter->item }}</span>
               </button>
-              <a type="button" class="btn btn-default" href="/component/price/comparative" title="Remove Filter"><span class="fa fa-close"></span></a>
+              <a type="button" class="btn btn-default" href="/product/sales/comparative" title="Remove Filter"><span class="fa fa-close"></span></a>
             @endif
           </div>
           
@@ -101,7 +101,7 @@
           </div><!-- end btn-grp -->
 
           <div class="btn-group hidden-xs" role="group" style="margin-left: 5px;">
-          	<input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search Component">
+          	<input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search Product">
           </div>
           
         </div>

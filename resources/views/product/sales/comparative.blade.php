@@ -258,7 +258,7 @@
         @if(is_null($graph))
           0,
         @else
-          {{ $graph->grsamt/($dr->diffInDays()+1) }}, 
+          {{ number_format($graph->grsamt/($dr->diffInDays()+1), 2, '.', '') }}, 
         @endif
       @endforeach
     ];
@@ -268,7 +268,7 @@
         @if(is_null($graph))
           0,
         @else
-          {{ $graph->qty/($dr->diffInDays()+1) }}, 
+          {{ number_format($graph->qty/($dr->diffInDays()+1), 2, '.', '') }}, 
         @endif
       @endforeach
     ];
@@ -305,7 +305,7 @@
               align: 'right',
               x: -10,
               y: 15,
-              format: '{value:.,0f}'
+              format: '{value:.,2f}'
             },
             opposite: true,
             showFirstLabel: false
@@ -318,7 +318,7 @@
               align: 'left',
               x: 3,
               y: 16,
-              format: '{value:.,0f}'
+              format: '{value:.,2f}'
             },
             showFirstLabel: false
           }

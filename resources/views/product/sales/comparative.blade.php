@@ -206,7 +206,7 @@
 
           <div class="form-group">
             <label>Filter:</label>
-            <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search Component">
+            <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search Product">
           </div>
             
 

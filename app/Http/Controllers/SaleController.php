@@ -363,7 +363,7 @@ class SaleController extends Controller {
       $q = $request->input('q');
       $branchid = $request->input('branchid');
       
-      $products = Product::where('prodcat_id', '<>', '625E2E18BDF211E6978200FF18C615EC')
+      $products = Product::where('prodcat_id', '<>', 'E841F22BBC3711E6856EC3CDBB4216A7')
                          ->where(function ($query) use ($q) {
                             $query->where('code', 'like', '%'.$q.'%')
                                   ->orWhere('descriptor', 'like', '%'.$q.'%');

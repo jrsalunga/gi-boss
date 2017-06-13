@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\Prodcat;
 use App\Models\Menucat;
 use App\Helpers\Locator;
+use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 
 class SaleController extends Controller { 
 
@@ -441,16 +442,15 @@ class SaleController extends Controller {
 
 
   public function productComparative(Request $request) {
-    $this->branch->skipCache()->active()->orderBy('code')->all(['code', 'descriptor', 'id']);
 
     $filter = $this->getFilter($request, ['product']);
     $products = null;
     $datas = [];
     $graphs = [];
     $branches = $this->branch
-                    ->skipCache()
-                    ->active()
+                    //->skipCache()
                     ->orderBy('code')
+                    ->getByCriteria(new ActiveBranch)
                     ->all(['code', 'descriptor', 'id']);
 
 
@@ -458,7 +458,7 @@ class SaleController extends Controller {
     if ($filter->isset) {
 
       $products = $this->sale
-                      ->skipCache()
+                      //->skipCache()
                       ->productSalesByDR($this->dr)
                       ->findwhere(['salesmtd.product_id'=>$filter->id]);
       

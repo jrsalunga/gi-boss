@@ -26,12 +26,12 @@
 
   <ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/component">Component</a></li>
+    <li><a href="/product">Product</a></li>
     @if($filter->isset)
-    <li><a href="/component/price/comparative">Price Range</a></li>
+    <li><a href="/product/sales/comparative">Sales</a></li>
     <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
     @else
-    <li class="active">Price Range</li>
+    <li class="active">Sales</li>
     @endif
   </ol>
 
@@ -71,7 +71,7 @@
           </div> <!-- end btn-grp -->
          
           <div class="btn-group btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/component/price/comparative', 'method' => 'get', 'id'=>'filter-form']) !!}
+            {!! Form::open(['url' => '/product/sales/comparative', 'method' => 'get', 'id'=>'filter-form']) !!}
             
             <button type="submit" data-toggle="loader" class="btn btn-success btn-go" title="Go">
               <span class="gly gly-search"></span>
@@ -123,41 +123,49 @@
         <thead>
           <tr>
             <th>Branch</th>
-            <th class="text-right">Ave Cost</th>
-            <th class="text-right">Last Purchase Cost</th>
             <th class="text-right">Total Qty</th>
-            <th class="text-right">Total Cost</th>
-            <th class="text-right">Min-Max Cost</th>
-            <th class="text-right">Min-Max Purch</th>
-            <th class="text-right">Trans Cnt</th>
+            <th class="text-right">Total Sales</th>
+            <th class="text-right">Trans Count</th>
+            <th class="text-right">Ave Qty</th>
+            <th class="text-right">Ave Sales</th>
           </tr>
         </thead>
         <tbody>
-        @foreach($datas as $data)
-          <tr>
+        @foreach($datas as $key => $data)
+        <tr>
+          @if(is_null($data))  
+            <td>{{ $key }}</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          @else
             <td>
-              <a href="/component/purchases?table=component&item={{$filter->item}}&itemid={{$filter->id}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}&branchid={{strtolower($data['component']->branchid)}}">
-                {{ $data['component']->code }}
+              <a href="/product/sales?branchid={{strtolower($data->branch_id)}}&to={{$dr->to->format('Y-m-d')}}&fr={{$dr->fr->format('Y-m-d')}}" target="_blank">
+                {{ $key }}
               </a>
             </td>
-            <td class="text-right">{{ number_format($data['component']->ave, 2) }}</td>
+            <td class="text-right">{{ number_format($data->qty, 2) }}</td>  
+            <td class="text-right">{{ number_format($data->grsamt, 2) }}</td>  
+            <td class="text-right">{{ number_format($data->trans_actual, 0) }}</td>  
+            @if($dr->diffInDays()>0)
             <td class="text-right">
-              <span class="help" title="{{ $data['last']->date->format('m/d/Y') }} @ {{ $data['last']->supplier->descriptor }}" data-toggle="tooltip">
-                {{ number_format($data['last']->ucost, 2) }}
-              </span> 
+              <span class="help" data-toggle="tooltip" title="{{ $data->qty }}/{{ $dr->diffInDays() }}">
+                {{ number_format($data->qty/$dr->diffInDays(), 2) }}
+              </span>
             </td>
-            
-            <td class="text-right">{{ number_format($data['component']->tot_qty, 0) }}</td>
-            <td class="text-right">{{ number_format($data['component']->tcost, 2) }}</td>
-            <td class="text-right">{{ number_format($data['component']->ucost_min, 2) }} - {{ number_format($data['component']->ucost_max, 2) }}</td>
-            <td class="text-right">{{ number_format($data['component']->qty_min, 2) }} - {{ number_format($data['component']->qty_max, 2) }}</td>
-            <td class="text-right help" title="Negative transactions are not included">{{ number_format($data['component']->trancnt, 0) }}</td>
-          </tr>
+            <td class="text-right">
+              <span class="help" data-toggle="tooltip" title="{{ number_format($data->grsamt, 2) }}/{{ $dr->diffInDays() }}">
+                {{ number_format($data->grsamt/$dr->diffInDays(), 2) }}
+              </span>
+            </td>
+            @else
+            <td></td><td></td>
+            @endif
+          @endif
+        </tr>
         @endforeach
         </tbody>
       </table>
     </div>
-    <p>&nbsp;</p>
+    <h5>{{ count($datas) }} Branch(es)</h5>
     @else
       
     @endif
@@ -359,7 +367,7 @@
           currentCategory = "";
         $.each(items, function(index, item) {
           var li;
-          if (item.category=='component') {
+          if (item.category=='product') {
             if (item.category != currentCategory) {
               ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
               currentCategory = item.category;
@@ -378,7 +386,7 @@
      	source: function(request, response) {
       	$.ajax({
         	type: 'GET',
-        	url: "/api/search/component",
+        	url: "/api/s/product/sales",
           dataType: "json",
           data: {
             maxRows: 25,

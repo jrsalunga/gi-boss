@@ -14,6 +14,7 @@ class DateRange {
   protected $request;
   protected $modes = ['daily', 'monthly', 'weekly', 'quarterly', 'yearly'];
   protected $mode;
+  public $diffInDays;
 
 
   public function __construct(Request $request, $now = null) {
@@ -128,6 +129,7 @@ class DateRange {
   	 do {
       array_push($arr, Carbon::parse($fr->format('Y-m-d')));
     } while ($fr->addMonth() <= $this->to);
+
     return $arr;
   }
 
@@ -294,6 +296,10 @@ class DateRange {
 
    
     return true;
+  }
+
+  public function diffInDays() {
+    return $this->diffInDays = $this->fr->diffInDays($this->to, false);
   }
 
 

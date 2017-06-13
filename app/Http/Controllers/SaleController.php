@@ -10,7 +10,7 @@ use App\Repositories\SalesmtdRepository as SalesmtdRepo;
 use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\BossBranchCriteria;
-use App\Repositories\BranchRepository;
+use App\Repositories\BranchRepository as BranchRepo;
 use App\Models\Product;
 use App\Models\Prodcat;
 use App\Models\Menucat;
@@ -23,13 +23,13 @@ class SaleController extends Controller {
   protected $ds;
   protected $bb;
 
-  public function __construct(SalesmtdRepo $sale, BBRepo $bbrepo, DateRange $dr, DSRepo $ds) {
+  public function __construct(SalesmtdRepo $sale, BBRepo $bbrepo, DateRange $dr, DSRepo $ds, BranchRepo $branch) {
     $this->sale = $sale;
     $this->dr = $dr;
     $this->bb = $bbrepo;
     $this->ds = $ds;
     $this->bb->pushCriteria(new BossBranchCriteria);
-    $this->branch = new BranchRepository;
+    $this->branch = $branch;
   }
 
   private function bossBranch(){
@@ -391,6 +391,90 @@ class SaleController extends Controller {
       return abort('404');
 
    }
+
+
+   private function getFilter(Request $request, $tables) {
+    $filter = new StdClass;
+    $table = strtolower($request->input('table'));
+    if($request->has('itemid') && $request->has('table') && $request->has('item') && in_array($table, $tables)) {
+      
+      $id = strtolower($request->input('itemid'));
+
+      $c = '\App\Models\\'.ucfirst($table);
+      $i = $c::find($id);
+
+      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
+        $item = $request->input('item');
+        /*
+        if(is_uuid($id) && in_array($table, $tables))
+          $where[$table.'.id'] = $id;
+        else if($table==='payment')
+          $where['purchase.terms'] = $id;
+        */
+        $filter->table = $table;
+        $filter->id = $id;
+        $filter->item = $item;
+        $filter->isset = true;
+      } else {
+        $filter->table = '';
+        $filter->id = '';
+        $filter->item = '';
+        $filter->isset = false;
+      }
+    } else {
+      $filter->table = '';
+      $filter->id = '';
+      $filter->item = '';
+      $filter->isset = false;
+    }
+
+    return $filter;
+  }
+
+
+  public function productComparative(Request $request) {
+    $this->branch->skipCache()->active()->orderBy('code')->all(['code', 'descriptor', 'id']);
+
+    $filter = $this->getFilter($request, ['product']);
+    $products = null;
+    $datas = [];
+    $graphs = [];
+    $branches = $this->branch
+                    ->skipCache()
+                    ->active()
+                    ->orderBy('code')
+                    ->all(['code', 'descriptor', 'id']);
+
+
+
+    if ($filter->isset) {
+
+      $products = $this->sale
+                      ->skipCache()
+                      ->productSalesByDR($this->dr)
+                      ->findwhere(['salesmtd.product_id'=>$filter->id]);
+      
+
+      foreach ($branches as $key => $branch) {
+        
+        $product = collect($products->where('code', $branch->code)->all());
+
+
+
+        if(count($product)>0) 
+          $datas[$branch->code] = $product->first();
+        else
+          $datas[$branch->code] = NULL;
+      }
+    }
+    //return $datas;
+    return $this->setViewWithDR(view('product.sales.comparative')
+              ->with('filter', $filter)
+              ->with('branches', $branches)
+              ->with('products', $products)
+              ->with('graphs', $graphs)
+              ->with('datas', $datas));
+  }
 
 
 

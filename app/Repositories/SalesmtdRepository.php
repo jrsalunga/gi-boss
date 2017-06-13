@@ -86,6 +86,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
     return $this->scopeQuery(function($query) use ($dr) {
       return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
                     ->where('salesmtd.group', '<>', '')
+                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->select(DB::raw('salesmtd.group, group_cnt as qty, sum(salesmtd.grsamt) as grsamt, cslipno'))
                     ->groupBy('salesmtd.cslipno')
                     ->orderBy(DB::raw('salesmtd.group'), 'asc');
@@ -102,6 +103,18 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                     //->groupBy('salesmtd.cslipno')
                     ->orderBy('product.descriptor');
     })->skipOrder();
+  }
+
+
+  public function productSalesByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    ->leftJoin('hr.branch', 'branch.id', '=', 'salesmtd.branch_id')
+                    ->select(DB::raw('branch.code, SUM(salesmtd.qty) AS qty, SUM(salesmtd.grsamt) AS grsamt, COUNT(salesmtd.id) AS trans_cnt,SUM(IF(salesmtd.qty<1, salesmtd.qty,0)) as neg_qty, (COUNT(salesmtd.id) - SUM(IF(salesmtd.qty<1, (ABS(salesmtd.qty)*2),0))) as trans_actual, salesmtd.branch_id'))
+                    ->groupBy('salesmtd.branch_id')
+                    ->orderBy('branch.code');
+                    //->orderBy('branch.code');
+    });
   }
   
 

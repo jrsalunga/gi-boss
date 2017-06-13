@@ -51,6 +51,7 @@ Route::get('api/s/product/sales', ['uses'=>'SaleController@search']);
 Route::get('api/mdl/purchases/{id}', ['uses'=>'Purchase2Controller@ajaxPurchases']);
 
 Route::get('product/sales', ['uses'=>'SaleController@getDaily']);
+Route::get('product/sales/comparative', ['uses'=>'SaleController@productComparative']);
 
 Route::get('m/{table?}', ['uses'=>'MasterfilesController@getDatatableIndex']);
 Route::get('masterfiles/{table?}', ['uses'=>'MasterfilesController@getIndex']);

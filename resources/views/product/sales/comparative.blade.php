@@ -153,20 +153,18 @@
                 {{ number_format($data->trans_actual, 0) }}
               @endif
             </td>  
-            @if($dr->diffInDays()>0)
+           
             <td class="text-right">
-              <span class="help" data-toggle="tooltip" title="{{ $data->qty }}/{{ $dr->diffInDays() }}">
-                {{ number_format($data->qty/$dr->diffInDays(), 2) }}
+              <span class="help" data-toggle="tooltip" title="{{ $data->qty }}/{{ $dr->diffInDays()+1 }}">
+                {{ number_format($data->qty/($dr->diffInDays()+1), 2) }}
               </span>
             </td>
             <td class="text-right">
-              <span class="help" data-toggle="tooltip" title="{{ number_format($data->grsamt, 2) }}/{{ $dr->diffInDays() }}">
-                {{ number_format($data->grsamt/$dr->diffInDays(), 2) }}
+              <span class="help" data-toggle="tooltip" title="{{ number_format($data->grsamt, 2) }}/{{ $dr->diffInDays()+1 }}">
+                {{ number_format($data->grsamt/($dr->diffInDays()+1), 2) }}
               </span>
             </td>
-            @else
-            <td></td><td></td>
-            @endif
+           
           @endif
         </tr>
         @endforeach

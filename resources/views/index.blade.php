@@ -40,7 +40,7 @@
           </h3>
         </div>
         <div class="panel-body">
-          <p class="text-right">
+          <div class="text-right">
             <a href="/dailysales?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-star"></span> 
               <span class="hidden-xs">Starred</span>
@@ -57,11 +57,24 @@
               <span class="gly gly-stats"></span> 
               <span class="hidden-xs">Comparative Analytics</span>
             </a>
+            <!--
             <a href="/component/price/comparative" class="btn btn-default btn-sm">
               <span class="fa fa-line-chart"></span> 
               <span><span class="hidden-xs">Component Cost</span> <small><span class="label label-success">new</span></small></span>
             </a>
-          </p> 
+            -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa fa-line-chart"></span>
+                <span class="hidden-xs">Reports <small><span class="label label-success">new</span></small></span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/component/price/comparative">Component Cost</a></li>
+                <li><a href="/product/sales/comparative">Product Sales</a></li>
+              </ul>
+            </div>
+          </div> 
           <table class="table table-striped table-hover">
             <thead>
               <tr>

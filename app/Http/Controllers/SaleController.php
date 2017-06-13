@@ -31,6 +31,20 @@ class SaleController extends Controller {
     $this->ds = $ds;
     $this->bb->pushCriteria(new BossBranchCriteria);
     $this->branch = $branch;
+    $this->ab = $this->getAMbranches();
+  }
+
+  private function getAMbranches() {
+
+    $bb = $this->bb
+      ->skipCache()
+      ->with([
+        'branch'=>function($q){
+          $q->select(['code', 'descriptor', 'mancost', 'id']);
+        }
+      ])->all();
+
+    return collect($bb->pluck('branch')->sortBy('code')->values()->all());
   }
 
   private function bossBranch(){
@@ -473,9 +487,17 @@ class SaleController extends Controller {
           $datas[$branch->code] = $product->first();
         else
           $datas[$branch->code] = NULL;
+
+
+
+        if (in_array($branch->code, $this->ab->pluck('code')->toArray())) {
+          $k = array_search($branch->code, $this->ab->pluck('code')->toArray());
+          $graphs[$branch->code] = $datas[$branch->code];
+        }
+
       }
     }
-    //return $datas;
+    //return $graphs;
     return $this->setViewWithDR(view('product.sales.comparative')
               ->with('filter', $filter)
               ->with('branches', $branches)

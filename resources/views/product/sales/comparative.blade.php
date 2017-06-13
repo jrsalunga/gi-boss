@@ -255,13 +255,21 @@
   
     var rangesData = [
       @foreach($graphs as $graph)
-        [{{ $graph['component']->ucost_min }}, {{ $graph['component']->ucost_max }}], 
+        @if(is_null($graph))
+          0,
+        @else
+          {{ $graph->grsamt }}, 
+        @endif
       @endforeach
     ];
     
     var powerData =  [
       @foreach($graphs as $graph)
-        {{ number_format($graph['component']->ave, 2) }}, 
+        @if(is_null($graph))
+          0,
+        @else
+          {{ $graph->qty }}, 
+        @endif
       @endforeach
     ];
 
@@ -278,49 +286,66 @@
         credits: {
           enabled: false
         },
-        colors: ['#15C0C2','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+        colors: ['#15C0C2', '#B09ADB', '#15C0C2','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#8d4653', '#F9CDAD'],
         title: {
           text: null
         },
         xAxis: {
         categories: [
-          @foreach($graphs as $graph)
-            '{{ $graph['component']->code }}', 
+          @foreach($graphs as $key => $graph)
+            '{{ $key }}', 
           @endforeach
         ]},
         yAxis: [
           { 
             title: { 
-              text: 'Price',
-              rotation: 270,
-              x: 30,
-              y: -30,
-              margin: -10
+              text: null,
             },
             labels: {
-            align: 'left',
-            x: 3,
-            y: -5,
-            format: '{value:.,0f}'
+              align: 'right',
+              x: -10,
+              y: 15,
+              format: '{value:.,0f}'
+            },
+            opposite: true,
+            showFirstLabel: false
           },
+          { 
+            title: { 
+              text: null,
+            },
+            labels: {
+              align: 'left',
+              x: 3,
+              y: 16,
+              format: '{value:.,0f}'
+            },
+            showFirstLabel: false
           }
         ],
-        legend: { enabled: false },
-         tooltip: {
-        shared: true,
+        legend: {
+          align: 'left',
+          verticalAlign: 'top',
+          y: -10,
+          floating: true,
+          borderWidth: 0
+        },
+        tooltip: {
+          shared: true,
           crosshairs: true
         },
         series: [
           {
-            type: 'columnrange',
-            name: 'Range',
+            type: 'column',
+            name: 'Sales',
+            yAxis: 1,
             inverted: true,
             opposite: true,
             data: rangesData
           },
           { 
             type: 'spline',
-            name: 'Average',
+            name: 'Quantity',
             data: powerData 
            }
         ]

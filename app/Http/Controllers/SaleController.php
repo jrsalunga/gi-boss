@@ -363,7 +363,15 @@ class SaleController extends Controller {
       $q = $request->input('q');
       $branchid = $request->input('branchid');
       
-      $products = Product::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
+      $products = Product::where('prodcat_id', '<>', '625E2E18BDF211E6978200FF18C615EC')
+                         ->where(function ($query) use ($q) {
+                            $query->where('code', 'like', '%'.$q.'%')
+                                  ->orWhere('descriptor', 'like', '%'.$q.'%');
+                        })
+                        ->orderBy('descriptor')
+                        ->get(['descriptor', 'id']);
+
+
       foreach ($products as $product) {
         array_push($arr, ['table'=>'product', 'item'=>$product->descriptor, 'id'=>strtolower($product->id)]);
       }

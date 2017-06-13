@@ -144,7 +144,15 @@
             </td>
             <td class="text-right">{{ number_format($data->qty, 2) }}</td>  
             <td class="text-right">{{ number_format($data->grsamt, 2) }}</td>  
-            <td class="text-right">{{ number_format($data->trans_actual, 0) }}</td>  
+            <td class="text-right">
+              @if($data->neg_qty<0)
+              <span class="help" data-toggle="tooltip" title="{{ $data->trans_cnt }}{{ $data->neg_qty+0 }}">
+                {{ number_format($data->trans_actual, 0) }}
+              </span>
+              @else
+                {{ number_format($data->trans_actual, 0) }}
+              @endif
+            </td>  
             @if($dr->diffInDays()>0)
             <td class="text-right">
               <span class="help" data-toggle="tooltip" title="{{ $data->qty }}/{{ $dr->diffInDays() }}">

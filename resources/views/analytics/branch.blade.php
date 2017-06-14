@@ -534,7 +534,7 @@
               @if(!is_null($d->dailysale))
               <td>{{ number_format($d->dailysale['sales'],2,'.','') }}</td>
               <td>{{ number_format($d->dailysale['cos'],2,'.','') }}</td>
-              <td>{{ number_format($d->opex }}</td>
+              <td>{{ number_format($d->opex,2,'.','') }}</td>
               <td>{{ number_format($d->dailysale['purchcost'],2,'.','') }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
               <td>{{ $d->dailysale['mancost'] }}</td>

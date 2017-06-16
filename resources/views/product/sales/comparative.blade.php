@@ -146,7 +146,7 @@
             <td class="text-right">{{ number_format($data->grsamt, 2) }}</td>  
             <td class="text-right">
               @if($data->neg_qty<0)
-              <span class="help" data-toggle="tooltip" title="{{ $data->trans_cnt }}{{ ($data->neg_qty*2)+0 }}">
+              <span class="help" data-toggle="tooltip" title="{{ $data->trans_cnt }}{{ ($data->neg_qty*2)+0 }}(cancelled)">
                 {{ number_format($data->trans_actual, 0) }}
               </span>
               @else
@@ -155,12 +155,12 @@
             </td>  
            
             <td class="text-right">
-              <span class="help" data-toggle="tooltip" title="{{ $data->qty }}/{{ $dr->diffInDays()+1 }}">
+              <span class="help" data-toggle="tooltip" title="{{ $data->qty }}qty / {{ $dr->diffInDays()+1 }}day(s)">
                 {{ number_format($data->qty/($dr->diffInDays()+1), 2) }}
               </span>
             </td>
             <td class="text-right">
-              <span class="help" data-toggle="tooltip" title="{{ number_format($data->grsamt, 2) }}/{{ $dr->diffInDays()+1 }}">
+              <span class="help" data-toggle="tooltip" title="{{ number_format($data->grsamt, 2) }} / {{ $dr->diffInDays()+1 }}day(s)">
                 {{ number_format($data->grsamt/($dr->diffInDays()+1), 2) }}
               </span>
             </td>
@@ -396,17 +396,18 @@
       _renderMenu: function(ul, items) {
         var that = this,
           currentCategory = "";
+       
         $.each(items, function(index, item) {
           var li;
-          if (item.category=='product') {
-            if (item.category != currentCategory) {
-              ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
-              currentCategory = item.category;
-            }
-            li = that._renderItemData(ul, item);
-            if (item.category) {
-              li.attr( "aria-label", item.category + " : " + item.label);
-            }
+          
+          if (item.category != currentCategory) {
+            ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
+            currentCategory = item.category;
+          }
+          
+          li = that._renderItemData(ul, item);
+          if (item.category) {
+            li.attr( "aria-label", item.category + " : " + item.label);
           }
         });
       }
@@ -425,12 +426,23 @@
           },
           success: function(data) {
             response($.map(data, function(item) {
-              return {
-                //label: item.item + ', ' + item.table,
-                label: item.item,
-                value: item.item,
-                category: item.table,
-								id: item.id
+              if(item.table=='product') {
+                return {
+                  label: item.code+' - '+item.item+' - '+item.uprice,
+                  value: item.code+' - '+item.item+' - '+item.uprice,
+                  category: item.table,
+                  code: item.code,
+                  ucost: item.ucost,
+                  uprice: item.uprice,
+                  id: item.id
+                }
+              } else {
+                return {
+                  label: item.item,
+                  value: item.item,
+                  category: item.table,
+                  id: item.id
+                }
               }
             }));
           }

@@ -384,11 +384,11 @@ class SaleController extends Controller {
                                   ->orWhere('descriptor', 'like', '%'.$q.'%');
                         })
                         ->orderBy('descriptor')
-                        ->get(['descriptor', 'id']);
+                        ->get(['code', 'descriptor', 'ucost', 'uprice', 'id']);
 
 
       foreach ($products as $product) {
-        array_push($arr, ['table'=>'product', 'item'=>$product->descriptor, 'id'=>strtolower($product->id)]);
+        array_push($arr, ['table'=>'product', 'item'=>$product->descriptor, 'id'=>strtolower($product->id), 'ucost'=> $product->ucost, 'uprice'=>$product->uprice, 'code'=>$product->code]);
       }
 
       $prodcats = Prodcat::where('descriptor', 'like', '%'.$q.'%')->orderBy('descriptor')->get(['descriptor', 'id']);
@@ -426,8 +426,8 @@ class SaleController extends Controller {
       $c = '\App\Models\\'.ucfirst($table);
       $i = $c::find($id);
 
-      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
-        $item = $request->input('item');
+     // if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
+      $item = $request->input('item');
         /*
         if(is_uuid($id) && in_array($table, $tables))
           $where[$table.'.id'] = $id;
@@ -438,12 +438,12 @@ class SaleController extends Controller {
         $filter->id = $id;
         $filter->item = $item;
         $filter->isset = true;
-      } else {
+    /*  } else {
         $filter->table = '';
         $filter->id = '';
         $filter->item = '';
         $filter->isset = false;
-      }
+      } */
     } else {
       $filter->table = '';
       $filter->id = '';
@@ -457,8 +457,8 @@ class SaleController extends Controller {
 
   public function productComparative(Request $request) {
 
-    $filter = $this->getFilter($request, ['product']);
-    $products = null;
+    $filter = $this->getFilter($request, ['menucat', 'prodcat', 'product']);
+    
     $datas = [];
     $graphs = [];
     $branches = $this->branch
@@ -471,39 +471,76 @@ class SaleController extends Controller {
 
     if ($filter->isset) {
 
-      $products = $this->sale
-                      //->skipCache()
-                      ->productSalesByDR($this->dr)
-                      ->findwhere(['salesmtd.product_id'=>$filter->id]);
-      
 
       foreach ($branches as $key => $branch) {
         
-        $product = collect($products->where('code', $branch->code)->all());
-
-
-
-        if(count($product)>0) 
-          $datas[$branch->code] = $product->first();
-        else
-          $datas[$branch->code] = NULL;
-
-
+        switch ($filter->table) {
+          case 'product':
+            $datas[$branch->code] = $this->sale
+                                        //->skipCache()
+                                        ->productSalesByDR($this->dr)
+                                        ->findwhere([
+                                          'salesmtd.product_id'=> $filter->id,
+                                          'salesmtd.branch_id' => $branch->id
+                                        ])->first();
+            break;
+          case 'prodcat':
+            $datas[$branch->code] = $this->sale
+                                        //->skipCache()
+                                        ->prodcatSalesByDR($this->dr)
+                                        ->findwhere([
+                                          'product.prodcat_id'=> $filter->id,
+                                          'salesmtd.branch_id' => $branch->id
+                                        ])->first();  
+            break;
+          case 'menucat':
+            $datas[$branch->code] = $this->sale
+                                        //->skipCache()
+                                        ->menucatSalesByDR($this->dr)
+                                        ->findwhere([
+                                          'product.menucat_id'=> $filter->id,
+                                          'salesmtd.branch_id' => $branch->id
+                                        ])->first();
+            break;
+          default:
+            $datas[$branch->code] = NULL;
+            break;
+        }
+        
+        
+        
 
         if (in_array($branch->code, $this->ab->pluck('code')->toArray())) {
           $k = array_search($branch->code, $this->ab->pluck('code')->toArray());
           $graphs[$branch->code] = $datas[$branch->code];
         }
-
       }
+      
     }
+
+
     //return $graphs;
     return $this->setViewWithDR(view('product.sales.comparative')
               ->with('filter', $filter)
               ->with('branches', $branches)
-              ->with('products', $products)
               ->with('graphs', $graphs)
               ->with('datas', $datas));
+  }
+
+  private function getByProduct($filter, $branch) {
+      
+    $products = $this->sale
+                    //->skipCache()
+                    ->productSalesByDR($this->dr)
+                    ->findwhere([
+                      'salesmtd.product_id'=> $filter->id,
+                      'salesmtd.branch_id' => $branch->id
+                    ]);
+
+    if(count($products)>0) 
+      return $products->first();
+    else
+      return NULL;
   }
 
 

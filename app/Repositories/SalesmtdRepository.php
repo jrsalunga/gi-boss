@@ -105,14 +105,37 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
     })->skipOrder();
   }
 
-
   public function productSalesByDR(DateRange $dr) {
     return $this->scopeQuery(function($query) use ($dr) {
       return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
-                    ->leftJoin('hr.branch', 'branch.id', '=', 'salesmtd.branch_id')
-                    ->select(DB::raw('branch.code, SUM(salesmtd.qty) AS qty, SUM(salesmtd.grsamt) AS grsamt, COUNT(salesmtd.id) AS trans_cnt,SUM(IF(salesmtd.qty<1, salesmtd.qty,0)) as neg_qty, (COUNT(salesmtd.id) - SUM(IF(salesmtd.qty<1, (ABS(salesmtd.qty)*2),0))) as trans_actual, salesmtd.branch_id'))
+                    //->leftJoin('hr.branch', 'branch.id', '=', 'salesmtd.branch_id')
+                    ->select(DB::raw('SUM(salesmtd.qty) AS qty, SUM(salesmtd.grsamt) AS grsamt, COUNT(salesmtd.id) AS trans_cnt,SUM(IF(salesmtd.qty<1, salesmtd.qty,0)) as neg_qty, (COUNT(salesmtd.id) - SUM(IF(salesmtd.qty<1, (ABS(salesmtd.qty)*2),0))) as trans_actual, salesmtd.branch_id'))
                     ->groupBy('salesmtd.branch_id')
-                    ->orderBy('branch.code');
+                    ->orderBy(DB::raw('1'));
+                    //->orderBy('branch.code');
+    });
+  }
+
+  public function prodcatSalesByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    //->leftJoin('hr.branch', 'branch.id', '=', 'salesmtd.branch_id')
+                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->select(DB::raw('SUM(salesmtd.qty) AS qty, SUM(salesmtd.grsamt) AS grsamt, COUNT(salesmtd.id) AS trans_cnt,SUM(IF(salesmtd.qty<1, salesmtd.qty,0)) as neg_qty, (COUNT(salesmtd.id) - SUM(IF(salesmtd.qty<1, (ABS(salesmtd.qty)*2),0))) as trans_actual, salesmtd.branch_id'))
+                    ->groupBy('salesmtd.branch_id')
+                    ->orderBy(DB::raw('1'));
+                    //->orderBy('branch.code');
+    });
+  }
+
+  public function menucatSalesByDR(DateRange $dr) {
+    return $this->scopeQuery(function($query) use ($dr) {
+      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    //->leftJoin('hr.branch', 'branch.id', '=', 'salesmtd.branch_id')
+                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->select(DB::raw('SUM(salesmtd.qty) AS qty, SUM(salesmtd.grsamt) AS grsamt, COUNT(salesmtd.id) AS trans_cnt,SUM(IF(salesmtd.qty<1, salesmtd.qty,0)) as neg_qty, (COUNT(salesmtd.id) - SUM(IF(salesmtd.qty<1, (ABS(salesmtd.qty)*2),0))) as trans_actual, salesmtd.branch_id'))
+                    ->groupBy('salesmtd.branch_id')
+                    ->orderBy(DB::raw('1'));
                     //->orderBy('branch.code');
     });
   }

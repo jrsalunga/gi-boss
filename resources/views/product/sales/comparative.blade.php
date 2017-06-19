@@ -180,9 +180,9 @@
         </tbody>
         <tfoot>
           <tr>
-            <td>{{ number_format($tot_qty, 2)</td>
-            <td>{{ number_format($tot_sales, 2)</td>
-            <td>{{ number_format($tot_trans, 2)</td>
+            <td>{{ number_format($tot_qty, 2) }}</td>
+            <td>{{ number_format($tot_sales, 2) }}</td>
+            <td>{{ number_format($tot_trans, 2) }}</td>
             <td></td><td></td><td></td>
           </tr>
         </tfoot>

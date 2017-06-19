@@ -398,7 +398,7 @@
           currentCategory = "";
        
         $.each(items, function(index, item) {
-          if (item.category=='product') {
+          if (item.category=='product' || item.category=='groupies') {
           var li;
 
           if (item.category != currentCategory) {

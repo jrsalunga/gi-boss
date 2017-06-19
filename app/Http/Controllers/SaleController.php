@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use StdClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -401,6 +402,15 @@ class SaleController extends Controller {
         array_push($arr, ['table'=>'menucat', 'item'=>$menucat->descriptor, 'id'=>strtolower($menucat->id)]);
       }
 
+
+      $groupies = config('giligans.groupies');
+
+      $s = preg_grep("/^".strtoupper($q)."/", $groupies);
+      if($s) {
+        $k = key($s);
+        array_push($arr, ['table'=>'groupies', 'item'=>ucwords($s[$k]), 'id'=>strtolower($k)]);
+      }
+
       
 
     }
@@ -444,6 +454,11 @@ class SaleController extends Controller {
         $filter->item = '';
         $filter->isset = false;
       } */
+    } elseif ($table==='groupies') {
+      $filter->table = 'groupies';
+      $filter->id = strtolower($request->input('itemid'));
+      $filter->item = strtoupper($request->input('item'));
+      $filter->isset = true;
     } else {
       $filter->table = '';
       $filter->id = '';
@@ -456,6 +471,8 @@ class SaleController extends Controller {
 
 
   public function productComparative(Request $request) {
+                                      
+    //return $this->sale->skipCache()->groupiesSalesByDR($this->dr, '0c17fe2d78a711e587fa00ff59fbb323', 'F1');                                 
 
     $filter = $this->getFilter($request, ['menucat', 'prodcat', 'product']);
     
@@ -502,6 +519,10 @@ class SaleController extends Controller {
                                           'salesmtd.branch_id' => $branch->id
                                         ])->first();
             break;
+          case 'groupies':
+            $datas[$branch->code] = $this->sale
+                                            ->groupiesSalesByDR($this->dr, $branch->id, strtoupper($filter->id));
+            break;
           default:
             $datas[$branch->code] = NULL;
             break;
@@ -509,17 +530,17 @@ class SaleController extends Controller {
         
         
         
-
         if (in_array($branch->code, $this->ab->pluck('code')->toArray())) {
           $k = array_search($branch->code, $this->ab->pluck('code')->toArray());
           $graphs[$branch->code] = $datas[$branch->code];
         }
       }
+      //return $datas;
       
     }
 
 
-    //return $graphs;
+    
     return $this->setViewWithDR(view('product.sales.comparative')
               ->with('filter', $filter)
               ->with('branches', $branches)

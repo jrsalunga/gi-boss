@@ -88,6 +88,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                     ->where('salesmtd.group', '<>', '')
                     ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->select(DB::raw('salesmtd.group, group_cnt as qty, sum(salesmtd.grsamt) as grsamt, cslipno'))
+                    ->groupBy('salesmtd.group')
                     ->groupBy('salesmtd.cslipno')
                     ->orderBy(DB::raw('salesmtd.group'), 'asc');
     })->skipOrder();
@@ -138,6 +139,20 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                     ->orderBy(DB::raw('1'));
                     //->orderBy('branch.code');
     });
+  }
+
+  public function groupiesSalesByDR(DateRange $dr, $branchid, $filter) {
+
+      $res = DB::table(DB::raw("(select salesmtd.group, group_cnt AS qty, SUM(salesmtd.grsamt) AS grsamt, salesmtd.cslipno, salesmtd.branch_id from salesmtd
+        where salesmtd.orddate between '".$dr->fr->format('Y-m-d')."' and '".$dr->to->format('Y-m-d')."'
+        and salesmtd.group = '".$filter."'
+        and salesmtd.branch_id = '".$branchid."'
+        group by salesmtd.cslipno) AS a"))
+        ->select(DB::raw('SUM(a.qty) as qty, SUM(a.grsamt) as grsamt, count(a.cslipno) as trans_cnt, count(a.cslipno) as trans_actual, a.branch_id, 0 as neg_qty'))->first();
+
+      return $res->qty > 0 ? $res : NULL;
+     
+
   }
   
 

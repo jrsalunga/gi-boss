@@ -180,15 +180,16 @@
         </tbody>
         <tfoot>
           <tr>
-            <td>{{ number_format($tot_qty, 2) }}</td>
-            <td>{{ number_format($tot_sales, 2) }}</td>
-            <td>{{ number_format($tot_trans, 2) }}</td>
-            <td></td><td></td><td></td>
+            <td>{{ count($datas) }} Branch(es)</td>
+            <td><b>{{ number_format($tot_qty, 2) }}</b></td>
+            <td><b>{{ number_format($tot_sales, 2) }}</b></td>
+            <td><b>{{ number_format($tot_trans, 2) }}</b></td>
+            <td></td><td></td>
           </tr>
         </tfoot>
       </table>
     </div>
-    <h5>{{ count($datas) }} Branch(es)</h5>
+    <h5></h5>
     @else
       
     @endif

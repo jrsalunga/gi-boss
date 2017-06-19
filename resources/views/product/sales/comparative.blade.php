@@ -119,6 +119,7 @@
 
     @if($datas)
     <?php
+      $ctr = 0;
       $tot_qty = 0;
       $tot_sales = 0;
       $tot_trans = 0;
@@ -170,6 +171,7 @@
               </span>
             </td>
             <?php
+              $ctr++;
               $tot_qty += $data->qty;
               $tot_sales += $data->grsamt;
               $tot_trans += $data->trans_actual;
@@ -180,7 +182,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td>{{ count($datas) }} Branch(es)</td>
+            <td>{{ $ctr }}/{{ count($datas) }} Branch(es)</td>
             <td class="text-right"><b>{{ number_format($tot_qty, 2) }}</b></td>
             <td class="text-right"><b>{{ number_format($tot_sales, 2) }}</b></td>
             <td class="text-right"><b>{{ number_format($tot_trans, 2) }}</b></td>

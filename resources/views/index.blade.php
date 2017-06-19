@@ -70,8 +70,10 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="/component/price/comparative">Component Cost</a></li>
-                <li><a href="/product/sales/comparative">Product Sales</a></li>
+                <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
+                <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
+                <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
+                <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
               </ul>
             </div>
           </div> 

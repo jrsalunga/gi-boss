@@ -118,6 +118,11 @@
     </div> <!-- end: .row -->
 
     @if($datas)
+    <?php
+      $tot_qty = 0;
+      $tot_sales = 0;
+      $tot_trans = 0;
+    ?>
     <div class="table-responsive">
       <table class="table table-hover table-sort-all">
         <thead>
@@ -164,11 +169,23 @@
                 {{ number_format($data->grsamt/($dr->diffInDays()+1), 2) }}
               </span>
             </td>
-           
+            <?php
+              $tot_qty += $data->qty;
+              $tot_sales += $data->grsamt;
+              $tot_trans += $data->trans_actual;
+            ?>
           @endif
         </tr>
         @endforeach
         </tbody>
+        <tfoot>
+          <tr>
+            <td>{{ number_format($tot_qty, 2)</td>
+            <td>{{ number_format($tot_sales, 2)</td>
+            <td>{{ number_format($tot_trans, 2)</td>
+            <td></td><td></td><td></td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <h5>{{ count($datas) }} Branch(es)</h5>

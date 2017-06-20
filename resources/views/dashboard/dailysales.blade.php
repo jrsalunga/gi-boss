@@ -96,7 +96,9 @@
   			<tr>
   				<td>
             <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
-            {{ $key }} <span class="hidden-xs hidden-sm">- {{ $ds['br']->descriptor }}</span>
+            <span data-toggle="tooltip" title="{{ $ds['br']->descriptor }}" class="help">
+            {{ $key }} 
+            </span>
             </a>
 
             @if(!is_null($ds['ds']) && ($ds['ds']->slsmtd_totgrs+0)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)

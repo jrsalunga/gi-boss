@@ -1,9 +1,8 @@
-<?php
+<?php namespace App\Handlers\Events;
 
-namespace App\Handlers\Events;
-
-use App\Events\UserLoggedIn;
+use Mail;
 use App\User;
+use App\Events\UserLoggedIn;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
@@ -35,7 +34,7 @@ class AuthLoginEventHandler
             'browser' => $_SERVER ['HTTP_USER_AGENT']
         ];
 
-        \Mail::send('emails.loggedin', $data, function ($message) {
+        Mail::queue('emails.loggedin', $data, function ($message) {
             $message->subject('User Logged In');
             $message->from('no-reply@giligansrestaurant.com', 'GI App - Boss');
             $message->to('giligans.app@gmail.com');

@@ -88,7 +88,7 @@ class BackupController extends Controller
 
 	//backup/delinquent
 	public function getDelinquent(Request $request){
-		$branchs =  $this->branch->active()->all();
+		$branchs =  $this->branch->active();
 		//$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];

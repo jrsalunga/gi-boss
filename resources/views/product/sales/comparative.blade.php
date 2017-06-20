@@ -182,7 +182,12 @@
         </tbody>
         <tfoot>
           <tr>
-            <td>{{ $ctr }}/{{ count($datas) }} Branch(es)</td>
+            <td>
+            @if($ctr!=count($datas))
+              {{ $ctr }} /
+            @endif
+              {{ count($datas) }} {{ count($datas)>1 ? 'Branches':'Branch' }}
+            </td>
             <td class="text-right"><b>{{ number_format($tot_qty, 2) }}</b></td>
             <td class="text-right"><b>{{ number_format($tot_sales, 2) }}</b></td>
             <td class="text-right"><b>{{ number_format($tot_trans, 2) }}</b></td>

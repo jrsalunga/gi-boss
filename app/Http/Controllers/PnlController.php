@@ -24,8 +24,16 @@ class PnlController extends Controller
 
 	public function getMonth(Request $request) {
 		$this->dr->setMode('monthly');
-		return dd($this->dr);
+		return $this->setViewWithDR(view('pnl.monthly'));
 	}
+
+	private function setViewWithDR($view){
+    $response = new Response($view->with('dr', $this->dr));
+    $response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
+    $response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
+    $response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
+    return $response;
+  }
 
 
 

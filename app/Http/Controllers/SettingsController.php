@@ -250,7 +250,7 @@ class SettingsController extends Controller {
 		  		
 		  		$exist_emp = false;
 
-		  		$return = $e;
+		  		$return = $employee;
 		  		//$exist_emp = true;
 		  	} else {
 		  		$employee = \App\Models\Employee::find($e->id);

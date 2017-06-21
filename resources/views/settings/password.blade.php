@@ -31,6 +31,7 @@
   			<li role="presentation"><a href="/settings">Profile</a></li>
 			  <li role="presentation" class="active"><a href="/settings/password">Change Password</a></li>
         <li role="presentation"><a href="/settings/bossbranch">Branch</a></li>
+        <li role="presentation"><a href="/settings/emp-import">Import Employee</a></li>
 			</ul>
   	</div>
   	<div class="col-sm-9">
@@ -65,7 +66,15 @@
 @endsection
 
 
-
+@section('js-external')
+  <script src="/js/vendors-common.min.js"></script>
+  
+  <script>
+  
+    
+ 
+  </script>
+@endsection
 
 
 

@@ -29,32 +29,36 @@
   <div class="row">
   	<div class="col-sm-3">
   		<ul class="nav nav-pills nav-stacked">
-  			<li role="presentation" class="active"><a href="/settings">Profile</a></li>
+        <li role="presentation"><a href="/settings">Profile</a></li>
         <li role="presentation"><a href="/settings/password">Change Password</a></li>
         <li role="presentation"><a href="/settings/bossbranch">Branch</a></li>
-			  <li role="presentation"><a href="/settings/emp-import">Import Employee</a></li>
+  			<li role="presentation" class="active"><a href="/settings/emp-import">Import Employee</a></li>
 			</ul>
   	</div>
   	<div class="col-sm-9">
       
-      <h4>Account Information</h4>
+      <h4>Import Employee</h4>
       <hr>
       @include('_partials.alerts')
-      <form>
-        <div class="form-group">
-          <label for="username">Fullname</label>
-          <input type="text" value="{{ $user->name }}" class="form-control" id="fullname" placeholder="fullname" readonly>
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" value="{{ $user->email }}" class="form-control" id="email" placeholder="Email" readonly>
-        </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" value="{{ $user->username }}" class="form-control" id="username" placeholder="Username" readonly>
-        </div>
+
+      
+      {!! Form::open(['url'=>'/settings/emp-import', 'method'=>'post', 'files'=>true]) !!}
         
+        
+        
+        <div class="form-group">
+          <label for="exampleInputFile">Attach .MAS File</label>
+          <input type="file" name="empfile">
+
+          <p class="help-block">&nbsp;</p>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-cloud-upload" aria-hidden="true"></i> 
+          Import
+        </button>
       </form>
+      
+
   		
   	</div>
 
@@ -66,6 +70,7 @@
 @endsection
 
 
+
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   
@@ -75,7 +80,6 @@
  
   </script>
 @endsection
-
 
 
 

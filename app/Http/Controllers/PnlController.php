@@ -35,7 +35,7 @@ class PnlController extends Controller
     return $response;
   }
 
-
+  
 
 
 }

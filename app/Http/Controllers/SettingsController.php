@@ -253,6 +253,7 @@ class SettingsController extends Controller {
 		  		$return = $employee;
 		  		//$exist_emp = true;
 		  	} else {
+		  		throw new \Exception($e->code.': Employee is already on database!');
 		  		$employee = \App\Models\Employee::find($e->id);
 		  		$exist_emp = true;
 

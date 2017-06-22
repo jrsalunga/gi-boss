@@ -77,5 +77,31 @@ class Employee extends BaseModel {
     {
         return $query->where('branchid', $id);
     }
+
+  public function scopeProcessing($query, $x='1'){
+    return $query->where('processing', $x);
+  }
+
+
+
+  /***************** mutators *****************************************************/
+  public function getLastnameAttribute($value){
+    return mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
+    //return ucwords(strtolower($value));
+  }
+
+  public function getFirstnameAttribute($value){
+    return mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
+    //return ucwords(strtolower($value));
+  }
+
+  public function getMiddlenameAttribute($value){
+    return mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
+    //return ucwords(strtolower($value));
+  }
+
+  public function getPhotoAttribute(){
+    return file_exists('../../gi-cashier/public/images/employees/'.$this->code.'.jpg');
+  }
 	
 }

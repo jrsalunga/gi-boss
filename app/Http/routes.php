@@ -81,6 +81,17 @@ Route::get('download/DEPSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
 
+Route::get('timesheet/employee/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@employeeTimesheet']);
+Route::get('timesheet/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@getRoute']);
+
+Route::delete('timelog/employee/{param1}', ['uses'=>'TimelogController@deleteEmployeeTimelog']);
+Route::get('timelog/{param1?}/{param2?}', ['uses'=>'TimelogController@getRoute']);
+Route::put('timelog/{id}/', ['uses'=>'TimelogController@put']);
+
+Route::get('mansked/manday/{mandayid}', ['uses'=>'ManskedhdrController@getManday']);
+Route::get('mansked/{param1?}', ['uses'=>'ManskedhdrController@getRoute']);
+
+
 /******************* API  *************************************************/
 Route::group(['prefix'=>'api'], function(){
 

@@ -47,9 +47,12 @@ class Branch extends BaseModel {
   }
 
 
-  public function getRouteKey()
-{
-    return $this->slug;
-}
+  public function getRouteKey() {
+      return $this->slug;
+  }
+
+  public function lcode() {
+    return strtolower($this->code);
+  }
   
 }

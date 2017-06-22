@@ -8,7 +8,7 @@ class Position extends BaseModel {
  	protected $fillable = ['code', 'descriptor'];
  	public static $header = ['code', 'descriptor'];
 
- 	 public function __construct(array $attributes = [])
+ 	public function __construct(array $attributes = [])
   {
     parent::__construct($attributes);
     $this->setConnection('mysql-hr');

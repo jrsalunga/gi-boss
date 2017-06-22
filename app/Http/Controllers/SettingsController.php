@@ -150,7 +150,7 @@ class SettingsController extends Controller {
 
 		
 		if (!$request->hasFile('empfile'))
-			return back()->withErrors('No .EMP file attached!');
+			return back()->withErrors('No .MAS file attached!');
 
 		if (!$request->file('empfile')->isValid())
 			return back()->withErrors('.EMP file is corrupted! Please re-upload again.');	

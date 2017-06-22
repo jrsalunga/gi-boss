@@ -454,10 +454,10 @@ class SettingsController extends Controller {
 				return 2;
 				break;
 			case "TRAINEE":
-				return 0;
+				return 1;
 				break;
 			case "TRAINEE 1":
-				return 0;
+				return 1;
 				break;
 			case "TEMPORARY":
 				return 1;
@@ -469,7 +469,7 @@ class SettingsController extends Controller {
 				return 3;
 				break;
 			default:
-				return '';
+				return 1;
 				break;
 		}
 	}
@@ -702,6 +702,9 @@ class SettingsController extends Controller {
 				break;
 			case "TRAINEE 3":
 				return '179E8AB1C5BD402E90E69A7F14E7F16F';
+				break;
+			case "TRAINEE 4":
+				return 'C6A67A2F280F4634A5AF1BBECF6D901B';
 				break;
 			default:
 				return '';

@@ -66,7 +66,7 @@
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-line-chart"></span>
-                <span class="hidden-xs">Reports <small><span class="label label-success">new</span></small></span>
+                <span class="hidden-xs">Reports </span>
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
@@ -198,6 +198,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/mansked"><span class="gly gly-notes-2"></span> Mansked</a></li>
               </ul>
             </div>
 
@@ -210,14 +211,15 @@
               <ul class="dropdown-menu">
                 <li><a href="/storage/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/timelog"><span class="gly gly-stopwatch"></span> Timelogs</a></li>
               </ul>
             </div>
-            <!--
-            <a href="/backup/delinquent" class="btn btn-default">
-              <span class="gly gly-disk-remove"></span> 
-              <span class="hidden-xs hidden-sm">Delinquent</span>
+            
+            <a href="/timesheet" class="btn btn-default btn-sm">
+              <span class="gly gly-stopwatch"></span> 
+              <span class="hidden-xs hidden-sm">Timesheet <small><span class="label label-success">new</span></small></span>
             </a> 
-            -->
+            
           </div>
 
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

@@ -125,7 +125,7 @@ $flag = false;
                       $src=$timelog->employee->photo?'employees/'.$timelog->employee->code.'.jpg':'login-avatar.png';
                     ?>
                     <a href="/timelog?search=employee.code:{{$timelog->employee->code}}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
-                      {{ $timelog->employee->lastname or '' }}, {{ $timelog->employee->firstname or ''}}
+                      {{ $timelog->employee->lastname or '' }}, {{ $timelog->employee->firstname or '' }}
                     </a>
                   </td>
                   <td>

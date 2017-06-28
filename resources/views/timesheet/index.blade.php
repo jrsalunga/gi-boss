@@ -20,6 +20,8 @@
 @endsection
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
@@ -63,6 +65,18 @@
               <span class="hidden-xs hidden-sm">Timesheet</span>
             </button>
           </div> <!-- end btn-grp -->
+
+          <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
+            <form method="GET" action="/timesheet" accept-charset="UTF-8" id="dp-form">
+            <button type="submit" class="btn btn-success btn-go" title="Go" disabled data-toggle="loader">
+              <span class="gly gly-search"></span>
+              <span class="hidden-xs hidden-sm">Go</span>
+            </button> 
+            <input type="hidden" name="branchid" id="branchid" value="">
+            <input type="hidden" name="date" id="date" value="{{ $dr->date->format('Y-m-d') }}" data-date="{{ $dr->date->format('Y-m-d') }}">
+            </form>
+          </div>
+
           <div class="btn-group pull-right clearfix" role="group">
           	@if(request()->has('branchid') && is_uuid(request()->input('branchid')))
             <a href="/timesheet?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}&branchid={{strtolower(request()->input('branchid'))}}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
@@ -102,6 +116,8 @@
               </ul>
             </div> <!-- .dropdown -->
           </div>
+
+
         </div>
       </div>
     </nav>
@@ -235,6 +251,7 @@
   @parent
 
   <script src="/js/vendors-common.min.js"></script>
+  <script src="/js/dr-picker.js"></script>
 
 <script>
    moment.locale('en', { week : {
@@ -253,8 +270,12 @@
       ignoreReadonly: true,
     }).on('dp.change', function(e){
       var date = e.date.format('YYYY-MM-DD');
-      console.log(date);
-      document.location.href = '/timesheet?date='+e.date.format('YYYY-MM-DD')+'&branchid='+$('#branchid').val();
+      //console.log(date);
+      //document.location.href = '/timesheet?date='+e.date.format('YYYY-MM-DD')+'&branchid='+$('#branchid').val();
+      if($('#to').data('date')==date)
+        $('.btn-go').prop('disabled', true);
+      else
+        $('.btn-go').prop('disabled', false);
       
     });
 
@@ -267,8 +288,13 @@
       $('.br-code').text(el.data('code'));
       $('.br-desc').text('- '+el.data('desc'));
       $('#branchid').val(el.data('branchid'));
+
+      if(el.data('branchid')==$('.btn-go').data('branchid'))
+        $('.btn-go').prop('disabled', true);
+      else
+        $('.btn-go').prop('disabled', false);
       
-      document.location.href = '/timesheet?date='+$('#date').val()+'&branchid='+el.data('branchid');
+      //document.location.href = '/timesheet?date='+$('#date').val()+'&branchid='+el.data('branchid');
     });
 
 

@@ -19,9 +19,13 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
   <link rel="stylesheet" href="/css/styles-all.min.css">
 
-  @section('css-internal')
+   @section('css-internal')
 
   @show
+  @section('css-external')
+
+  @show
+  
 
 
   

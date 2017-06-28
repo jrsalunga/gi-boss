@@ -72,7 +72,7 @@
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
-            <input type="hidden" name="branchid" id="branchid" value="">
+            <input type="hidden" name="branchid" id="branchid" value="{{ is_null($branch) ? '':$branch->lid() }}">
             <input type="hidden" name="date" id="date" value="{{ $dr->date->format('Y-m-d') }}" data-date="{{ $dr->date->format('Y-m-d') }}">
             </form>
           </div>
@@ -98,7 +98,7 @@
             	<input type="hidden" name="branchid" id="branchid" value="{{ $branch->id or '' }}">
               <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="gly gly-shop"></span>
-                @if(is_null(($branch)))
+                @if(is_null($branch))
                   <span class="br-code">Select Branch</span>
                   <span class="br-desc hidden-xs hidden-sm"></span>
                 @else

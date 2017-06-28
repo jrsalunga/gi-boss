@@ -140,8 +140,11 @@
       <tbody>
           <tr>
           @foreach ($hours as $key => $value) 
-            <td data-value={{ date('g:i A', strtotime(substr($key, 1).':00')) }}"" title="{{ $key }}" class="text-center"> 
-              {{ date('g A', strtotime(substr($key, 1).':00')) }}
+            <?php 
+              $idx=$key>=24?$key-24:$key
+            ?>
+            <td data-value={{ date('g:i A', strtotime($idx.':00')) }}"" title="{{ $key }}" class="text-center"> 
+              {{ date('g A', strtotime($idx.':00')) }}
             </td>
           @endforeach
           </tr>

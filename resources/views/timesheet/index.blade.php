@@ -270,7 +270,8 @@
       ignoreReadonly: true,
     }).on('dp.change', function(e){
       var date = e.date.format('YYYY-MM-DD');
-      //console.log(date);
+      console.log(date);
+      $('#date').val(date);
       //document.location.href = '/timesheet?date='+e.date.format('YYYY-MM-DD')+'&branchid='+$('#branchid').val();
       if($('#to').data('date')==date)
         $('.btn-go').prop('disabled', true);

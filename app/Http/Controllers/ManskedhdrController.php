@@ -168,7 +168,10 @@ class ManskedhdrController extends Controller
 
 	// for $this->makeSingleView
 	private function hourlyDuty($depts){
-		//return $depts;
+		//return config('giligans.hours');
+		//return $hrs = $this->getHour('19:00', '1:00');
+
+		
 
 		$arr = [];
 		$sorted = [];
@@ -210,14 +213,28 @@ class ManskedhdrController extends Controller
       	}
       }
     } 
-   	//return $arr;
+   	
     foreach($arr as $key => $value){ 
       $x = explode('_', $key);
       $sorted[$x[1]] = $value;
     }
     ksort($sorted);
 
-    return $sorted;
+    $arr = [];
+
+    foreach (config('giligans.hours') as $key => $value) {
+    	if (array_key_exists($value, $sorted)) {
+    		$arr['_'.$value] = $sorted[$value];
+    	}
+    }
+    /*
+    foreach ($sorted as $key => $value) {
+    	$idx = array_search($key, config('giligans.hours'));
+    	$arr[$idx] = $value;
+    }
+		*/
+
+    return $arr;
 	}
 
 	// for $this->hourlyDuty
@@ -235,14 +252,20 @@ class ManskedhdrController extends Controller
 	// for $this->consoHours
 	private function getHour($start, $end){
 		$arr = [];
-		if($start!='off' || $start!='0.00' || !empty($start) || $end!='0.00' || !empty($end)){
-			$s = explode(':', $start);
-			$e = explode(':', $end);
+		$hrs = config('giligans.hours');
 
-			for($i = $s[0]; $i < $e[0]; $i++){
-				$arr[] = intval($i);
-			}
+		if($start!='off' || $start!='0.00' || !empty($start) || $end!='0.00' || !empty($end)){
+			$s = explode(':', $start);  // 23
+			$e = explode(':', $end);    // 1
+
+			$f = array_search($s[0], $hrs);
+			$t = array_search($e[0], $hrs);
+
+			for ($f; $f<$t; $f++)
+				$arr[] = $hrs[$f];
+
 		}
+		
 		return $arr;
 	}
 

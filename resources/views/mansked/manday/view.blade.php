@@ -62,7 +62,7 @@
               <span class="hidden-xs hidden-sm">Timelogs</span>
             </a>
             
-            <a href="/timesheet" class="btn btn-default">
+            <a href="/timesheet?branchid={{ $manday->manskedhdr->branch->lid() }}&date={{ $manday->date->format('Y-m-d') }}" class="btn btn-default">
               <span class="glyphicon glyphicon-th-list"></span>
               <span class="hidden-xs hidden-sm">Timesheet</span>
             </a>
@@ -140,8 +140,8 @@
       <tbody>
           <tr>
           @foreach ($hours as $key => $value) 
-            <td data-value={{ date('g:i A', strtotime($key.'.00')) }}"" title="{{ $key }}" class="text-center"> 
-              {{ date('g A', strtotime($key.'.00')) }}
+            <td data-value={{ date('g:i A', strtotime(substr($key, 1).':00')) }}"" title="{{ $key }}" class="text-center"> 
+              {{ date('g A', strtotime(substr($key, 1).':00')) }}
             </td>
           @endforeach
           </tr>

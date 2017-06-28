@@ -189,7 +189,13 @@
                     @endif
                   </tr>
                   <tr>
-                    <td>Timesheet</td>
+                    <td>
+                      Timesheet
+                      &nbsp;
+                      <a href="/timesheet?date={{ $date->format('Y-m-d') }}&branchid={{strtolower($employee->branchid)}}" class="text-ccc">
+                        <span class="glyphicon glyphicon-th-list"></span> 
+                      </a>
+                    </td>
                     @if(is_null($timesheet))
                       <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
                     @else

@@ -103,7 +103,7 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="txncode" class="control-label">Type</label>
-                @if ($timelog->entrytype=='2')
+               
                   <select class="form-control" name="txncode" id="txncode"> 
                   @for($x=1; $x<=4; $x++)
                     <option value="{{$x}}"
@@ -111,9 +111,7 @@
                     >{{ $timelog->getTxnCode($x) }}</option>
                   @endfor
                   </select>
-                @else
-                  <input class="form-control" type="text" id="txncode" value="{{ $timelog->getTxnCode() }}" readonly>
-                @endif
+               
               </div>
             </div> 
 

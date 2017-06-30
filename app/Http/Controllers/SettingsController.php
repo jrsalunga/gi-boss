@@ -244,9 +244,9 @@ class SettingsController extends Controller {
 		  		$employee->id = $employee->get_uid();
 
 		  		$employee->code 				= trim($row['MAN_NO']);
-			    $employee->lastname 		= trim($row['LAST_NAM']);
-			    $employee->firstname		= trim($row['FIRS_NAM']);
-			    $employee->middlename		= trim($row['MIDL_NAM']);
+			    $employee->lastname 		= utf8_encode(trim($row['LAST_NAM']));
+			    $employee->firstname		= utf8_encode(trim($row['FIRS_NAM']));
+			    $employee->middlename		= utf8_encode(trim($row['MIDL_NAM']));
 		  		
 		  		$exist_emp = false;
 

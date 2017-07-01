@@ -173,7 +173,7 @@ class TimesheetController extends Controller
 
 		$employee = Employee::findOrFail($employeeid);
 
-		foreach ($this->dr->dateInterval() as $key => $date) {
+		foreach ($this->dr->dateInterval2() as $key => $date) {
 			
 			$timesheets[$key]['date'] = $date;
 			

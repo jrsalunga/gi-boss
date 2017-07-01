@@ -117,7 +117,14 @@ class DateRange {
   }
 
   public function dateInterval(){
-  	//$to = $this->to->copy();
+  	$to = $this->to->copy();
+    $interval = new DateInterval('P1D');
+    $to->add($interval);
+    return new DatePeriod($this->fr, $interval, $to);
+  }
+
+  public function dateInterval2(){
+    //$to = $this->to->copy();
     $to = $this->to->copy()->subDay();
     $interval = new DateInterval('P1D');
     $to->add($interval);

@@ -169,7 +169,11 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
         $s->today->sign = $this->getSign($ds_today->sales - $ds_yesteday->sales);
         
-        $c->sales1 = ($ds_yesteday->sales - $ds_otherday->sales);
+        if (is_null($ds_otherday))
+          $c->sales1 = ($ds_yesteday->sales - $ds_otherday->sales);
+        else
+          $c->sales1 = 0;
+
         $s->yesterday->sign = $this->getSign($ds_yesteday->sales - $ds_otherday->sales);
       
       $s->diff = $c;

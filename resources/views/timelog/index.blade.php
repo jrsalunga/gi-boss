@@ -20,6 +20,7 @@
 @endsection
 <?php
 $flag = false;
+$is_employee = false;
 ?>
 @section('container-body')
 <div class="container-fluid">
@@ -33,6 +34,9 @@ $flag = false;
           if ($x[0]=='branch.code') {
             $b = strtoupper($x[1]);
             $flag = true;
+          } elseif ($x[0]=='employee.code') {
+            $is_employee = true;
+            $b = $x[1];
           } else
             $b = $x[1];
         }
@@ -115,16 +119,24 @@ $flag = false;
                     <a href="/timesheet?date={{$timelog->datetime->format('Y-m-d')}}&branchid={{strtolower($timelog->branchid)}}" class="text-ccc" data-toggle="tooltip" title="Go to {{ $timelog->branch->code }}'s {{ $timelog->datetime->format('D, M j, Y') }} Timesheet">
                       <span class="glyphicon glyphicon-th-list"></span>
                     </a>
+                    
+                    @if(!$is_employee)
+                    &nbsp;
+                    <a href="/timelog?search=employee.code:{{$timelog->employee->code}}" title="Filter">
+                      <span class="fa fa-filter"></span>
+                    </a>
+                    @endif
+                    
                   </td>
                   <td>
                     <span class="label label-default help" data-toggle="tooltip" title="{{ $timelog->employee->position->descriptor or 'd'}}">
                       {{ $timelog->employee->position->code or 'd'}}
                     </span>
-                    &nbsp;
                     <?php 
                       $src=$timelog->employee->photo?'employees/'.$timelog->employee->code.'.jpg':'login-avatar.png';
                     ?>
-                    <a href="/timelog?search=employee.code:{{$timelog->employee->code}}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
+                    &nbsp;
+                    <a href="/timesheet/employee/{{strtolower($timelog->employeeid)}}?fr={{$timelog->datetime->copy()->startOfMonth()->format('Y-m-d')}}&to={{$timelog->datetime->copy()->endOfMonth()->format('Y-m-d')}}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
                       {{ $timelog->employee->lastname or '' }}, {{ $timelog->employee->firstname or '' }}
                     </a>
                   </td>

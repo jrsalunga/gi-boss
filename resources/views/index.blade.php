@@ -135,12 +135,16 @@
                     @endif
                   </td>
                   <td class="text-right  hidden-xs">
+                  @if(is_null($ds->otherday))
+                    0
+                  @else
                     @if($ds->otherday->slsmtd_totgrs>0)
                     <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}" data-toggle="loader">
                       {{ number_format($ds->otherday->sales,2) }}</a>
                     @else 
                       {{ number_format($ds->otherday->sales,2) }}
                     @endif
+                  @endif
                   </td>
                 </tr>
               @endforeach

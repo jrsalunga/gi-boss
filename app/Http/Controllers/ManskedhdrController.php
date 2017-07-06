@@ -73,7 +73,7 @@ class ManskedhdrController extends Controller
 														->values()
 														->all();
 		
-		return $depts = $this->employee->byDeptFrmEmpIds($empsOnMansked);
+		$depts = $this->employee->byDeptFrmEmpIds($empsOnMansked);
 
 		$days = $mansked->manskeddays;
   	$manskeddays = [];

@@ -231,7 +231,7 @@
     </div>
 
     @else
-      No Data
+      
     @endif
 
 

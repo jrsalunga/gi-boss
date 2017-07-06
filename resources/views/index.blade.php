@@ -69,7 +69,7 @@
                 <span class="hidden-xs">Reports </span>
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
                 <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
                 <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>

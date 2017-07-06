@@ -126,16 +126,23 @@ class Purchase2Controller extends Controller {
 			$id = strtolower($request->input('itemid'));
 			$table = strtolower($request->input('table'));
 
-      $c = '\App\Models\\'.ucfirst($table);
-      $i = $c::find($id);
-
-      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
-        $item = $request->input('item');
+      if(is_uuid($id) && in_array($table, $fields)) {
+        
+        $c = '\App\Models\\'.ucfirst($table);
+        $i = $c::find($id);
+        
+        $item = $i->descriptor;
+        
+        $where[$table.'.id'] = $id;
       
-        if(is_uuid($id) && in_array($table, $fields))
-          $where[$table.'.id'] = $id;
-        else if($table==='payment')
-          $where['purchase.terms'] = $id;
+      } else if($table==='payment') {
+      
+        $where['purchase.terms'] = $id;
+      
+        $item = $request->input('item');
+      }
+
+      if (strtolower($request->input('item'))==strtolower($item)) {
 
         $filter->table = $table;
         $filter->id = $id;

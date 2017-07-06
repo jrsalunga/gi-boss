@@ -135,6 +135,15 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
   }
 
 
+  public function setTable($table) {
+    $instance = new $this->model();
+    $instance->setTable($table);
+    return $instance;
+  }
+  
+  
+
+
     
 
 

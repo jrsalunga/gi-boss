@@ -88,6 +88,14 @@ class TimesheetController extends Controller
 
 	
 	public function employeeTimesheet(Request $request, $employeeid) {
+		/*
+		$emp = $this->employee->setTable('vemployee');
+
+		return $emp->where('branchid' ,'0C59D1A778A711E587FA00FF59FBB323')
+							->orderBy('lastname')
+							->orderBy('firstname')
+							->get(['code', 'lastname','firstname', 'branchcode', 'branch', 'branchid', 'positioncode', 'position', 'deptcode', 'department']);
+		*/
 
 		$employee = $this->employee
 									//->skipCache()

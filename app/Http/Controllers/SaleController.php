@@ -410,13 +410,9 @@ class SaleController extends Controller {
         $k = key($s);
         array_push($arr, ['table'=>'groupies', 'item'=>ucwords($s[$k]), 'id'=>strtolower($k)]);
       }
-
-      
-
     }
 
-    return $arr;
-
+    //return $arr;
 
     if($request->ajax())
       return $arr;

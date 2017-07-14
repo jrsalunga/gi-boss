@@ -80,7 +80,7 @@
   @else
   <div>
     <div>
-      <table class="table table-condensed">
+      <table class="table table-condensed" style="font-family: 'Source Code Pro', monospace;">
         <tbody>
           @foreach($datas as $d)
             <tr>

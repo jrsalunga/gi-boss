@@ -101,7 +101,7 @@
                       @foreach($d['timelogs'] as $timelog)
                       <span>
                         <span class="help label label-{{ $timelog->txnClass() }}" data-toggle="tooltip" title="{{ $timelog->getEntry() }} {{ $timelog->getTxnCode() }} {{ $timelog->datetime->format('g:i:s A') }}">
-                          {{ $timelog->datetime->format('g:i A') }} @ {{ $timelog->branch->code or '' }}
+                          {{ $timelog->datetime->format('h:i A') }} @ {{ $timelog->branch->code or '' }}
                           <span class="help label label-{{ $timelog->entryClass() }}" >
                             {{ $timelog->getEntry() }}
                           </span>

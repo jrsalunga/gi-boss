@@ -105,22 +105,75 @@ class TimesheetController extends Controller
         					->with(['position'=>function($query){
         						return $query->select(['code', 'descriptor', 'id']);
         					}])
-									->find($employeeid, ['code', 'firstname', 'lastname', 'positionid', 'branchid', 'id']);
+									->find($employeeid, ['code', 'firstname', 'lastname', 'positionid', 'branchid', 'deptid', 'id']);
 
 		
 
 		if (!$employee)
 			return abort('404');
 
-		$tot_tardy = 0;
 
-		foreach ($this->dr->dateInterval() as $key => $date) {
+		if ($employee->deptid==='201E68D4674111E596ECDA40B3C0AA12')
+			return $this->getMancom($employee);
+		else
+			return $this->getRegularEmp($employee);
+	}
+
+
+	public function getMancom($employee) {
+
+		$timesheets = [];
+
+		foreach ($this->dr->dateInterval2() as $key => $date) {
+			$timesheets[$key]['date'] = $date;
+			
+			
+
+			$timelogs = $this->timelog
+										->with(['branch'=>function($query) {
+											return $query->select('code', 'id');
+										}])
+										->scopeQuery(function($query) use ($date, $employee) {
+											return $query->whereBetween('datetime', [
+	                      $date->copy()->format('Y-m-d').' 06:00:00',          // '2015-11-13 06:00:00'
+	                      $date->copy()->addDay()->format('Y-m-d').' 05:59:59' // '2015-11-14 05:59:59'
+                    	])
+                    	->where('employeeid', $employee->id)
+                    	->groupBy('branchid')
+                    	->groupBy(\DB::raw('HOUR(datetime)'))
+                    	->groupBy(\DB::raw('MINUTE(datetime)'))
+                    	->orderBy('datetime');
+										})
+										->all();
+
+			$timesheets[$key]['timelogs'] = count($timelogs)>0
+				? $timelogs
+				: false;
+
+		}
+
+		//return $timesheets;
+		return 	$this->setViewWithDR(
+							view('timesheet.emp-watch')
+							->with('timesheets', $timesheets)
+							->with('employee', $employee)
+							->with('dr', $this->dr)
+						);
+	}
+
+
+	public function getRegularEmp($employee) {
+
+		$tot_tardy = 0;
+		$timesheets = [];
+
+		foreach ($this->dr->dateInterval2() as $key => $date) {
 			$timesheets[$key]['date'] = $date;
 			//$timesheets[$key]['timelog'] = [];
 			
 			$timelogs = $this->timelog
 			->skipCriteria()
-			->getRawEmployeeTimelog($employeeid, $date, $date)
+			->getRawEmployeeTimelog($employee->id, $date, $date)
 			->all();
 
 			$mandtl = $this->mandtl

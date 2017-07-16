@@ -89,7 +89,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <span class="label label-default">
-                    {{ $d['employee']->position->code }}
+                    {{ $d['employee']->position->code or '' }}
                   </span>
                   &nbsp;
                   <a href="/timelog/employee/{{$d['employee']->lid()}}?date={{ $date->format('Y-m-d') }}">

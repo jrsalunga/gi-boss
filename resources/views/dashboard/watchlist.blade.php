@@ -100,7 +100,7 @@
                     @if(count($d['timelogs'])>0)
                       @foreach($d['timelogs'] as $timelog)
                       <span>
-                        <span class="help label label-{{ $timelog->txnClass() }}" data-toggle="tooltip" title="{{ $timelog->getEntry() }} {{ $timelog->getTxnCode() }} {{ $timelog->datetime->format('g:i:s A') }}">
+                        <span class="help label label-{{ $timelog->txnClass() }}" data-timelogid="{{ $timelog->lid() }}" data-toggle="tooltip" title="{{ $timelog->getEntry() }} {{ $timelog->getTxnCode() }} {{ $timelog->datetime->format('g:i:s A') }}">
                           {{ $timelog->datetime->format('h:i A') }} @ {{ $timelog->branch->code or '' }}
                           <span class="help label label-{{ $timelog->entryClass() }}" >
                             {{ $timelog->getEntry() }}

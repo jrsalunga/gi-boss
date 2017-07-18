@@ -80,14 +80,14 @@
   @else
   <div>
     <div>
-      <table class="table table-condensed" style="font-family: 'Source Code Pro', monospace;">
+      <table class="table table-condensed table-hover" style="font-family: 'Source Code Pro', monospace;">
         <tbody>
           @foreach($datas as $d)
             <tr>
               <td>
 
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <span class="label label-default">
                     {{ $d['employee']->position->code or '' }}
                   </span>
@@ -96,7 +96,7 @@
                     {{ $d['employee']->lastname }}, {{ $d['employee']->firstname }}
                   </a>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-9">
                     @if(count($d['timelogs'])>0)
                       @foreach($d['timelogs'] as $timelog)
                       <span>

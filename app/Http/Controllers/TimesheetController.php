@@ -138,6 +138,7 @@ class TimesheetController extends Controller
 	                      $date->copy()->format('Y-m-d').' 06:00:00',          // '2015-11-13 06:00:00'
 	                      $date->copy()->addDay()->format('Y-m-d').' 05:59:59' // '2015-11-14 05:59:59'
                     	])
+                    	->where('ignore', '0')
                     	->where('employeeid', $employee->id)
                     	->groupBy('branchid')
                     	->groupBy(\DB::raw('HOUR(datetime)'))

@@ -55,6 +55,7 @@ class EmployeeController extends Controller
 	                      $date->copy()->addDay()->format('Y-m-d').' 05:59:59' // '2015-11-14 05:59:59'
                     	])
                     	->whereIn('employeeid', $empids)
+                    	->where('ingnore', '0')
                     	->groupBy('employeeid')
                     	->groupBy('branchid')
                     	->groupBy(\DB::raw('HOUR(datetime)'))

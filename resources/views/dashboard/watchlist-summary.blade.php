@@ -130,7 +130,11 @@
                 <td class="text-center {{ $t['date']->dayOfWeek == Carbon\Carbon::SUNDAY ? 'bg-warning':'' }}">
                   @if($t['count']>0)
                     <a href="/timelog/employee/{{ $d['employee']->lid() }}?date={{ $t['date']->format('Y-m-d') }}">
-                      {{ $t['count'] }}
+                      <!--
+                      <span class="glyphicon glyphicon-ok"></span>
+                      -->
+                      <span class="label label-success">{{ $t['count'] }}</span>
+                     
                     </a>
                   @else
 

@@ -94,7 +94,7 @@
               <div class="row">
                 <div class="col-md-3">
                   <?php 
-                    $src=$d['employee']->photo?'employees/'.$e['employee']->code.'.jpg':'login-avatar.png';
+                    $src=$d['employee']->photo?'employees/'.$d['employee']->code.'.jpg':'login-avatar.png';
                   ?>
                   <a href="/timelog/employee/{{$d['employee']->lid()}}?date={{ $date->format('Y-m-d') }}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
                     {{ $d['employee']->lastname }}, {{ $d['employee']->firstname }}

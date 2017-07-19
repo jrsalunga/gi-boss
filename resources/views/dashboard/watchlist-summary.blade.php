@@ -117,9 +117,9 @@
             <tr>
               <td>
                 <?php 
-                  $src=$d['employee']->photo?'employees/'.$e['employee']->code.'.jpg':'login-avatar.png';
+                  $src=$d['employee']->photo?'employees/'.$d['employee']->code.'.jpg':'login-avatar.png';
                 ?>
-                <a href="/timesheet/employee/{{ $d['employee']->lid() }}?fr={{ $first->format('Y-m-d') }}&to={{ $last->format('Y-m-d') }}"  rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
+                <a href="/timesheet/employee/{{ $d['employee']->lid() }}?fr={{ $first->format('Y-m-d') }}&to={{ $last->format('Y-m-d') }}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
                   {{ $d['employee']->lastname }}, {{ $d['employee']->firstname }}
                 </a>
                 <span class="help label label-default pull-right" data-toggle="tooltip" title="{{ $d['employee']->position->descriptor or '' }}">

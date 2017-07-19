@@ -69,6 +69,9 @@ Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
 
 Route::get('employee/watchlist', ['uses'=>'EmployeeController@getWatchlist']);
+Route::get('employee/watchlist/summary', ['uses'=>'EmployeeController@getWatchlistSummary']);
+Route::get('employee/tracker', ['uses'=>'EmployeeController@getWatchlist']);
+Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlistSummary']);
 
 Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);

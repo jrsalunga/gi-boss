@@ -92,7 +92,7 @@ class TimelogController extends Controller
 									->first();
 
 		$date = ($request->has('date') || is_iso_date($request->input('date')))
-			? c($request->input('date'))
+			? carbonCheckorNow($request->input('date'))
 			: c();
 
 		$timelogs = $this->timelog->employeeTimelogs($employee, $date);

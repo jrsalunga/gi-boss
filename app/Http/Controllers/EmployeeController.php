@@ -23,13 +23,11 @@ class EmployeeController extends Controller
 		$this->timelog = $timelog;
 	}
 
-	public function getWatchlist(Request $request) {
-
-		$datas = [];
+	private function getMancom() {
 
 		$this->employee->pushCriteria(ActiveEmployee::class);
 
-		$employees = $this->employee
+		return $this->employee
 									->with('position')
 									->orderBy('lastname')
 									->orderBy('firstname')
@@ -38,31 +36,41 @@ class EmployeeController extends Controller
 									//		['201E68D4674111E596ECDA40B3C0AA12', 'D2E8E339A47B11E592E000FF59FBB323'], 
 									//		['code', 'lastname', 'firstname', 'positionid','id']
 									//);
+	}
 
+	private function getTimelog($date, $empids) {
+		return $this->timelog
+							->with(['branch'=>function($query) {
+								return $query->select('code', 'id');
+							}])
+							->scopeQuery(function($query) use ($date, $empids) {
+								return $query->whereBetween('datetime', [
+                  $date->copy()->format('Y-m-d').' 06:00:00',          // '2015-11-13 06:00:00'
+                  $date->copy()->addDay()->format('Y-m-d').' 05:59:59' // '2015-11-14 05:59:59'
+              	])
+              	->whereIn('employeeid', $empids)
+              	->where('ignore', '0')
+              	->groupBy('employeeid')
+              	->groupBy('branchid')
+              	->groupBy(\DB::raw('HOUR(datetime)'))
+              	->groupBy(\DB::raw('MINUTE(datetime)'))
+              	->orderBy('datetime');
+							})
+							->all();
+	}
+
+	public function getWatchlist(Request $request) {
+
+		$datas = [];
+
+		$employees = $this->getMancom();
 		$empids = $employees->pluck('id')->toArray();
 
 		$date = $request->has('date')
-			? c($request->input('date'))
+			? carbonCheckorNow($request->input('date'))
 			: c();
 
-		$timelogs = $this->timelog
-										->with(['branch'=>function($query) {
-											return $query->select('code', 'id');
-										}])
-										->scopeQuery(function($query) use ($date, $empids) {
-											return $query->whereBetween('datetime', [
-	                      $date->copy()->format('Y-m-d').' 06:00:00',          // '2015-11-13 06:00:00'
-	                      $date->copy()->addDay()->format('Y-m-d').' 05:59:59' // '2015-11-14 05:59:59'
-                    	])
-                    	->whereIn('employeeid', $empids)
-                    	->where('ignore', '0')
-                    	->groupBy('employeeid')
-                    	->groupBy('branchid')
-                    	->groupBy(\DB::raw('HOUR(datetime)'))
-                    	->groupBy(\DB::raw('MINUTE(datetime)'))
-                    	->orderBy('datetime');
-										})
-										->all();
+		$timelogs = $this->getTimelog($date, $empids);
 
 
 		foreach ($employees as $key => $employee) {
@@ -74,6 +82,64 @@ class EmployeeController extends Controller
 		//return $datas;
 		return view('dashboard.watchlist')
 							->with('date', $date)
+							->with('datas', $datas);
+	}
+
+	public function getWatchlistSummary(Request $request) {
+
+		$datas = [];
+
+		$employees = $this->getMancom();
+		$empids = $employees->pluck('id')->toArray();
+
+		$date = $request->has('date')
+			? carbonCheckorNow($request->input('date'))
+			: c();
+
+		if ($date->day>15) {
+			$fr = c($date->format('Y-m-').'16');
+			$to = $date->copy()->endOfMonth();
+		} else {
+			$fr = $date->copy()->startOfMonth();
+			$to = c($date->format('Y-m-').'15');
+		}
+
+
+		$days = [];
+		$temp = $fr->copy();
+		do {
+			$days[$temp->day] = $temp->copy(); 
+			$temp->addDay();
+		} while ($temp->lte($to));
+
+		
+
+
+
+
+
+
+		foreach ($employees as $key => $employee) {
+			$datas[$key]['employee'] = $employee;
+			
+			foreach ($days as $k => $day) {
+				$i = [$employee->id];
+				$timelogs = $this->getTimelog($day, $i);
+			
+				$datas[$key]['timelogs'][$k]['count'] = count($timelogs);
+				$datas[$key]['timelogs'][$k]['date'] = $day;
+				//$datas[$key]['timelogs'][$key] = $timelogs->where('employeeid', $employee->id);
+
+			}
+		}
+
+		
+
+		//return $datas;
+		//return view('master');
+		return view('dashboard.watchlist-summary')
+							->with('date', $date)
+							->with('days', $days)
 							->with('datas', $datas);
 	}
 

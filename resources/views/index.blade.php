@@ -215,13 +215,19 @@
               <ul class="dropdown-menu">
                 <li><a href="/storage/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/timesheet"><span class="gly gly-clock"></span> Timesheet</a></li>
                 <li><a href="/timelog"><span class="gly gly-stopwatch"></span> Timelogs</a></li>
               </ul>
             </div>
-            
+            <!--
             <a href="/timesheet" class="btn btn-default btn-sm">
               <span class="gly gly-stopwatch"></span> 
               <span class="hidden-xs hidden-sm">Timesheet <small><span class="label label-success">new</span></small></span>
+            </a> 
+            -->
+            <a href="/employee/tracker" class="btn btn-default btn-sm">
+              <span class="fa fa-street-view"></span> 
+              <span class="hidden-xs hidden-sm">Tracker <small><span class="label label-success">new</span></small></span>
             </a> 
             
           </div>

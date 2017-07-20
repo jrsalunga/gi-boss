@@ -110,6 +110,10 @@
                 </a>
               </th>
             @endforeach
+            <th class="bg-primary">
+              <div class="text-center" style="color: #fff;">Total</div>
+              <div class="text-center" style="color: #fff;">Days</div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -141,6 +145,12 @@
                   @endif
                 </td>
               @endforeach
+              <td class="text-center">
+                @if($d['total_days']>0)
+                  {{ $d['total_days'] }}
+                @endif
+
+              </td>
             </tr>
         
           @endforeach

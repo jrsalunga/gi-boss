@@ -122,15 +122,21 @@ class EmployeeController extends Controller
 		foreach ($employees as $key => $employee) {
 			$datas[$key]['employee'] = $employee;
 			
+			$total = 0;
 			foreach ($days as $k => $day) {
 				$i = [$employee->id];
 				$timelogs = $this->getTimelog($day, $i);
 			
 				$datas[$key]['timelogs'][$k]['count'] = count($timelogs);
 				$datas[$key]['timelogs'][$k]['date'] = $day;
+
+				if (count($timelogs)>0)
+					$total++;
 				//$datas[$key]['timelogs'][$key] = $timelogs->where('employeeid', $employee->id);
 
 			}
+
+			$datas[$key]['total_days'] = $total;
 		}
 
 		

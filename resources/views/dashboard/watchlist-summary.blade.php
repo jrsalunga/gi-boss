@@ -36,7 +36,7 @@
     <li><a href="/employee">Employee</a></li>
     <li><a href="/employee/tracker">Tracker</a></li>
     <li><a href="/employee/tracker/summary">Summary</a></li>
-    <li class="active">{{ $first->format('M j') }} - {{ $date->format('M j') }}</li>
+    <li class="active">{{ $first->format('M j') }} - {{ $last->format('M j') }}</li>
   </ol>
 
   <nav id="nav-action" class="navbar navbar-default">

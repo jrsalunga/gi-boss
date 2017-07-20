@@ -140,8 +140,7 @@ class EmployeeController extends Controller
 		}
 
 		
-
-		//return $datas;
+		//return $last;
 		//return view('master');
 		return view('dashboard.watchlist-summary')
 							->with('date', $date)

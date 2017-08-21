@@ -422,6 +422,7 @@ class DepslpController extends Controller {
 			$d = $this->depslip->update([
 				'date' 				=> request()->input('date'),
 	    	'time' 				=> request()->input('time'),
+	    	'type' 				=> request()->input('type'),
 	    	'amount' 			=> str_replace(",", "", request()->input('amount')),
 	    	'cashier' 		=> $request->input('cashier'),
 	    	'remarks' 		=> $request->input('notes'),

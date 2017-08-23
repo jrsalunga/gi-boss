@@ -184,9 +184,9 @@
           <td class="{{ $bg }} text-center">
             @if($b['depo_totamt']>0 || $b['pos_totamt']>0)
               @if(number_format($b['depo_totamt'],2) == number_format($b['pos_totamt'],2))
-                <span class="glyphicon glyphicon-remove text-danger"></span>
-              @else
                 <span class="glyphicon glyphicon-ok text-success"></span>
+              @else
+                <span class="glyphicon glyphicon-remove text-danger"></span>
               @endif
             @endif
           </td>

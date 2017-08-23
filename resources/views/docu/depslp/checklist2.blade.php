@@ -182,22 +182,14 @@
             @endif
           </td>
           <td class="{{ $bg }} text-center">
-
-              <?php
-
-                if ($b['depo_totamt'] == $b['pos_totamt'])
-                  echo '<span class="glyphicon glyphicon-ok text-ok"></span>';
-                else
-                  echo '<span class="glyphicon glyphicon-remove text-danger"></span>';
-
-              ?>
-              <!--
+              
+              
+           
               @if($b['depo_totamt'] > $b['pos_totamt'])
                 <span class="glyphicon glyphicon-remove text-danger"></span>
               @else
                 <span class="glyphicon glyphicon-ok text-success"></span>
               @endif
-              -->
                
             
           </td>

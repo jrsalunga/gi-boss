@@ -185,10 +185,10 @@
            
               @if($b['depo_totamt']==$b['pos_totamt'])
                 <span class="glyphicon glyphicon-ok text-success"></span>
-                {{ $b['depo_totamt'] }} = {{ $b['pos_totamt'] }}
               @else
                 <span class="glyphicon glyphicon-remove text-danger"></span>
               @endif
+                {{ $b['depo_totamt'] }} = {{ $b['pos_totamt'] }}
             
           </td>
           

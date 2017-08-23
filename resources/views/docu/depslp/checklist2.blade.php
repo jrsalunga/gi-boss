@@ -168,8 +168,7 @@
             @if(!$type['slips'])
               
             @else
-              {{ number_format($type['amount'],2) }}
-              <div class="btn-group">
+              {{number_format($type['amount'],2)}}<div class="btn-group">
               <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="box-shadow: none; cursor: pointer;">
                 <span class="caret"></span>
               </a>

@@ -191,12 +191,13 @@
                   echo '<span class="glyphicon glyphicon-remove text-danger"></span>';
 
               ?>
-           
+              <!--
               @if($b['depo_totamt'] > $b['pos_totamt'])
                 <span class="glyphicon glyphicon-remove text-danger"></span>
               @else
                 <span class="glyphicon glyphicon-ok text-success"></span>
               @endif
+              -->
                
             
           </td>

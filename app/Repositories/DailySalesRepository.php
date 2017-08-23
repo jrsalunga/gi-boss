@@ -187,6 +187,20 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     return collect($arr);
   }
 
+  public function getByBranchDate(Carbon $fr, Carbon $to, $branchid, $select=['*']) {
+    return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
+      return $query
+                #->select($select)
+                ->whereBetween('date', 
+                  [$fr->format('Y-m-d').' 00:00:00', $to->format('Y-m-d').' 23:59:59']
+                  )
+                ->where('branchid', $branchid)
+                #->groupBy(DB::raw('DAY(date)'))
+                ->orderBy('date');
+                //->orderBy('filedate', 'DESC');
+    })->all($select);
+  }
+
   public function branchByDR(Branch $branch, DateRange $dr, $order = 'ASC') {
     
     $arr = [];

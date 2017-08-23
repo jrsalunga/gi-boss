@@ -78,7 +78,7 @@ Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSO
 
 /** Depslip **/
 Route::get('depslp/log', ['uses'=>'DepslpController@getHistory']);
-Route::get('depslp/checklist', ['uses'=>'DepslpController@getChecklist']);
+Route::get('depslp/checklist', ['uses'=>'DepslpController@getChecklist2']);
 Route::get('depslp/{id?}/{action?}/{p?}', ['uses'=>'DepslpController@getAction']);
 Route::get('images/depslp/{id?}', ['uses'=>'DepslpController@getImage']);
 Route::put('put/depslp', ['uses'=>'DepslpController@put']);

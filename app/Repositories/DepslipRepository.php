@@ -50,7 +50,19 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
 		})->all();
   }
 
-
+  public function branchByDR(Carbon $fr, Carbon $to, $branchid) {
+    return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
+      return $query
+                #->select(DB::raw('*, count(*) as count'))
+                ->whereBetween('date', 
+                  [$fr->format('Y-m-d').' 00:00:00', $to->format('Y-m-d').' 23:59:59']
+                  )
+                ->where('branch_id', $branchid)
+                #->groupBy(DB::raw('DAY(date)'))
+                ->orderBy('created_at', 'DESC');
+                //->orderBy('filedate', 'DESC');
+    })->all();
+  }
 
 
 	public function monthlyLogs(Carbon $date, $branch) {

@@ -186,7 +186,7 @@
               <?php
 
                 if ($b['depo_totamt'] == $b['pos_totamt'])
-                  echo '<span class="glyphicon glyphicon-ok text-danger"></span>';
+                  echo '<span class="glyphicon glyphicon-ok text-ok"></span>';
                 else
                   echo '<span class="glyphicon glyphicon-remove text-danger"></span>';
 

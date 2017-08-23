@@ -169,6 +169,18 @@
               
             @else
               {{ number_format($type['amount'],2) }}
+              <div class="btn-group">
+              <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="box-shadow: none; cursor: pointer;">
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                @foreach($type['slips'] as $slip)
+                <li>
+                  <a href="#" class="text-right">{{ number_format($slip->amount,2) }}</a>
+                </li>
+                @endforeach
+              </ul>
+              </div>
             @endif
             </td>
           @endforeach

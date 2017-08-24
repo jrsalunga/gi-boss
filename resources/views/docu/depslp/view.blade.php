@@ -137,7 +137,7 @@
               <button class="btn btn-default" data-toggle="modal" data-target=".mdl-delete">Delete</button>
               <a href="/depslp/log" class="btn btn-link">Cancel</a>
               <!--<a href="/depslp/{{$depslp->lid()}}/verify" class="btn btn-success pull-right" title="Verify the encoded informations are correct">Verify</a>-->
-              <a href="/depslp/{{$depslp->lid()}}?verify=true&user_id={{strtolower(session('user.id'))}}" class="btn btn-success pull-right" title="Verify the encoded informations are correct">Verify</a>
+              <a href="/depslp/{{$depslp->lid()}}?verify=true&user_id={{strtolower(session('user.id'))}}" class="btn btn-success pull-right" title="Verify the encoded informations are correct">Mark as Verified</a>
             @endif
           </div>
         </div><!-- end: .panel -->

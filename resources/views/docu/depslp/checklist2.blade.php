@@ -175,7 +175,7 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 @foreach($type['slips'] as $slip)
                 <li>
-                  <a href="#" class="text-right">{{ number_format($slip->amount,2) }}</a>
+                  <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">{{ number_format($slip->amount,2) }}</a>
                 </li>
                 @endforeach
               </ul>

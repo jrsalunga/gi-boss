@@ -153,7 +153,7 @@
           </td>
           @endforeach
 
-          <td class="{{ $bg }} text-right">
+          <td class="{{ $bg }} text-right" style="color: #909090">
             @if($b['pos_totamt']>0)
               <b>
               {{ number_format($b['pos_totamt'],2) }}
@@ -164,7 +164,7 @@
           </td>
 
           @foreach($b['depo_type'] as $type)
-            <td class="{{ $bg }} text-right">
+            <td class="{{ $bg }} text-right" style="color: #909090">
             @if(!$type['slips'])
               
             @else

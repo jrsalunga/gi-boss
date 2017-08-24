@@ -187,7 +187,7 @@ class DepslpController extends Controller {
   		return $arr;
   	
   	return view('docu.depslp.checklist2')
-  					->with('date', $date)
+  					->with('date', $fr)
   					->with('branches', $bb)
   					->with('branch', $branch)
   					->with('datas', $arr);

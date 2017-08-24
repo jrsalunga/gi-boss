@@ -231,7 +231,7 @@
       </tbody>
     </table>
     </div>
-    <h1>&nsbp;</h1>
+    <h1>&nbsp;</h1>
     @endif
     
    

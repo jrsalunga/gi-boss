@@ -217,7 +217,7 @@
                   </a>
                 </li>
                 @endforeach
-                <li><a href="/depslp/log?search=branch.code:{{strtolower($branch->code)}};date:{{$b['date']->format('Y-m-d')}};type:{{$k}}&searchJoin=and" target="_blank" class="text-right text-success">view logs</a></li>
+                <li><a href="/depslp/log?search=branch.code:{{strtolower($branch->code)}};date:{{$b['date']->format('Y-m-d')}};type:{{$k}}&searchJoin=and" target="_blank" class="text-right" style="color: #3c763d;">view logs</a></li>
               </ul>
               </div>
             @endif

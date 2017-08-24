@@ -259,6 +259,7 @@
   <script src="/js/vendors-common.min.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
 
     $('#dp-date').datetimepicker({
       //defaultDate: "2016-06-01",

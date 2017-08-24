@@ -202,7 +202,7 @@
             @if(!$type['slips'])
               
             @else
-              <a href="/depslp/log?search=branch.code:{{strtolower($branch->code}};date:{{$b['date']->format('Y-m-d')}};type:{{$k}}&searchJoin=and" target="_blank">
+              <a href="/depslp/log?search=branch.code:{{strtolower($branch->code)}};date:{{$b['date']->format('Y-m-d')}};type:{{$k}}&searchJoin=and" target="_blank">
               {{number_format($type['amount'],2)}}</a><div class="btn-group">
               <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="box-shadow: none; cursor: pointer;">
                 <span class="caret"></span>

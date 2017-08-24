@@ -38,7 +38,11 @@
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
+            @if(is_null(($branch)))
             <a href="/depslp/log" class="btn btn-default" title="Deposit Slip Logs">
+            @else
+            <a href="/depslp/log?search=branch.code:{{strtolower($branch->code)}}" class="btn btn-default" title="Deposit Slip Logs">
+            @endif
               <span class="fa fa-bank"></span>
               <span class="hidden-xs hidden-sm">Logs</span>
             </a> 
@@ -193,12 +197,13 @@
             @endif
           </td>
 
-          @foreach($b['depo_type'] as $type)
+          @foreach($b['depo_type'] as $k => $type)
             <td class="{{ $bg }} text-right" style="color: #909090">
             @if(!$type['slips'])
               
             @else
-              {{number_format($type['amount'],2)}}<div class="btn-group">
+              <a href="/depslp/log?search=date:{{$b['date']->format('Y-m-d')}};type:{{$k}}&searchJoin=and" target="_blank">
+              {{number_format($type['amount'],2)}}</a><div class="btn-group">
               <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="box-shadow: none; cursor: pointer;">
                 <span class="caret"></span>
               </a>
@@ -259,6 +264,7 @@
   <script src="/js/vendors-common.min.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#dp-date').datetimepicker({

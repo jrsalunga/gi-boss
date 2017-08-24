@@ -31,6 +31,7 @@ class DepslipRepository extends BaseRepository implements CacheableInterface
     'filename'=>'like',
     'cashier'=>'like',
     'date',
+    'type',
     'fileUpload.terminal',
   ];
 

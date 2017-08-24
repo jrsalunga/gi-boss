@@ -159,6 +159,12 @@
           </th>
         </tr>
       </thead>
+      <?php
+        $pcash = 0;
+        $pcheck = 0;
+        $total_pos = 0;
+
+      ?>
       <tbody>
         @foreach($datas as $key => $b) 
         <?php
@@ -199,7 +205,14 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 @foreach($type['slips'] as $slip)
                 <li>
-                  <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">{{ number_format($slip->amount,2) }}</a>
+                  <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">{{ number_format($slip->amount,2) }}
+      
+                  @if($slip->verified)
+                    <span class="gly gly-ok" data-toogle="tooltip" title="Verified"></span>
+                  @else
+                    <span class="gly gly-remove" style="color: #fff;"></span>
+                  @endif
+                  </a>
                 </li>
                 @endforeach
               </ul>

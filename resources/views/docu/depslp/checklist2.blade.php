@@ -144,7 +144,7 @@
           <td class="{{ $bg }}">{{ $b['date']->format('M j, D') }}</td>
                       
           @foreach($b['pos'] as $pos)
-          <td class="{{ $bg }} text-right">
+          <td class="{{ $bg }} text-right" style="color: #909090">
             @if(!$pos['amount'])
               
             @else
@@ -153,7 +153,7 @@
           </td>
           @endforeach
 
-          <td class="{{ $bg }} text-right" style="color: #909090">
+          <td class="{{ $bg }} text-right">
             @if($b['pos_totamt']>0)
               <b>
               {{ number_format($b['pos_totamt'],2) }}

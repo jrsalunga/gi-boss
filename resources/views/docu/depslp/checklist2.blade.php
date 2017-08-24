@@ -205,12 +205,14 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 @foreach($type['slips'] as $slip)
                 <li>
-                  <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">{{ number_format($slip->amount,2) }}
+                  <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">
       
                   @if($slip->verified)
-                    <span class="gly gly-ok" data-toogle="tooltip" title="Verified"></span>
+                    <span class="gly gly-ok pull-left" data-toogle="tooltip" title="Verified"></span>
                   @else
-                    <span class="gly gly-remove" style="color: #fff;"></span>
+                    <span class="gly gly-remove pull-left" style="color: #fff;"></span>
+
+                    {{ number_format($slip->amount,2) }}
                   @endif
                   </a>
                 </li>

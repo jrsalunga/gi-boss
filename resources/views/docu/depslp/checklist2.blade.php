@@ -206,14 +206,10 @@
                 @foreach($type['slips'] as $slip)
                 <li>
                   <a href="/depslp/{{$slip->lid()}}" target="_blank" class="text-right">
-      
-                  @if($slip->verified)
-                    <span class="gly gly-ok pull-left" data-toogle="tooltip" title="Verified"></span>
-                  @else
-                    <span class="gly gly-remove pull-left" style="color: #fff;"></span>
-
+                    @if($slip->verified)
+                      <span class="gly gly-ok pull-left" data-toogle="tooltip" title="Verified"></span>
+                    @endif
                     {{ number_format($slip->amount,2) }}
-                  @endif
                   </a>
                 </li>
                 @endforeach

@@ -117,19 +117,43 @@
       <thead>
         <tr>
           <th>Deposit Date</th>
-          <th class="text-right">POS Cash</th>
-          <th class="text-right">POS Cheque</th>
-          <th class="text-right">Total POS</th>
-          <th class="text-right">Cash&amp;Cheque</th>
           <th class="text-right">
-            <span style="cursor: help;" title="Shows only the lastest uploader of the same backup.">
+            <span style="cursor: help;" title="Declared amount of cash deposit on POS" data-toogle="tooltip">
+              POS Cash
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Declared amount of cheque deposit on POS" data-toogle="tooltip">
+              POS Cheque
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Total amount of declared deposit on POS" data-toogle="tooltip">
+              Total POS
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Combined amount of cash &amp; cheque deposit uploaded the old way" data-toogle="tooltip">
+              Cash&amp;Cheque
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Combined amount of cash deposit uploaded the new way" data-toogle="tooltip">
               Cash
             </span>
           </th>
-          <th class="text-right">Cheque</th>
-          <th class="text-right">Total Uploaded</th>
           <th class="text-right">
-            <span style="cursor: help;" title="Tells whether the actual physical backup file is in the server's file system.">
+            <span style="cursor: help;" title="Combined amount of cheque deposit uploaded the new way" data-toogle="tooltip">
+              Cheque
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Total amount of deposit slip uploaded" data-toogle="tooltip">
+              Total Uploaded
+            </span>
+          </th>
+          <th class="text-right">
+            <span style="cursor: help;" title="Tells whether the total amount declared on POS and total amount uploaded deposit slips are equal"  data-toogle="tooltip">
               Match?
             </span>
           </th>

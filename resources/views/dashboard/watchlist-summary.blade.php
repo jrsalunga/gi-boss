@@ -53,6 +53,13 @@
           </button>
         </div> <!-- end btn-grp -->
 
+        <div class="btn-group" role="group">
+          <a href="/timelog/add" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            <span class="hidden-xs hidden-sm">Add Timelog</span>
+          </a>
+        </div>
+
         <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
           <form method="GET" action="/employee/tracker/summary" accept-charset="UTF-8" id="dp-form">
           <button type="submit" class="btn btn-success btn-go" title="Go" disabled data-toggle="loader">

@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
-
+use Carbon\Carbon;
+use Validator;
 use App\Http\Controllers\Controller;
 use App\Repositories\TimelogRepository; 
 use App\Repositories\EmployeeRepository; 
@@ -11,6 +12,8 @@ use App\Repositories\Criterias\BossOldBranchesCriteria;
 use App\Repositories\BossBranchRepository as BBRepo;
 use App\Repositories\ManskeddayRepository as Manday;
 use App\Repositories\ManskeddtlRepository as Mandtl;
+use App\Repositories\BranchRepository;
+use App\Models\Employee;
 
 class TimelogController extends Controller 
 {
@@ -20,6 +23,7 @@ class TimelogController extends Controller
 	protected $bb;
 	protected $bb_id;
 	protected $mandtl;
+	protected $branch;
 
 	public function __construct(TimelogRepository $timelog, EmployeeRepository $employee, BBRepo $bbrepo, Mandtl $mandtl) {
 		
@@ -31,6 +35,8 @@ class TimelogController extends Controller
 		//$this->timelog->pushCriteria(new BossOldBranchesCriteria($this->getBossBranchid()));
 
 		$this->mandtl = $mandtl;
+
+		$this->branch = new BranchRepository;
 	}
 
 	private function getBossBranchid() {
@@ -178,6 +184,88 @@ class TimelogController extends Controller
 			return redirect($url)->with('alert-warning', 'Unable to ignore timelog!');
 		
 	}
+
+
+
+	public function makeAddView(Request $request) {
+		$branches = $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
+		return view('timelog.add')->with('branches', $branches);	
+	}
+
+
+	public function manualPost(Request $request) {
+		//return $request->all();
+  	$rules = array(
+			'employeeid'	=> 'required|max:32|min:32',
+			'branchid'	=> 'required|max:32|min:32',
+			'date'      	=> 'required|date',
+			'time' 				=> 'required',
+		);
+
+		$messages = [
+	    'employeeid.required' => 'Employee is required.',
+	    'branchid.required' => 'Branch is required.',
+	    'employeeid.max' => 'Employee is required..',
+	    'employeeid.min' => 'Employee is required...',
+	    'time.date_format' => 'The time does not match the format HH:MM. (e.g 02:30, 17:00)',
+		];
+		
+		$validator = Validator::make($request->all(), $rules, $messages);
+
+		if ($validator->fails())
+			return redirect('/timelog/add')->withErrors($validator);
+		
+		try {
+			$datetime = Carbon::parse($request->input('date').' '.$request->input('time'));
+		} catch (\Exception $e) {
+			return redirect('/timelog/add')->withErrors(
+				['message'=>'The time does not match the format 12 Hrs (01:30 PM) or 24 Hrs (13:30)']);
+		}
+
+		$employee = Employee::where('id', $request->input('employeeid'))
+												//->where('branchid', $request->user()->branchid)
+												->first();
+
+		if(is_null($employee)) {
+			return redirect('/timelog/add')->withErrors(
+				['message' => 'Employee not found on this branch.']);
+		}
+
+		try {
+			$branch = $this->branch->find($request->input('branchid'));
+		} catch (\Exception $e) {
+			return redirect('/timelog/add')->withErrors(
+				['message'=>$e->getMessage()]);
+		}
+
+
+		$attributes = [
+			'employeeid' 	=> $employee->id,
+			'branchid' 		=> $branch->id,
+			'datetime' 		=> $datetime->format('Y-m-d H:i').':'.c()->format('s'),
+			'txncode' 		=> $request->input('txncode'),
+			'entrytype' 	=> 2,
+			'terminalid'	=> clientIP()
+		];
+
+		$timelog = $this->timelog->create($attributes);
+
+				
+		if (is_null($timelog)) {
+			return redirect('/'.brcode().'/timelog/add')->withErrors(
+				['message' => 'Unable to save timelog.']);
+		} else {
+
+			if (app()->environment()==='production')
+				event(new TimelogEvent($timelog, $employee));
+			
+			$uri = is_null(request()->input('ref')) ? '/timelog/add':'/'.brcode().'/timesheet';
+			return redirect($uri)->with('alert-success', $employee->lastname.', '. $employee->lastname.' timelog saved!');
+		}
+
+		return $timelog;
+  }
+
 
 
 

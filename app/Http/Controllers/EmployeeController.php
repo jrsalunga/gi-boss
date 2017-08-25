@@ -9,7 +9,7 @@ use App\Repositories\DateRange;
 use App\Repositories\EmployeeRepository as EmployeeRepo;
 use App\Repositories\TimelogRepository as TimelogRepo;
 use App\Repositories\Criterias\ActiveEmployeeCriteria as ActiveEmployee;
-
+use App\Models\Employee;
 
 
 class EmployeeController extends Controller 
@@ -146,6 +146,27 @@ class EmployeeController extends Controller
 							->with('date', $date)
 							->with('days', $days)
 							->with('datas', $datas);
+	}
+
+
+	public function search(Request $request, $param1=null) {
+
+    $limit = empty($request->input('maxRows')) ? 10:$request->input('maxRows'); 
+    $res = Employee::where('empstatus', '<>', '4')
+    				->where('empstatus', '<>', '5')
+    				->where(function ($query) use ($request) {
+              $query->orWhere('code', 'like', '%'.$request->input('q').'%')
+          			->orWhere('lastname', 'like',  '%'.$request->input('q').'%')
+		            ->orWhere('firstname', 'like',  '%'.$request->input('q').'%')
+		            ->orWhere('middlename',  'like', '%'.$request->input('q').'%')
+		            ->orWhere('rfid',  'like', '%'.$request->input('q').'%');
+            })
+            ->orderBy('lastname')
+            ->orderBy('firstname')
+            ->take($limit)
+            ->get();
+
+		return $res;
 	}
 
 

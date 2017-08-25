@@ -24,8 +24,8 @@ class Timelog extends Event implements ShouldBroadcast
   {
     $this->timelog = $timelog;
     $this->employee = $employee;
-    $this->brcode = 'GHO';
-    $this->user = session('user.fullname');
+    $this->brcode = $this->timelog->branch->code;
+    $this->name = session('user.fullname');
   }
 
   /**
@@ -48,7 +48,7 @@ class Timelog extends Event implements ShouldBroadcast
 
     $message = '('.$this->employee->position->descriptor.') '; 
     $message .= $this->timelog->entrytype=='1' ? '':'manually'; 
-    $message .= ' '.$this->timelog->getTxnCode().' @ '. $this->brcode .' by '. $this->user; 
+    $message .= ' '.$this->timelog->getTxnCode().' @ '. $this->brcode .' by '. $this->name; 
 
     return [
       'title'=>$title, 

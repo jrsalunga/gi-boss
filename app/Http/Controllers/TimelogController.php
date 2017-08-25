@@ -14,6 +14,7 @@ use App\Repositories\ManskeddayRepository as Manday;
 use App\Repositories\ManskeddtlRepository as Mandtl;
 use App\Repositories\BranchRepository;
 use App\Models\Employee;
+use App\Events\Timelog\Timelog as TimelogEvent;
 
 class TimelogController extends Controller 
 {

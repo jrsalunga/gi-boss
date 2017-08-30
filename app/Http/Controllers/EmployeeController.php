@@ -139,13 +139,19 @@ class EmployeeController extends Controller
 			$datas[$key]['total_days'] = $total;
 		}
 
-		
-		//return $last;
-		//return view('master');
-		return view('dashboard.watchlist-summary')
+		#return $datas; 
+		if ($request->has('print') && $request->input('print')=='true') {
+			return view('dashboard.watchlist-summary-print')
 							->with('date', $date)
 							->with('days', $days)
 							->with('datas', $datas);
+
+		} else {
+			return view('dashboard.watchlist-summary')
+							->with('date', $date)
+							->with('days', $days)
+							->with('datas', $datas);
+		}
 	}
 
 

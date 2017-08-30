@@ -60,6 +60,9 @@
           </a>
         </div>
 
+
+
+
         <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
           <form method="GET" action="/employee/tracker/summary" accept-charset="UTF-8" id="dp-form">
           <button type="submit" class="btn btn-success btn-go" title="Go" disabled data-toggle="loader">
@@ -72,7 +75,6 @@
         </div>
 
         <div class="btn-group pull-right clearfix" role="group">
-        	
           <a data-toggle="loader" href="/employee/tracker/summary?date={{ $first->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $first->copy()->subDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
@@ -83,8 +85,13 @@
           <a data-toggle="loader" href="/employee/tracker/summary?date={{ $last->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $last->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
-         
-        
+        </div>
+
+        <div class="btn-group pull-right" role="group" style="margin-right: 10px;">
+          <a href="{{ request()->fullUrl() }}&print=true" class="btn btn-default" target="_blank">
+            <span class="glyphicon glyphicon-print"></span>
+            <span class="hidden-xs hidden-sm">Print</span>
+          </a>
         </div>
         
 

@@ -105,7 +105,6 @@ Route::get('mansked/{param1?}', ['uses'=>'ManskedhdrController@getRoute']);
 Route::group(['prefix'=>'api'], function(){
 
 Route::get('search/employee', ['uses'=>'EmployeeController@search']);
-
 Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 
 });/******* end prefix:api ********/

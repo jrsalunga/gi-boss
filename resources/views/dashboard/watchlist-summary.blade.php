@@ -88,7 +88,7 @@
         </div>
 
         <div class="btn-group pull-right" role="group" style="margin-right: 10px;">
-          <a href="{{ request()->fullUrl() }}&print=true" class="btn btn-default" target="_blank">
+          <a href="{{ request()->fullUrl() }}?&print=true" class="btn btn-default" target="_blank">
             <span class="glyphicon glyphicon-print"></span>
             <span class="hidden-xs hidden-sm">Print</span>
           </a>

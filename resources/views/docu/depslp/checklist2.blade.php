@@ -136,11 +136,13 @@
               Total POS
             </span>
           </th>
+          @if(c('2017-09-01')->gt($date))
           <th class="text-right">
             <span style="cursor: help;" title="Combined amount of cash &amp; cheque deposit uploaded the old way" data-toogle="tooltip">
               Cash&amp;Cheque
             </span>
           </th>
+          @endif
           <th class="text-right">
             <span style="cursor: help;" title="Combined amount of cash deposit uploaded the new way" data-toogle="tooltip">
               Cash
@@ -198,6 +200,7 @@
           </td>
 
           @foreach($b['depo_type'] as $k => $type)
+            @if(c('2017-09-01')->gt($date) || $k=='1'|| $k=='2')
             <td class="{{ $bg }} text-right" style="color: #909090">
             @if(!$type['slips'])
               
@@ -222,6 +225,7 @@
               </div>
             @endif
             </td>
+            @endif
           @endforeach
           <td class="{{ $bg }} text-right">
             @if($b['depo_totcnt']>0)

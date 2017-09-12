@@ -48,7 +48,7 @@ class DailySales extends BaseModel {
 
 
   public function getOpex() {
-    if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2017-01-01')))
+    if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
       return 0;
     else
       return $this->purchcost - $this->cos;

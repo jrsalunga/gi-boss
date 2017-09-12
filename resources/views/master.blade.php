@@ -125,6 +125,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
     
     channel.cashier.bind('auth', notify);
     channel.cashier.bind('App\\Events\\UserLoggedIn', notify);
+    channel.cashier.bind('App\\Events\\GoogleUserLoggedIn', notify);
     channel.cashier.bind('App\\Events\\Notifier', notify);
     channel.backup.bind('App\\Events\\Backup\\ProcessSuccess', notify);
     channel.upload.bind('App\\Events\\Upload\\Depslp', notify);

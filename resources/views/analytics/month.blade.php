@@ -286,11 +286,9 @@
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_cospct() }}">
                   @if($d->dailysale->get_cospct()=='0.00')
-                      {{ $d->dailysale->get_cospct() }}
-                  @else
-                    <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale['cos'], 2) }}" href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
-                      {{ $d->dailysale->get_cospct() }}
-                    </a>
+                      -
+                  @else                    
+                    {{ $d->dailysale->get_cospct() }}
                   @endif
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_opexpct() }}">

@@ -201,14 +201,15 @@
               <tr>
                   <th>Month</th>
                   <th class="text-right">Sales</th>
-                  <th class="text-right">Food Cost %</th>
-                  <th class="text-right">OpEx %</th>
-                  <th class="text-right">Purchased %</th>
+                  <th class="text-right">FoodCost</th>
+                  <th class="text-right">OpEx</th>
+                  <th class="text-right">Drnks</th>
+                  <th class="text-right">Purchased</th>
                   <th class="text-right">Customers</th>
-                  <th class="text-right">Head Spend</th>
-                  <th class="text-right">Trans</th>
-                  <th class="text-right">Sales/Receipt</th>
-                  <th class="text-right">Emp Count</th>
+                  <th class="text-right">HeadSpend</th>
+                  <th class="text-right">Txn</th>
+                  <th class="text-right">Sales/Rcpt</th>
+                  <th class="text-right">Emp</th>
                   <th class="text-right">Sales/Emp</th>
                   <!--
                   <th class="text-right">
@@ -219,8 +220,8 @@
                   </th>
                   <th class="text-right">Tips</th>
                   -->
-                  <th class="text-right">Mancost %</th>
-                  <th class="text-right">Tips %</th>
+                  <th class="text-right">Mancost</th>
+                  <th class="text-right">Tips</th>
               </tr>
             </thead>
             <tbody>
@@ -291,6 +292,7 @@
                     {{ $d->dailysale->get_cospct() }}
                   @endif
                 </td>
+
                 <td class="text-right" data-sort="{{ $d->dailysale->get_opexpct() }}">
                   @if($d->dailysale->get_opexpct()=='0.00')
                       {{ $d->dailysale->get_opexpct() }}
@@ -298,6 +300,13 @@
                     <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale->getOpex(),2) }}" href="/component/purchases?table=expscat&item=Operations+and+Administration&itemid=8a1c2ff95cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
                       {{ $d->dailysale->get_opexpct() }}
                     </a>
+                  @endif
+                </td>
+                <td class="text-right" data-sort="{{ $d->dailysale->get_beerpurchpct() }}">
+                  @if($d->dailysale->get_beerpurchpct()=='0.00')
+                      -
+                  @else                    
+                    {{ $d->dailysale->get_beerpurchpct() }}
                   @endif
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_purchcostpct() }}">
@@ -404,6 +413,7 @@
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
@@ -473,6 +483,9 @@
                       @endif
                     </small></em>
                   </div>
+                </td>
+                <td>
+                  
                 </td>
                 <td class="text-right">
                   <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>

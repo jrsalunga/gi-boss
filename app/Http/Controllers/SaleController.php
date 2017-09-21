@@ -170,12 +170,13 @@ class SaleController extends Controller {
 
     $backups = [];
     $locator = new Locator('backup');
-
+    /* remove 2017-09-21 boss dont see no backups
     foreach ($dr->dateInterval() as $key => $date) {
       $path = strtoupper($brcode).DS.$date->format('Y').DS.$date->format('m').DS.'GC'.$date->format('mdy').'.ZIP';
-      if (!$locator->exists($path) && c(now())->gt($date))
+      if (!$locator->exists($path) && c(now())->gt($date) && c('2017-01-01')->lt($date))
         array_push($backups, $date);
     }
+    */
     return $backups;
   }
 

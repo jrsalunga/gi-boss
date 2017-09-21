@@ -59,6 +59,16 @@ class DailySales extends BaseModel {
       return $this->purchcost - ($this->cos + $this->opex);
   }
 
+  public function get_beerpurchpct($format=true) {
+    if ($this->sales>0) {
+      if ($format)
+        return number_format(($this->getBeerPurch()/$this->sales)*100, 2);
+      else
+        return ($this->getBeerPurch()/$this->sales)*100;
+    }
+    return 0;
+  }
+
   public function getOpex() {
     if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
       return 0;

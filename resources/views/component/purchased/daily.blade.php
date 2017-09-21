@@ -346,14 +346,17 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totcomp = 0; ?>
                               @foreach($components as $component)
                                 <tr>
                                   <td>{{ $component->component }}</td>
                                   <td class="text-right">{{ $component->tran_cnt }}</td>
                                   <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totcomp+=$component->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcomp,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <table id="component-data" style="display:none;">
@@ -401,14 +404,17 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totcat = 0; ?>
                               @foreach($compcats as $compcat)
                                 <tr>
                                   <td>{{ $compcat->compcat }}</td>
                                   <td>{{ $compcat->expensecode }}</td>
                                   <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totcat+=$compcat->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcat,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <span class="label label-info show toggle">show more</span>
@@ -458,6 +464,7 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totexp=0; ?>
                               @foreach($expenses as $expense)
                                 <tr>
                                   <td>{{ $expense->expensecode }}</td>
@@ -473,8 +480,10 @@
                                   </td>
                                   <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totexp+=$expense->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totexp,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <span class="label label-info show toggle">show more</span>
@@ -523,6 +532,7 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totexpc=0; ?>
                               @foreach($expscats as $expscat)
                                 <tr>
                                   <td>
@@ -537,8 +547,10 @@
                                   <td>{{ $expscat->expscat }}</td>
                                   <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totexpc+=$expscat->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totexpc,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <!--
@@ -589,6 +601,7 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totpay=0; ?>
                               @foreach($payments as $payment)
                                 <tr>
                                   <td>{{ $payment->terms }}</td>
@@ -603,8 +616,10 @@
                                   </td>
                                   <td class="text-right">{{ number_format($payment->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totpay+=$payment->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totpay,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <!--
@@ -663,14 +678,17 @@
                               </tr>
                             </thead>
                             <tbody>
+                              <?php $totsup=0; ?>
                               @foreach($suppliers as $supplier)
                                 <tr>
                                   <td>{{ $supplier->code }}</td>
                                   <td>{{ $supplier->descriptor }}</td>
                                   <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
                                 </tr>
+                                <?php $totsup+=$supplier->tcost; ?>
                               @endforeach
                             </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
                         <span class="label label-info show toggle">show more</span>

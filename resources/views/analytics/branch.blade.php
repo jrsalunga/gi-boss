@@ -274,11 +274,9 @@
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['cos'], 2,'.','') }}">
                 @if(number_format($d->dailysale['cos'], 2)=='0.00')
+                  -
+                @else               
                   {{ number_format($d->dailysale['cos'], 2) }}
-                @else
-                  <a target="_blank"  class="text-primary" href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$d->date->format('Y-m-d')}}&to={{$d->date->format('Y-m-d')}}">
-                    {{ number_format($d->dailysale['cos'], 2) }}
-                  </a>
                 @endif
               </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
@@ -385,9 +383,9 @@
               </td>
               <td class="text-right">
                 <strong>
-                  <a id="f-tot-mancost" class="text-primary" target="_blank" href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" >
-                    {{ number_format($tot_cos, 2) }}
-                  </a>
+                  
+                  {{ number_format($tot_cos, 2) }}
+                 
                 </strong>
                 <div>
                 <em><small title="{{$tot_cos}}/{{$div_cos}}">

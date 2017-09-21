@@ -35,6 +35,12 @@ class DailySales extends BaseModel {
     'slsmtd_totgrs' => 'float',
     'depo_check' => 'float',
     'depo_cash' => 'float',
+    'sale_csh' => 'float',
+    'sale_chg' => 'float',
+    'sale_sig' => 'float',
+    'transcost' => 'float',
+    'transcos' => 'float',
+    'opex' => 'float',
   ];
 
 
@@ -46,20 +52,26 @@ class DailySales extends BaseModel {
     return Carbon::parse($value.' 00:00:00');
   }
 
+  public function getBeerPurch() {
+    if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
+      return 0;
+    else
+      return $this->purchcost - ($this->cos + $this->opex);
+  }
 
   public function getOpex() {
     if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
       return 0;
     else
-      return $this->purchcost - $this->cos;
+      return $this->opex;
   }
 
   public function get_opexpct($format=true) {
     if ($this->sales>0) {
       if ($format)
-        return number_format(($this->getOpex()/$this->sales)*100, 2);
+        return number_format(($this->opex/$this->sales)*100, 2);
       else
-        return ($this->getOpex()/$this->sales)*100;
+        return ($this->opex/$this->sales)*100;
     }
     return 0;
   }

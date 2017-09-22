@@ -203,6 +203,9 @@
                   <th class="text-right">Sales</th>
                   <th class="text-right">FoodCost</th>
                   <th class="text-right">OpEx</th>
+                  @if(is_me())
+                    <th class="text-right">Drinks</th>
+                  @endif
                   <th class="text-right">Purchased</th>
                   <th class="text-right">Customers</th>
                   <th class="text-right">HeadSpend</th>
@@ -239,6 +242,7 @@
                 $tot_opex = 0;
                 $tot_receipt = 0;
                 $tot_trans = 0;
+                $tot_drinks = 0;
 
                 $div_sales = 0;
                 $div_purchcost = 0;
@@ -251,6 +255,7 @@
                 $div_opex = 0;
                 $div_receipt = 0;
                 $div_trans = 0;
+                $div_drinks = 0;
               ?>
               @foreach($dailysales as $d)
               <?php
@@ -263,6 +268,7 @@
                 $div_cos+=($d->dailysale['cos']!=0)?1:0;
                 $div_opex+=($d->opex!=0)?1:0;
                 $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
+                $div_drinks+=(!is_null($d->dailysale)  && $d->dailysale->getBeerPurch()!=0)?1:0; 
                 $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
 
                 $fr = $d->date->copy()->firstOfMonth();
@@ -287,19 +293,32 @@
                 <td class="text-right" data-sort="{{ $d->dailysale->get_cospct() }}">
                   @if($d->dailysale->get_cospct()=='0.00')
                       -
-                  @else                    
+                  @else      
+                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale->cos,2) }}">
                     {{ $d->dailysale->get_cospct() }}
+                    </span>              
                   @endif
-                </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_opexpct() }}">
                   @if($d->dailysale->get_opexpct()=='0.00')
-                      {{ $d->dailysale->get_opexpct() }}
+                      -
                   @else
                     <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale->getOpex(),2) }}" href="/component/purchases?table=expscat&item=Operations+and+Administration&itemid=8a1c2ff95cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
                       {{ $d->dailysale->get_opexpct() }}
                     </a>
                   @endif
                 </td>
+                </td>
+                @if(is_me())
+                <td class="text-right" data-sort="{{ $d->dailysale->get_cospct() }}">
+                  @if($d->dailysale->get_beerpurchpct()=='0.00')
+                      -
+                  @else               
+                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale->getBeerPurch(),2) }}">
+                      {{ $d->dailysale->get_beerpurchpct() }}
+                    </span>     
+                  @endif
+                </td>
+                @endif
                 <td class="text-right" data-sort="{{ $d->dailysale->get_purchcostpct() }}">
                   @if($d->dailysale->get_purchcostpct()=='0.00')
                       {{ $d->dailysale->get_purchcostpct() }}
@@ -395,9 +414,11 @@
                   $tot_opex       += $d->dailysale->getOpex();
                   $tot_trans      += $d->dailysale['trans_cnt'];
                   $tot_receipt    += $d->dailysale->get_receipt_ave();
+                  $tot_drinks     += $d->dailysale->getBeerPurch();
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
@@ -474,6 +495,25 @@
                     </small></em>
                   </div>
                 </td>
+                @if(is_me())
+                <td class="text-right">
+                  <strong>{{ number_format($tot_drinks, 2) }}</strong>
+                  <div>
+                    <em><small title="{{$tot_drinks}}/{{$div_drinks}}">
+                      {{ $div_drinks!=0?number_format($tot_drinks/$div_drinks,2):0 }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_drinks}}/{{$tot_sales}})*100">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_drinks/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                @endif
                 <td class="text-right">
                   <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
                   <div>

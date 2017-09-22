@@ -210,6 +210,13 @@ if (!function_exists('rand_color')) {
 	}
 }
 
+if (!function_exists('is_me')) {
+	function is_me($id=NULL) {
+		$id = is_null($id) ? session('user.id') : $id;
+    return '41F0FB56DFA811E69815D19988DDBE1E'==$id ? true : false;
+	}
+}
+
 if (!function_exists('dayDesc')) {
   function dayDesc($x=1, $short=false) {
       

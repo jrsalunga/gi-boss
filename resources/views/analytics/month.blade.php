@@ -277,7 +277,7 @@
               <tr>
                 <td data-sort="{{$d->date->format('Y-m-d')}}">
                   <a href="/status/branch?branchid={{$branch->lid()}}&fr={{$d->date->firstOfMonth()->format('Y-m-d')}}&to={{$d->date->lastOfMonth()->format('Y-m-d')}}">
-                  {{ $d->date->format('M_Y') }}
+                  {{ $d->date->format('M Y') }}
                   </a>
                 </td>
                 @if(!is_null($d->dailysale))
@@ -454,22 +454,30 @@
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong id="f-tot-sales">{{ number_format($tot_sales,2) }}</strong>
+                  <strong id="f-tot-sales">
+                    <span data-toggle="tooltip"  title="{{ number_format($tot_sales,2) }}">
+                      {{ nice_format($tot_sales) }}
+                    </span>
+                  </strong>
                   <div>
-                  <em><small title="{{$tot_sales}}/{{$div_sales}}">
-                    {{ $div_sales!=0?number_format($tot_sales/$div_sales,2):0 }}
+                  <em><small data-toggle="tooltip" title="{{$tot_sales}}/{{$div_sales}}={{ $div_sales!=0?number_format($tot_sales/$div_sales,2):0 }}">
+                    {{ $div_sales!=0?nice_format($tot_sales/$div_sales):'-' }}
                   </small></em>
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong id="f-tot-mancost">{{ number_format($tot_cos, 2) }}</strong>
+                  <strong id="f-tot-mancost">
+                    <span data-toggle="tooltip" title="{{ number_format($tot_cos,2) }}">
+                      {{ nice_format($tot_cos) }}
+                    </span>
+                  </strong>
                   <div>
-                    <em><small title="{{$tot_cos}}/{{$div_cos}}">
-                      {{ $div_cos!=0?number_format($tot_cos/$div_cos,2):0 }}
+                    <em><small title="{{$tot_cos}}/{{$div_cos}}={{ $div_cos!=0?number_format($tot_cos/$div_cos,2):0 }}" data-toggle="tooltip">
+                      {{ $div_cos!=0?nice_format($tot_cos/$div_cos):'-' }}
                     </small></em>
                   </div>
                   <div>
-                    <em><small title="({{$tot_cos}}/{{$tot_sales}})*100">
+                    <em><small title="({{$tot_cos}}/{{$tot_sales}})*100" data-toggle="tooltip">
                       @if($tot_sales!='0')
                       {{ number_format(($tot_cos/$tot_sales)*100,2) }}%
                       @else
@@ -479,14 +487,16 @@
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong>{{ number_format($tot_opex, 2) }}</strong>
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_opex, 2) }}">
+                    {{ nice_format($tot_opex) }}
+                  </strong>
                   <div>
-                    <em><small title="{{$tot_opex}}/{{$div_opex}}">
-                      {{ $div_opex!=0?number_format($tot_opex/$div_opex,2):0 }}
+                    <em><small title="{{$tot_opex}}/{{$div_opex}}={{ $div_opex!=0?number_format($tot_opex/$div_opex,2):0 }}" data-toggle="tooltip">
+                      {{ $div_opex!=0?nice_format($tot_opex/$div_opex):'-' }}
                     </small></em>
                   </div>
                   <div>
-                    <em><small title="({{$tot_opex}}/{{$tot_sales}})*100">
+                    <em><small title="({{$tot_opex}}/{{$tot_sales}})*100" data-toggle="tooltip">
                       @if($tot_sales!='0')
                       {{ number_format(($tot_opex/$tot_sales)*100,2) }}%
                       @else
@@ -497,14 +507,16 @@
                 </td>
                 @if(is_me())
                 <td class="text-right">
-                  <strong>{{ number_format($tot_drinks, 2) }}</strong>
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_drinks, 2) }}">
+                    {{ nice_format($tot_drinks) }}
+                  </strong>
                   <div>
-                    <em><small title="{{$tot_drinks}}/{{$div_drinks}}">
-                      {{ $div_drinks!=0?number_format($tot_drinks/$div_drinks,2):0 }}
+                    <em><small title="{{$tot_drinks}}/{{$div_drinks}}={{ $div_drinks!=0?number_format($tot_drinks/$div_drinks,2):0 }}" data-toggle="tooltip">
+                      {{ $div_drinks!=0?nice_format($tot_drinks/$div_drinks):'-' }}
                     </small></em>
                   </div>
                   <div>
-                    <em><small title="({{$tot_drinks}}/{{$tot_sales}})*100">
+                    <em><small title="({{$tot_drinks}}/{{$tot_sales}})*100" data-toggle="tooltip">
                       @if($tot_sales!='0')
                       {{ number_format(($tot_drinks/$tot_sales)*100,2) }}%
                       @else
@@ -515,14 +527,16 @@
                 </td>
                 @endif
                 <td class="text-right">
-                  <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
+                  <strong id="f-tot-purch" data-toggle="tooltip" title="{{ number_format($tot_purchcost,2) }}">
+                    {{ nice_format($tot_purchcost) }}
+                  </strong>
                   <div>
-                    <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
-                      {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
+                    <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}={{$div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}" data-toggle="tooltip">
+                      {{ $div_purchcost!=0?nice_format($tot_purchcost/$div_purchcost):'-' }}
                     </small></em>
                   </div>
                   <div>
-                    <em><small title="({{$tot_purchcost}}/{{$tot_sales}})*100">
+                    <em><small title="({{$tot_purchcost}}/{{$tot_sales}})*100" data-toggle="tooltip">
                       @if($tot_sales!='0')
                       {{ number_format(($tot_purchcost/$tot_sales)*100,2) }}%
                       @else
@@ -532,83 +546,66 @@
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong>{{ number_format($tot_custcount, 0) }}</strong>
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_custcount, 0) }}">
+                    {{ nice_format($tot_custcount) }}
+                  </strong>
                   <div>
-                  <em><small title="{{$tot_custcount}}/{{$div_custcount}}">
-                    {{ $div_custcount!=0?number_format($tot_custcount/$div_custcount,2):0 }}
+                  <em><small title="{{$tot_custcount}}/{{$div_custcount}}={{ $div_custcount!=0?number_format($tot_custcount/$div_custcount,2):0 }}" data-toggle="tooltip">
+                    {{ $div_custcount!=0?nice_format($tot_custcount/$div_custcount):'-' }}
                   </small></em>
                   </div>
                 </td>
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
-                  <em><small title="{{$tot_headspend}}/{{$div_headspend}}">
-                    {{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}
+                  <em><small title="{{$tot_headspend}}/{{$div_headspend}}={{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}" data-toggle="tooltip">
+                    {{ $div_headspend!=0?nice_format($tot_headspend/$div_headspend):0 }}
                   </small></em>
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong>{{ number_format($tot_trans, 0) }}</strong>
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_trans, 0) }}">
+                    {{ nice_format($tot_trans) }}
+                  </strong>
                   <div>
-                  <em><small title="{{$tot_trans}}/{{$div_trans}}">
-                    {{ $div_trans!=0?number_format($tot_trans/$div_trans,2):0 }}
-                  </small></em>
-                  </div>
-                </td>
-                <td class="text-right">
-                  <strong>&nbsp;</strong>
-                  <div>
-                  <em><small title="{{$tot_receipt}}/{{$div_receipt}}">
-                    {{ $div_receipt!=0?number_format($tot_receipt/$div_receipt,2):0 }}
-                  </small></em>
-                  </div>
-                </td>
-                <td class="text-right">
-                  <strong>{{ number_format($tot_empcount,0) }}</strong>
-                  <div>
-                  <em><small title="{{$tot_empcount}}/{{$div_empcount}}">
-                    {{ $div_empcount!=0?number_format($tot_empcount/$div_empcount,2):0 }}
+                  <em><small title="{{$tot_trans}}/{{$div_trans}}={{ $div_trans!=0?number_format($tot_trans/$div_trans,2):0 }}" data-toggle="tooltip">
+                    {{ $div_trans!=0?nice_format($tot_trans/$div_trans):'-' }}
                   </small></em>
                   </div>
                 </td>
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
-                  <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}" >
-                    @if($tot_empcount!='0')
-                      {{ number_format($tot_sales/$tot_empcount,2) }}
-                      <!--
-                      {{ number_format($tot_sales-($tot_purchcost+$tot_mancost),2) }}
-                      -->
-                    @else
-                      0
-                    @endif
+                  <em><small title="{{$tot_receipt}}/{{$div_receipt}}={{ $div_receipt!=0?number_format($tot_receipt/$div_receipt,2):0 }}" data-toggle="tooltip">
+                    {{ $div_receipt!=0?nice_format($tot_receipt/$div_receipt):'-' }}
                   </small></em>
                   </div>
                 </td>
-                <!--
                 <td class="text-right">
-                  <strong id="f-tot-mancost">{{ number_format($tot_mancost,2) }}</strong>
+                  <strong title="{{ number_format($tot_empcount,0) }}" data-toggle="tooltip">
+                    {{ nice_format($tot_empcount) }}
+                  </strong>
                   <div>
-                  <em><small title="{{$tot_mancost}}/{{$div_mancost}}">
-                    @if($div_mancost!='0')
-                    {{ number_format($tot_mancost/$div_mancost,2) }}
-                     @else
-                      0
-                    @endif
+                  <em><small title="{{$tot_empcount}}/{{$div_empcount}}={{ $div_empcount!=0?number_format($tot_empcount/$div_empcount,2):0 }}" data-toggle="tooltip">
+                    {{ $div_empcount!=0?nice_format($tot_empcount/$div_empcount):'-' }}
                   </small></em>
                   </div>
                 </td>
-                -->
                 <td class="text-right">
-                  <strong>{{ number_format($tot_mancost,2) }}</strong>
+                  <strong>&nbsp;</strong>
                   <div>
-                  <em><small title="{{$tot_mancost}}/{{$div_mancost}}">
-                    @if($div_mancost!='0')
-                    {{ number_format($tot_mancost/$div_mancost,2) }}
-                     @else
-                      0
-                    @endif
+                  <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}={{ $tot_empcount!='0'?number_format($tot_sales/$tot_empcount,2):'-' }}" data-toggle="tooltip">
+                    {{ $tot_empcount!='0'?nice_format($tot_sales/$tot_empcount):'-' }}
+                    </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <strong title="{{ number_format($tot_mancost,2) }}" data-toggle="tooltip">
+                    {{ nice_format($tot_mancost) }}
+                  </strong>
+                  <div>
+                  <em><small title="{{$tot_mancost}}/{{$div_mancost}}={{ $div_mancost!=0?nice_format($tot_mancost/$div_mancost):0 }}">
+                    {{ $div_mancost!=0?nice_format($tot_mancost/$div_mancost):'-' }}
                   </small></em>
                   </div>
                   <div>
@@ -621,20 +618,13 @@
                     </small></em>
                   </div>
                 </td>
-                <!--
                 <td class="text-right">
-                  <strong>{{ number_format($tot_tips,2) }}</strong>
+                  <strong title="{{ number_format($tot_tips,2) }}" data-toggle="tooltip">
+                    {{ nice_format($tot_tips) }}
+                  </strong>
                   <div>
-                  <em><small title="{{$tot_tips}}/{{$div_tips}}">
-                    {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}</small></em>
-                  </div>
-                </td>
-                -->
-                <td class="text-right">
-                  <strong>{{ number_format($tot_tips,2) }}</strong>
-                  <div>
-                    <em><small title="{{$tot_tips}}/{{$div_tips}}">
-                      {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}
+                    <em><small title="{{$tot_tips}}/{{$div_tips}}={{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}">
+                      {{ $div_tips!=0?nice_format($tot_tips/$div_tips):'-' }}
                     </small></em>
                   </div>
                   <div>

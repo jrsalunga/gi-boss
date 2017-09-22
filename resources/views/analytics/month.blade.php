@@ -277,7 +277,7 @@
               <tr>
                 <td data-sort="{{$d->date->format('Y-m-d')}}">
                   <a href="/status/branch?branchid={{$branch->lid()}}&fr={{$d->date->firstOfMonth()->format('Y-m-d')}}&to={{$d->date->lastOfMonth()->format('Y-m-d')}}">
-                  {{ $d->date->format('M Y') }}
+                  {{ $d->date->format('M-Y') }}
                   </a>
                 </td>
                 @if(!is_null($d->dailysale))

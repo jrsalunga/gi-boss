@@ -158,7 +158,7 @@
 
     @include('_partials.alerts')
 
-
+    @if(count($transfers)>0)
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-pills" role="tablist">
@@ -196,7 +196,7 @@
         $tot_neg_qty = 0;
       ?>
       <div class="col-md-12">
-        @if(count($transfers)>0)
+        
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
             <tr>
@@ -322,13 +322,13 @@
             </tr>
           </tfoot>
         </table>
-        @else
-          <!-- no data  -->
-        @endif
+        
 
       </div>
-    <div>
-
+    </div>
+    @else
+      <!-- no data  -->
+    @endif
   <!-- Nav tabs -->
 <div>
   

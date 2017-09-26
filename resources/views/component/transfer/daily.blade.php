@@ -197,7 +197,7 @@
       
       
       <div class="col-md-12">
-        
+        <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
             <tr>
@@ -221,14 +221,14 @@
               $cancel = $transfer->tcost>0 ? false:'text-decoration: line-through;';
             ?>
               <tr class="{{ !$cancel?'':'text-muted' }}">
-                <td>{{ $transfer->date->format('Y-m-d') }}</td>
+                <td style="{{ $cancel }}">{{ $transfer->date->format('Y-m-d') }}</td>
                 <td style="{{ $cancel }}">{{ $transfer->component }}</td>
-                <td class="text-right">{{ number_format($transfer->qty,2)+0 }}</td>
+                <td class="text-right text-muted">{{ number_format($transfer->qty,2)+0 }}</td>
                 <td><small class="text-muted">{{ strtolower($transfer->uom) }}@if($transfer->qty>1 && substr(strtolower($transfer->uom), -1)!='s')s
                         @endif</small></td>
-                <td class="text-right">{{ number_format($transfer->ucost,2) }}</td>
+                <td class="text-right text-muted">{{ number_format($transfer->ucost,2) }}</td>
                 <td class="text-right">{{ number_format($transfer->tcost,2) }}</td>
-                <td class="text-center"><span 
+                <td class="text-center"><span  data-toggle="tooltip"
                       @if(strtolower($transfer->terms)=='c')
                         class="label label-success" title="Cash"
                       @elseif(strtolower($transfer->terms)=='k')
@@ -239,20 +239,25 @@
                       
                       style="cursor: help;"><small>{{ $transfer->terms }}</small></span>
                 </td>
-                <td><small class="text-muted">{{ $transfer->supplier }}</small></td>
-                <td>
-                  <small class="text-muted">
+                <td style="{{ $cancel }}">
+                  <small class="text-muted help" title="{{ $transfer->suppliercode }} - {{ $transfer->supplier }}" data-toggle="tooltip">
+                  {{ $transfer->supplier }}
+                  </small>
+                </td>
+                <td style="{{ $cancel }}">
                   @if(!is_null($transfer->toBranch) && is_null($transfer->toSupplier))
+                  <small class="text-muted help" title="{{ $transfer->toBranch->code }} - {{ $transfer->toBranch->descriptor }}" data-toggle="tooltip">
                     {{ $transfer->toBranch->descriptor }}
                   @endif
 
                   @if(is_null($transfer->toBranch) && !is_null($transfer->toSupplier))
+                  <small class="text-muted help" title="{{ $transfer->toSupplier->code }} - {{ $transfer->toSupplier->descriptor }}" data-toggle="tooltip">
                     {{ $transfer->toSupplier->descriptor }}
                   @endif
                   </small>
                 </td>
-                <td><small class="text-muted">{{ $transfer->compcat }}</small></td>
-                <td><small class="text-muted">{{ $transfer->expensecode }}</small></td>
+                <td style="{{ $cancel }}"><small class="text-muted help" title="{{ $transfer->compcatcode }} - {{ $transfer->compcat }}" data-toggle="tooltip">{{ $transfer->compcat }}</small></td>
+                <td style="{{ $cancel }}"><small class="text-muted help" title="{{ $transfer->expensecode }} - {{ $transfer->expense }}" data-toggle="tooltip">{{ $transfer->expensecode }}</small></td>
                 <td>
                   <span class="label 
                     @if($transfer->expscatcode=='05')
@@ -262,7 +267,7 @@
                     @else
                       label-default
                     @endif
-                     pull-right" title="{{ $transfer->expscat }}" style="cursor: help;">{{ $transfer->expscatcode }}</span>
+                     pull-right" title="{{ $transfer->expscatcode }} - {{ $transfer->expscat }}" data-toggle="tooltip" style="cursor: help;">{{ $transfer->expscatcode }}</span>
                 </td>
               </tr>
             <?php
@@ -323,8 +328,8 @@
             </tr>
           </tfoot>
         </table>
-        
-
+        </div><!-- table-responsive  -->
+  
       </div>
     </div>
     @else

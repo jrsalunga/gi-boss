@@ -53,7 +53,7 @@
               @else
               <span class="label label-info" style="margin-left: 5px;" data-toggle="loader">
                 {{ $filter->item }} 
-                <a href="/component/transfers?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" title="Remove filter">
+                <a href="/component/transfer?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" title="Remove filter">
                 <span style="color:#ccc; margin-right: 5px; border-radius: .25em;">x</span>
                 </a>
               </span>
@@ -335,20 +335,78 @@
     @else
       <!-- no data  -->
     @endif
-  <!-- Nav tabs -->
-<div>
-  
-</div>
-<div>
-  <!-- Tab panes -->
-  
-</div>
+  </div>
 
-</div>
+
+
+</div><!-- end: .container-fluid  -->
       
+<div class="modal fade" id="mdl-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mdl-formLabel">Filter Parameters</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="form-group">
+            <label>Branch:</label>
+            <div class="dropdown">
+              <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="gly gly-shop"></span>
+                @if(is_null(($branch)))
+                  <span class="br-code">Select Branch</span>
+                  <span class="br-desc"></span>
+                @else
+                  <span class="br-code">{{ $branch->code }}</span>
+                  <span class="br-desc">- {{ $branch->descriptor }}</span>
+                @endif
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu br" aria-labelledby="dLabel" style="max-height: 400px; overflow-y: scroll;">
+                @foreach($branches as $b)
+                <li>
+                  <a href="#" data-desc="{{ $b->descriptor }}" data-code="{{ $b->code }}" data-branchid="{{ $b->lid() }}">{{ $b->code }}</a>
+                </li>
+                @endforeach
+              </ul>
+            </div> <!-- .dropdown -->
+          </div>
+          
+          <div class="form-group">
+            <label>Date Range:</label>
+            <div>
+            <div class="btn-group" role="group">
+            <label class="btn btn-default" for="mdl-dp-date-fr">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            
+            <div class="btn btn-default" style="pointer-events: none;">-</div>
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
+            <label class="btn btn-default" for="mdl-dp-date-to">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Filter:</label>
+            <input type="text" id="searchfield" class="form-control searchfield" value="{{ $filter->item }}" placeholder="Search Component">
+          </div>
+            
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success pull-right mdl-btn-go" data-dismiss="modal" data-toggle="loader"><span class="gly gly-search"></span> Go </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Discard</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-
 @endsection
 
 

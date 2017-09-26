@@ -46,12 +46,12 @@ class TransferController extends Controller
     if (!is_null($branch)) {
     	$where['stocktransfer.branchid'] = $branch->id;
     	$transfers = $this->transfer
-                    ->skipCache()
+                    //->skipCache()
     								->branchByDR($branch, $this->dr)
                     ->withRelations()
     								->findWhere($where);
     }
-    
+
     return $this->setViewWithDR(view('component.transfer.daily')
                 ->with('filter', $filter)
                 ->with('branches', $this->bb)

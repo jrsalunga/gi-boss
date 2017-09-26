@@ -158,6 +158,12 @@
 
     @include('_partials.alerts')
 
+    <?php
+      $tot_transcost = 0;
+      $tot_qty = 0;
+      $tot_neg_transcost = 0;
+      $tot_neg_qty = 0;
+    ?>
     @if(count($transfers)>0)
     <div class="row">
       <div class="col-md-12">
@@ -189,12 +195,7 @@
         </ul>
       </div><!-- end: .col-md-12 -->
       
-      <?php
-        $tot_transcost = 0;
-        $tot_qty = 0;
-        $tot_neg_transcost = 0;
-        $tot_neg_qty = 0;
-      ?>
+      
       <div class="col-md-12">
         
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">

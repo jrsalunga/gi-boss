@@ -48,6 +48,7 @@ Route::get('report/comp-purch', ['uses'=>'AnalyticsController@getCompPurch']);
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);
 Route::get('component/purchases', ['uses'=>'Purchase2Controller@getDaily']);
 Route::get('component/price/comparative', ['uses'=>'Purchase2Controller@componentComparative']);
+Route::get('component/transfer', ['uses'=>'TransferController@getDaily']);
 Route::get('api/search/component', ['uses'=>'Purchase2Controller@search']);
 Route::get('api/s/product/sales', ['uses'=>'SaleController@search']);
 Route::get('api/mdl/purchases/{id}', ['uses'=>'Purchase2Controller@ajaxPurchases']);

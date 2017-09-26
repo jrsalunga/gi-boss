@@ -157,9 +157,10 @@
               @if(number_format($ds['ds']->cos,2)=='0.00')
                 {{ number_format($ds['ds']->cos,2) }}
               @else
+                <!--
                 <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+                </a>-->
                   {{ number_format($ds['ds']->cos,2) }}
-                </a>
               @endif
             </td>
             <td class="text-right">

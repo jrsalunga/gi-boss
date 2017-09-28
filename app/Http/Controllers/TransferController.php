@@ -51,9 +51,8 @@ class TransferController extends Controller
     }
 
     
-    //if (!is_null($branch)) {
-
-      if (!is_null($branch) && !$filter->isset && $this->dr->diffInDays()>100) {
+    if (!is_null($branch)) {
+      if (!$filter->isset && $this->dr->diffInDays()>100) {
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
       } else {
 
@@ -65,7 +64,7 @@ class TransferController extends Controller
                     ->findWhere($where);
 
       }
-    //}
+    }
 
     return $this->setViewWithDR(view('component.transfer.daily')
                 ->with('filter', $filter)

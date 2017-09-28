@@ -35,20 +35,13 @@ class TransferController extends Controller
     $transfers = [];
     $where = [];
 
-    $request->session()->flash('alert-warning', $this->dr->diffInDays().' '.$filter->isset);
-    //if ($this->dr->diffInDays() < 100 ) 
-
     if ($filter->isset)
       $where['stocktransfer.'.$filter->table.'id'] = $filter->id;
 
-    //return dd(!$filter->isset && $this->dr->diffInDays()<101);
-
    	if ($request->has('branchid'))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
-    else {
+    else
       $branch = null;
-      $request->session()->flash('alert-warning', 'No branch selected.');
-    }
 
     
     if (!is_null($branch)) {

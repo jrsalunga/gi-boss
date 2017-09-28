@@ -35,22 +35,37 @@ class TransferController extends Controller
     $transfers = [];
     $where = [];
 
+    $request->session()->flash('alert-warning', $this->dr->diffInDays().' '.$filter->isset);
+    //if ($this->dr->diffInDays() < 100 ) 
+
     if ($filter->isset)
       $where['stocktransfer.'.$filter->table.'id'] = $filter->id;
 
+    //return dd(!$filter->isset && $this->dr->diffInDays()<101);
+
    	if ($request->has('branchid'))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
-    else
+    else {
       $branch = null;
-    
-    if (!is_null($branch)) {
-    	$where['stocktransfer.branchid'] = $branch->id;
-    	$transfers = $this->transfer
-                    //->skipCache()
-    								->branchByDR($branch, $this->dr)
-                    ->withRelations()
-    								->findWhere($where);
+      $request->session()->flash('alert-warning', 'No branch selected.');
     }
+
+    
+    //if (!is_null($branch)) {
+
+      if (!is_null($branch) && !$filter->isset && $this->dr->diffInDays()>100) {
+        $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
+      } else {
+
+        $where['stocktransfer.branchid'] = $branch->id;
+        $transfers = $this->transfer
+                    //->skipCache()
+                    ->branchByDR($branch, $this->dr)
+                    ->withRelations()
+                    ->findWhere($where);
+
+      }
+    //}
 
     return $this->setViewWithDR(view('component.transfer.daily')
                 ->with('filter', $filter)

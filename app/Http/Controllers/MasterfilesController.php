@@ -11,7 +11,7 @@ use App\Repositories\Criterias\LimitCriteria;
 class MasterfilesController extends Controller {
 
 	protected $datatables_data;
-	protected $tables = ['branch','component'];
+	protected $tables = ['branch','component', 'company'];
 
 	public function __construct() {
 		
@@ -73,18 +73,17 @@ class MasterfilesController extends Controller {
 
 		$datas = $this->getRepositoryData($request, $table);
 
-		return view('masterfiles.'.$table, compact('datas'))->with('tables', $this->tables);
+		return view('masterfiles.branch', compact('datas'))->with('tables', $this->tables)->with('active', $table);
 	}
 
 	private function getRepositoryData(Request $request, $table) {
 
 		$repository = $this->validateToRepository($table);
 
-		$repository->orderBy('code', 'asc')
-							->orderBy('descriptor', 'asc');
+		//$repository->orderBy('code', 'asc')->orderBy('descriptor', 'asc');
 		//$repository->skipCache(true);
 
-		return $repository->paginate($this->getLimit($request));
+		return $repository->skipCache()->order()->paginate($this->getLimit($request));
 	}
 
 	private function getLimit(Request $request, $limit = 10) {

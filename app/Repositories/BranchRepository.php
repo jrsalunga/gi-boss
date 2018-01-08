@@ -10,12 +10,15 @@ use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
+use App\Traits\Repository as RepoTrait;
 
 
 class BranchRepository extends BaseRepository implements CacheableInterface
 //class BranchRepository extends BaseRepository 
 {
-  use CacheableRepository;
+  use CacheableRepository, RepoTrait;
+
+  protected $order = ['descriptor', 'code'];
 
   protected $fieldSearchable = [
     'code'=>'like',
@@ -28,6 +31,21 @@ class BranchRepository extends BaseRepository implements CacheableInterface
       parent::__construct(app());
 
 			//$this->boots();      
+  }
+
+  public function ordered($order=null, $asc='asc'){
+
+    if(!is_null($order)) {
+      if (is_array($order)) 
+        foreach ($order as $key => $field) 
+          $this->orderBy($field, $asc);
+      else 
+        $this->orderBy($field, $asc);
+    } else {
+      if (property_exists($this, 'order'))
+        $this->order($this->order);
+    }
+    return $this;
   }
 
   public function boots() {

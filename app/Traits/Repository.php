@@ -14,7 +14,7 @@ trait Repository {
   }
 
   public function order($order=null, $asc='asc'){
-    if($this->checkSkipOrder()) {
+    if(!$this->checkSkipOrder()) {
 
       if(!is_null($order)) {
         if (is_array($order)) 

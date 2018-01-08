@@ -19,6 +19,10 @@ class BossBranch extends BaseModel {
     return $this->belongsTo('App\Models\Branch', 'branchid');
   }
 
+  public function user() {
+    return $this->belongsTo('App\User', 'bossid');
+  }
+
   
   
 }

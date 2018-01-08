@@ -250,17 +250,15 @@ class BranchController extends Controller
 
 
 
-	public function getList(Request $request) {
-		/*
-		$active = $this->repository->all();	
-		$inactive = $this->repository
-										->skipCache()
-										->skipCriteria()
-										->findWhere([['closedate','<>','0000-00-00']]);	
-		*/
+	public function show(Request $request, $branchid) {
+		
+		if (!is_uuid($branchid))
+			return abort('404');
 
-		$branches = $this->repository->paginate(10);	
-		return view('branch.index')->with('branches',$branches);
+		$branch = $this->repository->find($branchid);	
+
+		$branch->load('boss.user');
+		return view('branch.index')->with('branch', $branch);
 
 
 		return [

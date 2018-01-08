@@ -27,6 +27,11 @@ class Branch extends BaseModel {
   }
 
 
+  public function boss() {
+    return $this->hasMany('App\Models\BossBranch', 'branchid');
+  }
+
+
 
 
 

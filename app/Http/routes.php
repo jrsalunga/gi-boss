@@ -77,6 +77,7 @@ Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlist
 
 
 Route::get('branch', ['uses'=>'BranchController@getList']);
+Route::get('branch/{id?}', ['uses'=>'BranchController@show']);
 
 Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);

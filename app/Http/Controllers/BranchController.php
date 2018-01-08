@@ -250,7 +250,24 @@ class BranchController extends Controller
 
 
 
+	public function getList(Request $request) {
+		/*
+		$active = $this->repository->all();	
+		$inactive = $this->repository
+										->skipCache()
+										->skipCriteria()
+										->findWhere([['closedate','<>','0000-00-00']]);	
+		*/
 
+		$branches = $this->repository->paginate(10);	
+		return view('branch.index')->with('branches',$branches);
+
+
+		return [
+			'active'=>count($active),
+			'inactive'=>count($inactive)
+		];
+	}
 
 
 

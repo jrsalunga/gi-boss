@@ -74,6 +74,10 @@ Route::get('employee/watchlist/summary', ['uses'=>'EmployeeController@getWatchli
 Route::get('employee/tracker', ['uses'=>'EmployeeController@getWatchlist']);
 Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlistSummary']);
 
+
+
+Route::get('branch', ['uses'=>'BranchController@getList']);
+
 Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);
 
@@ -113,7 +117,7 @@ Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 
 }); /******* end middeware:auth ********/
 
-
+/*
 get('branch', function () {
     return App\User::with(['bossbranch'=>function($query){
     	$query->select('bossid', 'branchid', 'id')
@@ -122,7 +126,7 @@ get('branch', function () {
     	}]);
     }])->get();
 });
-
+*/
 
 get('getweek', function () {
 

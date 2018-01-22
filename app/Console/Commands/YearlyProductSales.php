@@ -89,7 +89,7 @@ class YearlyProductSales extends Command
     }
   
     foreach ($arr as $key => $value) {
-      $this->comment($key.' '.$value['qty'].' '.$value['grsamt']);
+      $this->comment($key.','.$value['qty'].','.$value['grsamt']);
     }
   }
 

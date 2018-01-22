@@ -61,10 +61,9 @@ class YearlySales extends Command
     */
 
     foreach ($branches as $key => $branch) {
-      $text = '';
 
       //$this->comment(($key+1).' '.$branch->id);
-      $text = $text.' '.$branch->code;
+      $text = $branch->code.',';
       
       foreach ($this->dr->monthInterval() as $key => $date) {
        // $this->comment(($key+1).' '.$date->format('Y-m-d'));
@@ -81,9 +80,9 @@ class YearlySales extends Command
           ->first();
 
         if (isset($ds->sales))
-          $text = $text.' '.$ds->sales;
+          $text = $text.$ds->sales.',';
         else
-          $text = $text.' -';
+          $text = $text.',';
         //$this->comment($ds->sales);
       }
       

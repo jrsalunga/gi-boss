@@ -62,26 +62,34 @@ class YearlyProductSales extends Command
     
     */
 
-    foreach ($this->products() as $key => $p) {
-      $t = $p[0].','.$p[1].','.$p[2];
-      $product = Product::where('code', $p[0])->first();
-      if (!is_null($product)) {
-        $this->comment($product->id);
+    //$this->comment($year);
+    //DB::enableQueryLog();
+    $s = Salesmtd::whereBetween('salesmtd.orddate', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
+                    ->where('salesmtd.group', '<>', '')
+                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->select(DB::raw('salesmtd.group, group_cnt as qty, sum(salesmtd.grsamt) as grsamt, cslipno'))
+                    ->groupBy('salesmtd.branch_id')
+                    ->groupBy('salesmtd.group')
+                    ->groupBy('salesmtd.cslipno')
+                    ->orderBy(DB::raw('salesmtd.group'), 'asc')
+                    ->get();
 
-        $s = Salesmtd::select(DB::raw('sum(netamt) as netamt, sum(qty) as qty'))
-                      ->where('product_id', $product->id)
-                      ->where(DB::raw('YEAR(orddate)', $year))
-                      //->where('branchid', $branch->id)
-                      ->groupBy(DB::raw('YEAR(orddate)'))
-                      ->first();
-        
-        if (is_null($s))
-          $t = $t.',,';
-        else
-          $t = $t.','.$s->netamt.','.$s->qty;
+    $arr = [];
+    foreach ($s as $key => $p) {
 
+      if(array_key_exists($p->group, $arr)) {
+        $arr[$p->group]['qty']    += $p->qty;       
+        $arr[$p->group]['grsamt'] += $p->grsamt;
+      } else {
+        $arr[$p->group]['group']  = $p->group;
+        $arr[$p->group]['qty']    = $p->qty;
+        $arr[$p->group]['grsamt'] = $p->grsamt;
       }
-      $this->comment($t);
+    
+    }
+  
+    foreach ($arr as $key => $value) {
+      $this->comment($key.' '.$value['qty'].' '.$value['grsamt']);
     }
   }
 

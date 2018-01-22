@@ -66,7 +66,7 @@ class YearlyProductSales extends Command
       $t = $p[0].','.$p[1].','.$p[2];
       $product = Product::where('code', $p[0])->first();
       if (!is_null($product)) {
-        //$this->comment($product->id);
+        $this->comment($product->id);
 
         $s = Salesmtd::select(DB::raw('sum(netamt) as netamt, sum(qty) as qty'))
                       ->where('product_id', $product->id)
@@ -98,6 +98,7 @@ class YearlyProductSales extends Command
   private function products() {
     return [
   ["AK","Ado.Kangkong",58.00],
+  /*
   ["BCT","B.Chix Teriyaki",172.00],
   ["BLK","B.Lech.Kwali",282.00],
   ["BOC","B.OYSTR.CHS",169.00],
@@ -217,7 +218,7 @@ class YearlyProductSales extends Command
   ["TB","Tokwa Baboy",171.00],
   ["UPGFR","Up Frd. Rice Promo",91.00],
   ["UPGCR","Up Garl.Rice Promo",49.00],
-  ["YAKI","Yakitori Chix 1stick",31.00],
+  ["YAKI","Yakitori Chix 1stick",31.00], */
 ];
 
   }

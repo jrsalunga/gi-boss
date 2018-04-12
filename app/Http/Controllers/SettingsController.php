@@ -142,9 +142,10 @@ class SettingsController extends Controller {
 
 
 	public function empImport(Request $request) {
-	
 		return view('settings.emp-import');	
 	}
+
+	
 
 	public function postEmpImport(Request $request) {
 
@@ -160,6 +161,8 @@ class SettingsController extends Controller {
 
 		if (strtoupper($ext)!=='MAS')
 			return back()->withErrors('Invalid file!');	
+
+
 
 		try {
 			$request->file('empfile')->move(storage_path().DS.'mas', $filename.'.DBF');
@@ -244,19 +247,24 @@ class SettingsController extends Controller {
 		  		$employee->id = $employee->get_uid();
 
 		  		$employee->code 				= trim($row['MAN_NO']);
-			    $employee->lastname 		= utf8_encode(trim($row['LAST_NAM']));
-			    $employee->firstname		= utf8_encode(trim($row['FIRS_NAM']));
-			    $employee->middlename		= utf8_encode(trim($row['MIDL_NAM']));
+			    $employee->lastname 		= str_replace('¥', 'Ñ', utf8_encode(trim($row['LAST_NAM'])));
+			    $employee->firstname		= str_replace('¥', 'Ñ', utf8_encode(trim($row['FIRS_NAM'])));
+			    $employee->middlename		= str_replace('¥', 'Ñ', utf8_encode(trim($row['MIDL_NAM'])));
 		  		
 		  		$exist_emp = false;
-
 		  		$return = $employee;
-		  		//$exist_emp = true;
-		  	} else {
-		  		throw new \Exception($e->code.': Employee is already on database!');
-		  		$employee = \App\Models\Employee::find($e->id);
-		  		$exist_emp = true;
 
+		  	} else {
+
+		  		throw new \Exception($e->code.': Employee is already on database!');
+		  		
+		  		$employee = \App\Models\Employee::find($e->id);
+
+		  		$employee->lastname 		= str_replace('¥', 'Ñ', utf8_encode(trim($row['LAST_NAM'])));
+			    $employee->firstname		= str_replace('¥', 'Ñ', utf8_encode(trim($row['FIRS_NAM'])));
+			    $employee->middlename		= str_replace('¥', 'Ñ', utf8_encode(trim($row['MIDL_NAM'])));
+		  		
+		  		$exist_emp = true;
 		  		$return = $employee;
 		  	}
 

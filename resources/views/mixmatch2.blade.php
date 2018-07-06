@@ -61,12 +61,13 @@ function onDragEndHandler(e) {
 	var td = $(e.target);
 	if (td.hasClass('hover'))
 		td.removeClass('hover');
-	console.log('dragend');
+	//console.log('dragend');
 	return false;
 }
 function dropHandler(ev) {
   console.log('File(s) dropped');
   var td = $(ev.target);
+  console.log(td[0].clientWidth);
 
   // Prevent default behavior (Prevent file from being opened)
   ev.preventDefault();
@@ -114,7 +115,8 @@ function previewfile(file, el) {
     reader.onload = function (event) {
       var image = new Image();
       image.src = event.target.result;
-      image.width = '250'; // a fake resize
+      image.width = el[0].clientWidth; // a fake resize
+      image.height = el[0].clientHeight; // a fake resize
       el.append(image);
       //holder.appendChild(image);
       //console.log(image);

@@ -77,7 +77,13 @@ Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlist
 
 
 Route::get('branch', ['uses'=>'BranchController@getList']);
-Route::get('branch/{id?}', ['uses'=>'BranchController@show']);
+
+Route::resource('/masterfiles/lessor', 'LessorController');
+Route::resource('/masterfiles/company', 'CompanyController');
+Route::resource('/masterfiles/branch', 'BranchController');
+Route::resource('/masterfiles/sector', 'SectorController');
+Route::resource('/masterfiles/filetype', 'FiletypeController');
+//Route::get('/masterfiles/branch/{id?}', ['uses'=>'BranchController@show2']);
 
 Route::post('api/csv/comparative', ['uses'=>'BranchController@getComparativeCSV']);
 Route::post('api/json/comparative', ['uses'=>'BranchController@getComparativeJSON']);
@@ -116,18 +122,33 @@ Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 });/******* end prefix:api ********/
 
 
+
+
+/******************* API  *************************************************/
+/******* end prefix:api ********/
+
+
 }); /******* end middeware:auth ********/
 
-/*
-get('branch', function () {
-    return App\User::with(['bossbranch'=>function($query){
-    	$query->select('bossid', 'branchid', 'id')
-    	->with(['branch'=>function($query){
-    		$query->select('code', 'descriptor', 'id');
-    	}]);
-    }])->get();
+Route::group(['prefix'=>'hr', 'middleware' => 'hr'], function(){
+
+get('/', function () {
+    return view('hr.index');
 });
-*/
+
+Route::get('masterfiles/{table?}', ['uses'=>'Hr\MasterfilesController@getIndex']);
+Route::get('masterfiles/employee/{id}/edit/employment', 'Hr\EmployeeController@editEmployment');
+Route::get('masterfiles/employee/{id}/edit/personal', 'Hr\EmployeeController@editPersonal');
+Route::resource('masterfiles/employee', 'Hr\EmployeeController');
+Route::resource('masterfiles/position', 'Hr\PositionController');
+
+});
+
+
+get('mixmatch', function () {
+    return view('mixmatch2');
+});
+
 
 get('getweek', function () {
 

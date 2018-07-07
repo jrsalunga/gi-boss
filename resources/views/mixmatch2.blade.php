@@ -50,15 +50,21 @@ var tests = {
 function onDragHandler(e) {
 	e.preventDefault();
 	var td = $(e.target);
-	//console.log(td);
+
+	if (td.is('img'))
+		td = td.parent();
+		
+	//console.log(td.is('img'));
 	td.addClass('hover');
-	this.className = 'hover'; 
+	//this.className = 'hover'; 
 	//console.log('dragover');
 	return false;
 }
 function onDragEndHandler(e) {
 	e.preventDefault();
 	var td = $(e.target);
+	if (td.is('img'))
+		td = td.parent();
 	if (td.hasClass('hover'))
 		td.removeClass('hover');
 	//console.log('dragend');
@@ -67,7 +73,10 @@ function onDragEndHandler(e) {
 function dropHandler(ev) {
   console.log('File(s) dropped');
   var td = $(ev.target);
-  console.log(td[0].clientWidth);
+  if (td.is('img'))
+		td = td.parent();
+  td.children('img').remove();
+  //console.log(td[0].clientWidth);
 
   // Prevent default behavior (Prevent file from being opened)
   ev.preventDefault();
@@ -80,24 +89,24 @@ function dropHandler(ev) {
       // If dropped items aren't files, reject them
       if (ev.dataTransfer.items[i].kind === 'file') {
         var file = ev.dataTransfer.items[i].getAsFile();
-        console.log('... file[' + i + '].name = ' + file.name);
+        //console.log('... file[' + i + '].name = ' + file.name);
       }
     }
   } else {
     // Use DataTransfer interface to access the file(s)
     for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+      //console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
     }
   } 
   
   // Pass event to removeDragData for cleanup
   if (td.hasClass('hover'))
 		td.removeClass('hover');
-	console.log('dragend');
+	//console.log('dragend');
   removeDragData(ev)
 }
 function removeDragData(ev) {
-  console.log('Removing drag data')
+  //console.log('Removing drag data')
 
   if (ev.dataTransfer.items) {
     // Use DataTransferItemList interface to remove the drag data
@@ -125,7 +134,7 @@ function previewfile(file, el) {
     reader.readAsDataURL(file);
   }  else {
     holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
-    console.log(file);
+    //console.log(file);
   }
 }
 

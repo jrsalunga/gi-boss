@@ -16,19 +16,19 @@
 <table class="table" cellpadding="0" cellspacing="0" width="100%">
 	<tbody>
 		<tr>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
 		</tr>
 		<tr>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
 		</tr>
 		<tr>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
-			<td ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
+			<td class="box" ondragover="onDragHandler(event);" ondragleave="onDragEndHandler(event);" ondrop="dropHandler(event);"></td>
 		</tr>
 	</tbody>
 </table>
@@ -46,6 +46,8 @@ var tests = {
       'image/jpeg': true,
       'image/gif': true
     };
+
+
 
 function onDragHandler(e) {
 	e.preventDefault();
@@ -166,5 +168,15 @@ function readfiles(files, el) {
       xhr.send(formData);
       */
 }
+
+
+
+$(document).ready(function(e){
+  $('.box').on('dblclick', function(e){
+    e.preventDefault();
+    $(this).html('');
+  });
+
+})
 </script>
 </html>

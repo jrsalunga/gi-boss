@@ -16,7 +16,10 @@
         "prettus/l5-repository": "^2.1",
         "maatwebsite/excel": "~2.1.0",
         "league/fractal": "^0.13.0",
-        "yajra/laravel-datatables-oracle": "~6.0"
+        "yajra/laravel-datatables-oracle": "~6.0",
+        "tnkemdilim/money-to-words-converter": "^1.0",
+        "ramsey/uuid": "^3.7",
+        "moontoast/math": "^1.1"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

@@ -11,7 +11,7 @@ use App\Repositories\Criterias\LimitCriteria;
 class MasterfilesController extends Controller {
 
 	protected $datatables_data;
-	protected $tables = ['branch','component', 'company'];
+	protected $tables = ['branch','component', 'company', 'lessor', 'sector', 'filetype'];
 
 	public function __construct() {
 		
@@ -29,15 +29,25 @@ class MasterfilesController extends Controller {
 
 	private function validateToRepository($table) {
 
-		$model = 'App\\Models\\'.ucwords($table);
+		$model = 'App\\Models\\Boss\\'.ucwords($table);
 
-		if(!class_exists($model))
-  		return abort('404');
+		if(class_exists($model)) {
+			$repo = 'App\\Repositories\\Boss\\'.ucwords($table).'Repository';
 		
-		$repo = 'App\\Repositories\\'.ucwords($table).'Repository';
-		if(!class_exists($repo))
-  		return abort('404');	
+			if(!class_exists($repo))
+  			throw new \Exception($repo.' not found.');
+		} else {
 
+			$model2 = 'App\\Models\\'.ucwords($table);
+			
+			if(!class_exists($model2))
+  			throw new \Exception($model2.' not found.');
+
+	  		$repo = 'App\\Repositories\\'.ucwords($table).'Repository';
+			
+				if(!class_exists($repo))
+	  			return abort('404');	
+		}
   	return app()->make($repo);
 	}
 
@@ -67,13 +77,12 @@ class MasterfilesController extends Controller {
 
 	public function getIndex(Request $request, $table=null) {
 
-		$table = $this->isValidTable($table);
-		if(!$table)
-			return view('masterfiles.index')->with('tables', $this->tables);
+		$datas = null;
 
-		$datas = $this->getRepositoryData($request, $table);
+		if($this->isValidTable($table))
+			$datas = $this->getRepositoryData($request, $table);
 
-		return view('masterfiles.branch', compact('datas'))->with('tables', $this->tables)->with('active', $table);
+		return view('masterfiles.index', compact('datas'))->with('tables', $this->tables)->with('active', $table);
 	}
 
 	private function getRepositoryData(Request $request, $table) {
@@ -83,7 +92,19 @@ class MasterfilesController extends Controller {
 		//$repository->orderBy('code', 'asc')->orderBy('descriptor', 'asc');
 		//$repository->skipCache(true);
 
-		return $repository->skipCache()->order()->paginate($this->getLimit($request));
+		//$data = $this->checkRepoIndex($repository, $request);
+
+		return $this->checkRepoIndex($repository, $request) 
+			? $repository->index_data($request)
+			: $repository
+				//->skipCache()
+				->order()
+				->paginate($this->getLimit($request));
+	}
+
+
+	private function checkRepoIndex($repo) {
+		return method_exists(get_class($repo), 'index_data');
 	}
 
 	private function getLimit(Request $request, $limit = 10) {

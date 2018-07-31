@@ -8,11 +8,15 @@ class Position extends BaseModel {
  	protected $fillable = ['code', 'descriptor'];
  	public static $header = ['code', 'descriptor'];
 
- 	public function __construct(array $attributes = [])
+ public function __construct(array $attributes = [])
   {
     parent::__construct($attributes);
-    $this->setConnection('mysql-hr');
+    if (app()->environment()==='production')
+      $this->setConnection('mysql-hr');
+    else  
+      $this->setConnection('hr-live');
   }
+
 
 	public function employee() {
     return $this->hasOne('App\Models\Employee', 'positionid');

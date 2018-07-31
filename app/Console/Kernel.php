@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\YearlySales::class,
         \App\Console\Commands\YearlyProductSales::class,
+        \App\Console\Commands\Import\Paymast::class,
+        \App\Console\Commands\Export\Emp::class,
     ];
 
     /**

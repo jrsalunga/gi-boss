@@ -11,6 +11,7 @@
     "gulp-cssnano": "^2.1.0",
     "gulp-open": "^1.0.0",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.1"
+    "gulp-uglify": "^1.5.1",
+    "material-components-web": "^0.28.0"
   }
 }

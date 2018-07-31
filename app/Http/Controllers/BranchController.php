@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use File;
 use Exception;
 use Validator;
@@ -8,9 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Branch;
 use App\Repositories\BranchRepository;
+use App\Repositories\Boss\BranchRepository as BossBr;
 use App\Repositories\DateRange;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
+use App\Repositories\CompanyRepository as CompRepo;
+//use App\Repositories\Boss\SectorRepository as SectorRepo;
+use App\Repositories\LessorRepository as LessorRepo;
+use App\Repositories\Boss\SectorRepository as SectorRepo;
 
 
 
@@ -18,13 +24,21 @@ class BranchController extends Controller
 {
 
 	protected $repository;
+	protected $branchBoss;
+	protected $company;
+	protected $lessor;
+	protected $sector;
 
-	public function __construct(BranchRepository $branchrepository, DSRepo $dsrepo, DateRange $dr){
+	public function __construct(BranchRepository $branchrepository, DSRepo $dsrepo, DateRange $dr, BossBr $branchBoss, CompRepo $compRepo, LessorRepo $lessorRepo, SectorRepo $sectorRepo){
 
 		$this->repository = $branchrepository;
 		$this->repository->pushCriteria(new ActiveBranch);
 		$this->dr = $dr;
 		$this->ds = $dsrepo;
+		$this->branchBoss = $branchBoss;
+		$this->company = $compRepo;
+		$this->lessor = $lessorRepo;
+		$this->sector = $sectorRepo;
 	}
 
 	//status/branch/{branchid}
@@ -250,15 +264,19 @@ class BranchController extends Controller
 
 
 
-	public function show(Request $request, $branchid) {
+	public function show2(Request $request, $branchid) {
 		
-		if (!is_uuid($branchid))
+		if (!is_uuid($branchid) && strlen($branchid)>3)
+		 return abort('404');
+
+		$branch = $this->repository->skipCriteria()->codeID($branchid);
+		//$branch = $branches->first();
+
+		if (is_null($branch))
 			return abort('404');
 
-		$branch = $this->repository->find($branchid);	
-
 		$branch->load('boss.user');
-		return view('branch.index')->with('branch', $branch);
+		return view('masterfiles.branch.view')->with('branch', $branch);
 
 
 		return [
@@ -284,6 +302,251 @@ class BranchController extends Controller
 		$response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 120));
 		return $response;
 	}
+
+
+
+
+	public function create(Request $request) {
+		return view('masterfiles.branch.create');
+	}
+
+	public function store(Request $request) {
+		
+		if ($request->has('_type')) {
+			switch ($request->input('_type')) {
+				case 'quick':
+					return $this->process_quick($request);
+					break;
+				case 'full':
+					return $this->process_full($request);
+					break;
+				case 'import':
+					return $this->process_import($request);
+					break;
+				case 'update':
+					return $this->process_full($request);
+					break;
+			}
+		} 
+		return app()->environment('local') ? 'Honeypot not found!' : abort('404'); 
+	}
+
+
+	private function process_quick(Request $request) {
+		
+		$this->validate($request, [
+    	'code' 				=> 'required|max:3',
+      'descriptor' 	=> 'required|max:50',
+    ]);
+
+    $cb = $this->branchBoss->findWhere(['code'=>$request->input('code')])->first();
+    if (!is_null($cb))
+			return redirect()->back()->withErrors(strtoupper($request->input('code')).' already exist on Boss Module');
+
+		$brBoss = $this->repository->findWhere(['code'=>$request->input('code')])->first();
+		if (!is_null($brBoss))
+			return redirect()->back()->with('branch.import', $brBoss);
+
+		DB::beginTransaction();
+
+		try {
+    	$branch = $this->branchBoss->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect('/masterfiles/branch/create')->withErrors($er);
+		}
+
+		DB::commit();
+    return redirect('/masterfiles/branch/'.$branch->lid())->with('alert-success','Saved!');
+	}
+
+
+	public function show(Request $request, $id) {
+		$branch = $this->branchBoss->codeID($id);
+		return is_null($branch) ? abort('404') : view('masterfiles.branch.view')->with('branch', $branch);
+	}
+
+	private function get_rules() {
+		return $rules = [
+    	'code' 					=> 'required|max:3',
+      'descriptor' 		=> 'required|max:25',
+      'trade_name' 		=> 'max:50',
+      'address' 			=> 'max:120',
+      'email' 				=> 'max:50|email',
+      'tin' 					=> 'max:16',
+      'company_id'		=> 'alpha_num|max:32',
+      'sector_id'		  => 'alpha_num|max:32',
+      'lessor_id'	  	=> 'alpha_num|max:32',
+      'status'	    	=> 'integer',
+      'seating'	    	=> 'numeric',
+      'din'	    			=> 'integer',
+      'kit'	    			=> 'integer',
+      'mancost'	    	=> 'numeric',
+      'ophr'	    		=> 'integer',
+      'reg_date'  		=> 'date',
+      'lessor_id'  		=> 'alpha_num|min:32:max:32',
+    	'id' 						=> 'required|min:32:max:32',
+    ];
+	}
+
+
+	private function unset_blank_form_rules(Request $request, array $rules) {
+		foreach ($rules as $key => $value) {
+			if (empty($request->{$key}))
+				unset($rules[$key]);
+		}
+		unset($rules['id']);
+		
+		return $rules;
+	}
+
+	private function process_full(Request $request) {
+		//return $request->all();
+		if (!is_uuid($request->input('id')))
+			return redirect('/masterfiles/branch')->withErrors('Something went wrong. Please try again');
+
+		//$look_up_branch = $this->branchBoss->find($request->input('id'));
+
+		//return $look_up_branch;
+
+		$rules = $this->get_rules();
+
+		if ($request->has('_type') && $request->input('_type')==='full') {
+			$this->validate($request, $rules);
+		} else if ($request->has('_type') && $request->input('_type')==='update') {
+			unset($rules['code']);
+			unset($rules['descriptor']);
+			$this->validate($request, $rules);
+		} else  {
+			return redirect('/masterfiles/branch')->withErrors('Something went wrong. Please try again');
+		}
+		
+		$keys = array_keys($this->unset_blank_form_rules($request, $rules));
+
+		DB::beginTransaction();
+
+		try {
+    	$branch = $this->branchBoss->update($request->only($keys), $request->input('id'));
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
+		try {
+    	$branch->contacts()->delete();
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
+		try {
+    	$this->saveContacts($branch, $request->input('contact'));
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
+		try {
+    	$branch->spaces()->delete();
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
+		try {
+    	$this->saveSpaces($branch, $request->input('space'));
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
+		DB::commit();
+    return redirect('/masterfiles/branch/'.$branch->lid())->with('alert-success', 'Record has been updated!');
+
+		return clean_number_format('2,4,44,000.01');
+		return dd($request->all());
+
+	}
+
+	private function process_import(Request $request) {
+		if (!is_uuid($request->input('id')))
+			return abort('404');
+
+		$hrBranch = $this->repository->find($request->input('id'));
+		if (is_null($hrBranch))
+			return redirect()->back()->withErrors('Record not found on HRIS Database.');
+		
+		$oc = [
+			'code' => $hrBranch->code,
+			'descriptor' => $hrBranch->descriptor,
+			'address' => $hrBranch->address,
+			'email' => $hrBranch->email,
+			'tin' => $hrBranch->tin,
+			'mancost' => $hrBranch->mancost,
+			'company_id' => $hrBranch->companyid,
+			'id' => $hrBranch->id,
+		];
+
+		DB::beginTransaction();
+
+		try {
+			$branch = $this->branchBoss->modelCreate($oc);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect('/masterfiles/branch')->withErrors($er);
+		}
+
+		$this->saveContacts($branch, [
+			['type'=>1, 'number'=>$hrBranch->mobile],
+			['type'=>2, 'number'=>$hrBranch->phone],
+			['type'=>3, 'number'=>$hrBranch->fax],
+		]);
+
+		DB::commit();
+		return redirect('/masterfiles/branch')->with('alert-success', $branch->code.' - '.$branch->descriptor.' has been imported to Boss Module.');
+	}
+
+	private function saveContacts($model, array $contacts) {
+		foreach ($contacts as $key => $contact) {
+			if (!empty($contact['number']))
+				$model->contacts()->save(new \App\Models\Contact($contact));
+		}
+	}
+
+	private function saveSpaces($model, array $spaces) {
+		foreach ($spaces as $key => $space) {
+			if (!empty($space['unit']) || $space['area']>0)
+				$model->spaces()->save(new \App\Models\Boss\Space($space));
+		}
+	}
+
+	public function edit(Request $request, $id) {
+		$branch = $this->branchBoss->codeID($id);
+
+		if (is_null($branch))
+			return abort('404');
+
+		$companies = $this->company->all(['code', 'descriptor', 'id']);
+		$lessors = $this->lessor->all(['code', 'descriptor', 'id']);
+		$sectors = $this->sector->with('children')->parents();
+
+		return view('masterfiles.branch.edit')
+							->with('branch', $branch)
+							->with('companies', $companies)
+							->with('sectors', $sectors)
+							->with('lessors', $lessors);
+	}
+
+
+
+
 
 
 }

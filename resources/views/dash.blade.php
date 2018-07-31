@@ -4,27 +4,45 @@
 
 @section('css-internal')
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/css/material-components-web.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<style type="text/css">
+.material-icons {
+  font-size: inherit;
+}
+
+
+.form-control.unit {
+
+}
+
+.input-group-addon.area {
+  width: 40%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.area .area {
+  text-align: right;
+}
+
+.input-group-addon .form-control {
+  border-left: 0;
+}
+
+.rmv-area {
+ padding: 0 8px;
+}
+</style>
 @endsection
 
 @section('navbar-1')
-  <ul class="nav navbar-nav">
-    <li><a href="/masterfiles">Masterfiles</a></li>
-    <li><a href="#">Transactions</a></li>
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-        Reports <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" class="divider"></li>
-        <li class="dropdown-header">Nav header</li>
-        <li><a href="#">Separated link</a></li>
-        <li><a href="#">One more separated link</a></li>
-      </ul>
-    </li>
-  </ul>
+  @include('menu.main')
+@endsection
+
+@section('sidebar')
+  @include('menu.sub')
 @endsection
 
 @section('navbar-2')
@@ -64,18 +82,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
+  <script src="/js/hc-all.js"> </script>
+  <script src="/js/dr-picker.js"> </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"> </script>
+  <script src="/js/material-components-web.min.js"></script>
+  <script>mdc.autoInit()</script>
+  
 
 @endsection

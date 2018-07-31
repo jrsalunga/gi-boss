@@ -18,7 +18,7 @@ class BranchRepository extends BaseRepository implements CacheableInterface
 {
   use CacheableRepository, RepoTrait;
 
-  protected $order = ['descriptor', 'code'];
+  protected $order = ['code', 'descriptor'];
 
   protected $fieldSearchable = [
     'code'=>'like',

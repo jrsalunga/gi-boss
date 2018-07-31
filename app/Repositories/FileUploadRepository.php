@@ -13,9 +13,11 @@ class FileUploadRepository extends BaseRepository implements CacheableInterface
 
   protected $order = ['uploaddate'];
 
+  /*
   public function boot(){
     $this->pushCriteria(new ByBranch(request()));
   }
+  */
   
   public function model() {
     return 'App\\Models\\FileUpload';

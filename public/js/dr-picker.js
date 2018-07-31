@@ -35,6 +35,11 @@ $('[data-toggle="loader"]').on('click', function(){
 
 $('[data-toggle="tooltip"]').tooltip();
 
+$('.datepicker').datetimepicker({
+  format: 'YYYY-MM-DD',
+  ignoreReadonly: true
+});
+
 var initDatePicker = function(){
 
       $('#dp-date-fr').datetimepicker({
@@ -178,7 +183,7 @@ var initDatePicker = function(){
 
 
       function getWeekNumber(d) {
-        // Copy date so don't modify original
+        
         d = new Date(+d);
         d.setHours(0,0,0);
         // Set to nearest Thursday: current date + 4 - current day number
@@ -368,3 +373,19 @@ var getOptions = function(to, table) {
         }
         return options;
       }
+
+
+
+$('.form-control', '.form-group').on('change', function(e){
+
+  $p = $(this).parents('.form-group');
+
+  if ($p.hasClass('has-error'))
+    $p.removeClass('has-error')
+
+  if ($p.hasClass('has-feedback'))
+    $p.removeClass('has-feedback')
+});
+
+
+

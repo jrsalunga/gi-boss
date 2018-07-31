@@ -104,6 +104,31 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'paytype'       => 'pay type',
+        'ratetype '     => 'rate type',
+        'empstatus '    => 'employment status',
+        'reg_date'      => 'registration date',
+        'lessor_id'     => 'lessor',
+        'sector_id'     => 'sector',
+        'company_id'    => 'company',
+        'companyid'     => 'company',
+        'branchid'      => 'branch',
+        'positionid'    => 'position',
+        'deptid'        => 'department',
+        'positionid'    => 'position',
+        'sssno'         => 'SSS #',
+        'ee_sss'        => 'SSS employee share',
+        'er_sss'        => 'SSS employer share',
+        'ee_phic'       => 'PhilHealth employee share',
+        'er_phic'       => 'PhilHealth employer share',
+        'ee_hdmf'       => 'PagIbig employee share',
+        'er_hdmf'       => 'PagIbig employer share',
+        'civstatus'     => 'civil status',
+        'religionid'    => 'religion',
+        'spouse.lastname'    => 'spouse lastname',
+        'spouse.firstname'    => 'spouse fistname',
+
+    ],
 
 ];

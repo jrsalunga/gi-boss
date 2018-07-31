@@ -1,0 +1,199 @@
+@extends('hr.dash', ['search_url'=> 'employee'])
+
+@section('title', '- Employee Update Personal Info')
+
+@section('body-class', 'employee-update-personal')
+
+@section('content')
+<div class="row" style="margin-top: 20px;">
+	<div class="col-md-12">
+		<h3 class="page-header page-header-wizard">Update Employee Record</h3>
+	</div>
+	<div class="col-md-12">
+		<ul class='nav nav-wizard'>
+		  <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit" title="General Info"><span class="gly gly-user"></span> <span class="hidden-xs hidden-sm">General</span></a></li>
+		  <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/employment" title="Employment Info"><span class="gly gly-folder-closed"></span> <span class="hidden-xs hidden-sm">Employment</span></a></li>
+			<li class='active'><a href="javascript:void(0)" data-toggle="tab" title="Personal Info"><span class="gly gly-nameplate-alt"></span> <span class="hidden-xs hidden-sm">Personal</span></a></li>
+		  <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/family" title="Family Info"><span class="gly gly-group"></span> <span class="hidden-xs hidden-sm">Family</span></a></li>
+		  <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/workedu" title="Work & Education Info"><span class="gly gly-certificate"></span> <span class="hidden-xs hidden-sm">Work & Education</span></a></li>
+		  <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/confirm" title="Confirmation"><span class="gly gly-disk-saved"></span> <span class="hidden-xs hidden-sm">Confirmation</span></a></li>
+		</ul>
+	</div>
+	<div class="col-md-12">
+		@include('_partials.alerts')
+	</div>
+</div>
+
+<form action="/hr/masterfiles/employee" method="POST">
+	{{ csrf_field() }}
+	<div class="panel panel-primary">
+	  <div class="panel-body">
+	  	<div class="row">
+				<div class="col-md-6">
+					<div class="form-group @include('_partials.input-error', ['field'=>'address'])">
+				    <label for="address" class="control-label">Address</label>
+				    <textarea class="form-control" id="address" name="address" placeholder="Address" maxlength="120" style="max-width: 100%; min-width: 100%;" rows="5">{{ $employee->address }}</textarea>
+				  </div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'email'])">
+				   	<label for="email" class="control-label">Email</label>
+					 	<input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="80" value="{{ $employee->email }}">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'mobile'])">
+				   	<label for="mobile" class="control-label">Mobile</label>
+					 	<input type="text" class="form-control" id="mobile" name="mobile" placeholder="0000-0000000" data-mask="0000-0000000" maxlength="20" value="{{ $employee->mobile }}">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'phone'])">
+				   	<label for="phone" class="control-label">Phone</label>
+					 	<input type="text" class="form-control" id="phone" name="phone" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ $employee->phone }}">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'fax'])">
+				   	<label for="fax" class="control-label">Fax</label>
+					 	<input type="text" class="form-control" id="fax" name="fax" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ $employee->fax }}">
+					</div>
+				</div>
+			</div><!-- end: .row -->
+	  </div><!-- end: .panel-body -->
+	</div><!-- end: .panel.panel-primary -->
+	<div class="panel panel-primary">
+	  <div class="panel-body">
+	  	<div class="row">
+	  		<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'birthdate'])">
+				    <label for="birthdate" class="control-label">Birthday</label>
+				    <input type="text" class="form-control datepicker" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" maxlength="10" value="{{ $employee->getBirthdate() }}" readonly>
+				  </div>
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+				  <div class="form-group @include('_partials.input-error', ['field'=>'birthplace'])">
+				    <label for="birthplace" class="control-label">Birthplace</label>
+				    <input type="text" class="form-control" id="birthplace" name="birthplace" placeholder="Birthplace" maxlength="30" value="{{ $employee->birthplace }}">
+				  </div>
+				</div><!-- end: .col-md-3 -->
+	  		<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'gender'])">
+						<label for="gender" class="control-label">Gender</label>
+						<select class="selectpicker form-control show-tick" name="gender" id="gender" data-live-search="true" data-size="10" data-gender="{{ $employee->gender }}">
+							@if($employee->gender==0)
+								<option disabled selected>-- Select Gender -- </option>
+							@endif
+							@foreach(['MALE', 'FEMALE'] as $key => $g)
+						  	<option value="{{ ($key+1) }}" <?=isset($employee->gender)&&(($key+1)==$employee->gender)?'selected':'';?> data-tokens="{{ $g }}">
+						  		{{ $g }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>	
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'civstatus'])">
+						<label for="civstatus" class="control-label">Civil Status</label>
+						<select class="selectpicker form-control show-tick" name="civstatus" id="civstatus" data-live-search="true" data-size="10" data-civstatus="{{ $employee->paytype }}">
+							@if($employee->civstatus==0)
+								<option disabled selected>-- Select Civil Status -- </option>
+							@endif
+							@foreach(['SINGLE', 'MARRIED', 'SEPARATED'] as $key => $c)
+						  	<option value="{{ ($key+1) }}" <?=isset($employee->civstatus)&&(($key+1)==$employee->civstatus)?'selected':'';?> data-tokens="{{ $c }}">
+						  		{{ $c }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>	
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'religionid'])"">
+						<label for="religionid" class="control-label">Religion</label>
+						@if(count($religions)>0)
+						<select class="selectpicker form-control show-tick" name="religionid" id="religionid" data-live-search="true" data-size="10"  data-religionid="{{ $employee->religionid }}">
+							@if(!isset($employee->religion->id))
+								<option disabled selected>-- Select Religion -- </option>
+							@endif
+							@foreach($religions as $religion)
+						  	<option value="{{$religion->id}}" <?=isset($employee->religion->id)&&($religion->id==$employee->religionid)?'selected':'';?> data-tokens="{{ $religion->code }} {{ $religion->descriptor }}">
+						  		{{ $religion->code }} - {{ $religion->descriptor }}
+						  	</option>
+						  @endforeach
+						</select>
+						@else
+							Add Religion
+						@endif
+					</div>
+				</div><!-- end:.col-md-3 -->
+				<?php
+					$hgts = ['121.92', '124.46', '127.00', '129.54', '132.08', '134.62', '137.16', '139.70', '142.24', '144.78', '147.32', '149.86', '152.40', '154.94', '157.48', '160.02', '162.56', '165.10', '167.64', '170.18', '172.72', '175.26', '177.80', '180.34', '182.88', '185.42', '187.96', '190.50', '193.04', '195.58', '198.12', '200.66', '203.20', '205.74', '208.28', '210.82', '213.36', '215.90', '218.44', '220.98', '223.52', '226.06', '228.60', '231.14', '233.68', '236.22', '238.76', '241.30', '243.84'];
+					$m_hgts = ['1.2192',	'1.2446',	'1.2700',	'1.2954',	'1.3208',	'1.3462',	'1.3716',	'1.3970',	'1.4224',	'1.4478',	'1.4732',	'1.4986',	'1.5240',	'1.5494',	'1.5748',	'1.6002',	'1.6256',	'1.6510',	'1.6764',	'1.7018',	'1.7272',	'1.7526',	'1.7780',	'1.8034',	'1.8288',	'1.8542',	'1.8796',	'1.9050',	'1.9304',	'1.9558',	'1.9812',	'2.0066',	'2.0320',	'2.0574',	'2.0828',	'2.1082',	'2.1336',	'2.1590',	'2.1844',	'2.2098',	'2.2352',	'2.2606',	'2.286',	'2.3114',	'2.3368',	'2.3622',	'2.3876',	'2.4130',	'2.4384'];
+					$ft = 4;
+					$in = 0;
+				?>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'height'])">
+						<label for="height" class="control-label">Height (m)</label>
+						<select class="selectpicker form-control show-tick" name="height" id="height" data-live-search="true" data-size="10" data-height="{{ $employee->height }}">
+							@if($employee->height<1.21)
+								<option disabled selected>-- Select Height -- </option>
+							@endif
+							@foreach($m_hgts as $key => $c)
+						  	<option value="{{ number_format($c,2) }}" <?=isset($employee->height)&&(number_format($c,2)==$employee->height)?'selected':'';?> data-tokens="{{ number_format($c,2) }} {{ $ft }}'{{ $in }}''" data-actual="{{ $c }}">
+						  		{{ number_format($c,2) }}m <?=$in>0?"(".$ft."'".$in."'')":"(".$ft."'')";?>
+						  	</option>
+						  	<?php
+						  		$in++;
+						  		if ($in==12) {
+						  			$in=0;
+						  			$ft++;
+						  		}
+						  	?>
+						  @endforeach
+						</select>
+					</div>	
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'weight'])">
+				    <label for="weight" class="control-label">Weight (kg)</label>
+				    <input type="text" class="form-control" id="weight" name="weight" placeholder="0.00" data-mask="000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->weight }}">
+				  </div>
+				</div><!-- end: .col-md-3 -->
+			</div><!-- end: .row -->
+		</div><!-- end: .panel-body -->
+	</div><!-- end: .panel.panel-primary -->
+	<div class="panel panel-primary">
+	  <div class="panel-body">
+	  	<div class="row">
+	  		<div class="col-md-5">
+					<div class="form-group @include('_partials.input-error', ['field'=>'notes'])">
+				    <label for="notes" class="control-label">Notes</label>
+				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="200" style="max-width: 100%; min-width: 100%;" rows="4">{{ $employee->notes }}</textarea>
+				  </div>
+				</div>
+			</div><!-- end: .row -->
+	</div><!-- end: .panel-body -->
+	</div><!-- end: .panel.panel-primary -->
+<hr>
+<div class="row">
+	<div class="col-md-12">
+		<input type="hidden" name="_type" value="personal">
+		<input type="hidden" name="id" value="{{ $employee->id }}">
+		@if(request()->has('raw') && request()->input('raw')=='true')
+			<input type="hidden" name="_raw" value="true">
+		@endif
+		<button type="submit" name="_submit" value="submit" class="btn btn-primary" data-toggle="loader"><span class="gly gly-floppy-saved" data-toggle="loader"></span> Save</button>
+		<button type="submit" name="_submit" value="next" class="btn btn-success" data-toggle="loader"><span class="gly gly-floppy-saved" data-toggle="loader"></span> Save & Next</button>
+		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}?tab=personal" class="btn btn-default" data-toggle="loader"><span class="gly gly-remove"></span> <span class="hidden-xs hidden-sm">Cancel</span></a>
+		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/family" class="btn btn-default pull-right" data-toggle="loader"><span class="gly gly-forward"></span> <span class="hidden-xs hidden-sm">Skip</span></a>
+		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/employment" class="btn btn-default pull-right" data-toggle="loader" style="margin-right: 5px;">
+			<span class="gly gly-rewind"></span> 
+			<span class="hidden-xs hidden-sm">Back</span>
+		</a>
+	</div>
+</div>
+</form>
+
+@endsection
+

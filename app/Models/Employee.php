@@ -6,8 +6,10 @@ class Employee extends BaseModel {
 
   //protected $connection = 'hr';
 	protected $table = 'hr.employee';
- 	protected $fillable = ['code', 'lastname', 'firstname', 'middlename', 'positionid', 'branchid', 'punching', 'processing'];
+  //protected $fillable = ['code', 'lastname', 'firstname', 'middlename', 'companyid', 'positionid', 'branchid', 'punching', 'processing'];
+  protected $guarded = ['id'];
  	public static $header = ['code', 'lastname'];
+  protected $dates = ['datehired', 'datestart', 'datestop', 'birthdate'];
   public $timestamps = false;
 
   
@@ -16,8 +18,14 @@ class Employee extends BaseModel {
     parent::__construct($attributes);
     if (app()->environment()==='production')
       $this->setConnection('mysql-hr');
-      
-    $this->setConnection('mysql-hr');
+    else  
+      $this->setConnection('hr-live');
+  }
+
+
+
+  public function department() {
+    return $this->belongsTo('App\Models\Department', 'deptid');
   }
   
 
@@ -27,6 +35,10 @@ class Employee extends BaseModel {
 
   public function branch() {
     return $this->belongsTo('App\Models\Branch', 'branchid');
+  }
+
+  public function company() {
+    return $this->belongsTo('App\Models\Company', 'companyid');
   }
 
   public function position() {
@@ -63,6 +75,19 @@ class Employee extends BaseModel {
 
   public function spouse() {
     return $this->hasOne('App\Models\Spouse', 'employeeid');
+  }
+
+  public function religion() {
+    return $this->belongsTo('App\Models\Religion', 'religionid');
+  }
+
+  public function statutory() {
+    return $this->hasOne('App\Models\Statutory');
+  }
+
+
+  public function empfile() {
+    return $this->hasOne('App\Models\Empfile');
   }
 
 
@@ -103,5 +128,83 @@ class Employee extends BaseModel {
   public function getPhotoAttribute(){
     return file_exists('../../gi-cashier/public/images/employees/'.$this->code.'.jpg');
   }
+
+  public function getPhotoUrl(){
+    return $this->photo
+      ? 'http://cashier.giligansrestaurant.com/images/employees/'.$this->code.'.jpg'
+      : 'http://cashier.giligansrestaurant.com/images/login-avatar.png';
+  }
+
+  public function getBirthdate() {
+    return is_iso_date($this->birthdate->format('Y-m-d'))
+      ? $this->birthdate->format('Y-m-d')
+      : NULL;
+  }
+
+  public function isConfirm() {
+    $this->load('empfile');
+    if (!is_null($this->empfile))
+      return true;
+    return false;
+  }
+
+  public function hasEmpfile($type='MAS') {
+
+    switch ($type) {
+      case 'MAS':
+        return file_exists(config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.$type.DS.$this->code.'.'.$type);
+        break;
+      case 'EMP':
+        return file_exists(config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.$type.DS.$this->code.'.'.$type);
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+
+
+
+
+  public function sssno() {
+    if (empty($this->sssno))
+      return NULL;
+
+    $s = str_replace('-', '', $this->sssno);
+    return substr($s, -10, 2).'-'.substr($s, -8, 7).'-'.substr($s, -1, 1);
+  }
+
+  public function hdmfno() {
+    if (empty($this->hdmfno))
+      return NULL; 
+
+    $s = str_replace('-', '', $this->hdmfno);
+    return substr($s, -12, 4).'-'.substr($s, -8, 4).'-'.substr($s, -4, 4); 
+  }
+
+  public function tin() {
+    if (empty($this->tin))
+      return NULL;
+    
+    $s = str_replace('-', '', $this->tin);
+    return substr($s, 0, 3).'-'.substr($s, 3, 3).'-'.substr($s, 6, 3).'-'.str_pad(substr($s, 9, 3), 3, '0'); 
+  }
+
+  public function isActive() {
+    return ($this->empstatus==4 || $this->empstatus==5 || is_iso_date($this->datestop->format('Y-m-d')) || empty($this->branchid))
+      ? false
+      : true;
+  }
+
+
+  public function height() {
+    return ($this->height+0);
+  }
+
+  public function weight() {
+    return ($this->weight+0);
+  }
+
+  
 	
 }

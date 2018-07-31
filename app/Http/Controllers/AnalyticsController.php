@@ -108,8 +108,39 @@ class AnalyticsController extends Controller
     }
 
     $dailysales = $this->ds->branchByDR($branch, $this->dr);
+
+    if($request->has('export') && $request->input('export')==='true') {
+
+      $ar = $this->dailyToArray($dailysales);
+
+      return $this->exportDaily($ar);
+    }
+
     return $this->setDailyViewVars('analytics.branch', $dailysales, $bb,  $branch);
 
+  }
+
+  public function dailyToArray($ds) {
+    $arr = [];
+
+    array_push($arr, 
+      ['Date', 'Sales', 'Food Cost', 'Purchased', 'Customers', 'Head Spead', 'Trans Count', 'Sales/Receipt', 'Emp Count', 'Sales/Emp', 'Mancost', 'Mancost %', 'Tips', 'Tips %']);
+
+    return $arr;
+
+  }
+
+  public function exportDaily(array $data, $filename='download') {
+
+    
+    return \Excel::create($filename, function($excel) use ($data) {
+
+      $excel->sheet('Sheetname', function($sheet) use ($data) {
+
+        $sheet->fromArray($data);
+      });
+
+    })->export('csv');
   }
 
 

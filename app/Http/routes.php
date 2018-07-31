@@ -139,6 +139,10 @@ get('/', function () {
 Route::get('masterfiles/{table?}', ['uses'=>'Hr\MasterfilesController@getIndex']);
 Route::get('masterfiles/employee/{id}/edit/employment', 'Hr\EmployeeController@editEmployment');
 Route::get('masterfiles/employee/{id}/edit/personal', 'Hr\EmployeeController@editPersonal');
+Route::get('masterfiles/employee/{id}/edit/family', 'Hr\EmployeeController@editFamily');
+Route::get('masterfiles/employee/{id}/edit/workedu', 'Hr\EmployeeController@editWorkedu');
+Route::get('masterfiles/employee/{id}/edit/confirm', 'Hr\EmployeeController@editConfirm');
+Route::delete('masterfiles/employee/child', 'Hr\EmployeeController@deleteChild');
 Route::resource('masterfiles/employee', 'Hr\EmployeeController');
 Route::resource('masterfiles/position', 'Hr\PositionController');
 

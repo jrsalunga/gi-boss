@@ -34,6 +34,7 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
+
         if ($this->auth->guest()) {
             if ($request->ajax()) {
                 //return response('Unauthorized.', 401);
@@ -43,6 +44,11 @@ class Authenticate
                 return redirect()->guest('/login');
             }
         }
+
+        if($this->auth->user()->admin == 2)
+                return redirect('/hr');
+        else if($this->auth->user()->admin != 1)
+                return redirect('/logout');
 
         return $next($request);
     }

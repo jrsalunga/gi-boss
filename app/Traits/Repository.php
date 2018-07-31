@@ -1,5 +1,7 @@
 <?php namespace App\Traits;
 
+use Prettus\Repository\Events\RepositoryEntityCreated;
+
 trait Repository {
 
   protected $skipOrder = false;
@@ -30,6 +32,16 @@ trait Repository {
     return $this;
   }
 
+  public function codeID($id, $field=['*']) {
+    $datas = $this->skipCache()->scopeQuery(function($q) use ($id, $field) {
+      return $q->select($field)->where('id', $id)->orWhere('code', $id);
+    })->all();
+
+    return is_null($datas)
+      ? NULL
+      : $datas->first();
+  }
+
 
   /*****
   * search/match $field from $attributes and DB before creating 
@@ -50,6 +62,48 @@ trait Repository {
     $obj = $this->findWhere($attr_idx)->first();
 
     return !is_null($obj) ? $obj : $this->create($attributes);
+  }
+
+
+
+  public function firstOrNewField($attributes, $field) {
+      
+    $attr_idx = [];
+    
+    if (is_array($field)) {
+      foreach ($field as $value) {
+        $attr_idx[$value] = array_pull($attributes, $value);
+      }
+    } else {
+      $attr_idx[$field] = array_pull($attributes, $field);
+    }
+
+    $m = $this->model();
+    // Retrieve by the attributes, or instantiate a new instance...
+    $model = $m::firstOrNew($attr_idx);
+    //$this->model->firstOrNew($attr_idx);
+    
+    foreach ($attributes as $key => $value) {
+      $model->{$key} = $value;
+    }
+
+    return $model->save() ? $model : false;
+
+  }
+
+
+  public function modelCreate(array $attributes) {
+
+    $model = new $this->model();
+
+    foreach ($attributes as $key => $value) {
+      if (!empty($value))
+        $model->{$key} = $value;
+    }
+
+    event(new RepositoryEntityCreated($this, $model));
+
+    return $model->save() ? $model : NULL;
   }
   
 

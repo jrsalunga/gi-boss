@@ -14,9 +14,16 @@ use App\Traits\Repository as RepoTrait;
 
 class CompanyRepository extends BaseRepository implements CacheableInterface
 {
-  use CacheableRepository, RepoTrait;
+  use CacheableRepository, 
+      RepoTrait;
 
-  protected $order = ['descriptor', 'code'];
+  protected $order = ['code', 'descriptor'];
+
+  protected $fieldSearchable = [
+    'code'=>'like',
+    'descriptor'=>'like',
+    'address'=>'like'
+  ];
 
 	public function __construct() {
       parent::__construct(app());

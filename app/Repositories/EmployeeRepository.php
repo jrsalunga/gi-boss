@@ -14,6 +14,7 @@ use App\Repositories\Criterias\ByBranchCriteria;
 use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Traits\Repository as RepoTrait;
 
 
 class EmployeeRepository extends BaseRepository implements CacheableInterface
@@ -21,7 +22,9 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
 {
   //protected $cacheMinutes = 1;
 
-  use CacheableRepository;
+  use CacheableRepository, RepoTrait;
+
+  protected $order = ['lastname', 'firstname', 'middlename'];
 
   public function __construct() {
       parent::__construct(app());
@@ -43,11 +46,13 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
   }
 
   protected $fieldSearchable = [
+    'branch.code',
     'position.code',
     'department.code',
-    'code',
+    'code'=>'like',
     'lastname'=>'like',
-    'fistname'=>'like',
+    'firstname'=>'like',
+    'middlename'=>'like',
   ];
 
     /**
@@ -139,6 +144,21 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
     $instance = new $this->model();
     $instance->setTable($table);
     return $instance;
+  }
+
+  public function lastEmpByCode() {
+    return $this->skipCache()
+      ->orderBy('code', 'desc')
+      ->findWhere([['code','like', '0%']])
+      ->first();
+  }
+
+  public function getLatestCode() {
+    $le = $this->lastEmpByCode();
+
+    return (!is_null($le) && isset($le->code))
+      ? str_pad(($le->code + 1), 6, '0', STR_PAD_LEFT)
+      : str_pad('1', 6, '0', STR_PAD_LEFT);
   }
   
   

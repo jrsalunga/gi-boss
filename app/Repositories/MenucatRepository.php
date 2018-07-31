@@ -7,7 +7,6 @@ use Prettus\Repository\Contracts\CacheableInterface;
 use App\Traits\Repository as RepoTrait;
 
 class MenucatRepository extends BaseRepository implements CacheableInterface
-//class MenucatRepository extends BaseRepository 
 {
   use CacheableRepository, RepoTrait;
 

@@ -80,7 +80,7 @@ class AuthController extends Controller
         $login_type = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL ) ? 'email' : 'username';
 
         //$request->merge([ $login_type => $request->input('email')]);
-        $request->merge([ $login_type => $request->input('email'), 'admin'=>'1']); // added 5 for Area Manager
+        $request->merge([ $login_type => $request->input('email')]); // added 5 for Area Manager
 
 
         if ($login_type == 'email') {
@@ -111,7 +111,7 @@ class AuthController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        $credentials = $request->only($login_type, 'password', 'admin'); // added check user
+        $credentials = $request->only($login_type, 'password'); // added check user
         //$credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {

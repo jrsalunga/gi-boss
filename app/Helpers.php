@@ -289,3 +289,204 @@ if (!function_exists('dayDesc')) {
   }
 }
 
+if (!function_exists('contact_icon')) {
+  function contact_icon($x, $full=false) {
+  	switch ($x) {
+    	case '2':
+    		if ($full)
+    			return '<span class="gly gly-phone-alt"></span>';
+    		else
+    			return 'gly-phone-alt';
+    	case '3':
+    		if ($full)
+    			return '<span class="gly gly-fax"></span>';
+    		else
+    			return 'gly-fax';
+    	default:
+    		if ($full)
+    			return '<span class="gly gly-iphone"></span>';
+    		else
+        	return 'gly-iphone';
+        break;
+    }
+  }
+}
+
+
+if (!function_exists('jquery_mask')) {
+  function jquery_mask($x, $full=false) {
+  	switch ($x) {
+    	case '2':
+    		if ($full)
+    			return '<span class="gly gly-phone-alt"></span>';
+    		else
+    			return 'mask="000 0000" maxlength="8"';
+    	case '3':
+    		if ($full)
+    			return '<span class="gly gly-fax"></span>';
+    		else
+    			return 'maxlength="17"';
+    	default:
+    		if ($full)
+    			return '<span class="gly gly-iphone"></span>';
+    		else
+        	return 'mask="0000 0000000" maxlength="12"';
+        break;
+    }
+  }
+}
+
+if (!function_exists('nf')) {
+  function nf($x='0.00', $d=2) {
+    return number_format($x, $d);
+  }
+}
+
+if (!function_exists('clean_number_format')) {
+  function clean_number_format($x='0.00') {
+  	return floatval(preg_replace('/[^\d.]/', '', $x));
+  }
+}
+
+if (!function_exists('nav_caption')) {
+  function nav_caption($x) {
+  	return config('menu.main.navbar-left.masterfiles.dropdown.'.$x.'.caption');
+  }
+}
+
+if (!function_exists('hr_nav_caption')) {
+  function hr_nav_caption($x) {
+  	return config('menu.main-hr.navbar-left.masterfiles.dropdown.'.$x.'.caption');
+  }
+}
+
+
+if (!function_exists('up')) {
+  function up($x) {
+  	return strtoupper($x);
+  }
+}
+
+
+if (!function_exists('emp_status')) {
+  function emp_status($x) {
+  	switch ($x) {
+    	case '1':
+    		return 'TRAINEE';
+    	case '2':
+    		return 'CONTRACTUAL';
+    	case '3':
+    		return 'REGULAR';
+    	case '4':
+    		return 'RESIGNED';
+    	case '5':
+    		return 'TERMINATED';
+    	default:
+    		return '';
+        break;
+    }
+  }
+}
+
+
+if (!function_exists('emp_ratetype')) {
+  function emp_ratetype($x) {
+  	switch ($x) {
+    	case '1':
+    		return 'DAY';
+    	case '2':
+    		return 'MON';
+    	default:
+    		return '*';
+        break;
+    }
+  }
+}
+
+if (!function_exists('check_educ')) {
+  function check_educ($x) {
+  	switch ($x) {
+    	case '1':
+    		return 'DAY';
+    	case '2':
+    		return 'MON';
+    	default:
+    		return '*';
+        break;
+    }
+  }
+}
+
+if (!function_exists('check_civil_status')) {
+  function check_civil_status($x) {
+  	switch ($x) {
+    	case '1':
+    		return 'SINGLE';
+    	case '2':
+    		return 'MARRIED';
+    	case '3':
+    		return 'SEPARATED';
+    	default:
+    		return '*';
+        break;
+    }
+  }
+}
+
+if (!function_exists('check_gender')) {
+  function check_gender($x, $full=false) {
+  	switch ($x) {
+    	case '1':
+    		if ($full)
+    			return 'MALE';
+    		else
+    			return 'M';
+    	case '2':
+    		if ($full)
+    			return 'FEMALE';
+    		else
+    			return 'F';
+    	default:
+    		if ($full)
+    			return '';
+    		else
+        	return '';
+        break;
+    }
+  }
+}
+
+if (!function_exists('emp_paytype')) {
+  function emp_paytype($x) {
+    switch ($x) {
+      case '1':
+        return 'WEEKLY';
+      case '2':
+        return 'SEMI-MONTHLY';
+      case '3':
+        return 'MONTHLY';
+      default:
+        return '';
+        break;
+    }
+  }
+}
+
+if (!function_exists('emp_ratetype2')) {
+  function emp_ratetype2($x) {
+    switch ($x) {
+      case '1':
+        return 'DAILY';
+      case '2':
+        return 'MONTHLY';
+      default:
+        return '';
+        break;
+    }
+  }
+}
+
+
+
+
+

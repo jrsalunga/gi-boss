@@ -277,7 +277,7 @@ class SettingsController extends Controller {
 		    $employee->deptid				= $this->getDeptId($row['DEPT']);
 		    $employee->positionid		= $this->getPositionId(trim($row['POSITION']));
 		    $employee->paytype			= 2;
-		    $employee->ratetype			= 2;
+		    $employee->ratetype			= $this->getRateType($row['DEPT']);
 		    $employee->rate					= trim($row['RATE_HR']);
 		    $employee->ecola				= trim($row['RATE_HR']);
 		    $employee->allowance1		= trim($row['ALW1_RATE']);
@@ -544,6 +544,15 @@ class SettingsController extends Controller {
 			return 'DC60EC42B0B143AFA7D42312DA5D80BF';
 		if(starts_with($dept, 'ADM'))
 			return 'D2E8E339A47B11E592E000FF59FBB323';
+		return '';	
+	
+	}
+
+	public function getRateType($dept){
+		if(ends_with($dept, 'DAY'))
+			return '1';
+		if(ends_with($dept, 'MON'))
+			return '2';
 		return '';	
 	
 	}

@@ -1,4 +1,4 @@
-<?php namespace App\Repositories;
+<?php namespace App\Repositories\Hris;
 
 use App\Repositories\Repository;
 use Prettus\Repository\Eloquent\BaseRepository;

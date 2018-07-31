@@ -5,6 +5,7 @@ namespace App\Providers;
 use Auth;
 use App\User;
 use Illuminate\Support\ServiceProvider;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('name', session('user.fullname'))->with('bossbranch', session('user.bossbranch'));
         });
 
-        view()->composer('*', 'App\Http\ViewComposers\MainMenuComposer');
-        view()->composer('*', 'App\Http\ViewComposers\HrMainMenuComposer');
+        View::composer('*', 'App\Http\ViewComposers\MainMenuComposer');
+        View::composer('*', 'App\Http\ViewComposers\HrMainMenuComposer');
     }
 
     /**

@@ -33,8 +33,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('name', session('user.fullname'))->with('bossbranch', session('user.bossbranch'));
         });
 
-        view()->composer(['menu.main', 'menu.sub', '_partials.pager'], 'App\Http\ViewComposers\MainMenuComposer');
-        view()->composer(['menu.main-hr', 'menu.sub-hr', '_partials.pager-hr'], 'App\Http\ViewComposers\HrMainMenuComposer');
+        view()->composer('*', 'App\Http\ViewComposers\MainMenuComposer');
+        view()->composer('*', 'App\Http\ViewComposers\HrMainMenuComposer');
     }
 
     /**

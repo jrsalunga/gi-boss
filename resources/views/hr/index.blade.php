@@ -37,7 +37,13 @@
 </style>
 @endsection
 
-{{ dd(config('menu.main-hr')) }}
+@section('navbar-1')
+  @include('menu.main-hr')
+@endsection
+
+@section('sidebar')
+  @include('menu.sub-hr')
+@endsection
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 

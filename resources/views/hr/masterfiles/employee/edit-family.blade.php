@@ -223,7 +223,7 @@
 	  </div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-default -->
 <hr>
-<div class="row">
+<div class="row" style="margin-bottom: 50px;">
 	<div class="col-md-12">
 		<input type="hidden" name="_type" value="family">
 		<input type="hidden" name="id" value="{{ $employee->id }}">

@@ -159,7 +159,7 @@
 	
 	
 <hr>
-<div class="row">
+<div class="row" style="margin-bottom: 50px;">
 	<div class="col-md-12">
 		<input type="hidden" name="_type" value="workedu">
 		<input type="hidden" name="id" value="{{ $employee->id }}">

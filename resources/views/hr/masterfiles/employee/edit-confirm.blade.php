@@ -99,23 +99,18 @@
 	@endif
 @endif
 <hr>
-<div class="row">
+<div class="row" style="margin-bottom: 50px;">
 	<div class="col-md-12">
 		<input type="hidden" name="_type" value="confirm">
 		<input type="hidden" name="id" value="{{ $employee->id }}">
 		@if(request()->has('raw') && request()->input('raw')=='true')
 			<input type="hidden" name="_raw" value="true">
 		@endif
-
-
-		
-		
 		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader" {{ $valid ? '':'disabled' }}>
 			<span class="gly gly-disk-saved" data-toggle="loader"></span> 
 			<span class="{{ $c }}">Confirm</span> & 
 			<span class="{{ $g }}">Generate .MAS File</span>
 		</button>
-		
 		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}" class="btn btn-default" data-toggle="loader"><span class="gly gly-remove"></span> Cancel</a>
 		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/workedu" class="btn btn-default pull-right" data-toggle="loader" style="margin-right: 5px;">
 			<span class="gly gly-rewind"></span> 

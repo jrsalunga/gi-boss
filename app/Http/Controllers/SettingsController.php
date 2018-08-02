@@ -554,7 +554,6 @@ class SettingsController extends Controller {
 		if(ends_with($dept, 'MON'))
 			return '2';
 		return '';	
-	
 	}
 
 

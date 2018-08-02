@@ -23,7 +23,9 @@
 		@include('_partials.alerts')
 	</div>
 </div>
-
+<h3 class="text-success" style="margin: 15px 0;"> {{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
+	<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
+</h3>
 <form action="/hr/masterfiles/employee" method="POST">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">
@@ -149,64 +151,102 @@
 				    <input type="text" class="form-control" id="er_sss" name="er_sss" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_sss:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-offset-3 col-md-pull-3">
+				<div class="col-md-2">
+					<div class="form-group @include('_partials.input-error', ['field'=>'sss_tag'])">
+						<label for="sss_tag" class="control-label">Tag</label>
+						<select class="form-control" name="sss_tag" id="sss_tag">
+							@foreach(['No', 'Yes'] as $key => $t)
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->sss_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  		{{ $t }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'phicno'])">
 				    <label for="phicno" class="control-label">PhilHealth #</label>
 				    <input type="text" class="form-control" id="phicno" name="phicno" placeholder="000000000000" data-mask="000000000000" maxlength="12" value="{{ $employee->phicno }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
+				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ee_phic'])">
 				    <label for="ee_phic" class="control-label">PhilHealth EE Share</label>
 				    <input type="text" class="form-control" id="ee_phic" name="ee_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_phic:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
+				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'er_phic'])">
 				    <label for="er_phic" class="control-label">PhilHealth ER Share</label>
 				    <input type="text" class="form-control" id="er_phic" name="er_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_phic:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-offset-3 col-md-pull-3">
+				<div class="col-md-2 col-md-pull-1">
+					<div class="form-group @include('_partials.input-error', ['field'=>'phic_tag'])">
+						<label for="phic_tag" class="control-label">Tag</label>
+						<select class="form-control" name="phic_tag" id="phic_tag">
+							@foreach(['No', 'Yes'] as $key => $t)
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->phic_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  		{{ $t }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'hdmfno'])">
 				    <label for="hdmfno" class="control-label">Pag Ibig #</label>
 				    <input type="text" class="form-control" id="hdmfno" name="hdmfno" placeholder="0000-0000-0000" data-mask="0000-0000-0000" maxlength="14" value="{{ $employee->hdmfno }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
+				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ee_hdmf'])">
 				    <label for="ee_hdmf" class="control-label">Pag Ibig EE Share</label>
 				    <input type="text" class="form-control" id="ee_hdmf" name="ee_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_hdmf:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
+				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'er_hdmf'])">
 				    <label for="er_hdmf" class="control-label">Pag Ibig ER Share</label>
 				    <input type="text" class="form-control" id="er_hdmf" name="er_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_hdmf:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-offset-3 col-md-pull-3">
+				<div class="col-md-2 col-md-pull-1">
+					<div class="form-group @include('_partials.input-error', ['field'=>'hdmf_tag'])">
+						<label for="hdmf_tag" class="control-label">Tag</label>
+						<select class="form-control" name="hdmf_tag" id="hdmf_tag">
+							@foreach(['No', 'Yes'] as $key => $t)
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->hdmf_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  		{{ $t }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'tin'])">
 				    <label for="tin" class="control-label">TIN #</label>
 				    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" data-mask="000-000-000-000" maxlength="15" value="{{ $employee->tin }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
-					<div class="form-group @include('_partials.input-error', ['field'=>'ee_tin'])">
-				    <label for="ee_tin" class="control-label">TIN EE Share</label>
-				    <input type="text" class="form-control" id="ee_tin" name="ee_tin" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_tin:'' }}">
+				<div class="col-md-3 col-md-pull-1">
+					<div class="form-group @include('_partials.input-error', ['field'=>'wtax'])">
+				    <label for="wtax" class="control-label">W/Tax</label>
+				    <input type="text" class="form-control" id="wtax" name="wtax" placeholder="0.00" data-mask="000,000.00" data-mask-reverse="true" maxlength="10" value="{{ isset($employee->statutory)?$employee->statutory->wtax:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
-				<div class="col-md-3 col-md-pull-3">
-					<div class="form-group @include('_partials.input-error', ['field'=>'er_tin'])">
-				    <label for="er_tin" class="control-label">TIN ER Share</label>
-				    <?php 
-
-				    $er_tin = isset($employee->statutory)?$employee->statutory->er_tin:'';
-				    $er_tin=is_null(request()->old('er_tin'))?$er_tin:request()->old('er_tin') ;?>
-				    <input type="text" class="form-control" id="er_tin" name="er_tin" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $er_tin }}">
-				  </div>
-				</div><!-- end: .col-md-3 -->
+				<div class="col-md-2 col-md-pull-1 col-md-push-2">
+					<div class="form-group @include('_partials.input-error', ['field'=>'wtax_tag'])">
+						<label for="wtax_tag" class="control-label">Tag</label>
+						<select class="form-control" name="wtax_tag" id="wtax_tag">
+							@foreach(['No', 'Yes'] as $key => $t)
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->wtax_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  		{{ $t }}
+						  	</option>
+						  @endforeach
+						</select>
+					</div>
+				</div>
 			</div><!-- end: .row -->
 	</div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->

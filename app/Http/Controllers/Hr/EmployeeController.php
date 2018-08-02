@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Hr;
 
 use DB;
+use Mail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -197,16 +198,21 @@ class EmployeeController extends Controller
     $rules2 = [
       'ee_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'sss_tag'			=> 'regex:/^\d{1}$/',
       'ee_phic' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_phic' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'phic_tag'		=> 'regex:/^\d{1}$/',
       'ee_hdmf' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_hdmf' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'hdmf_tag'		=> 'regex:/^\d{1}$/',
       'ee_tin' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_tin' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'wtax' 				=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'wtax_tag'		=> 'regex:/^\d{1}$/',
       'employee_id' => 'max:32|alpha_num',
     ];
 
-    $this->clean_request_number_format($request, ['rate', 'ecola', 'allowance1', 'allowance2', 'ee_sss', 'er_sss', 'ee_phic', 'er_phic', 'ee_hdmf', 'er_hdmf', 'ee_tin', 'er_tin']);
+    $this->clean_request_number_format($request, ['rate', 'ecola', 'allowance1', 'allowance2', 'ee_sss', 'er_sss', 'ee_phic', 'er_phic', 'ee_hdmf', 'er_hdmf', 'ee_tin', 'er_tin', 'wtax']);
     $this->clean_request_govmt($request, ['sssno', 'hdmfno', 'tin']);
 
 		//return $request->all();
@@ -643,10 +649,14 @@ class EmployeeController extends Controller
 		}
 
 		$this->employee->update(['processing'=>1], $o->id);
-
+		
 		DB::commit();
-
-
+		
+		try {
+			$this->email($o->branch->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
+    } catch (Exception $e) {
+			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+    }
     
     return redirect()->back()->with('alert-success', 'Employee has been confirmed and generated .MAS file.');
   }
@@ -673,6 +683,40 @@ class EmployeeController extends Controller
 
     return $fileUploadRepo->create($data)?:NULL;
   }
+
+  private function email($brcode, $name, $fileupload, $filepath) {
+		
+		$data = [
+			'branchcode' 	=> $brcode,
+			'name' 				=> $name,
+			'attachment' 	=> $filepath,
+			'user'				=> 'Giligans HR',
+			'cashier'			=> $fileupload->cashier,
+			'filename'		=> $fileupload->filename,
+			'remarks'			=> $fileupload->user_remarks,
+			'email'				=> request()->user()->email
+		];
+		
+		try {
+
+			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {
+	        $message->subject('Man# '.$data['name'].' ('.$data['branchcode'].')');
+	        $message->from('giligans.app@gmail.com', 'Giligans HR');
+	       	$message->to('giligans.app@gmail.com');
+	       	$message->replyTo($data['email'], $data['user']);
+
+	        //if (app()->environment()==='production')
+	        	//$message->to('gi.hrd01@gmail.com');
+	       	
+	       	$message->attach($data['attachment']);
+	    });
+
+		} catch (Exception $e) {
+			throw $e;
+			return false;
+		}
+		return true;
+	}
 
   private function createEmpfile($employeeid, $fileupload) {
 

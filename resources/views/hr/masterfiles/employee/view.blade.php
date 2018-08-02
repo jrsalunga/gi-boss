@@ -23,7 +23,7 @@
 					</td>
 					<td>
 						<h3 class="text-success">
-							</span> {{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
+							{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
 							<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 						</h3>
 						@if(isset($employee->position))
@@ -212,69 +212,95 @@
 				  <div class="panel-heading">Contribution Details</div>
 				  <div class="panel-body">
 				  	<div class="row">
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>SSS #</label>
 									<div><abbr title="{{ $employee->sssno }}" data-toggle="tooltip">{{ $employee->sssno() }}</abbr></div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>SSS EE Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->ee_sss):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>SSS ER Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->er_sss):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Tag</label>
+									<div>{{ $employee->statutory ? ($employee->statutory->sss_tag==1?'Y':'N'):'&nbsp;' }}</div>
+								</div>
+				  		</div>
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>PhilHealth #</label>
 									<div><abbr title="{{ $employee->phicno }}" data-toggle="tooltip">{{ $employee->phicno }}</abbr></div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>PhilHealth EE Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->ee_phic):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>PhilHealth ER Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->er_phic):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Tag</label>
+									<div>{{ $employee->statutory ? ($employee->statutory->phic_tag==1?'Y':'N'):'&nbsp;' }}</div>
+								</div>
+				  		</div>
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Pag Ibig #</label>
 									<div><abbr title="{{ $employee->hdmfno }}" data-toggle="tooltip">{{ $employee->hdmfno() }}</abbr></div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Pag Ibig EE Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->ee_hdmf):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Pag Ibig ER Share</label>
 									<div>{{ $employee->statutory ? nf($employee->statutory->er_hdmf):'&nbsp;' }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Tag</label>
+									<div>{{ $employee->statutory ? ($employee->statutory->hdmf_tag==1?'Y':'N'):'&nbsp;' }}</div>
+								</div>
+				  		</div>
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>TIN #</label>
 									<div><abbr title="{{ $employee->tin }}" data-toggle="tooltip">{{ $employee->tin() }}</abbr></div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-6">
+				  			<div class="form-group">
+									<label>W/Tax</label>
+									<div>{{ $employee->statutory ? nf($employee->statutory->wtax):'&nbsp;' }}</div>
+								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Tag</label>
+									<div>{{ $employee->statutory ? ($employee->statutory->wtax_tag==1?'Y':'N'):'&nbsp;' }}</div>
+								</div>
 				  		</div>
 						</div>
 				 	</div>

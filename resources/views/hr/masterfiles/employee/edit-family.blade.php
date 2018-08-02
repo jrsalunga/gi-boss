@@ -23,7 +23,9 @@
 		@include('_partials.alerts')
 	</div>
 </div>
-
+<h3 class="text-success" style="margin: 15px 0;"> {{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
+	<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
+</h3>
 <form action="/hr/masterfiles/employee" method="POST">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">

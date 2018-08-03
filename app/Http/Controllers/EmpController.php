@@ -216,6 +216,10 @@ class EmpController extends Controller
 		$wtax				= number_format(0, 2, '.', ''); //['WTAX', 	'N', 10,2],
 		$tax_ee			= number_format(0, 2, '.', ''); //['TAX_EE', 	'N', 10,2],
 		$tax_er			= number_format(0, 2, '.', ''); //['WTTAX_ERAX', 	'N', 10,2],
+		$sss_tag 		= 'N';
+		$ph_tag 		= 'N';
+		$pbig_tag 	= 'N';
+		$tax_tag 		= 'N';
 
 		if (!is_null($employee->statutory)) {
 			$sss_ee			= $employee->statutory->ee_sss;
@@ -227,6 +231,10 @@ class EmpController extends Controller
 			$wtax				= $employee->statutory->wtax;
 			$tax_ee			= $employee->statutory->ee_tin;
 			$tax_er			= $employee->statutory->er_tin;
+			$sss_tag 		= $employee->statutory->sss_tag=='1' ? 'Y':'N';
+			$ph_tag 		= $employee->statutory->phic_tag=='1' ? 'Y':'N';
+			$pbig_tag 	= $employee->statutory->hdmf_tag=='1' ? 'Y':'N';
+			$tax_tag 		= $employee->statutory->wtax_tag=='1' ? 'Y':'N';
 		}
 
 
@@ -237,7 +245,7 @@ class EmpController extends Controller
 			'FIRS_NAM'		=> up(substr($employee->firstname, 0, 20)),	//['FIRS_NAM', 	'C', 20],	
 			'MI'					=> up(substr($employee->middlename, 0, 1)),	//['MI', 				'C', 2],	
 			'MIDL_NAM'		=> up(substr($employee->middlename, 0, 20)), //['MIDL_NAM', 	'C', 20],	
-			'HIRED'				=> $employee->datehired->format('Ymd'), //['HIRED', 		'D'],	
+			'HIRED'				=> is_iso_date($employee->datehired->format('Y-m-d')) ? $employee->datehired->format('Ymd') : '', //['HIRED', 		'D'],	
 			'EMP_STUS' 		=> substr(emp_status($employee->empstatus), 0, 20), //['EMP_STUS', 	'C', 9],	
 			'STATUS_TAG'	=> ' ', //['STATUS_TAG','C', 1],	
 			'RATE_HR'			=> number_format($employee->rate, 2, '.', ''), //['RATE_HR', 	'N', 8,2],	
@@ -265,10 +273,10 @@ class EmpController extends Controller
 			'PHEALTH_NO'	=> substr($employee->phicno, 0, 14), //['PHEALTH_NO', 	'C', 14],	
 			'PBIG_NO'			=> substr($employee->hdmfno, 0, 14), //['PBIG_NO', 	'C', 14],	
 			'WTAX_NO'			=> substr($employee->tin, 0, 14), //['WTAX_NO', 	'C', 14],
-			'SSS_TAG'			=> 'Y', //['SSS_TAG','C', 1],	
-			'PH_TAG'			=> 'Y', //['PH_TAG','C', 1],	
-			'PBIG_TAG'		=> 'Y', //['PBIG_TAG','C', 1],	
-			'WTAX_TAG'		=> 'N', //['WTAX_TAG','C', 1],		
+			'SSS_TAG'			=> $sss_tag, //['SSS_TAG','C', 1],	
+			'PH_TAG'			=> $ph_tag, //['PH_TAG','C', 1],	
+			'PBIG_TAG'		=> $pbig_tag, //['PBIG_TAG','C', 1],	
+			'WTAX_TAG'		=> $tax_tag, //['WTAX_TAG','C', 1],		
 			'SSS_EE'			=> number_format($sss_ee, 2, '.', ''), //['SSS_EE', 	'N', 10,2],
 			'SSS_ER'			=> number_format($sss_er, 2, '.', ''), //['SSS_ER', 	'N', 10,2],
 			'PH_EE'				=> number_format($ph_ee, 2, '.', ''), //['PH_EE', 	'N', 10,2],

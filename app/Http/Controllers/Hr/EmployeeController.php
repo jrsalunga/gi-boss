@@ -111,7 +111,7 @@ class EmployeeController extends Controller
 		if (!$request->has('code'))
 			$request->request->add(['code'=>$this->employee->getLatestCode()]);
 
-		return $request->all();
+		//return $request->all();
 		$keys = array_keys($rules);
 
 		DB::beginTransaction();

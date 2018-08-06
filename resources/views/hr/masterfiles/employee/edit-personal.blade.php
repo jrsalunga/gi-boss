@@ -70,7 +70,7 @@
 	  		<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'birthdate'])">
 				    <label for="birthdate" class="control-label">Birthday</label>
-				    <input type="text" class="form-control datepicker" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" maxlength="10" value="{{ $employee->getBirthdate() }}" readonly>
+				    <input type="text" class="form-control datepicker" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" maxlength="10" value="{{ $employee->getBirthdate() }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">

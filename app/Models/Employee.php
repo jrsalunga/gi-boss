@@ -141,6 +141,12 @@ class Employee extends BaseModel {
       : NULL;
   }
 
+  public function getDatestart() {
+    return is_iso_date($this->datestart->format('Y-m-d'))
+      ? $this->datestart->format('Y-m-d')
+      : NULL;
+  }
+
   public function isConfirm() {
     $this->load('empfile');
     if (!is_null($this->empfile))

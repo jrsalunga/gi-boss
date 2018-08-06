@@ -155,10 +155,7 @@ function carbonCheckorNow($date=NULL) {
 }
 
 function diffForHumans(Carbon\Carbon $time) {
-
-  $x = Carbon\Carbon::now()->diffForHumans($time);
-                    
-  return str_replace("after", "",  $x);
+  return str_replace(["after", "before"], "", Carbon\Carbon::now()->diffForHumans($time));
 }
 
 

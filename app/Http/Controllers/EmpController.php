@@ -167,7 +167,7 @@ class EmpController extends Controller
 		if (isset($employee->rate)) {
 			$r = explode('.', $employee->rate);
 			//$cmd->info('Rate:'. $r[0]);
-			$converter = new Convert($r[0], 'Pesos');
+			$converter = new Convert($r[0], ' Pesos');
 			$sal_word = up(substr($converter->Convert(), 0, -5)).' & '.$r[1].'/100';
 			//$cmd->info('Rate Word:'.$sal_word);
 		}

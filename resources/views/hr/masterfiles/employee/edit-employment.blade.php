@@ -66,6 +66,12 @@
 						</select>
 					</div>	
 				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'datestart'])">
+				    <label for="datestart" class="control-label">Date Start</label>
+				    <input type="text" class="form-control datepicker" id="datestart" name="datestart" placeholder="YYYY-MM-DD" maxlength="10" value="{{ $employee->getDatestart() }}" readonly>
+				  </div>
+				</div><!-- end: .col-md-3 -->
 			</div>
 	  				  
 	  </div><!-- end: .panel-body -->

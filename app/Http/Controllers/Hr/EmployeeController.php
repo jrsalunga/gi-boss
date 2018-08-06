@@ -181,6 +181,7 @@ class EmployeeController extends Controller
 		$rules = [
       'deptid'			=> 'required|max:32|alpha_num',
       'empstatus' 	=> 'required|regex:/^[0-5]{1}$/',
+      'datestart' 	=> 'required|date_format:Y-m-d',
       'paytype' 		=> 'required|regex:/^[0-3]{1}$/',
       'ratetype' 		=> 'required|regex:/^[0-2]{1}$/',
       'rate' 				=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
@@ -826,6 +827,7 @@ class EmployeeController extends Controller
       'positionid'=> ['desc'=>'Position', 'url'=>'edit/employment'],
       'paytype'		=> ['desc'=>'Pay Type', 'url'=>'edit/employment'],
       'ratetype'	=> ['desc'=>'Rate Type', 'url'=>'edit/employment'],
+      'datestart'	=> ['desc'=>'Date Start', 'url'=>'edit/employment'],
       'rate'			=> ['desc'=>'Rate', 'url'=>'edit/employment'],
       'sssno'			=> ['desc'=>'SSS #', 'url'=>'edit/employment'],
       'phicno'		=> ['desc'=>'PhilHealth #', 'url'=>'edit/employment'],
@@ -841,10 +843,6 @@ class EmployeeController extends Controller
 	   				$valid = false;
 	    	}    	
     }
-
-		//if ($employee->isActive())
-	  // 	$valid = false;
-
 
 		return is_null($employee)
 			? abort('404')

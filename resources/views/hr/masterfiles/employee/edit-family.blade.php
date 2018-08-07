@@ -119,7 +119,12 @@
 						<div class="col-md-3">
 							<div class="form-group @include('_partials.input-error', ['field'=>'children.'.($key+1).'.birthdate'])">
 						    <label for="children[{{($key+1)}}][birthdate]" class="control-label">Birthday</label>
-						    <input type="text" class="form-control datepicker" id="children[{{($key+1)}}][birthdate]" name="children[{{($key+1)}}][birthdate]" placeholder="YYYY-MM-DD" maxlength="10" value="{{ is_null(old('children.'.($key+1).'.birthdate'))?$c->getBirthdate():old('children.'.($key+1).'.birthdate') }}" readonly>
+						    <div class="input-group datepicker">
+						    	<input type="text" class="form-control" id="children[{{($key+1)}}][birthdate]" name="children[{{($key+1)}}][birthdate]" placeholder="YYYY-MM-DD" maxlength="10" value="{{ is_null(old('children.'.($key+1).'.birthdate'))?$c->getBirthdate():old('children.'.($key+1).'.birthdate') }}" data-mask="0000-00-00">
+						    	<div class="input-group-addon">
+					        <span class="glyphicon glyphicon-calendar"></span>
+					    </div>
+					  </div>
 						  </div>
 						</div><!-- end: .col-md-3 -->
 						<div class="col-md-3">
@@ -304,7 +309,9 @@ var add_child = function(x, idx) {
 						html += '<div class="col-md-3">';
 							html += '<div class="form-group">';
 						    html += '<label for="children['+idx+'][birthdate]" class="control-label">Birthday</label>';
-						    html += '<input type="text" class="form-control datepicker" id="children['+idx+'][birthdate]" name="children['+idx+'][birthdate]" placeholder="YYYY-MM-DD" maxlength="10" readonly>';
+						    html += '<div class="input-group datepicker">';
+						    html += '<input type="text" class="form-control" id="children['+idx+'][birthdate]" name="children['+idx+'][birthdate]" placeholder="YYYY-MM-DD" maxlength="10" data-mask="0000-00-00">';
+						    html += '<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div></div>';
 						  html += '</div>';
 						html += '</div><!-- end: .col-md-3 -->';
 						html += '<div class="col-md-3">';

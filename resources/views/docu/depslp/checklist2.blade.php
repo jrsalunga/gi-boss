@@ -278,9 +278,9 @@
           <td><strong class="pull-right">{{ number_format($gtp_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_check,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_total,2) }}</strong></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td><strong class="pull-right">{{ number_format($gtu_cash,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_check,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_total,2) }}</strong></td>
           <td></td>
         </tr>
       </tfoot>

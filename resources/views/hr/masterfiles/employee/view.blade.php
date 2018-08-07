@@ -97,7 +97,7 @@
 	  <div class="tab-content">
 	    <div role="tabpanel" class="tab-pane <?=is_null(request()->input('tab'))?'active':'';?>" id="emplymt">
 				<div class="panel panel-primary">
-				  <div class="panel-heading">Employeer</div>
+				  <div class="panel-heading">Employer</div>
 				  <div class="panel-body">
 				  	<div class="row">
 				  		<div class="col-md-4">

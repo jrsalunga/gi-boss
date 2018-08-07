@@ -37,19 +37,18 @@
 	if(count($invalid_fields)>1)
 		$f = 'fields are';
 
-
-		$c = '';
-		$g = '';
-		if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
-			$valid = false;
-		elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$g = 'text-muted';
-		}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$c = 'text-muted';
-		}
-	?>
+	$c = '';
+	$g = '';
+	if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
+		$valid = false;
+	elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
+		$valid = false;
+		$g = 'text-muted';
+	}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
+		$valid = false;
+		$c = 'text-muted';
+	}
+?>
 
 @if(count($invalid_fields)>0)
 <div class="panel panel-warning">

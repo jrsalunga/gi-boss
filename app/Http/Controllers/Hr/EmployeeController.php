@@ -783,6 +783,8 @@ class EmployeeController extends Controller
 		if ($request->has('raw') && $request->input('raw')=='data')
 			return $employee;
 
+		//return dd($employee);
+
 		$valid = true;
 		$invalid_fields = [];
 		

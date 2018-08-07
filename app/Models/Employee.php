@@ -148,7 +148,8 @@ class Employee extends BaseModel {
   }
 
   public function isConfirm() {
-    $this->load('empfile');
+
+    //$this->load('empfile');
     if (!is_null($this->empfile))
       return true;
     return false;

@@ -167,7 +167,7 @@
 						<label for="sss_tag" class="control-label">Tag</label>
 						<select class="form-control" name="sss_tag" id="sss_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->sss_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->sss_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach
@@ -197,7 +197,7 @@
 						<label for="phic_tag" class="control-label">Tag</label>
 						<select class="form-control" name="phic_tag" id="phic_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->phic_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->phic_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach
@@ -227,7 +227,7 @@
 						<label for="hdmf_tag" class="control-label">Tag</label>
 						<select class="form-control" name="hdmf_tag" id="hdmf_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->hdmf_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->hdmf_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach

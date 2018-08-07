@@ -274,13 +274,23 @@
       </tbody>
       <tfoot>
         <tr>
-          <td></td>
+          <td>Total</td>
           <td><strong class="pull-right">{{ number_format($gtp_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_check,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_total,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtu_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtu_check,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtu_total,2) }}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Short/Over</td>
+          <td><strong class="pull-right">{{ number_format($gtp_cash-$gtu_cash,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtp_check-$gtu_check,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtp_total-$gtu_total,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_cash-$gtp_cash,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_check-$gtp_check,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_total-($gtp_total,2) }}</strong></td>
           <td></td>
         </tr>
       </tfoot>

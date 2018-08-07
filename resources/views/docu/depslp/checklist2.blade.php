@@ -220,6 +220,14 @@
             @if(!$type['slips'])
               
             @else
+              <?php
+              if ($k==1)
+                $gtu_cash += $type['amount'];
+              else
+                $gtu_check += $type['amount'];
+
+              $gtu_total += $type['amount'];
+              ?>
               {{number_format($type['amount'],2)}}<div class="btn-group">
               <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="box-shadow: none; cursor: pointer;">
                 <span class="caret"></span>

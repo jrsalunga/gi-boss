@@ -41,13 +41,23 @@
 						<div class="col-md-2">
 							<div class="form-group @include('_partials.input-error', ['field'=>'workexp.'.($key+1).'.periodfrom'])">
 						    <label for="workexp[{{($key+1)}}][periodfrom]" class="control-label">From</label>
-						    <input type="text" class="form-control monyr" id="workexp[{{($key+1)}}][periodfrom]" name="workexp[{{($key+1)}}][periodfrom]" placeholder="YYYY-MM" maxlength="7" value="{{ $w->getPeriodFrom()?$w->getPeriodFrom()->format('Y-m'):'' }}" readonly>
+						    <div class="input-group monyr">
+						    	<input type="text" class="form-control" id="workexp[{{($key+1)}}][periodfrom]" name="workexp[{{($key+1)}}][periodfrom]" placeholder="YYYY-MM" maxlength="7" value="{{ $w->getPeriodFrom()?$w->getPeriodFrom()->format('Y-m'):'' }}" data-mask="0000-00">
+						    	<div class="input-group-addon">
+						        <span class="glyphicon glyphicon-calendar"></span>
+						    	</div>
+						  	</div>
 						  </div>
 						</div><!-- end: .col-md-2 -->
 						<div class="col-md-2">
 							<div class="form-group @include('_partials.input-error', ['field'=>'workexp.'.($key+1).'.periodto'])">
 						    <label for="workexp[{{($key+1)}}][periodto]" class="control-label">To</label>
-						    <input type="text" class="form-control monyr" id="workexp[{{($key+1)}}][periodto]" name="workexp[{{($key+1)}}][periodto]" placeholder="YYYY-MM" maxlength="7" value="{{ $w->getPeriodTo()?$w->getPeriodTo()->format('Y-m'):'' }}" readonly>
+						    <div class="input-group monyr">
+						    	<input type="text" class="form-control monyr" id="workexp[{{($key+1)}}][periodto]" name="workexp[{{($key+1)}}][periodto]" placeholder="YYYY-MM" maxlength="7" value="{{ $w->getPeriodTo()?$w->getPeriodTo()->format('Y-m'):'' }}" data-mask="0000-00">
+						    	<div class="input-group-addon">
+						        <span class="glyphicon glyphicon-calendar"></span>
+						    	</div>
+						  	</div>
 						  </div>
 						</div><!-- end: .col-md-2 -->
 						<div class="col-md-5">

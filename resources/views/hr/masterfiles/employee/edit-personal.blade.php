@@ -38,15 +38,15 @@
 				  </div>
 				</div>
 				<div class="col-md-3">
-					<div class="form-group @include('_partials.input-error', ['field'=>'email'])">
-				   	<label for="email" class="control-label">Email</label>
-					 	<input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="80" value="{{ $employee->email }}">
-					</div>
-				</div>
-				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'mobile'])">
 				   	<label for="mobile" class="control-label">Mobile</label>
 					 	<input type="text" class="form-control" id="mobile" name="mobile" placeholder="0000-0000000" data-mask="0000-0000000" maxlength="20" value="{{ $employee->mobile }}">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'email'])">
+				   	<label for="email" class="control-label">Email</label>
+					 	<input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="80" value="{{ $employee->email }}">
 					</div>
 				</div>
 				<div class="col-md-3">

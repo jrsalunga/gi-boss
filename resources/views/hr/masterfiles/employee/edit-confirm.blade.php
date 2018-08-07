@@ -37,7 +37,19 @@
 	if(count($invalid_fields)>1)
 		$f = 'fields are';
 
-?>
+
+		$c = '';
+		$g = '';
+		if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
+			$valid = false;
+		elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
+			$valid = false;
+			$g = 'text-muted';
+		}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
+			$valid = false;
+			$c = 'text-muted';
+		}
+	?>
 
 @if(count($invalid_fields)>0)
 <div class="panel panel-warning">
@@ -53,19 +65,7 @@
 </div>
 @else
 
-	<?php
-		$c = '';
-		$g = '';
-		if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
-			$valid = false;
-		elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$g = 'text-muted';
-		}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$c = 'text-muted';
-		}
-	?>
+	
 
 	@if($employee->isConfirm() && $employee->hasEmpfile('MAS'))
 		<h4 class="text-success">Employee is already confirmed and has .MAS file</h4>
@@ -106,19 +106,6 @@
 		@if(request()->has('raw') && request()->input('raw')=='true')
 			<input type="hidden" name="_raw" value="true">
 		@endif
-		<?php
-		$c = '';
-		$g = '';
-		if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
-			$valid = false;
-		elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$g = 'text-muted';
-		}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
-			$valid = false;
-			$c = 'text-muted';
-		}
-	?>
 		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader" {{ $valid ? '':'disabled' }}>
 			<span class="gly gly-disk-saved" data-toggle="loader"></span> 
 			<span class="{{ $c }}">Confirm</span> & 

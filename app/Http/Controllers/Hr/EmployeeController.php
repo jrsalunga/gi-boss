@@ -672,6 +672,7 @@ class EmployeeController extends Controller
 	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
 	        $message->from('giligans.app@gmail.com', 'Giligans HRIS');
 	       	$message->to('giligans.app@gmail.com');
+	       	$message->cc('giligans.app@gmail.com');
 	       	$message->replyTo($data['email'], $data['user']);
 
 	        //if (app()->environment()==='production')

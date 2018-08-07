@@ -126,6 +126,7 @@ class DepslpController extends Controller {
 
 
     $arr = [];
+    $gt = [];
     for ($i=0; $i < $date->daysInMonth; $i++) { 
 
   		$date = $fr->copy()->addDays($i);

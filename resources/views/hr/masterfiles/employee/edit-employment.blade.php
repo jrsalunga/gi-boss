@@ -69,7 +69,12 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'datestart'])">
 				    <label for="datestart" class="control-label">Date Start</label>
-				    <input type="text" class="form-control datepicker" id="datestart" name="datestart" placeholder="YYYY-MM-DD" maxlength="10" value="{{ $employee->getDatestart() }}">
+				    <div class="input-group datepicker">
+				    	<input type="text" class="form-control" id="datestart" name="datestart" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ $employee->getDatestart() }}">
+				    	<div class="input-group-addon">
+					        <span class="glyphicon glyphicon-calendar"></span>
+					    </div>
+					  </div>
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div>

@@ -170,6 +170,13 @@
         $pcheck = 0;
         $total_pos = 0;
 
+        $gtp_cash = 0;
+        $gtp_check = 0;
+        $gtp_total = 0;
+        $gtu_cash = 0;
+        $gtu_check = 0;
+        $gtu_total = 0;
+
       ?>
       <tbody>
         @foreach($datas as $key => $b) 
@@ -185,6 +192,14 @@
               
             @else
               {{ number_format($pos['amount'],2) }}
+              <?php
+              if ($key==0)
+                $gtp_cash += $pos['amount'];
+              else
+                $gtp_check += $pos['amount'];
+
+              $gtp_total += $pos['amount'];
+              ?>
             @endif
           </td>
           @endforeach
@@ -249,6 +264,18 @@
         </tr>
         @endforeach
       </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td>{{ number_format($gtp_cash,2) }}</td>
+          <td>{{ number_format($gtp_check,2) }}</td>
+          <td>{{ number_format($gtp_total,2) }}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
     </div>
     <h1>&nbsp;</h1>

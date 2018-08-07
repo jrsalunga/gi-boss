@@ -54,7 +54,7 @@
 					<div class="form-group @include('_partials.input-error', ['field'=>'spouse.birthdate'])">
 				    <label for="spouse[birthdate]" class="control-label">Birthday</label>
 				    <div class="input-group datepicker">
-				    	<input type="text" class="form-control datepicker" id="spouse[birthdate]" name="spouse[birthdate]" placeholder="YYYY-MM-DD" maxlength="10" value="{{ is_null(old('spouse.birthdate'))?isset($employee->spouse)?$employee->spouse->getBirthdate():'':old('spouse.birthdate') }}" data-mask="0000-00-00">
+				    	<input type="text" class="form-control" id="spouse[birthdate]" name="spouse[birthdate]" placeholder="YYYY-MM-DD" maxlength="10" value="{{ is_null(old('spouse.birthdate'))?isset($employee->spouse)?$employee->spouse->getBirthdate():'':old('spouse.birthdate') }}" data-mask="0000-00-00">
 				    	<div class="input-group-addon">
 					        <span class="glyphicon glyphicon-calendar"></span>
 					    </div>

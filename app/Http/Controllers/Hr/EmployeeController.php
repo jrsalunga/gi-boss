@@ -114,9 +114,8 @@ class EmployeeController extends Controller
 		if (!$request->has('code'))
 			$request->request->add(['code'=>$this->employee->getLatestCode()]);
 		else
+			$request->merge(['code'=>pad($request->input('code'),6)]);
 
-
-		//return $request->all();
 		$keys = array_keys($rules);
 
 		DB::beginTransaction();
@@ -138,9 +137,6 @@ class EmployeeController extends Controller
 
 	private function update_general(Request $request) {
 
-		if ($request->has('_raw'))
-			return $request->all();
-		
 		$rules = [
       'lastname' 		=> 'required|max:30|alpha_dash',
       'firstname' 	=> 'required|max:30|alpha_dash',
@@ -180,9 +176,6 @@ class EmployeeController extends Controller
 
 	private function process_employment(Request $request) {
 
-		if ($request->has('_raw'))
-			return $request->all();
-		
 		$rules = [
       'deptid'			=> 'required|max:32|alpha_num',
       'empstatus' 	=> 'required|regex:/^[0-5]{1}$/',
@@ -267,9 +260,6 @@ class EmployeeController extends Controller
 
 	private function process_personal(Request $request) {
 
-		if ($request->has('_raw'))
-			return $request->all();
-
 		$rules = [
       'address' 		=> 'required|max:120',
       'mobile' 			=> 'max:20',
@@ -304,9 +294,6 @@ class EmployeeController extends Controller
 
 
 	private function process_family(Request $request) {
-
-		if ($request->has('_raw'))
-			return $request->all();
 
 		$rules = [
       'spouse.middlename' 	=> 'max:30',
@@ -366,11 +353,8 @@ class EmployeeController extends Controller
 		  }
     }
 
-
-
     $this->clean_request_to_number($request, ['spouse'=>['mobile', 'phone'], 'ecperson'=>['mobile', 'phone']]);
 		$this->validate($request, $rules);
-
 
 		$to_update = ['ecperson', 'spouse', 'children'];
 
@@ -383,11 +367,6 @@ class EmployeeController extends Controller
 		if (!$request->has('children'))
 				unset($to_update[2]);
 
-		//return $request->all();
-
-		//return Employee::get_uid();
-    //return $this->update_child($request, ['children'], $rules);
-
 		DB::beginTransaction();
 		try {
     	$new = $this->update_child($request, $to_update, $rules);
@@ -397,15 +376,6 @@ class EmployeeController extends Controller
 			return redirect()->back()->withErrors($er);
 		}
 		DB::commit();
-
-    //return $request->input('spouse');
-
-		
-
-		//$new = $this->update_record($request, $rules);
-    
-
-
 
     if ($request->input('_submit')==='next')
     	return redirect('/hr/masterfiles/employee/'.$new->lid().'/edit/workedu');
@@ -520,8 +490,6 @@ class EmployeeController extends Controller
 		if (is_null($o))
 			return redirect()->back()->withErrors('Employee not found.');
 
-		//return $request->all();
-
 		DB::beginTransaction();
 
 		$model = '\App\Models\\'.ucfirst($request->input('table'));
@@ -538,15 +506,11 @@ class EmployeeController extends Controller
 		DB::commit();
 
 		return redirect()->back()->with('alert-success', 'Deleted!');
-
 	}
 
 
 
 	public function process_workedu(Request $request) {
-
-		if ($request->has('_raw'))
-			return $request->all();
 
 		$rules = [
       'id' => 'required|max:32|alpha_num',
@@ -607,9 +571,6 @@ class EmployeeController extends Controller
 
 	public function process_confirm(Request $request) {
 
-		if ($request->has('_raw'))
-			return $request->all();
-
 		$rules = [
       'id' 				=> 'required|max:32|alpha_num',
       'generate' 	=> 'boolean',
@@ -659,7 +620,7 @@ class EmployeeController extends Controller
 		DB::commit();
 		
 		try {
-			$this->email($o->branch->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
+			$this->email($o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
@@ -690,10 +651,11 @@ class EmployeeController extends Controller
     return $fileUploadRepo->create($data)?:NULL;
   }
 
-  private function email($brcode, $name, $fileupload, $filepath) {
+  private function email($brcode, $man_no, $name, $fileupload, $filepath) {
 		
 		$data = [
 			'branchcode' 	=> $brcode,
+			'man_no' 			=> $man_no,
 			'name' 				=> $name,
 			'attachment' 	=> $filepath,
 			'user'				=> 'Giligans HR',
@@ -706,7 +668,7 @@ class EmployeeController extends Controller
 		try {
 
 			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {
-	        $message->subject('Man# '.$data['name'].' ('.$data['branchcode'].')');
+	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
 	        $message->from('giligans.app@gmail.com', 'Giligans HR');
 	       	$message->to('giligans.app@gmail.com');
 	       	$message->replyTo($data['email'], $data['user']);

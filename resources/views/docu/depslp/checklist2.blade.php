@@ -290,7 +290,7 @@
           <td><strong class="pull-right">{{ number_format($gtp_total-$gtu_total,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtu_cash-$gtp_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtu_check-$gtp_check,2) }}</strong></td>
-          <td><strong class="pull-right">{{ number_format($gtu_total-($gtp_total,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtu_total-$gtp_total,2) }}</strong></td>
           <td></td>
         </tr>
       </tfoot>

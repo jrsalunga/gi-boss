@@ -283,7 +283,7 @@
           <td><strong class="pull-right">{{ number_format($gtu_total,2) }}</strong></td>
           <td></td>
         </tr>
-        <tr class="bg-info">
+        <tr class="bg-warning">
           <td><strong>Short/Over</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_cash-$gtu_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_check-$gtu_check,2) }}</strong></td>

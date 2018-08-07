@@ -273,8 +273,8 @@
         @endforeach
       </tbody>
       <tfoot>
-        <tr>
-          <td>Total</td>
+        <tr class="bg-success">
+          <td><strong>Total</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_check,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_total,2) }}</strong></td>
@@ -283,8 +283,8 @@
           <td><strong class="pull-right">{{ number_format($gtu_total,2) }}</strong></td>
           <td></td>
         </tr>
-        <tr>
-          <td>Short/Over</td>
+        <tr class="bg-info">
+          <td><strong>Short/Over</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_cash-$gtu_cash,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_check-$gtu_check,2) }}</strong></td>
           <td><strong class="pull-right">{{ number_format($gtp_total-$gtu_total,2) }}</strong></td>

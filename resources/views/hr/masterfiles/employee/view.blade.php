@@ -22,7 +22,7 @@
 						<img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 100px;" class="img-responsive">
 					</td>
 					<td>
-						<h3 class="text-success">
+						<h3 class="text-success" style="margin-top: 10px;">
 							{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
 							<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 						</h3>

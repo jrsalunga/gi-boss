@@ -274,10 +274,10 @@ class SettingsController extends Controller {
 		    
 		   	$branch 								= \App\Models\Branch::where('code', trim($row['BRANCH']))->first();
 		    $employee->branchid			= is_null($branch) ? '': $branch->id;
-		    $employee->deptid				= $this->getDeptId($row['DEPT']);
+		    $employee->deptid				= $this->getDeptId(trim($row['DEPT']));
 		    $employee->positionid		= $this->getPositionId(trim($row['POSITION']));
 		    $employee->paytype			= 2;
-		    $employee->ratetype			= $this->getRateType($row['DEPT']);
+		    $employee->ratetype			= $this->getRateType(trim($row['DEPT']));
 		    $employee->rate					= trim($row['RATE_HR']);
 		    $employee->ecola				= trim($row['RATE_HR']);
 		    $employee->allowance1		= trim($row['ALW1_RATE']);
@@ -416,29 +416,27 @@ class SettingsController extends Controller {
 			    		$employee->spouse()->save($spou);	
 			    }
 
-			    if(!empty(trim($row['EMER_NAM'])) && trim($row['EMER_NAM'])!='N/A') {
-			    	$emer = explode(' ', trim($row['EMER_NAM']));
-			    	$sttr = new \App\Models\Statutory;
-			    	
-			    	$sttr->ee_sss = trim($row['SSS_EE']);
-			    	$sttr->er_sss = trim($row['SSS_ER']);
-			    	$sttr->sss_tag = trim($row['SSS_TAG'])=='Y' ? 1 : 0;
-			    	$sttr->ee_phic = trim($row['PH_EE']);
-			    	$sttr->er_phic = trim($row['PH_ER']);
-			    	$sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;
-			    	$sttr->ee_hdmf = trim($row['PBIG_EE']);
-			    	$sttr->er_hdmf = trim($row['PBIG_ER']);
-			    	$sttr->hdmf_tag = trim($row['PBIG_TAG'])=='Y' ? 1 : 0;
-			    	$sttr->ee_tin = trim($row['TAX_EE']);
-			    	$sttr->er_tin = trim($row['TAX_ER']);
-			    	$sttr->wtax = trim($row['WTAX']);
-			    	$sttr->wtax_tag = trim($row['WTAX_TAG'])=='Y' ? 1 : 0;
-			    	
-			    	$sttr->id = $sttr->get_uid();
-			    	
-			    	if($import)
-			    		$employee->statutory()->save($sttr);	
-			    }
+			    
+		    	$sttr = new \App\Models\Statutory;	
+		    	$sttr->ee_sss = trim($row['SSS_EE']);
+		    	$sttr->er_sss = trim($row['SSS_ER']);
+		    	$sttr->sss_tag = trim($row['SSS_TAG'])=='Y' ? 1 : 0;
+		    	$sttr->ee_phic = trim($row['PH_EE']);
+		    	$sttr->er_phic = trim($row['PH_ER']);
+		    	$sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;
+		    	$sttr->ee_hdmf = trim($row['PBIG_EE']);
+		    	$sttr->er_hdmf = trim($row['PBIG_ER']);
+		    	$sttr->hdmf_tag = trim($row['PBIG_TAG'])=='Y' ? 1 : 0;
+		    	$sttr->ee_tin = trim($row['TAX_EE']);
+		    	$sttr->er_tin = trim($row['TAX_ER']);
+		    	$sttr->wtax = trim($row['WTAX']);
+		    	$sttr->wtax_tag = trim($row['WTAX_TAG'])=='Y' ? 1 : 0;
+		    	
+		    	$sttr->id = $sttr->get_uid();
+		    	
+		    	if($import)
+		    		$employee->statutory()->save($sttr);	
+			    
 
 		    }
 		    

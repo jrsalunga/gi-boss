@@ -301,7 +301,8 @@ class SettingsController extends Controller {
 		    $employee->email 				= trim($row['EMAIL']);
 		    $employee->gender 			= trim($row['SEX'])=='M' ? 1:2;
 		    $employee->civstatus 		= trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
-		    $employee->height 			= str_replace("'",'.',trim($row['HEIGHT']));
+		    $employee->height 			= $this->getHeight(trim($row['HEIGHT']));
+		    //$employee->height 			= str_replace("'",'.',trim($row['HEIGHT']));
 		    $employee->weight 			= trim($row['WEIGHT']);
 		    $employee->birthdate		= Carbon::parse(trim($row['BIRTHDATE']));
 		    $employee->birthplace		= trim($row['BIRTHPLC']);
@@ -413,6 +414,30 @@ class SettingsController extends Controller {
 			    
 			    if($import)
 			    		$employee->spouse()->save($spou);	
+			    }
+
+			    if(!empty(trim($row['EMER_NAM'])) && trim($row['EMER_NAM'])!='N/A') {
+			    	$emer = explode(' ', trim($row['EMER_NAM']));
+			    	$sttr = new \App\Models\Statutory;
+			    	
+			    	$sttr->ee_sss = trim($row['SSS_EE']);
+			    	$sttr->er_sss = trim($row['SSS_ER']);
+			    	$sttr->sss_tag = trim($row['SSS_TAG'])=='Y' ? 1 : 0;
+			    	$sttr->ee_phic = trim($row['PH_EE']);
+			    	$sttr->er_phic = trim($row['PH_ER']);
+			    	$sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;
+			    	$sttr->ee_hdmf = trim($row['PBIG_EE']);
+			    	$sttr->er_hdmf = trim($row['PBIG_ER']);
+			    	$sttr->hdmf_tag = trim($row['PBIG_TAG'])=='Y' ? 1 : 0;
+			    	$sttr->ee_tin = trim($row['TAX_EE']);
+			    	$sttr->er_tin = trim($row['TAX_ER']);
+			    	$sttr->wtax = trim($row['WTAX']);
+			    	$sttr->wtax_tag = trim($row['WTAX_TAG'])=='Y' ? 1 : 0;
+			    	
+			    	$sttr->id = $sttr->get_uid();
+			    	
+			    	if($import)
+			    		$employee->statutory()->save($sttr);	
 			    }
 
 		    }
@@ -726,6 +751,16 @@ class SettingsController extends Controller {
 				return '';
 				break;
 		}
+
+	}
+
+
+	public function getHeight($height) {
+		$h = str_replace('"', '', $height);
+
+		$r = array_search($h, config('giligans.meter_to_feet'));
+
+		return is_null($r) ? $height : $r;
 
 	}
 

@@ -60,6 +60,9 @@ class EmployeeController extends Controller
 	public function store(Request $request) {
 
 		$this->middleware('sanitize');
+
+		if ($request->has('_raw'))
+			return $request->all();
 			
 		if ($request->has('_type')) {
 			switch ($request->input('_type')) {
@@ -110,6 +113,8 @@ class EmployeeController extends Controller
 		// set man_no if no code/man_no given by the user
 		if (!$request->has('code'))
 			$request->request->add(['code'=>$this->employee->getLatestCode()]);
+		else
+
 
 		//return $request->all();
 		$keys = array_keys($rules);

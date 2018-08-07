@@ -116,6 +116,9 @@
 <div class="row">
 	<div class="col-md-6">
 		<input type="hidden" name="_type" value="quick">
+		@if(request()->has('raw') && request()->input('raw')=='true')
+			<input type="hidden" name="_raw" value="true">
+		@endif
 		<button type="submit" name="_submit" value="submit" class="btn btn-primary" data-toggle="loader"><span class="gly gly-floppy-saved" data-toggle="loader"></span> Save</button>
 		<button type="submit" name="_submit" value="next" class="btn btn-success" data-toggle="loader"><span class="gly gly-floppy-saved" data-toggle="loader"></span> Save & Next</button>
 		<a href="/hr/masterfiles/employee" class="btn btn-default" data-toggle="loader"><span class="gly gly-remove"></span> Cancel</a>

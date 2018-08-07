@@ -384,7 +384,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>Height</label>
-									<div>{{ $employee->height() }}m <em>({{ config('giligans.meter_to_feet')[$employee->height] }}")</em></div>
+									<div>{{ $employee->height() }}m <em>({{ isset(config('giligans.meter_to_feet')[$employee->height])?config('giligans.meter_to_feet')[$employee->height]:'' }}")</em></div>
 								</div>
 							</div>
 							<div class="col-md-3">

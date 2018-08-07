@@ -658,8 +658,9 @@ class EmployeeController extends Controller
 			'man_no' 			=> $man_no,
 			'name' 				=> $name,
 			'attachment' 	=> $filepath,
-			'user'				=> 'Giligans HR',
-			'cashier'			=> $fileupload->cashier,
+			'user'				=> 'Giligans HRIS',
+			//'cashier'			=> $fileupload->cashier,
+			'cashier'			=> '',
 			'filename'		=> $fileupload->filename,
 			'remarks'			=> $fileupload->user_remarks,
 			'email'				=> request()->user()->email
@@ -669,7 +670,7 @@ class EmployeeController extends Controller
 
 			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {
 	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
-	        $message->from('giligans.app@gmail.com', 'Giligans HR');
+	        $message->from('giligans.app@gmail.com', 'Giligans HRIS');
 	       	$message->to('giligans.app@gmail.com');
 	       	$message->replyTo($data['email'], $data['user']);
 

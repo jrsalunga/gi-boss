@@ -70,7 +70,7 @@
 					@elseif(request()->input('tab')=='workedu')
 					href="/hr/masterfiles/employee/{{$employee->lid()}}/edit/workedu"
 					@else
-					href="/hr/masterfiles/employee/{{$employee->lid()}}/edit"
+					href="/hr/masterfiles/employee/{{$employee->lid()}}/edit/employment"
 					@endif
 					 data-toggle="loader"><i class="material-icons">edit</i> Edit</a>
 		    </li>

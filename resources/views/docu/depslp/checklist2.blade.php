@@ -186,14 +186,14 @@
         <tr>
           <td class="{{ $bg }}">{{ $b['date']->format('M j, D') }}</td>
                       
-          @foreach($b['pos'] as $pos)
+          @foreach($b['pos'] as $kp => $pos)
           <td class="{{ $bg }} text-right" style="color: #909090">
             @if(!$pos['amount'])
               
             @else
               {{ number_format($pos['amount'],2) }}
               <?php
-              if ($key==0)
+              if ($kp==0)
                 $gtp_cash += $pos['amount'];
               else
                 $gtp_check += $pos['amount'];
@@ -267,9 +267,9 @@
       <tfoot>
         <tr>
           <td></td>
-          <td>{{ number_format($gtp_cash,2) }}</td>
-          <td>{{ number_format($gtp_check,2) }}</td>
-          <td>{{ number_format($gtp_total,2) }}</td>
+          <td><strong class="pull-right">{{ number_format($gtp_cash,2) }}</strong></td>
+          <td><strong class="pull-right">{{ number_format($gtp_check,2) }}</strong>/td>
+          <td><strong class="pull-right">{{ number_format($gtp_total,2) }}</strong></td>
           <td></td>
           <td></td>
           <td></td>

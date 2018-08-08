@@ -164,7 +164,7 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
   public function index_data(Request $request) {
     if ($request->has('search')) {
 
-      return $this->scopeQuery(function($query) {
+      return $this->skipCache()->scopeQuery(function($query) {
         return $query->orderBy('lastname')
                     ->orderBy('firstname')
                     ->orderBy('middlename')
@@ -172,7 +172,7 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
       })->paginate($this->getLimit($request));
     }
 
-    return $this->scopeQuery(function($query) {
+    return $this->skipCache()->scopeQuery(function($query) {
       return $query->where('datestop', '0000-00-00')->orderBy('code', 'desc');
     })
     ->paginate($this->getLimit($request));

@@ -259,12 +259,20 @@ class BackupController extends Controller
 
 	  $ctr=0;
   	$date = c($request->input('date'));
-  	$path = public_path('downloads/'.$date->format('Ymd').'.ZIP');
+
+  	if (app()->environment()=='production')
+  		$path = '/home/server-admin/Public/Maindepot/BATCH_BACKUP/'.$date->format('Y');
+  	else
+  		$path = public_path('BATCH_BACKUP').DS.$date->format('Y');
+  	
+  	if(!is_dir($path))
+			mkdir($path, 0775, true);
+
+  	$path = $path.DS.$date->format('Ymd').'.ZIP';
 		$zip = new ZipArchive;
 		$res = $zip->open($path, ZipArchive::CREATE);
 	  $paths = [];
   	
-
 		$r = $this->disk->folderInfo('.');
 		foreach ($r['subfolders'] as $path => $folder) {
 			$filename = 'GC'.$date->format('mdy').'.ZIP';

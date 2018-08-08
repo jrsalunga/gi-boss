@@ -418,18 +418,19 @@ class SettingsController extends Controller {
 
 			    
 		    	$sttr = new \App\Models\Statutory;	
-		    	$sttr->ee_sss = trim($row['SSS_EE']);
-		    	$sttr->er_sss = trim($row['SSS_ER']);
-		    	$sttr->sss_tag = trim($row['SSS_TAG'])=='Y' ? 1 : 0;
-		    	$sttr->ee_phic = trim($row['PH_EE']);
-		    	$sttr->er_phic = trim($row['PH_ER']);
+		    	$sttr->meal 		= trim($row['CA_BAL']);
+		    	$sttr->ee_sss 	= trim($row['SSS_EE']);
+		    	$sttr->er_sss 	= trim($row['SSS_ER']);
+		    	$sttr->SSS_TAG 	= trim($row['SSS_TAG'])=='Y' ? 1 : 0;
+		    	$sttr->ee_phic 	= trim($row['PH_EE']);
+		    	$sttr->er_phic 	= trim($row['PH_ER']);
 		    	$sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;
-		    	$sttr->ee_hdmf = trim($row['PBIG_EE']);
-		    	$sttr->er_hdmf = trim($row['PBIG_ER']);
+		    	$sttr->ee_hdmf 	= trim($row['PBIG_EE']);
+		    	$sttr->er_hdmf 	= trim($row['PBIG_ER']);
 		    	$sttr->hdmf_tag = trim($row['PBIG_TAG'])=='Y' ? 1 : 0;
-		    	$sttr->ee_tin = trim($row['TAX_EE']);
-		    	$sttr->er_tin = trim($row['TAX_ER']);
-		    	$sttr->wtax = trim($row['WTAX']);
+		    	$sttr->ee_tin 	= trim($row['TAX_EE']);
+		    	$sttr->er_tin 	= trim($row['TAX_ER']);
+		    	$sttr->wtax 		= trim($row['WTAX']);
 		    	$sttr->wtax_tag = trim($row['WTAX_TAG'])=='Y' ? 1 : 0;
 		    	
 		    	$sttr->id = $sttr->get_uid();

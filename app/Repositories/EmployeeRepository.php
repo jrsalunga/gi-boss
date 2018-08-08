@@ -165,8 +165,7 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
     if ($request->has('search')) {
 
       return $this->scopeQuery(function($query) {
-        return $query->where('datestop', '0000-00-00')
-                    ->orderBy('lastname')
+        return $query->orderBy('lastname')
                     ->orderBy('firstname')
                     ->orderBy('middlename')
                     ->orderBy('code');
@@ -174,7 +173,7 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
     }
 
     return $this->scopeQuery(function($query) {
-      return $query->orderBy('code', 'desc');
+      return $query->where('datestop', '0000-00-00')->orderBy('code', 'desc');
     })
     ->paginate($this->getLimit($request));
   }

@@ -187,22 +187,28 @@
 									<div>{{ number_format($employee->rate, 2) }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>ECOLA</label>
 									<div>{{ number_format($employee->ecola, 2) }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Allowance 1</label>
 									<div>{{ number_format($employee->allowance1, 2) }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Allowance 2</label>
 									<div>{{ number_format($employee->allowance2, 2) }}</div>
+								</div>
+				  		</div>
+				  		<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Meal</label>
+									<div>{{ $employee->statutory ? nf($employee->statutory->meal):'&nbsp;' }}</div>
 								</div>
 				  		</div>
 				  	</div>

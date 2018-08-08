@@ -138,9 +138,9 @@ class EmployeeController extends Controller
 	private function update_general(Request $request) {
 
 		$rules = [
-      'lastname' 		=> 'required|max:30|alpha_dash',
-      'firstname' 	=> 'required|max:30|alpha_dash',
-      'middlename' 	=> 'max:30|alpha_dash',
+      'lastname' 		=> 'required|max:30|alpha_spaces',
+      'firstname' 	=> 'required|max:30|alpha_spaces',
+      'middlename' 	=> 'max:30|alpha_spaces',
       'companyid' 	=> 'required|max:32|alpha_num',
       'branchid' 		=> 'required|max:32|alpha_num',
       'positionid' 	=> 'required|max:32|alpha_num',

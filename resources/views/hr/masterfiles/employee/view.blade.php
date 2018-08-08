@@ -544,7 +544,17 @@
 									@foreach($employee->workexps as $k => $w)
 									<tr>
 										<td>
-											
+											@if(!$w->getPeriodFrom())
+												*											
+											@else
+												{{ $w->getPeriodFrom()->format('M Y') }}
+											@endif
+											-
+											@if(!$w->getPeriodTo())
+												*											
+											@else
+												{{ $w->getPeriodTo()->format('M Y') }}
+											@endif
 
 											@if($w->getPeriodFrom() instanceof \Carbon\Carbon && $w->getPeriodTo() instanceof \Carbon\Carbon)
 												<small class="text-muted">

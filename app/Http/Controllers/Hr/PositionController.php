@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers\Hr;
 
 use DB;
 use Exception;
@@ -7,34 +7,31 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
-use App\Repositories\CompanyRepository as CompanyRepo;
-use App\Repositories\Hris\CompanyRepository as CompanyHris;
+use App\Repositories\PositionRepository as PositionRepo;
 
 class PositionController extends Controller
 {
 
 	protected $dr;
-	protected $companyRepo;
-	protected $companyHris;
+	protected $position;
+	protected $table = 'position';
 
-	public function __construct(DateRange $dr, CompanyRepo $companyRepo, CompanyHris $companyHris) {
+	public function __construct(DateRange $dr, PositionRepo $position) {
 		$this->dr = $dr;
-		$this->companyRepo = $companyRepo;
-		$this->companyHris = $companyHris;
-	}
-
-
-	public function index(Request $request) {
-		
+		$this->repository = $position;
 	}
 
 	public function create(Request $request) {
-		return view('masterfiles.company.create');
+		return view('hr.masterfiles.'.$this->getTable().'.create')->with('table', $this->getTable());
 	}
 
 	public function show(Request $request, $id) {
-		$company = $this->companyRepo->codeID($id);
-		return is_null($company) ? abort('404') : view('masterfiles.company.view')->with('company', $company);
+		$model = $this->repository->codeID($id);
+		return is_null($model) 
+			? abort('404') 
+			: view('hr.masterfiles.'.$this->getTable().'.view')
+						->with('model', $model)
+						->with('table', $this->getTable());
 	}
 
 	public function store(Request $request) {
@@ -45,7 +42,7 @@ class PositionController extends Controller
 					return $this->process_quick($request);
 					break;
 				case 'full':
-					return $this->process_full($request);
+					return $this->process_quick($request);
 					break;
 				case 'import':
 					return $this->process_import($request);
@@ -59,31 +56,24 @@ class PositionController extends Controller
 	}
 
 	private function process_quick(Request $request) {
+		
 		$this->validate($request, [
-    	'code' => 'required|max:3',
-      'descriptor' => 'required|max:50',
+    	'code' 				=> 'required|anshu|max:3',
+      'descriptor' 	=> 'required|anshu|max:50',
     ]);
-
-    $cc = $this->companyRepo->findWhere(['code'=>$request->input('code')])->first();
-    if (!is_null($cc))
-			return redirect()->back()->withErrors(strtoupper($request->input('code')).' already exist on Boss Module');
-
-		$hrComp = $this->companyHris->findWhere(['code'=>$request->input('code')])->first();
-
-		if (!is_null($hrComp))
-			return redirect()->back()->with('company.import', $hrComp);
 
 		DB::beginTransaction();
 
 		try {
-    	$company = $this->companyRepo->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
+    	$model = $this->repository->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
 		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
-			return redirect('/masterfiles/company/create')->withErrors($e->previous->errorInfo[2]);
+			return redirect()->back()->withErrors($er);
 		}
 
 		DB::commit();
-    return redirect('/masterfiles/company/'.$company->lid());
+    return redirect('/hr/masterfiles/'.$this->getTable().'/'.$model->lid());
 	}
 
 	private function process_full(Request $request) {
@@ -119,7 +109,7 @@ class PositionController extends Controller
 		DB::beginTransaction();
 
 		try {
-    	$company = $this->companyRepo->update($request->only($keys), $request->input('id'));
+    	$company = $this->repository->update($request->only($keys), $request->input('id'));
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
@@ -165,7 +155,7 @@ class PositionController extends Controller
 		DB::beginTransaction();
 
 		try {
-			$company = $this->companyRepo->modelCreate($oc);
+			$company = $this->repository->modelCreate($oc);
 		} catch (Exception $e) {
 			DB::rollBack();
 			return redirect('/masterfiles/company')->withErrors($e->previous->errorInfo[2]);
@@ -189,8 +179,27 @@ class PositionController extends Controller
 	}
 
 	public function edit(Request $request, $id) {
-		$company = $this->companyRepo->codeID($id);
-		return view('masterfiles.company.edit')->with('company', $company);
+		$model = $this->repository->codeID($id);
+		return view('hr.masterfiles.'.$this->getTable().'.edit')->with('model', $model)->with('table', $this->getTable());
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public function getTable() {
+		return $this->table;
 	}
 
 

@@ -138,6 +138,12 @@
 				    <input type="text" class="form-control" id="allowance2" name="allowance2" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->allowance2 }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'meal'])">
+				    <label for="meal" class="control-label">Meal</label>
+				    <input type="text" class="form-control" id="meal" name="meal" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->meal:'' }}">
+				  </div>
+				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->
 		</div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->

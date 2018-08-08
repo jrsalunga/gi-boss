@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         view()->composer(['menu.main', 'menu.sub', '_partials.pager'], 'App\Http\ViewComposers\MainMenuComposer');
-        view()->composer(['menu.main-hr', 'menu.sub-hr', '_partials.pager-hr'], 'App\Http\ViewComposers\HrMainMenuComposer');
+        view()->composer(['menu.main-hr', 'menu.sub-hr', '_partials.hr-pager'], 'App\Http\ViewComposers\HrMainMenuComposer');
 
 
         Validator::extend('alpha_spaces', function ($attribute, $value) {
@@ -43,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
             // If you want to accept hyphens use: /^[\pL\s-]+$/u.
             //return preg_match('/^[\pL\s]+$/u', $value); 
             return preg_match('/^[\pL\s-]+$/u', $value); 
+        });
+
+        Validator::extend('anshu', function ($attribute, $value) {
+            return preg_match('/^[0-9\pL\s-_]+$/u', $value); 
         });
     }
 

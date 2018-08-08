@@ -77,6 +77,7 @@ return [
     'url'                  => 'The :attribute format is invalid.',
 
     'alpha_spaces'         => 'The :attribute may only contain letters, hypen and spaces.',
+    'anshu'                => 'The :attribute may only contain letters, numbers, spaces, hypen and underscore.',
 
     /*
     |--------------------------------------------------------------------------

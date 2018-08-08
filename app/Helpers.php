@@ -360,7 +360,13 @@ if (!function_exists('hr_nav_caption')) {
 
 if (!function_exists('up')) {
   function up($x) {
-  	return strtoupper($x);
+    return strtoupper($x);
+  }
+}
+
+if (!function_exists('page_title')) {
+  function page_title($x) {
+  	return ucwords(str_replace('_', ' ', $x));
   }
 }
 

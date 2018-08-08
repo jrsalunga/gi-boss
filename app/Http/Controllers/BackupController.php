@@ -263,7 +263,7 @@ class BackupController extends Controller
   	if (app()->environment()=='production')
   		$path = '/home/server-admin/Public/maindepot/BATCH_BACKUP/'.$date->format('Y');
   	else
-  		$path = public_path('BATCH_BACKUP').DS.$date->format('Y');
+  		$path = public_path('downloads').DS.$date->format('Y');
   	
   	if(!is_dir($path))
 			mkdir($path, 0775, true);

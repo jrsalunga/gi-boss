@@ -195,6 +195,7 @@ class EmployeeController extends Controller
 
 
     $rules2 = [
+      'meal' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'ee_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'sss_tag'			=> 'regex:/^\d{1}$/',
@@ -211,7 +212,7 @@ class EmployeeController extends Controller
       'employee_id' => 'max:32|alpha_num',
     ];
 
-    $this->clean_request_number_format($request, ['rate', 'ecola', 'allowance1', 'allowance2', 'ee_sss', 'er_sss', 'ee_phic', 'er_phic', 'ee_hdmf', 'er_hdmf', 'ee_tin', 'er_tin', 'wtax']);
+    $this->clean_request_number_format($request, ['meal','rate', 'ecola', 'allowance1', 'allowance2', 'ee_sss', 'er_sss', 'ee_phic', 'er_phic', 'ee_hdmf', 'er_hdmf', 'ee_tin', 'er_tin', 'wtax']);
     $this->clean_request_govmt($request, ['sssno', 'hdmfno', 'tin']);
 
 		//return $request->all();

@@ -9,10 +9,10 @@
 ?>
 @section('content')
 <div class="row">
-		<div class="col-md-12"  style="margin-top: 20px;">
-			@include('_partials.alerts')
-		</div>
+	<div class="col-md-12"  style="margin-top: 20px;">
+		@include('_partials.alerts')
 	</div>
+</div>
 <div class="row">
 	<div class="col-md-8">
 		<table>

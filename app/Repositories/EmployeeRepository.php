@@ -165,7 +165,8 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
     if ($request->has('search')) {
 
       return $this->scopeQuery(function($query) {
-        return $query->orderBy('lastname')
+        return $query->where('datestop', '0000-00-00')
+                    ->orderBy('lastname')
                     ->orderBy('firstname')
                     ->orderBy('middlename')
                     ->orderBy('code');

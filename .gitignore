@@ -7,4 +7,5 @@ Homestead.json
 /logs
 /database/migrations
 /public/downloads
+/public/BATCH_BACKUP
 /storage

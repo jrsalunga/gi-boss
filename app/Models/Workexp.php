@@ -25,11 +25,7 @@ class Workexp extends BaseModel {
   public function getPeriodFrom() {
     if (!is_iso_date($this->periodfrom.'-01'))
       return false;
-    try {
-      $c = Carbon::parse($this->periodfrom.'-01');
-    } catch (\Exception $e) {
-      return false;
-    }
+    $c = Carbon::parse($this->periodfrom.'-01');
     return is_iso_date($c->format('Y-m-d'))
       ? $c
       : false;
@@ -38,11 +34,7 @@ class Workexp extends BaseModel {
   public function getPeriodTo() {
     if (!is_iso_date($this->periodto.'-01'))
       return false;
-    try {
-      $c = Carbon::parse($this->periodto.'-01');
-    } catch (\Exception $e) {
-      return false;      
-    }
+    $c = Carbon::parse($this->periodto.'-01');
     return is_iso_date($c->format('Y-m-d'))
       ? $c
       : false;

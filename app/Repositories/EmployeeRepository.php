@@ -160,6 +160,33 @@ class EmployeeRepository extends BaseRepository implements CacheableInterface
       ? str_pad(($le->code + 1), 6, '0', STR_PAD_LEFT)
       : str_pad('1', 6, '0', STR_PAD_LEFT);
   }
+
+  public function index_data(Request $request) {
+    if ($request->has('search')) {
+
+      return $this->scopeQuery(function($query) {
+        return $query->orderBy('lastname')
+                    ->orderBy('firstname')
+                    ->orderBy('middlename')
+                    ->orderBy('code');
+      })->paginate($this->getLimit($request));
+    }
+
+    return $this->scopeQuery(function($query) {
+      return $query->orderBy('code', 'desc');
+    })
+    ->paginate($this->getLimit($request));
+  }
+
+  private function getLimit(Request $request, $limit = 10) {
+
+    if ( $request->has('limit')
+    && filter_var($request->input('limit'), FILTER_VALIDATE_INT, ['options'=>['min_range'=>1, 'max_range'=>100]]) ) {
+      return $request->input('limit');
+    } else {
+      return $limit;
+    }
+  }
   
   
 

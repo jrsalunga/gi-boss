@@ -23,14 +23,22 @@ class Workexp extends BaseModel {
   }
 
   public function getPeriodFrom() {
-    $c = Carbon::parse($this->periodfrom.'-01');
+    try {
+      $c = Carbon::parse($this->periodfrom.'-01');
+    } catch (\Exception $e) {
+      return false;
+    }
     return is_iso_date($c->format('Y-m-d'))
       ? $c
       : false;
   }
 
   public function getPeriodTo() {
-    $c = Carbon::parse($this->periodto.'-01');
+    try {
+      $c = Carbon::parse($this->periodto.'-01');
+    } catch (\Exception $e) {
+      return false;      
+    }
     return is_iso_date($c->format('Y-m-d'))
       ? $c
       : false;

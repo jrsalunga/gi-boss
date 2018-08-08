@@ -207,6 +207,7 @@ class EmpController extends Controller
 		}
 
 		
+		$meal			= number_format(0, 2, '.', ''); //['SSS_EE', 	'N', 10,2],
 		$sss_ee			= number_format(0, 2, '.', ''); //['SSS_EE', 	'N', 10,2],
 		$sss_er			= number_format(0, 2, '.', ''); //['SSS_ER', 	'N', 10,2],
 		$ph_ee			= number_format(0, 2, '.', ''); //['PH_EE', 	'N', 10,2],
@@ -222,6 +223,7 @@ class EmpController extends Controller
 		$tax_tag 		= 'N';
 
 		if (!is_null($employee->statutory)) {
+			$meal			= $employee->statutory->meal;
 			$sss_ee			= $employee->statutory->ee_sss;
 			$sss_er			= $employee->statutory->er_sss;
 			$ph_ee			= $employee->statutory->ee_phic;
@@ -252,7 +254,8 @@ class EmpController extends Controller
 			'ECOL_RATE'		=> number_format($employee->ecola, 2, '.', ''), //['ECOL_RATE', 	'N', 8,2],	
 			'ALW1_RATE'		=> number_format($employee->allowance1, 2, '.', ''), //['ALW1_RATE', 	'N', 8,2],	
 			'ALW2_RATE'		=> number_format($employee->allowance2, 2, '.', ''), //['ALW2_RATE', 	'N', 8,2],	
-			'CA_BAL'			=> number_format(0, 2, '.', ''), //['CA_BAL', 	'N', 10,2],	
+			//'CA_BAL'			=> number_format(0, 2, '.', ''), //['CA_BAL', 	'N', 10,2],	
+			'CA_BAL'			=> number_format($meal, 2, '.', ''), //['CA_BAL', 	'N', 10,2],	
 			'CHIT_BAL'		=> number_format(0, 2, '.', ''), //['CHIT_BAL', 	'N', 12,2],	
 			'MTD_GRS'			=> number_format(0, 2, '.', ''), //['MTD_GRS', 	'N', 12,2],	
 			'YTD_GRS'			=> number_format(0, 2, '.', ''), //['YTD_GRS', 	'N', 12,2],	

@@ -169,19 +169,19 @@
 				  <div class="panel-heading">Rates</div>
 				  <div class="panel-body">
 				  	<div class="row">
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Pay Type</label>
 									<div>{{ emp_paytype($employee->paytype) }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Rate Type</label>
 									<div>{{ emp_ratetype2($employee->ratetype) }}</div>
 								</div>
 				  		</div>
-				  		<div class="col-md-4">
+				  		<div class="col-md-3">
 				  			<div class="form-group">
 									<label>Basic Rate</label>
 									<div>{{ number_format($employee->rate, 2) }}</div>

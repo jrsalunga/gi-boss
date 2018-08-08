@@ -295,10 +295,10 @@ class SettingsController extends Controller {
 		    $employee->punching			= 1;
 		    $employee->processing		= 1;
 		    $employee->address			= trim($row['ADDRESS1']).', '.trim($row['ADDRESS2']).', '.trim($row['ADDRESS3']);
-		    $employee->phone 				= trim($row['TEL']);
+		    $employee->phone 				= trim($row['TEL'])=='N/A' ? '':trim($row['TEL']);
 		    //$employee->fax 					= trim($row['TEL']);
 		    $employee->mobile 			= trim($row['CEL']);
-		    $employee->email 				= trim($row['EMAIL']);
+		    $employee->email 				= trim($row['EMAIL'])=='N/A' ? '':trim($row['EMAIL']);
 		    $employee->gender 			= trim($row['SEX'])=='M' ? 1:2;
 		    $employee->civstatus 		= trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
 		    $employee->height 			= $this->getHeight(trim($row['HEIGHT']));

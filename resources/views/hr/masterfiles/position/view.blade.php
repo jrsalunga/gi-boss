@@ -2,7 +2,7 @@
 
 @section('title', '- '.page_title($table).': '.$model->descriptor)
 
-@section('body-class', 'filetype-view')
+@section('body-class', $table.'-view')
 
 @section('content')
 <div class="row" style="margin-top: 20px;">
@@ -25,6 +25,12 @@
 		    <li>
 		    	<a href="/hr/masterfiles/{{$table}}/{{$model->lid()}}/edit" data-toggle="loader">
 						<span class="glyphicon glyphicon-pencil"></span> Edit
+		    	</a>
+		    </li>
+		    <li role="separator" class="divider"></li>
+		    <li>
+		    	<a href="/hr/masterfiles/{{$table}}/create" data-toggle="loader">
+						<span class="glyphicon glyphicon-plus"></span> Create New
 		    	</a>
 		    </li>
 		  </ul>

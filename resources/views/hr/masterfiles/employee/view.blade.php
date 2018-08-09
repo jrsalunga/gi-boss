@@ -76,6 +76,12 @@
 		    </li>
 		    <li><a href="javascript:void(0)" ><i class="glyphicon glyphicon-level-up"></i>  Promote</a></li>
 		    <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/confirm" ><i class="gly gly-disk-saved"></i>  Confirm</a></li>
+		    <li role="separator" class="divider"></li>
+		    <li>
+		    	<a href="/hr/masterfiles/employee/create" data-toggle="loader">
+						<span class="glyphicon glyphicon-plus"></span> Create New
+		    	</a>
+		    </li>
 		  </ul>
 		</div>
 	</div>

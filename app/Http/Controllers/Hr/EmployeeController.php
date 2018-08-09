@@ -110,6 +110,13 @@ class EmployeeController extends Controller
 		else
 			$request->merge(['code'=>pad($request->input('code'),6)]);
 
+		$o = $this->employee->findWhere(['code'=>$request->input('code')])->first();
+		if (!is_null($o))
+			return redirect()->back()
+										->withInput($request->input())
+										->withErrors('Man No. '.$request->input('code').' is already in used.');
+
+
 		$keys = array_keys($rules);
 
 		DB::beginTransaction();

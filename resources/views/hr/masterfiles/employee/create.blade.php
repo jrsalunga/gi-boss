@@ -50,67 +50,11 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="form-group @include('_partials.input-error', ['field'=>'code'])">
-			<label for="code" class="control-label">Man No</label>
+			<label for="code" class="control-label">Man No: <span class="text-success help" title="This Man # will be used if the field is blank" data-toggle="tooltip">{{ $code }}</span></label>
 			<input type="text" class="form-control" id="code" name="code" placeholder="Man No" maxlength="6" value="{{ request()->old('code') }}">
 		</div>
 	</div><!-- end:.col-md-4 -->
-	<div class="col-md-3">
-		<div class="form-group @include('_partials.input-error', ['field'=>'companyid'])">
-			<label for="companyid" class="control-label">Company</label>
-			@if(count($companies)>0)
-			<select class="selectpicker form-control show-tick" name="companyid" id="companyid" data-live-search="true" data-size="10">
-				@if(!isset($employee->company->id))
-					<option disabled selected>-- Select Company -- </option>
-				@endif
-				@foreach($companies as $company)
-			  	<option value="{{$company->id}}" <?=isset($employee->company->id)&&($company->id==$employee->company->id)?'selected':'';?> data-tokens="{{ $company->code }} {{ $company->descriptor }}">
-			  		{{ $company->code }} - {{ $company->descriptor }}
-			  	</option>
-			  @endforeach
-			</select>
-			@else
-				Add Company
-			@endif
-		</div>
-	</div><!-- end:.col-md-4 -->
-	<div class="col-md-3">
-		<div class="form-group @include('_partials.input-error', ['field'=>'branchid'])">
-			<label for="branchid" class="control-label">Branch</label>
-			@if(count($branches)>0)
-			<select class="selectpicker form-control show-tick" name="branchid" id="branchid" data-live-search="true" data-size="10">
-				@if(!isset($employee->branch->id))
-					<option disabled selected>-- Select Branch -- </option>
-				@endif
-				@foreach($branches as $branch)
-			  	<option value="{{$branch->id}}" <?=isset($employee->branch->id)&&($branch->id==$employee->branch->id)?'selected':'';?> data-tokens="{{ $branch->code }} {{ $branch->descriptor }}">
-			  		{{ $branch->code }} - {{ $branch->descriptor }}
-			  	</option>
-			  @endforeach
-			</select>
-			@else
-				Add Branch
-			@endif
-		</div>
-	</div><!-- end:.col-md-4 -->
-	<div class="col-md-3">
-		<div class="form-group @include('_partials.input-error', ['field'=>'positionid'])">
-			<label for="positionid" class="control-label">Position</label>
-			@if(count($branches)>0)
-			<select class="selectpicker form-control show-tick" name="positionid" id="positionid" data-live-search="true" data-size="10">
-				@if(!isset($employee->position->id))
-					<option disabled selected>-- Select Position -- </option>
-				@endif
-				@foreach($positions as $position)
-			  	<option value="{{$position->id}}" <?=isset($employee->position->id)&&($position->id==$employee->position->id)?'selected':'';?> data-tokens="{{ $position->code }} {{ $position->descriptor }}">
-			  		{{ $position->code }} - {{ $position->descriptor }}
-			  	</option>
-			  @endforeach
-			</select>
-			@else
-				Add Position
-			@endif
-		</div>
-	</div><!-- end:.col-md-4 -->
+	
 </div>
 <hr>
 <div class="row">

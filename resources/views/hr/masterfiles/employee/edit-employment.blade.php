@@ -29,8 +29,66 @@
 <form action="/hr/masterfiles/employee" method="POST">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">
+	<div class="panel-heading">Employer</div>
 	  <div class="panel-body">
 	  	<div class="row">
+	  		<div class="col-md-4">
+					<div class="form-group @include('_partials.input-error', ['field'=>'companyid'])">
+						<label for="companyid" class="control-label">Company</label>
+						@if(count($companies)>0)
+						<select class="selectpicker form-control show-tick" name="companyid" id="companyid" data-live-search="true" data-size="10" data-companyid="{{ $employee->companyid }}">
+							@if(!isset($employee->company->id))
+								<option disabled selected>-- Select Company -- </option>
+							@endif
+							@foreach($companies as $company)
+						  	<option value="{{$company->id}}" <?=isset($employee->company->id)&&($company->id==$employee->companyid)?'selected':'';?> data-tokens="{{ $company->code }} {{ $company->descriptor }}">
+						  		{{ $company->code }} - {{ $company->descriptor }}
+						  	</option>
+						  @endforeach
+						</select>
+						@else
+							Add Company
+						@endif
+					</div>
+				</div><!-- end:.col-md-4 -->
+				<div class="col-md-4">
+					<div class="form-group @include('_partials.input-error', ['field'=>'branchid'])">
+						<label for="branchid" class="control-label">Branch</label>
+						@if(count($branches)>0)
+						<select class="selectpicker form-control show-tick" name="branchid" id="branchid" data-live-search="true" data-size="10" data-branchid="{{ $employee->branchid }}">
+							@if(!isset($employee->branch->id))
+								<option disabled selected>-- Select Branch -- </option>
+							@endif
+							@foreach($branches as $branch)
+						  	<option value="{{$branch->id}}" <?=isset($employee->branch->id)&&($branch->id==$employee->branchid)?'selected':'';?> data-tokens="{{ $branch->code }} {{ $branch->descriptor }}">
+						  		{{ $branch->code }} - {{ $branch->descriptor }}
+						  	</option>
+						  @endforeach
+						</select>
+						@else
+							Add Branch
+						@endif
+					</div>
+				</div><!-- end:.col-md-4 -->
+				<div class="col-md-4">
+					<div class="form-group @include('_partials.input-error', ['field'=>'positionid'])">
+						<label for="positionid" class="control-label">Position</label>
+						@if(count($positions)>0)
+						<select class="selectpicker form-control show-tick" name="positionid" id="positionid" data-live-search="true" data-size="10"  data-positionid="{{ $employee->positionid }}">
+							@if(!isset($employee->position->id))
+								<option disabled selected>-- Select Position -- </option>
+							@endif
+							@foreach($positions as $position)
+						  	<option value="{{$position->id}}" <?=isset($employee->position->id)&&($position->id==$employee->positionid)?'selected':'';?> data-tokens="{{ $position->code }} {{ $position->descriptor }}">
+						  		{{ $position->code }} - {{ $position->descriptor }}
+						  	</option>
+						  @endforeach
+						</select>
+						@else
+							Add Position
+						@endif
+					</div>
+				</div><!-- end:.col-md-4 -->
 				<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'deptid'])">
 						<label for="deptid" class="control-label">Department</label>
@@ -82,6 +140,7 @@
 	  </div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->
 	<div class="panel panel-primary">
+	<div class="panel-heading">Rates</div>
 	  <div class="panel-body">
 	  	<div class="row">
 	  		<div class="col-md-3">
@@ -141,13 +200,14 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'meal'])">
 				    <label for="meal" class="control-label">Meal</label>
-				    <input type="text" class="form-control" id="meal" name="meal" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->meal:'' }}">
+				    <input type="text" class="form-control" id="meal" name="meal" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="false" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->meal:'' }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->
 		</div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->
 	<div class="panel panel-primary">
+	<div class="panel-heading">Contribution Details</div>
 	  <div class="panel-body">
 	  	<div class="row">
 	  		<div class="col-md-3">

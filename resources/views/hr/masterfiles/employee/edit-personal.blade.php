@@ -29,6 +29,7 @@
 <form action="/hr/masterfiles/employee" method="POST">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">
+		<div class="panel-heading">Address & Contacts</div>
 	  <div class="panel-body">
 	  	<div class="row">
 				<div class="col-md-6">
@@ -65,6 +66,7 @@
 	  </div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->
 	<div class="panel panel-primary">
+		<div class="panel-heading">Personal Details</div>
 	  <div class="panel-body">
 	  	<div class="row">
 	  		<div class="col-md-3">

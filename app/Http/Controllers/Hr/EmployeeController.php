@@ -44,10 +44,7 @@ class EmployeeController extends Controller
 
 
 	public function create(Request $request) {
-		return view('hr.masterfiles.employee.create')
-						->with('companies', $this->company->all())
-						->with('branches', $this->branch->active()->all())
-						->with('positions', $this->position->all());
+		return view('hr.masterfiles.employee.create')->with('code', $this->employee->getLatestCode());
 	}
 
 
@@ -103,9 +100,6 @@ class EmployeeController extends Controller
       'lastname' 		=> 'required|max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
       'firstname' 	=> 'required|max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
       'middlename' 	=> 'max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
-      'companyid' 	=> 'required|max:32|alpha_num',
-      'branchid' 		=> 'required|max:32|alpha_num',
-      'positionid' 	=> 'required|max:32|alpha_num',
     ];
 
 		$this->validate($request, $rules);
@@ -141,10 +135,6 @@ class EmployeeController extends Controller
       'lastname' 		=> 'required|max:30|alpha_spaces',
       'firstname' 	=> 'required|max:30|alpha_spaces',
       'middlename' 	=> 'max:30|alpha_spaces',
-      'companyid' 	=> 'required|max:32|alpha_num',
-      'branchid' 		=> 'required|max:32|alpha_num',
-      'positionid' 	=> 'required|max:32|alpha_num',
-      'id' 					=> 'required|max:32|alpha_num',
     ];
 
 		$this->validate($request, $rules);
@@ -177,6 +167,9 @@ class EmployeeController extends Controller
 	private function process_employment(Request $request) {
 
 		$rules = [
+			'companyid' 	=> 'required|max:32|alpha_num',
+      'branchid' 		=> 'required|max:32|alpha_num',
+      'positionid' 	=> 'required|max:32|alpha_num',
       'deptid'			=> 'required|max:32|alpha_num',
       'empstatus' 	=> 'required|regex:/^[0-5]{1}$/',
       'datestart' 	=> 'required|date_format:Y-m-d',
@@ -709,7 +702,7 @@ class EmployeeController extends Controller
 
 
 	public function edit(Request $request, $id) {
-		$employee = $this->employee->codeID($id);
+		$employee = $this->employee->codeID($id, ['code', 'lastname', 'firstname', 'middlename', 'id']);
 
 		if ($request->has('raw') && $request->input('raw')=='data')
 			return $employee;
@@ -717,10 +710,7 @@ class EmployeeController extends Controller
 		return is_null($employee)
 			? abort('404')
 			: view('hr.masterfiles.employee.edit')
-						->with('employee', $employee)
-						->with('companies', $this->company->all())
-						->with('branches', $this->branch->active()->all())
-						->with('positions', $this->position->all());	
+						->with('employee', $employee);	
 	}
 
 	public function editEmployment(Request $request, $id) {
@@ -733,7 +723,10 @@ class EmployeeController extends Controller
 			? abort('404')
 			: view('hr.masterfiles.employee.edit-employment')
 						->with('employee', $employee)
-						->with('departments', $this->department->all());
+						->with('departments', $this->department->all())
+						->with('companies', $this->company->all())
+						->with('branches', $this->branch->active()->all())
+						->with('positions', $this->position->all());
 	}
 
 	public function editPersonal(Request $request, $id) {

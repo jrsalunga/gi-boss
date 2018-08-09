@@ -33,19 +33,19 @@
 
 				<div class="form-group @include('_partials.input-error', ['field'=>'lastname'])">
 			    <label for="lastname" class="control-label">Lastname</label>
-			    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" maxlength="30" value="{{ $employee->lastname }}">
+			    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" maxlength="30" value="{{ !is_null(old('lastname'))?old('lastname'):$employee->lastname }}">
 			  </div>
 			</div>
 			<div class="col-md-4">
 			  <div class="form-group @include('_partials.input-error', ['field'=>'firstname'])">
 			    <label for="firstname" class="control-label">Firstname</label>
-			    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" maxlength="30" value="{{ $employee->firstname }}">
+			    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" maxlength="30" value="{{ !is_null(old('firstname'))?old('firstname'):$employee->firstname }}">
 			  </div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group @include('_partials.input-error', ['field'=>'middlename'])">
 			    <label for="middlename" class="control-label">Middlename</label>
-			    <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middlename" maxlength="30" value="{{ $employee->middlename }}">
+			    <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middlename" maxlength="30" value="{{ !is_null(old('middlename'))?old('middlename'):$employee->middlename }}">
 			  </div>
 			</div>  
 		</div>

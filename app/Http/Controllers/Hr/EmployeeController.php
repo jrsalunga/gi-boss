@@ -188,7 +188,7 @@ class EmployeeController extends Controller
 
 
     $rules2 = [
-      'meal' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'meal' 			  => 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'ee_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'sss_tag'			=> 'regex:/^\d{1}$/',
@@ -267,6 +267,7 @@ class EmployeeController extends Controller
       'height' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'weight' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'notes' 			=> 'max:225',
+      'hobby'  			=> 'max:50',
       'id' 					=> 'required|max:32|alpha_num',
     ];
 

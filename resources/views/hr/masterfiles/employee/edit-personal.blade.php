@@ -178,9 +178,15 @@
 	  		<div class="col-md-5">
 					<div class="form-group @include('_partials.input-error', ['field'=>'notes'])">
 				    <label for="notes" class="control-label">Notes</label>
-				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="200" style="max-width: 100%; min-width: 100%;" rows="4">{{ $employee->notes }}</textarea>
+				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="220" style="max-width: 100%; min-width: 100%;" rows="4">{{ $employee->notes }}</textarea>
 				  </div>
 				</div>
+				<div class="col-md-4">
+				  <div class="form-group @include('_partials.input-error', ['field'=>'hobby'])">
+				    <label for="hobby" class="control-label">Hobbies</label>
+				    <input type="text" class="form-control" id="hobby" name="hobby" placeholder="Hobbies" maxlength="50" value="{{ $employee->hobby }}">
+				  </div>
+				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->
 	</div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->

@@ -2,6 +2,7 @@
 
 use DB;
 use Mail;
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -394,18 +395,18 @@ class EmployeeController extends Controller
 			$repo = 'App\\Repositories\\Boss\\'.ucwords($table).'Repository';
 		
 			if(!class_exists($repo))
-  			throw new \Exception($repo.' not found.');
+  			throw new Exception($repo.' not found.');
 		} else {
 
 			$model2 = 'App\\Models\\'.ucwords($table);
 			
 			if(!class_exists($model2))
-  			throw new \Exception($model2.' not found.');
+  			throw new Exception($model2.' not found.');
 
 	  		$repo = 'App\\Repositories\\'.ucwords($table).'Repository';
 			
 				if(!class_exists($repo))
-	  			throw new \Exception($repo.' not found.');
+	  			throw new Exception($repo.' not found.');
 		}
   	return app()->make($repo);
 	}

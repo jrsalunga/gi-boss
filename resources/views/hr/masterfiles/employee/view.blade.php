@@ -1,8 +1,8 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', '- employee List')
+@section('title', '- Employee: '.$employee->code.' '.$employee->lastname.', '.$employee->firstname.' '.$employee->middlename)
 
-@section('body-class', 'employee-list')
+@section('body-class', 'employee-view')
 
 <?php
  $employee->load(['company', 'branch', 'position', 'department', 'religion', 'spouse', 'childrens.acadlevel', 'ecperson', 'workexps', 'educations', 'statutory']);

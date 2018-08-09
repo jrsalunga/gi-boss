@@ -1,9 +1,3 @@
-@if(app()->environment() == 'local')
-<?php
-$debugbar = new DebugBar\StandardDebugBar();
-$debugbarRenderer = $debugbar->getJavascriptRenderer();
-?>
-@endif
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +7,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-  <title>Giligan's Restaurant @yield('title')</title>
+  <title>Giligans HRIS @yield('title')</title>
 
   <link rel="shortcut icon" type="image/x-icon" href="/images/g.png" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
@@ -76,9 +70,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer();
 
 
 
-@if(app()->environment() == 'local')
-<?php echo $debugbarRenderer->render() ?>
-@endif
+
 
 
 <script src="https://js.pusher.com/3.1/pusher.min.js"></script>

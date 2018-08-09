@@ -1,4 +1,4 @@
-@extends('master')
+@extends('hr-master')
 
 @section('title', ' - Dashboard')
 

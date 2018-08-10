@@ -33,7 +33,9 @@
 						@endif
 						@if(isset($employee->branch))
 						<div>
+				  		<a href="/hr/masterfiles/employee/branch/{{ $employee->branch->lid() }}">
 								{{ $employee->branch->code }} - {{ $employee->branch->descriptor }}
+				  		</a>
 						</div>
 						@endif
 						@if(isset($employee->company))

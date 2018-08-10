@@ -10,7 +10,9 @@
 	</td>
 	<td>
 		@if(isset($employee->branch))
+		<a href="/hr/masterfiles/employee/branch/{{ $employee->branch->lid() }}">
 			{{ $employee->branch->code }}
+		</a>
 		@endif
 	</td>
 	<td>

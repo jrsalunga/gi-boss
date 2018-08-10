@@ -16,7 +16,7 @@ class Ordinal extends Command {
 
 	public function handle() {
 
-		$employees = Employee::where('punching', '>', 0)->get();
+		$employees = Employee::where('punching', '>', 0)->orderBy('code')->get();
 
 		foreach ($employees as $key => $employee) {
 			$this->info($employee->code.' '.$employee->lastname.' '.$employee->firstname);
@@ -25,8 +25,7 @@ class Ordinal extends Command {
 				? config('giligans.position')[$employee->positionid]['ordinal']
 				: 99;
 			
-			Employee::where('id', $employee->id)
-          ->update(['punching' => $ordinal]);
+			Employee::where('id', $employee->id)->update(['punching' => $ordinal]);
 		}
 
 

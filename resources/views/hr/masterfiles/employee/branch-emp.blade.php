@@ -33,10 +33,37 @@
    </form>
   </div>
 </div>
-<div class="row">
+<div class="row" style="margin-top: 20px;">
   <div class="col-md-8" >
     @if($branch)
-      {{ count($branch->active_employee) }}
+  
+      <div class="table-responsive">
+      <table class="table">
+        <tbody>
+        @foreach($branch->active_employee as $k => $employee)
+        <tr>
+          
+          <td>
+            <img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 50px; " class="img-responsive">
+          </td>
+          <td>
+            <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 
+          </td>
+          <td>
+            <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <span class="text-muted">{{ $employee->middlename }}</span></a> 
+          </td>
+          <td>
+            @if(isset($employee->position))
+              {{ $employee->position->descriptor }}
+            @endif
+          </td>
+
+        </tr>
+        @endforeach
+        </tbody>
+      </table>
+      </div>
+
     @endif
   </div>
 </div>

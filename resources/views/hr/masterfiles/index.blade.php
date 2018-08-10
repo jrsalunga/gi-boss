@@ -8,7 +8,10 @@
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-12">
     <h3 class="page-header">{{ hr_nav_caption($active) }} List 
-      <a href="/hr/masterfiles/{{$active}}/create" class="pull-right" title="Add Record"><i class="material-icons">note_add</i></a>
+      @if($active=='employee')
+      <a href="/hr/masterfiles/{{$active}}/branch" class="pull-right" title="Branch Employee" data-toggle="tooltip"><i class="material-icons">store</i></a>
+      @endif
+      <a href="/hr/masterfiles/{{$active}}/create" class="pull-right" title="Add Record" data-toggle="tooltip"><i class="material-icons">note_add</i></a>
     </h3>
     @include('_partials.alerts')
 

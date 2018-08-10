@@ -292,7 +292,7 @@ class SettingsController extends Controller {
 		    $employee->datehired		= $hired;
 		    $stop = empty(trim($row['RESIGNED'])) ? '0000-00-00' : Carbon::parse(trim($row['RESIGNED']));
 		    $employee->datestop			= $stop;
-		    $employee->punching			= 1;
+		    $employee->punching		  = array_key_exists($employee->positionid, config('giligans.position')) ? config('giligans.position')[$employee->positionid]['ordinal']:99;
 		    $employee->processing		= 1;
 		    $employee->address			= trim($row['ADDRESS1']).', '.trim($row['ADDRESS2']).', '.trim($row['ADDRESS3']);
 		    $employee->phone 				= trim($row['TEL'])=='N/A' ? '':trim($row['TEL']);

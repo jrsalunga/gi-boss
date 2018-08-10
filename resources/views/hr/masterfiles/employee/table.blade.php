@@ -22,7 +22,7 @@
 		@if($employee->isActive())
 			<span class="label label-success">Active</span>
 			@if(is_iso_date($employee->datestart->format('Y-m-d')))
-			<em><small class="text-muted" title="{{ $employee->datestart->format('m/d/Y') }}" data-toggle="tooltip"> {{ diffForHumans($employee->datestart) }}</small></em>
+			<em><small class="text-muted help" title="{{ $employee->datestart->format('m/d/Y') }}" data-toggle="tooltip"> {{ diffForHumans($employee->datestart) }}</small></em>
 			@endif
 		@else
 			<span class="label label-default">Inactive</span>

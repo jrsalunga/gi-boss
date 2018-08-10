@@ -127,7 +127,7 @@
 				  		<div class="col-md-4">
 				  			<div class="form-group">
 									<label>Position</label>
-									<div><?=isset($employee->position)?$employee->position->descriptor:'-';?></div>
+									<div title="Ordinal: {{ $employee->punching }}"><?=isset($employee->position)?$employee->position->descriptor:'-';?></div>
 								</div>
 				  		</div>
 				  		<div class="col-md-4">

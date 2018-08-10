@@ -183,6 +183,7 @@ class EmployeeController extends Controller
       'datestart' 	=> 'required|date_format:Y-m-d',
       'paytype' 		=> 'required|regex:/^[0-3]{1}$/',
       'ratetype' 		=> 'required|regex:/^[0-2]{1}$/',
+      'punching' 		=> 'max:100',
       'rate' 				=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'ecola' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'allowance1' 	=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
@@ -227,6 +228,12 @@ class EmployeeController extends Controller
 
 		$keys = array_keys($rules);
 		unset($rules['id']);
+
+		
+		if (array_key_exists($request->input('positionid'), config('giligans.position')))
+			$request->merge(['punching'=>config('giligans.position')[$request->input('positionid')]['ordinal']]);
+		else
+			$request->merge(['punching'=>99]);
 
 		//return $request->only($keys);
 		DB::beginTransaction();

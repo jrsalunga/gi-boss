@@ -135,6 +135,7 @@ Route::group(['prefix'=>'hr', 'middleware' => 'hr'], function(){
 get('/', function () {
     return view('hr.index');
 });
+Route::get('masterfiles/employee/branch', 'Hr\BranchController@getBranch');
 
 Route::get('masterfiles/{table?}', ['uses'=>'Hr\MasterfilesController@getIndex']);
 Route::get('masterfiles/employee/{id}/edit/employment', 'Hr\EmployeeController@editEmployment');
@@ -144,6 +145,7 @@ Route::get('masterfiles/employee/{id}/edit/workedu', 'Hr\EmployeeController@edit
 Route::get('masterfiles/employee/{id}/edit/confirm', 'Hr\EmployeeController@editConfirm');
 Route::delete('masterfiles/employee/child', 'Hr\EmployeeController@deleteChild');
 Route::resource('masterfiles/employee', 'Hr\EmployeeController');
+Route::get('masterfiles/employee/branch/{branchid?}', 'Hr\BranchController@branchEmployee');
 Route::resource('masterfiles/position', 'Hr\PositionController');
 
 });

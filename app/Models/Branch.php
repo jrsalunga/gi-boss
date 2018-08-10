@@ -11,7 +11,11 @@ class Branch extends BaseModel {
  	public static $header = ['code', 'descriptor'];
 
 	public function employee() {
-    return $this->hasMany('App\Models\Employee', 'employeeid');
+    return $this->hasMany('App\Models\Employee', 'branchid');
+  }
+
+  public function active_employee() {
+    return $this->hasMany('App\Models\Employee', 'branchid')->whereNotIn('empstatus', [4, 5]);
   }
 
   public function holidays() {

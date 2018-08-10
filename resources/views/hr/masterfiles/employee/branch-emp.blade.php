@@ -34,7 +34,7 @@
   </div>
 </div>
 <div class="row" style="margin-top: 20px;">
-  <div class="col-md-8" >
+  <div class="col-md-6" >
     @if($branch)
   
       <div class="table-responsive">
@@ -42,22 +42,28 @@
         <tbody>
         @foreach($branch->active_employee as $k => $employee)
         <tr>
-          
           <td>
-            <img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 50px; " class="img-responsive">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <img src="{{ $employee->getPhotoUrl() }}" style="margin-right:10px; width: 60px; " class="img-responsive">
+                  </td>
+                  <td>
+                    <div>
+                      <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 
+                    </div>
+                    <div>
+                      <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <span class="text-muted">{{ $employee->middlename }}</span></a> 
+                    </div>
+                    @if(isset($employee->position))
+                      <p><small>{{ $employee->position->descriptor }}</small></p>
+                    @endif
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </td>
-          <td>
-            <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 
-          </td>
-          <td>
-            <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <span class="text-muted">{{ $employee->middlename }}</span></a> 
-          </td>
-          <td>
-            @if(isset($employee->position))
-              {{ $employee->position->descriptor }}
-            @endif
-          </td>
-
         </tr>
         @endforeach
         </tbody>

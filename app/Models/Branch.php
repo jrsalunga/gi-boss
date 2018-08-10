@@ -15,7 +15,11 @@ class Branch extends BaseModel {
   }
 
   public function active_employee() {
-    return $this->hasMany('App\Models\Employee', 'branchid')->whereNotIn('empstatus', [4, 5])->orderby('punching');
+    return $this->hasMany('App\Models\Employee', 'branchid')
+                ->whereNotIn('empstatus', [4, 5])
+                ->orderby('punching')
+                ->orderby('lastname')
+                ->orderby('firstname');
   }
 
   public function holidays() {

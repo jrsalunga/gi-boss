@@ -21,7 +21,9 @@
 	<td>
 		@if($employee->isActive())
 			<span class="label label-success">Active</span>
-			<em><small class="text-muted"> {{ diffForHumans($employee->datestart) }}</small></em>
+			@if(is_iso_date($employee->datestart))
+			<em><small class="text-muted" title="{{ $employee->datestart->format('m/d/Y') }}" data-toggle="tooltip"> {{ diffForHumans($employee->datestart) }}</small></em>
+			@endif
 		@else
 			<span class="label label-default">Inactive</span>
 		@endif

@@ -98,9 +98,9 @@ class EmployeeController extends Controller
 		
 		$rules = [
       'code' 				=> 'regex:/^\d{1,6}$/',
-      'lastname' 		=> 'required|max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
-      'firstname' 	=> 'required|max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
-      'middlename' 	=> 'max:30|regex:/^[a-zA-Z0-9\_\-\s]+$/',
+      'lastname' 		=> 'required|max:30|anshup',
+      'firstname' 	=> 'required|max:30|anshup',
+      'middlename' 	=> 'max:30|anshup',
     ];
 
 		$this->validate($request, $rules);
@@ -140,9 +140,9 @@ class EmployeeController extends Controller
 	private function update_general(Request $request) {
 
 		$rules = [
-      'lastname' 		=> 'required|max:30|alpha_spaces',
-      'firstname' 	=> 'required|max:30|alpha_spaces',
-      'middlename' 	=> 'max:30|alpha_spaces',
+      'lastname' 		=> 'required|max:30|anshup',
+      'firstname' 	=> 'required|max:30|anshup',
+      'middlename' 	=> 'max:30|anshup',
     ];
 
 		$this->validate($request, $rules);

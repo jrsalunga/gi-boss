@@ -45,8 +45,8 @@ class AppServiceProvider extends ServiceProvider
             return preg_match('/^[\pL\s-]+$/u', $value); 
         });
 
-        Validator::extend('anshu', function ($attribute, $value) {
-            return preg_match('/^[0-9\pL\s-_]+$/u', $value); 
+        Validator::extend('anshup', function ($attribute, $value) {
+            return preg_match('/^[0-9\pL\s-_.]+$/u', $value); 
         });
     }
 

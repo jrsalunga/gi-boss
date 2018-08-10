@@ -35,13 +35,14 @@
 	  		<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'companyid'])">
 						<label for="companyid" class="control-label">Company</label>
+						<?php $_companyid = !is_null(old('companyid'))?old('companyid'):$employee->companyid; ?>
 						@if(count($companies)>0)
-						<select class="selectpicker form-control show-tick" name="companyid" id="companyid" data-live-search="true" data-size="10" data-companyid="{{ $employee->companyid }}">
-							@if(!isset($employee->company->id))
+						<select class="selectpicker form-control show-tick" name="companyid" id="companyid" data-live-search="true" data-size="10" data-companyid="{{ $_companyid }}">
+							@if(empty($_companyid))
 								<option disabled selected>-- Select Company -- </option>
 							@endif
 							@foreach($companies as $company)
-						  	<option value="{{$company->id}}" <?=isset($employee->company->id)&&($company->id==$employee->companyid)?'selected':'';?> data-tokens="{{ $company->code }} {{ $company->descriptor }}">
+						  	<option value="{{$company->id}}" <?=($company->id==$_companyid)?'selected':'';?> data-tokens="{{ $company->code }} {{ $company->descriptor }}">
 						  		{{ $company->code }} - {{ $company->descriptor }}
 						  	</option>
 						  @endforeach
@@ -54,13 +55,14 @@
 				<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'branchid'])">
 						<label for="branchid" class="control-label">Branch</label>
+						<?php $_branchid = !is_null(old('branchid'))?old('branchid'):$employee->branchid; ?>
 						@if(count($branches)>0)
-						<select class="selectpicker form-control show-tick" name="branchid" id="branchid" data-live-search="true" data-size="10" data-branchid="{{ $employee->branchid }}">
-							@if(!isset($employee->branch->id))
+						<select class="selectpicker form-control show-tick" name="branchid" id="branchid" data-live-search="true" data-size="10" data-branchid="{{ $_branchid }}">
+							@if(empty($_branchid))
 								<option disabled selected>-- Select Branch -- </option>
 							@endif
 							@foreach($branches as $branch)
-						  	<option value="{{$branch->id}}" <?=isset($employee->branch->id)&&($branch->id==$employee->branchid)?'selected':'';?> data-tokens="{{ $branch->code }} {{ $branch->descriptor }}">
+						  	<option value="{{$branch->id}}" <?=($branch->id==$_branchid)?'selected':'';?> data-tokens="{{ $branch->code }} {{ $branch->descriptor }}">
 						  		{{ $branch->code }} - {{ $branch->descriptor }}
 						  	</option>
 						  @endforeach
@@ -73,13 +75,14 @@
 				<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'positionid'])">
 						<label for="positionid" class="control-label">Position</label>
+						<?php $_positionid = !is_null(old('positionid'))?old('positionid'):$employee->positionid; ?>
 						@if(count($positions)>0)
-						<select class="selectpicker form-control show-tick" name="positionid" id="positionid" data-live-search="true" data-size="10"  data-positionid="{{ $employee->positionid }}">
-							@if(!isset($employee->position->id))
+						<select class="selectpicker form-control show-tick" name="positionid" id="positionid" data-live-search="true" data-size="10"  data-positionid="{{ $_positionid }}">
+							@if(empty($_positionid))
 								<option disabled selected>-- Select Position -- </option>
 							@endif
 							@foreach($positions as $position)
-						  	<option value="{{$position->id}}" <?=isset($employee->position->id)&&($position->id==$employee->positionid)?'selected':'';?> data-tokens="{{ $position->code }} {{ $position->descriptor }}">
+						  	<option value="{{$position->id}}" <?=($position->id==$_positionid)?'selected':'';?> data-tokens="{{ $position->code }} {{ $position->descriptor }}">
 						  		{{ $position->code }} - {{ $position->descriptor }}
 						  	</option>
 						  @endforeach
@@ -92,13 +95,14 @@
 				<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'deptid'])">
 						<label for="deptid" class="control-label">Department</label>
+						<?php $_deptid = !is_null(old('deptid'))?old('deptid'):$employee->deptid; ?>
 						@if(count($departments)>0)
-						<select class="selectpicker form-control show-tick" name="deptid" id="deptid" data-live-search="true" data-size="10" data-deptid="{{ $employee->deptid }}">
-							@if(!isset($employee->department->id))
+						<select class="selectpicker form-control show-tick" name="deptid" id="deptid" data-live-search="true" data-size="10" data-deptid="{{ $_deptid }}">
+							@if(empty($_deptid))
 								<option disabled selected>-- Select Company -- </option>
 							@endif
 							@foreach($departments as $department)
-						  	<option value="{{$department->id}}" <?=isset($employee->department->id)&&($department->id==$employee->deptid)?'selected':'';?> data-tokens="{{ $department->code }} {{ $department->descriptor }}">
+						  	<option value="{{$department->id}}" <?=($department->id==$_deptid)?'selected':'';?> data-tokens="{{ $department->code }} {{ $department->descriptor }}">
 						  		{{ $department->code }} - {{ $department->descriptor }}
 						  	</option>
 						  @endforeach
@@ -111,13 +115,13 @@
 				<div class="col-md-4">
 					<div class="form-group @include('_partials.input-error', ['field'=>'empstatus'])">
 						<label for="empstatus" class="control-label">Employment Status</label>
-						
-						<select class="selectpicker form-control show-tick" name="empstatus" id="empstatus" data-live-search="true" data-size="10" data-empstatus="{{ $employee->empstatus }}">
-							@if($employee->empstatus==0)
+						<?php $_empstatus = !is_null(old('empstatus'))?old('empstatus'):$employee->empstatus; ?>
+						<select class="selectpicker form-control show-tick" name="empstatus" id="empstatus" data-live-search="true" data-size="10" data-empstatus="{{ $_empstatus }}">
+							@if($_empstatus==0)
 								<option disabled selected>-- Select Emp Status -- </option>
 							@endif
 							@foreach(['TRAINEE', 'CONTRACTUAL', 'REGULAR', 'RESIGNED', 'TERMNINATED'] as $key => $status)
-						  	<option value="{{ ($key+1) }}" <?=isset($employee->empstatus)&&(($key+1)==$employee->empstatus)?'selected':'';?> data-tokens="{{ $status }}">
+						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_empstatus)?'selected':'';?> data-tokens="{{ $status }}">
 						  		{{ $status }}
 						  	</option>
 						  @endforeach
@@ -128,7 +132,7 @@
 					<div class="form-group @include('_partials.input-error', ['field'=>'datestart'])">
 				    <label for="datestart" class="control-label">Date Start</label>
 				    <div class="input-group datepicker">
-				    	<input type="text" class="form-control" id="datestart" name="datestart" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ $employee->getDatestart() }}">
+				    	<input type="text" class="form-control" id="datestart" name="datestart" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ !is_null(old('datestart'))?old('datestart'):$employee->getDatestart() }}">
 				    	<div class="input-group-addon">
 					        <span class="glyphicon glyphicon-calendar"></span>
 					    </div>

@@ -14,7 +14,7 @@
 
     @if(count($datas)>0)        
     <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-hover">
       <tbody>
         <?php
         $active = is_null($active) ? 'index' : $active;

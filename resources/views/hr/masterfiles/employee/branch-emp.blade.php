@@ -99,14 +99,16 @@
             <tr><th>Department</th><th class="text-right">#</th></tr>
           </thead>
           <tbody>
+            <?php $d = 0; ?>
             @foreach($datas['deptd'] as $key => $dept)
               <tr>
                 <td>{{ $dept['deptd'] }}</td>
                 <td class="text-right">{{ $dept['ctr'] }}</td>
               </tr>
+              <?php $d += $dept['ctr'];  ?>
             @endforeach
           </tbody>
-          <thead><tr><td></td><td class="text-right"><a href="/egc/employee/list">24</a></td></tr></thead>
+          <thead><tr><td></td><td class="text-right">{{ $d }}</td></tr></thead>
         </table>
       </div><!-- end: .panel-body-->
     </div>

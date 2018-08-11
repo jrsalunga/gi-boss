@@ -71,6 +71,7 @@
     @endif
   </div><!-- end: .col-nd-6 -->
   <div class="col-md-5">
+    @if($branch)
     <div class="panel panel-default">
       <div class="panel-body">
         <table class="table table-condensed">
@@ -109,6 +110,7 @@
         </table>
       </div><!-- end: .panel-body-->
     </div>
+  @endif
   </div><!-- end: .col-nd-5 -->
 </div>
 @endsection

@@ -34,20 +34,19 @@
   </div>
 </div>
 <div class="row" style="margin-top: 20px;">
-  <div class="col-md-6" >
+  <div class="col-md-7" >
     @if($branch)
-  
       <div class="table-responsive">
       <table class="table">
         <tbody>
-        @foreach($branch->active_employee as $k => $employee)
+        @foreach($datas['employees'] as $k => $employee)
         <tr>
-          <td>
+          <td style="padding: 0 0 5px 0;">
             <table>
               <tbody>
                 <tr>
                   <td>
-                    <img src="{{ $employee->getPhotoUrl() }}" style="margin-right:10px; width: 60px; " class="img-responsive">
+                    <img src="{{ $employee->getPhotoUrl() }}" style="margin-right:5px; width: 80px; " class="img-responsive">
                   </td>
                   <td>
                     <div>
@@ -69,9 +68,48 @@
         </tbody>
       </table>
       </div>
-
     @endif
-  </div>
+  </div><!-- end: .col-nd-6 -->
+  <div class="col-md-5">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <table class="table table-condensed">
+          <thead>
+            <tr><th>Position</th><th class="text-right">#</th></tr>
+          </thead>
+          <tbody>
+            <?php $p = 0; ?>
+            @foreach($datas['positions'] as $key => $position)
+              <tr>
+                <td>{{ $position['position'] }}</td>
+                <td class="text-right">{{ $position['ctr'] }}</td>
+              </tr>
+              <?php $p += $position['ctr'];  ?>
+            @endforeach
+          </tbody>
+          <thead><tr><td></td><td class="text-right">{{ $p }}</td></tr></thead>
+        </table>
+      </div><!-- end: .panel-body-->
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <table class="table table-condensed">
+          <thead>
+            <tr><th>Department</th><th class="text-right">#</th></tr>
+          </thead>
+          <tbody>
+            @foreach($datas['deptd'] as $key => $dept)
+              <tr>
+                <td>{{ $dept['deptd'] }}</td>
+                <td class="text-right">{{ $dept['ctr'] }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+          <thead><tr><td></td><td class="text-right"><a href="/egc/employee/list">24</a></td></tr></thead>
+        </table>
+      </div><!-- end: .panel-body-->
+    </div>
+  </div><!-- end: .col-nd-5 -->
 </div>
 @endsection
 

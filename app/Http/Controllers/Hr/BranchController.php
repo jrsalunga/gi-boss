@@ -31,6 +31,10 @@ class BranchController extends Controller
 	}
 
 	public function branchEmployee(Request $request, $branchid) {
+
+		$data['employees'] = [];
+		$data['positions'] = [];
+		$data['deptd'] = [];
 		
 		try {
 			$o = $this->repository->skipCriteria()->find($branchid);
@@ -38,7 +42,31 @@ class BranchController extends Controller
 			return redirect('/hr/masterfiles/employee/branch')->withErrors('Unknown Branch.');
 		}
 
-		return view('hr.masterfiles.employee.branch-emp')->with('branch', $o)->with('branches', $this->branches);
+		foreach ($o->active_employee as $key => $employee) {
+			$data['employees'][$key] = $employee;
+
+			$pos = isset($employee->position) ? $employee->position->id : 'Unassigned';
+			$dep = isset($employee->department) ? $employee->department->id : 'Unassigned';
+
+			if (array_key_exists($pos, $data['positions'])) {
+				$data['positions'][$pos]['ctr'] += 1;
+			} else {
+				$data['positions'][$pos]['position'] = $employee->position->descriptor;
+				$data['positions'][$pos]['ctr'] = 1;
+			}
+
+			if (array_key_exists($dep, $data['deptd'])) {
+				$data['deptd'][$dep]['ctr'] += 1;
+			} else {
+				$data['deptd'][$dep]['deptd'] = $employee->department->descriptor;
+				$data['deptd'][$dep]['ctr'] = 1;
+			}
+		}
+
+		return view('hr.masterfiles.employee.branch-emp')
+									->with('branch', $o)
+									->with('branches', $this->branches)
+									->with('datas', $data);
 
 	}
 

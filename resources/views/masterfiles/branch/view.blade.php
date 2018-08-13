@@ -40,9 +40,19 @@
 		@endif
 		@if(isset($branch->sector))
 		<div>
-			<a href="/masterfiles/sector/{{ $branch->sector->lid() }}">
-				{{ $branch->sector->descriptor }}
+			@if($branch->sector->is_parent())
+				<a href="/masterfiles/sector/{{ $branch->sector->lid() }}">
+					{{ $branch->sector->descriptor }}
+				</a>
+			@else
+			<a href="/masterfiles/sector/{{ $branch->sector->parent->lid() }}">
+				{{ $branch->sector->parent->descriptor }}
 			</a>
+			 -
+			 <small><em>(<a href="/masterfiles/sector/{{ $branch->sector->lid() }}">
+					{{ $branch->sector->descriptor }}
+				</a>)</em></small>
+			@endif
 		</div>
 		@endif
 		<ul class="list-unstyled">

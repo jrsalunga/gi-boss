@@ -65,7 +65,7 @@
 			@if($u->user->admin=='3')
 			{{ $u->user->name }} <small>
 			<div>
-				<em>{{ $u->user->email }}</em></small>
+				<em>{{ $u->user->email or '' }}</em></small>
 			</div>
 			@endif
 		@endforeach

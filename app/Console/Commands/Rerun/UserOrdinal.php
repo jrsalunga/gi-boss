@@ -24,13 +24,29 @@ class UserOrdinal extends Command {
 
 			$employee = Employee::find($user->id);
 
-			if (is_null($employee))
-				$this->error('-');
-			else
+			if (is_null($employee)) {
+				$x = explode(' ', $user->name);
+				$e = Employee::where('firstname', $x[0])->where('lastname', $x[1])->first();
+				if (is_null($e)) 
+					$this->error('-');
+				else
+					$this->info('>>'.$e->lastname.' '.$e->firstname);
+
+			} else {
 				$this->info('>'.$employee->lastname.' '.$employee->firstname);
 
+				if ($user->admin = 3) {
+					$this->info('Update ordinal');
 
+				}
 
+				/*
+				$ordinal = array_key_exists($employee->positionid, config('giligans.position')) 
+					? config('giligans.position')[$employee->positionid]['ordinal']
+					: 99;
+				User::where('id', $user->id)->update(['ordinal' => $ordinal]);
+				*/
+			}
 			
 		
 

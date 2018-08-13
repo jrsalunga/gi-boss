@@ -21,7 +21,7 @@
 
 		@include('_partials.alerts')
 		
-		<div>{{ $branch->address }}</div>
+		<div>{{ $branch->fullAddress() }}</div>
 		<div>{{ $branch->tin or '-' }}</div>
 		<div>{{ $branch->email }}</div>
 		@if(isset($branch->company))
@@ -66,11 +66,11 @@
 
 		@foreach($branch->boss as $u)
 			@if(isset($u->user))
-			@if($u->user->admin=='3')
-				{{ $u->user->name or '' }} <small>
-				<div>
-					<em>{{ $u->user->email or '' }}</em></small>
-				</div>
+				@if($u->user->admin=='3')
+					{{ $u->user->name or '' }} <small>
+					<div>
+						<em>{{ $u->user->email or '' }}</em></small>
+					</div>
 				@endif
 			@endif
 		@endforeach

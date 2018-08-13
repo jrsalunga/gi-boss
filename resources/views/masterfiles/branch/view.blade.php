@@ -31,6 +31,13 @@
 			</a>
 		</div>
 		@endif
+		@if(isset($branch->lessor))
+		<div>
+			<a href="/masterfiles/lessor/{{ $branch->lessor->lid() }}">
+				{{ $branch->lessor->descriptor }}
+			</a>
+		</div>
+		@endif
 		<ul class="list-unstyled">
 		@foreach($branch->contacts as $c)
 				<li>{!! contact_icon($c->type, true) !!} <a href="#">{{ $c->number }}</a></li>

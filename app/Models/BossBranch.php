@@ -20,7 +20,7 @@ class BossBranch extends BaseModel {
   }
 
   public function user() {
-    return $this->belongsTo('App\User', 'bossid')->orderBy('ordinal');
+    return $this->belongsTo('App\User', 'bossid');
   }
 
   

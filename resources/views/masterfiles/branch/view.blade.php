@@ -38,6 +38,13 @@
 			</a>
 		</div>
 		@endif
+		@if(isset($branch->sector))
+		<div>
+			<a href="/masterfiles/sector/{{ $branch->sector->lid() }}">
+				{{ $branch->sector->descriptor }}
+			</a>
+		</div>
+		@endif
 		<ul class="list-unstyled">
 		@foreach($branch->contacts as $c)
 				<li>{!! contact_icon($c->type, true) !!} <a href="#">{{ $c->number }}</a></li>

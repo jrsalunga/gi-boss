@@ -20,14 +20,14 @@ class UserOrdinal extends Command {
 		$users = User::orderBy('username')->get();
 
 		foreach ($users as $key => $user) {
-			$this->info($user->username.' '.$user->name);
+			$this->line($user->username.' '.$user->name);
 
 			$employee = Employee::find($user->id);
 
 			if (is_null($employee))
-				$this->info('-');
+				$this->error('-');
 			else
-				$this->log('>'.$employee->lastname.' '.$employee->firstname);
+				$this->info('>'.$employee->lastname.' '.$employee->firstname);
 
 
 

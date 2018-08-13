@@ -62,9 +62,7 @@
 		</ul>
 		<br>
 		@foreach($branch->boss as $u)
-			@if($u->user->admin=='3')
 			
-			@endif
 		@endforeach
 	</div>
 	<br>

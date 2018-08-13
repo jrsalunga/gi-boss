@@ -34,7 +34,7 @@ class CompanyRepository extends BaseRepository implements CacheableInterface
   }
 
 	public function model() {
-    return 'App\\Models\\Company';
+    return 'App\\Models\\Boss\\Company';
   }
 
   

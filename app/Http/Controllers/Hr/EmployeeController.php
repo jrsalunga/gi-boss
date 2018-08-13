@@ -228,7 +228,7 @@ class EmployeeController extends Controller
 		if ($request->input('phic_tag')) {
 			$rules['phicno'] 	= 'required|regex:/^\d{12}$/';
       $rules['ee_phic'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
-      $rules['er_phic'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_phic'] = 'required|same:ee_phic|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
 		} else {
 			$rules['phicno'] 	= 'regex:/^\d{12}$/';
       $rules['ee_phic'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
@@ -238,7 +238,7 @@ class EmployeeController extends Controller
 		if ($request->input('hdmf_tag')) {
 			$rules['hdmfno'] 	= 'required|regex:/^\d{12}$/';
       $rules['ee_hdmf'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
-      $rules['er_hdmf'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_hdmf'] = 'required|same:ee_hdmf|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
 		} else {
 			$rules['hdmfno'] 	= 'regex:/^\d{12}$/';
       $rules['ee_hdmf'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';

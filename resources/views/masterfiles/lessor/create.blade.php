@@ -22,7 +22,7 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="descriptor">Descriptor</label>
-			    <input type="text" class="form-control" id="descriptor" name="descriptor" placeholder="Descriptor" maxlength="25" value="{{ request()->old('descriptor') }}">
+			    <input type="text" class="form-control" id="descriptor" name="descriptor" placeholder="Descriptor" maxlength="50" value="{{ request()->old('descriptor') }}">
 			  </div>
 			</div>  
 		</div>

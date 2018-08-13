@@ -61,16 +61,16 @@
 		@endforeach
 		</ul>
 		<br>
+		@if(isset($branch->boss))
 		@foreach($branch->boss as $u)
-		@if(isset(($u->user)))
 			@if($u->user->admin=='3')
 			{{ $u->user->name }} <small>
 			<div>
 				<em>{{ $u->user->email }}</em></small>
 			</div>
 			@endif
-		@endif
 		@endforeach
+		@endif
 	</div>
 	<br>
 	@include('_partials.pager', ['field'=>'code', 'model'=>$branch])

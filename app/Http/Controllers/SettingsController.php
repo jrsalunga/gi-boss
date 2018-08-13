@@ -279,7 +279,7 @@ class SettingsController extends Controller {
 		    $employee->paytype			= 2;
 		    $employee->ratetype			= $this->getRateType(trim($row['DEPT']));
 		    $employee->rate					= trim($row['RATE_HR']);
-		    $employee->ecola				= trim($row['RATE_HR']);
+		    $employee->ecola				= trim($row['ECOL_RATE']);
 		    $employee->allowance1		= trim($row['ALW1_RATE']);
 		    $employee->allowance2		= trim($row['ALW2_RATE']);
 		    $employee->phicno				= trim($row['PHEALTH_NO']);

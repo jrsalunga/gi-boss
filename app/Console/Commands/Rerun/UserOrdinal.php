@@ -49,9 +49,9 @@ class UserOrdinal extends Command {
 
 				$this->info('ordinal: '.$ordinal);
 
-				/*
+				
 				User::where('id', $user->id)->update(['ordinal' => $ordinal]);
-				*/
+				
 				}
 
 		

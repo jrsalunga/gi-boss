@@ -29,25 +29,30 @@ class UserOrdinal extends Command {
 				$e = Employee::where('firstname', $x[0])->where('lastname', $x[1])->first();
 				if (is_null($e)) 
 					$this->error('-');
-				else
+				else {
 					$this->info('>>'.$e->lastname.' '.$e->firstname);
+					$pid = $e->positionid;
+				}
 
 			} else {
 				$this->info('>'.$employee->lastname.' '.$employee->firstname);
+				$pid = $employee->positionid;
 
+			
+			}
 				if ($user->admin = 3) {
-					$this->info('Update ordinal');
 
-				}
-
-				/*
 				$ordinal = array_key_exists($employee->positionid, config('giligans.position')) 
 					? config('giligans.position')[$employee->positionid]['ordinal']
 					: 99;
+
+				$this->info('ordinal: '.$ordinal);
+
+				/*
 				User::where('id', $user->id)->update(['ordinal' => $ordinal]);
 				*/
-			}
-			
+				}
+
 		
 
 		}

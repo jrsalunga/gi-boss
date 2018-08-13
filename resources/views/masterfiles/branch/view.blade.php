@@ -62,7 +62,7 @@
 		</ul>
 		<br>
 		@foreach($branch->boss as $u)
-		@if(isset(($u->user))
+		@if(isset(($u->user)))
 			@if($u->user->admin=='3')
 			{{ $u->user->name }} <small>
 			<div>

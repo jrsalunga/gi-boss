@@ -150,12 +150,13 @@
 	  		<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'paytype'])">
 						<label for="paytype" class="control-label">Pay Type</label>
-						<select class="selectpicker form-control show-tick" name="paytype" id="paytype" data-live-search="true" data-size="10" data-paytype="{{ $employee->paytype }}">
-							@if($employee->paytype==0)
+						<?php $_paytype = !is_null(old('paytype'))?old('paytype'):$employee->paytype; ?>
+						<select class="selectpicker form-control show-tick" name="paytype" id="paytype" data-live-search="true" data-size="10" data-paytype="{{ $_paytype }}">
+							@if($_paytype==0)
 								<option disabled selected>-- Select Pay Type -- </option>
 							@endif
 							@foreach(['WEEKLY', 'SEMI-MONTHLY', 'MONTHLY'] as $key => $pt)
-						  	<option value="{{ ($key+1) }}" <?=isset($employee->paytype)&&(($key+1)==$employee->paytype)?'selected':'';?> data-tokens="{{ $pt }}">
+						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_paytype)?'selected':'';?> data-tokens="{{ $pt }}">
 						  		{{ $pt }}
 						  	</option>
 						  @endforeach
@@ -165,12 +166,13 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ratetype'])">
 						<label for="ratetype" class="control-label">Rate Type</label>
-						<select class="selectpicker form-control show-tick" name="ratetype" id="ratetype" data-live-search="true" data-size="10" data-ratetype="{{ $employee->paytype }}">
-							@if($employee->ratetype==0)
+						<?php $_ratetype = !is_null(old('ratetype'))?old('paytype'):$employee->ratetype; ?>
+						<select class="selectpicker form-control show-tick" name="ratetype" id="ratetype" data-live-search="true" data-size="10" data-ratetype="{{ $_ratetype }}">
+							@if($_ratetype==0)
 								<option disabled selected>-- Select Rate Type -- </option>
 							@endif
 							@foreach(['DAILY', 'MONTHLY'] as $key => $rt)
-						  	<option value="{{ ($key+1) }}" <?=isset($employee->ratetype)&&(($key+1)==$employee->ratetype)?'selected':'';?> data-tokens="{{ $rt }}">
+						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_ratetype)?'selected':'';?> data-tokens="{{ $rt }}">
 						  		{{ $rt }}
 						  	</option>
 						  @endforeach
@@ -180,31 +182,31 @@
 				<div class="col-md-3">
 				  <div class="form-group @include('_partials.input-error', ['field'=>'rate'])">
 				    <label for="rate" class="control-label">Basic Rate</label>
-				    <input type="text" class="form-control" id="rate" name="rate" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->rate }}">
+				    <input type="text" class="form-control" id="rate" name="rate" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('rate'))?old('rate')>0?old('rate'):'':$employee->rate }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ecola'])">
 				    <label for="ecola" class="control-label">ECOLA</label>
-				    <input type="text" class="form-control" id="ecola" name="ecola" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->ecola }}">
+				    <input type="text" class="form-control" id="ecola" name="ecola" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('ecola'))?old('ecola')>0?old('ecola'):'':$employee->ecola }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'allowance1'])">
 				    <label for="allowance1" class="control-label">Allowance 1</label>
-				    <input type="text" class="form-control" id="allowance1" name="allowance1" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->allowance1 }}">
+				    <input type="text" class="form-control" id="allowance1" name="allowance1" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('allowance1'))?old('allowance1')>0?old('allowance1'):'':$employee->allowance1 }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'allowance2'])">
 				    <label for="allowance2" class="control-label">Allowance 2</label>
-				    <input type="text" class="form-control" id="allowance2" name="allowance2" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->allowance2 }}">
+				    <input type="text" class="form-control" id="allowance2" name="allowance2" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('allowance2'))?old('allowance2')>0?old('allowance2'):'':$employee->allowance2 }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'meal'])">
 				    <label for="meal" class="control-label">Meal</label>
-				    <input type="text" class="form-control" id="meal" name="meal" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="false" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->meal:'' }}">
+				    <input type="text" class="form-control" id="meal" name="meal" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="false" maxlength="8" value="{{ is_null(old('meal'))?isset($employee->statutory)?$employee->statutory->meal:'':(old('meal')>0?old('meal'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->
@@ -217,27 +219,31 @@
 	  		<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'sssno'])">
 				    <label for="sssno" class="control-label">SSS #</label>
-				    <input type="text" class="form-control" id="sssno" name="sssno" placeholder="00-0000000-0" data-mask="00-0000000-0" maxlength="12" value="{{ $employee->sssno }}">
+				    <input type="text" class="form-control" id="sssno" name="sssno" placeholder="00-0000000-0" data-mask="00-0000000-0" maxlength="12" value="{{ !is_null(old('sssno'))?old('sssno'):$employee->sssno }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ee_sss'])">
 				    <label for="ee_sss" class="control-label">SSS EE Share</label>
-				    <input type="text" class="form-control" id="ee_sss" name="ee_sss" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_sss:'' }}">
+				    <input type="text" class="form-control" id="ee_sss" name="ee_sss" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('ee_sss'))?isset($employee->statutory)?$employee->statutory->ee_sss:'':(old('ee_sss')>0?old('ee_sss'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'er_sss'])">
 				    <label for="er_sss" class="control-label">SSS ER Share</label>
-				    <input type="text" class="form-control" id="er_sss" name="er_sss" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_sss:'' }}">
+				    <input type="text" class="form-control" id="er_sss" name="er_sss" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('er_sss'))?isset($employee->statutory)?$employee->statutory->er_sss:'':(old('er_sss')>0?old('er_sss'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-2">
 					<div class="form-group @include('_partials.input-error', ['field'=>'sss_tag'])">
 						<label for="sss_tag" class="control-label">Tag</label>
-						<select class="form-control" name="sss_tag" id="sss_tag">
+						<?php 
+							$t = isset($employee->statutory) ? $employee->statutory->sss_tag : 0;
+							$_sss_tag = !is_null(old('sss_tag'))?old('sss_tag') : $t; 
+						?>
+						<select class="form-control" name="sss_tag" id="sss_tag" data-sss-tag="{{ $_sss_tag }}">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->sss_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=($key==$_sss_tag)?'selected':'';?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach
@@ -247,27 +253,31 @@
 				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'phicno'])">
 				    <label for="phicno" class="control-label">PhilHealth #</label>
-				    <input type="text" class="form-control" id="phicno" name="phicno" placeholder="000000000000" data-mask="000000000000" maxlength="12" value="{{ $employee->phicno }}">
+				    <input type="text" class="form-control" id="phicno" name="phicno" placeholder="000000000000" data-mask="000000000000" maxlength="12" value="{{ !is_null(old('phicno'))?old('phicno'):$employee->phicno }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ee_phic'])">
 				    <label for="ee_phic" class="control-label">PhilHealth EE Share</label>
-				    <input type="text" class="form-control" id="ee_phic" name="ee_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_phic:'' }}">
+				    <input type="text" class="form-control" id="ee_phic" name="ee_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('ee_phic'))?isset($employee->statutory)?$employee->statutory->ee_phic:'':(old('ee_phic')>0?old('ee_phic'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'er_phic'])">
 				    <label for="er_phic" class="control-label">PhilHealth ER Share</label>
-				    <input type="text" class="form-control" id="er_phic" name="er_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_phic:'' }}">
+				    <input type="text" class="form-control" id="er_phic" name="er_phic" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('er_phic'))?isset($employee->statutory)?$employee->statutory->er_phic:'':(old('er_phic')>0?old('er_phic'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-2 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'phic_tag'])">
 						<label for="phic_tag" class="control-label">Tag</label>
+						<?php 
+							$t = isset($employee->statutory) ? $employee->statutory->phic_tag : 0;
+							$_phic_tag = !is_null(old('phic_tag'))?old('phic_tag') : $t; 
+						?>
 						<select class="form-control" name="phic_tag" id="phic_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->phic_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=($key==$_phic_tag)?'selected':''?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach
@@ -277,27 +287,31 @@
 				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'hdmfno'])">
 				    <label for="hdmfno" class="control-label">Pag Ibig #</label>
-				    <input type="text" class="form-control" id="hdmfno" name="hdmfno" placeholder="0000-0000-0000" data-mask="0000-0000-0000" maxlength="14" value="{{ $employee->hdmfno }}">
+				    <input type="text" class="form-control" id="hdmfno" name="hdmfno" placeholder="0000-0000-0000" data-mask="0000-0000-0000" maxlength="14" value="{{ !is_null(old('hdmfno'))?old('hdmfno'):$employee->hdmfno }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'ee_hdmf'])">
 				    <label for="ee_hdmf" class="control-label">Pag Ibig EE Share</label>
-				    <input type="text" class="form-control" id="ee_hdmf" name="ee_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->ee_hdmf:'' }}">
+				    <input type="text" class="form-control" id="ee_hdmf" name="ee_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('ee_hdmf'))?isset($employee->statutory)?$employee->statutory->ee_hdmf:'':(old('ee_hdmf')>0?old('ee_hdmf'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'er_hdmf'])">
 				    <label for="er_hdmf" class="control-label">Pag Ibig ER Share</label>
-				    <input type="text" class="form-control" id="er_hdmf" name="er_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ isset($employee->statutory)?$employee->statutory->er_hdmf:'' }}">
+				    <input type="text" class="form-control" id="er_hdmf" name="er_hdmf" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ is_null(old('er_hdmf'))?isset($employee->statutory)?$employee->statutory->er_hdmf:'':(old('er_hdmf')>0?old('er_hdmf'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-2 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'hdmf_tag'])">
 						<label for="hdmf_tag" class="control-label">Tag</label>
+						<?php 
+							$t = isset($employee->statutory) ? $employee->statutory->hdmf_tag : 0;
+							$_hdmf_tag = !is_null(old('hdmf_tag'))?old('hdmf_tag') : $t; 
+						?>
 						<select class="form-control" name="hdmf_tag" id="hdmf_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->hdmf_tag)?'selected':($key==1)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=($key==$_hdmf_tag)?'selected':''?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach
@@ -307,21 +321,25 @@
 				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'tin'])">
 				    <label for="tin" class="control-label">TIN #</label>
-				    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" data-mask="000-000-000-000" maxlength="15" value="{{ $employee->tin }}">
+				    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" data-mask="000-000-000-000" maxlength="15" value="{{ !is_null(old('tin'))?old('tin'):$employee->tin }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'wtax'])">
 				    <label for="wtax" class="control-label">W/Tax</label>
-				    <input type="text" class="form-control" id="wtax" name="wtax" placeholder="0.00" data-mask="000,000.00" data-mask-reverse="true" maxlength="10" value="{{ isset($employee->statutory)?$employee->statutory->wtax:'' }}">
+				    <input type="text" class="form-control" id="wtax" name="wtax" placeholder="0.00" data-mask="000,000.00" data-mask-reverse="true" maxlength="10" value="{{ is_null(old('wtax'))?isset($employee->statutory)?$employee->statutory->wtax:'':(old('wtax')>0?old('wtax'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-2 col-md-pull-1 col-md-push-2">
 					<div class="form-group @include('_partials.input-error', ['field'=>'wtax_tag'])">
 						<label for="wtax_tag" class="control-label">Tag</label>
+						<?php 
+							$t = isset($employee->statutory) ? $employee->statutory->wtax_tag : 0;
+							$_wtax_tag = !is_null(old('wtax_tag'))?old('wtax_tag') : $t; 
+						?>
 						<select class="form-control" name="wtax_tag" id="wtax_tag">
 							@foreach(['No', 'Yes'] as $key => $t)
-						  	<option value="{{ $key }}" <?=isset($employee->statutory)&&($key==$employee->statutory->wtax_tag)?'selected':'';?> data-tokens="{{ $t }}">
+						  	<option value="{{ $key }}" <?=($key==$_wtax_tag)?'selected':''?> data-tokens="{{ $t }}">
 						  		{{ $t }}
 						  	</option>
 						  @endforeach

@@ -94,6 +94,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'ee_sss'    => ['regex' => 'The :attribute is required or format is invalid.'],
+        'er_sss'    => ['regex' => 'The :attribute is required or format is invalid.'],
+        'ee_phic'   => ['regex' => 'The :attribute is required or format is invalid.'],
+        'er_phic'   => ['regex' => 'The :attribute is required or format is invalid.'],
+        'ee_hdmf'   => ['regex' => 'The :attribute is required or format is invalid.'],
+        'er_hdmf'   => ['regex' => 'The :attribute is required or format is invalid.'],
+        'wtax'      => ['regex' => 'The :attribute is required or format is invalid.'],
+
     ],
 
     /*
@@ -121,6 +129,10 @@ return [
         'deptid'        => 'department',
         'positionid'    => 'position',
         'sssno'         => 'SSS #',
+        'phicno'        => 'PhilHealth #',
+        'hdmfno'        => 'Pag Ibig #',
+        'tin'           => 'TIN #',
+        'wtax'          => 'W/Tax',
         'ee_sss'        => 'SSS employee share',
         'er_sss'        => 'SSS employer share',
         'ee_phic'       => 'PhilHealth employee share',

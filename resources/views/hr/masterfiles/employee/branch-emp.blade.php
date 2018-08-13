@@ -12,7 +12,16 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <h4>Branch Employees</h4>
+    <h4>Branch Employees
+
+    <span>
+      <a href="/hr/masterfiles/employee" title="Back" data-toggle="tooltip" class="pull-right visible-xs">
+      <span class="gly gly-unshare"></span>
+      </a>
+    </span>
+    </h4>
+
+
   </div>
   <div class="col-md-6">
    <form action="/hr/masterfiles/employee/branch" method="POST">

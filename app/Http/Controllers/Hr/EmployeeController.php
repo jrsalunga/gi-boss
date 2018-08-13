@@ -188,18 +188,18 @@ class EmployeeController extends Controller
       'ecola' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'allowance1' 	=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'allowance2' 	=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
-      'sssno' 			=> 'regex:/^\d{10}$/',
-      'phicno' 			=> 'regex:/^\d{12}$/',
-      'hdmfno' 			=> 'regex:/^\d{12}$/',
-      'tin'					=> 'regex:/^\d{12}$/',
+      //'sssno'			 	=> 'required|regex:/^\d{10}$/',
+      //'phicno' 			=> 'regex:/^\d{12}$/',
+      //'hdmfno' 			=> 'regex:/^\d{12}$/',
+      //'tin'					=> 'regex:/^\d{12}$/',
       'id' 					=> 'required|max:32|alpha_num',
     ];
 
 
     $rules2 = [
       'meal' 			  => 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
-      'ee_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
-      'er_sss' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'ee_sss'		  => 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'er_sss'			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'sss_tag'			=> 'regex:/^\d{1}$/',
       'ee_phic' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_phic' 		=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
@@ -214,27 +214,69 @@ class EmployeeController extends Controller
       'employee_id' => 'max:32|alpha_num',
     ];
 
+
+		if ($request->input('sss_tag')) {
+			$rules['sssno'] 	= 'required|regex:/^\d{10}$/';
+      $rules['ee_sss'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_sss'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		} else {
+			$rules['sssno'] 	= 'regex:/^\d{10}$/';
+      $rules['ee_sss'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_sss']	= 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		}
+
+		if ($request->input('phic_tag')) {
+			$rules['phicno'] 	= 'required|regex:/^\d{12}$/';
+      $rules['ee_phic'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_phic'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		} else {
+			$rules['phicno'] 	= 'regex:/^\d{12}$/';
+      $rules['ee_phic'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_phic']	= 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		}
+
+		if ($request->input('hdmf_tag')) {
+			$rules['hdmfno'] 	= 'required|regex:/^\d{12}$/';
+      $rules['ee_hdmf'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_hdmf'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		} else {
+			$rules['hdmfno'] 	= 'regex:/^\d{12}$/';
+      $rules['ee_hdmf'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+      $rules['er_hdmf']	= 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		}
+
+		if ($request->input('wtax_tag')) {
+			$rules['tin'] 	= 'required|regex:/^\d{12}$/';
+      $rules['wtax'] = 'required|regex:/^(?!$)(?:[1-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		} else {
+			$rules['tin'] 	= 'regex:/^\d{12}$/';
+      $rules['wtax'] = 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/';
+		}
+
+
     $this->clean_request_number_format($request, ['meal','rate', 'ecola', 'allowance1', 'allowance2', 'ee_sss', 'er_sss', 'ee_phic', 'er_phic', 'ee_hdmf', 'er_hdmf', 'ee_tin', 'er_tin', 'wtax']);
     $this->clean_request_govmt($request, ['sssno', 'hdmfno', 'tin']);
 
-		//return $request->all();
 		$this->validate($request, $rules);
-		$this->validate($request, $rules2);
+		//$this->validate($request, $rules2);
 
-		//return $o;
 		$o = $this->employee->find($request->input('id'));
 		if (is_null($o))
 			return redirect()->back()->withErrors('Employee not found.');
 
-		$keys = array_keys($rules);
 		unset($rules['id']);
+		foreach ($rules2 as $key => $value) {
+			if (array_key_exists($key, $rules))
+				unset($rules[$key]);
+		}
+		$keys = array_keys($rules);
 
-		
 		if (array_key_exists($request->input('positionid'), config('giligans.position')))
 			$request->merge(['punching'=>config('giligans.position')[$request->input('positionid')]['ordinal']]);
 		else
 			$request->merge(['punching'=>99]);
 
+		//return $request->all();
 		//return $request->only($keys);
 		DB::beginTransaction();
 

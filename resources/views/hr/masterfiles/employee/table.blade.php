@@ -1,6 +1,6 @@
 <tr>
 	<td style="padding: 0 0 5px 0;">
-		<img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 80px; " class="img-responsive">
+		<img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 80px; max-width: 80px" class="img-responsive">
 	</td>
 	<td>
 		<a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 

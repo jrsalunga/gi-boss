@@ -133,6 +133,7 @@ Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 Route::group(['prefix'=>'hr', 'middleware' => 'hr'], function(){
 
 get('/', function () {
+    return redirect('/hr/masterfiles/employee');
     return view('hr.index');
 });
 Route::get('masterfiles/employee/branch', 'Hr\BranchController@getBranch');

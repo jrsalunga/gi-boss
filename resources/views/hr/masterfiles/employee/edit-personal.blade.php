@@ -35,31 +35,31 @@
 				<div class="col-md-6">
 					<div class="form-group @include('_partials.input-error', ['field'=>'address'])">
 				    <label for="address" class="control-label">Address</label>
-				    <textarea class="form-control" id="address" name="address" placeholder="Address" maxlength="120" style="max-width: 100%; min-width: 100%;" rows="5">{{ $employee->address }}</textarea>
+				    <textarea class="form-control" id="address" name="address" placeholder="Address" maxlength="120" style="max-width: 100%; min-width: 100%;" rows="5">{{ !is_null(old('address'))?old('address'):$employee->address }}</textarea>
 				  </div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'mobile'])">
 				   	<label for="mobile" class="control-label">Mobile</label>
-					 	<input type="text" class="form-control" id="mobile" name="mobile" placeholder="0000-0000000" data-mask="0000-0000000" maxlength="20" value="{{ $employee->mobile }}">
+					 	<input type="text" class="form-control" id="mobile" name="mobile" placeholder="0000-0000000" data-mask="0000-0000000" maxlength="20" value="{{ !is_null(old('mobile'))?old('mobile'):$employee->mobile }}">
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'email'])">
 				   	<label for="email" class="control-label">Email</label>
-					 	<input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="80" value="{{ $employee->email }}">
+					 	<input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="80" value="{{ !is_null(old('email'))?old('email'):$employee->email }}">
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'phone'])">
 				   	<label for="phone" class="control-label">Phone</label>
-					 	<input type="text" class="form-control" id="phone" name="phone" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ $employee->phone }}">
+					 	<input type="text" class="form-control" id="phone" name="phone" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ !is_null(old('phone'))?old('phone'):$employee->phone }}">
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'fax'])">
 				   	<label for="fax" class="control-label">Fax</label>
-					 	<input type="text" class="form-control" id="fax" name="fax" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ $employee->fax }}">
+					 	<input type="text" class="form-control" id="fax" name="fax" placeholder="(00) 000-0000" data-mask="(00) 000-0000" maxlength="20" value="{{ !is_null(old('fax'))?old('fax'):$employee->fax }}">
 					</div>
 				</div>
 			</div><!-- end: .row -->
@@ -73,7 +73,7 @@
 					<div class="form-group @include('_partials.input-error', ['field'=>'birthdate'])">
 				    <label for="birthdate" class="control-label">Birthday</label>
 				    <div class="input-group datepicker">
-				    	<input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ $employee->getBirthdate() }}">
+				    	<input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ !is_null(old('birthdate'))?old('birthdate'):$employee->getBirthdate() }}">
 				    	<div class="input-group-addon">
 					        <span class="glyphicon glyphicon-calendar"></span>
 					    </div>
@@ -83,18 +83,19 @@
 				<div class="col-md-3">
 				  <div class="form-group @include('_partials.input-error', ['field'=>'birthplace'])">
 				    <label for="birthplace" class="control-label">Birthplace</label>
-				    <input type="text" class="form-control" id="birthplace" name="birthplace" placeholder="Birthplace" maxlength="30" value="{{ $employee->birthplace }}">
+				    <input type="text" class="form-control" id="birthplace" name="birthplace" placeholder="Birthplace" maxlength="30" value="{{ !is_null(old('birthplace'))?old('birthplace'):$employee->birthplace }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 	  		<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'gender'])">
 						<label for="gender" class="control-label">Gender</label>
-						<select class="selectpicker form-control show-tick" name="gender" id="gender" data-live-search="true" data-size="10" data-gender="{{ $employee->gender }}">
-							@if($employee->gender==0)
+						<?php $_gender = !is_null(old('gender'))?old('gender'):$employee->gender; ?>
+						<select class="selectpicker form-control show-tick" name="gender" id="gender" data-live-search="true" data-size="10" data-gender="{{ $_gender }}">
+							@if($_gender==0)
 								<option disabled selected>-- Select Gender -- </option>
 							@endif
 							@foreach(['MALE', 'FEMALE'] as $key => $g)
-						  	<option value="{{ ($key+1) }}" <?=isset($employee->gender)&&(($key+1)==$employee->gender)?'selected':'';?> data-tokens="{{ $g }}">
+						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_gender)?'selected':'';?> data-tokens="{{ $g }}">
 						  		{{ $g }}
 						  	</option>
 						  @endforeach
@@ -104,12 +105,13 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'civstatus'])">
 						<label for="civstatus" class="control-label">Civil Status</label>
-						<select class="selectpicker form-control show-tick" name="civstatus" id="civstatus" data-live-search="true" data-size="10" data-civstatus="{{ $employee->paytype }}">
-							@if($employee->civstatus==0)
+						<?php $_civstatus = !is_null(old('civstatus'))?old('civstatus'):$employee->civstatus; ?>
+						<select class="selectpicker form-control show-tick" name="civstatus" id="civstatus" data-live-search="true" data-size="10" data-civstatus="{{ $_civstatus }}">
+							@if($_civstatus==0)
 								<option disabled selected>-- Select Civil Status -- </option>
 							@endif
 							@foreach(['SINGLE', 'MARRIED', 'SEPARATED'] as $key => $c)
-						  	<option value="{{ ($key+1) }}" <?=isset($employee->civstatus)&&(($key+1)==$employee->civstatus)?'selected':'';?> data-tokens="{{ $c }}">
+						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_civstatus)?'selected':'';?> data-tokens="{{ $c }}">
 						  		{{ $c }}
 						  	</option>
 						  @endforeach
@@ -119,13 +121,14 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'religionid'])"">
 						<label for="religionid" class="control-label">Religion</label>
+						<?php $_religionid = !is_null(old('religionid'))?old('religionid'):$employee->religionid; ?>
 						@if(count($religions)>0)
 						<select class="selectpicker form-control show-tick" name="religionid" id="religionid" data-live-search="true" data-size="10"  data-religionid="{{ $employee->religionid }}">
 							@if(!isset($employee->religion->id))
 								<option disabled selected>-- Select Religion -- </option>
 							@endif
 							@foreach($religions as $religion)
-						  	<option value="{{$religion->id}}" <?=isset($employee->religion->id)&&($religion->id==$employee->religionid)?'selected':'';?> data-tokens="{{ $religion->code }} {{ $religion->descriptor }}">
+						  	<option value="{{$religion->id}}" <?=($religion->id==$_religionid)?'selected':'';?> data-tokens="{{ $religion->code }} {{ $religion->descriptor }}">
 						  		{{ $religion->code }} - {{ $religion->descriptor }}
 						  	</option>
 						  @endforeach
@@ -144,12 +147,13 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'height'])">
 						<label for="height" class="control-label">Height (m)</label>
-						<select class="selectpicker form-control show-tick" name="height" id="height" data-live-search="true" data-size="10" data-height="{{ $employee->height }}">
-							@if($employee->height<1.21)
+						<?php $_height = !is_null(old('height'))?old('height'):$employee->height; ?>
+						<select class="selectpicker form-control show-tick" name="height" id="height" data-live-search="true" data-size="10" data-height="{{ $_height }}">
+							@if($_height<1.21)
 								<option disabled selected>-- Select Height -- </option>
 							@endif
 							@foreach($m_hgts as $key => $c)
-						  	<option value="{{ number_format($c,2) }}" <?=isset($employee->height)&&(number_format($c,2)==$employee->height)?'selected':'';?> data-tokens="{{ number_format($c,2) }} {{ $ft }}'{{ $in }}''" data-actual="{{ $c }}">
+						  	<option value="{{ number_format($c,2) }}" <?=(number_format($c,2)==$_height)?'selected':'';?> data-tokens="{{ number_format($c,2) }} {{ $ft }}'{{ $in }}''" data-actual="{{ $c }}">
 						  		{{ number_format($c,2) }}m <?=$in>0?"(".$ft."'".$in."'')":"(".$ft."'')";?>
 						  	</option>
 						  	<?php
@@ -166,7 +170,7 @@
 				<div class="col-md-3">
 					<div class="form-group @include('_partials.input-error', ['field'=>'weight'])">
 				    <label for="weight" class="control-label">Weight (kg)</label>
-				    <input type="text" class="form-control" id="weight" name="weight" placeholder="0.00" data-mask="000.00" data-mask-reverse="true" maxlength="8" value="{{ $employee->weight }}">
+				    <input type="text" class="form-control" id="weight" name="weight" placeholder="0.00" data-mask="000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('weight'))?old('weight'):$employee->weight }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->
@@ -178,13 +182,13 @@
 	  		<div class="col-md-5">
 					<div class="form-group @include('_partials.input-error', ['field'=>'notes'])">
 				    <label for="notes" class="control-label">Notes</label>
-				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="220" style="max-width: 100%; min-width: 100%;" rows="4">{{ $employee->notes }}</textarea>
+				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="220" style="max-width: 100%; min-width: 100%;" rows="4">{{ !is_null(old('notes'))?old('notes'):$employee->notes }}</textarea>
 				  </div>
 				</div>
 				<div class="col-md-4">
 				  <div class="form-group @include('_partials.input-error', ['field'=>'hobby'])">
 				    <label for="hobby" class="control-label">Hobbies</label>
-				    <input type="text" class="form-control" id="hobby" name="hobby" placeholder="Hobbies" maxlength="50" value="{{ $employee->hobby }}">
+				    <input type="text" class="form-control" id="hobby" name="hobby" placeholder="Hobbies" maxlength="50" value="{{ !is_null(old('hobby'))?old('hobby'):$employee->hobby }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->

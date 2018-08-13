@@ -27,7 +27,7 @@ class UserOrdinal extends Command {
 			if (is_null($employee))
 				$this->info('-');
 			else
-				$this->success('>'.$employee->lastname.' '.$employee->firstname);
+				$this->log('>'.$employee->lastname.' '.$employee->firstname);
 
 
 

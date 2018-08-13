@@ -17,7 +17,7 @@ class UserOrdinal extends Command {
 
 	public function handle() {
 
-		$users = User::orderBy('username')->get();
+		$users = User::whereIn('admin', [1, 2, 3])->orderBy('username')->get();
 
 		foreach ($users as $key => $user) {
 			$this->line($user->username.' '.$user->name);

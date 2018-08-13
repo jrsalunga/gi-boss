@@ -62,8 +62,15 @@
 		</ul>
 		<br>
 
-		{{ count($branch->boss) }}
-		
+
+		@foreach($branch->boss as $u)
+			@if($u->user->admin=='3')
+			{{ $u->user->name or '' }} <small>
+			<div>
+				<em>{{ $u->user->email or '' }}</em></small>
+			</div>
+			@endif
+		@endforeach
 	</div>
 	<br>
 	@include('_partials.pager', ['field'=>'code', 'model'=>$branch])

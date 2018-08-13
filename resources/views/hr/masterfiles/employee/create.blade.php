@@ -11,12 +11,12 @@
 	</div>
 	<div class="col-md-12">
 		<ul class='nav nav-wizard'>
-		  <li class='active'><a href='#' data-toggle="tab"><span class="gly gly-user"></span> <span class="hidden-xs hidden-sm">General</span></a></li>
-		  <li><a href='#'><span class="gly gly-folder-closed"></span> <span class="hidden-xs hidden-sm">Employment</span></a></li>
-			<li><a href='#'><span class="gly gly-nameplate-alt"></span> <span class="hidden-xs hidden-sm">Personal</span></a></li>
-		  <li><a href='#'><span class="gly gly-group"></span> <span class="hidden-xs hidden-sm">Family</span></a></li>
-		  <li><a href='#'><span class="gly gly-certificate"></span> <span class="hidden-xs hidden-sm">Work & Education</span></a></li>
-		  <li><a href='#'><span class="gly gly-disk-saved"></span> <span class="hidden-xs hidden-sm">Confirmation</span></a></li>
+		  <li class='active'><a href="javascript:void(0)" data-toggle="tab"><span class="gly gly-user"></span> <span class="hidden-xs hidden-sm">General</span></a></li>
+		  <li><a href="javascript:void(0)"><span class="gly gly-folder-closed"></span> <span class="hidden-xs hidden-sm">Employment</span></a></li>
+			<li><a href="javascript:void(0)"><span class="gly gly-nameplate-alt"></span> <span class="hidden-xs hidden-sm">Personal</span></a></li>
+		  <li><a href="javascript:void(0)"><span class="gly gly-group"></span> <span class="hidden-xs hidden-sm">Family</span></a></li>
+		  <li><a href="javascript:void(0)"><span class="gly gly-certificate"></span> <span class="hidden-xs hidden-sm">Work & Education</span></a></li>
+		  <li><a href="javascript:void(0)"><span class="gly gly-disk-saved"></span> <span class="hidden-xs hidden-sm">Confirmation</span></a></li>
 		</ul>
 	</div>
 	<div class="col-md-12">

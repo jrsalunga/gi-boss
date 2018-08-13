@@ -40,10 +40,11 @@ class UserOrdinal extends Command {
 
 			
 			}
-				if ($user->admin = 3) {
+			
+			if ($user->admin = 3) {
 
-				$ordinal = array_key_exists($employee->positionid, config('giligans.position')) 
-					? config('giligans.position')[$employee->positionid]['ordinal']
+				$ordinal = array_key_exists($pid, config('giligans.position')) 
+					? config('giligans.position')[$pid]['ordinal']
 					: 99;
 
 				$this->info('ordinal: '.$ordinal);

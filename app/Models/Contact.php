@@ -13,5 +13,29 @@ class Contact extends BaseModel {
 	public function contactable() {
     return $this->morphTo();
   }
+
+
+
+  public function getNumber() {
+
+  	if (empty($this->number))
+      return NULL;  
+    $s = str_replace(['-', '(', ')', ' ', '.'], '',$this->number);
+
+    switch ($this->type) {
+    	case 1:
+    		return substr($s, -11, 4).' '.substr($s, -7, 7);
+    		break;
+    	case 2:
+    		return '('.substr($s, -9, 2).') '.substr($s, -7, 3).' '.substr($s, -4, 4);
+    		break;
+    	default:
+    		return $this->number;
+    		break;
+    }
+
+  	
+    
+  }
   
 }

@@ -378,7 +378,7 @@
    		}
 
    		if (type==1) {
-   			cn.mask('0000 000 0000');
+   			cn.mask('0000 0000000');
    		} else if (type==2) {
    			cn.mask('(00) 000 0000');
    		} else {

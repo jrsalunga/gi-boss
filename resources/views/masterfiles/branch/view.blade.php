@@ -57,14 +57,15 @@
 		@endif
 		<ul class="list-unstyled">
 		@foreach($branch->contacts as $c)
-				<li>{!! contact_icon($c->type, true) !!} <a href="#">{{ $c->number }}</a></li>
+				<li>{!! contact_icon($c->type, true) !!} <a href="#">{{ $c->getNumber() }}</a></li>
 		@endforeach
 		</ul>
 		<br>
 	
-		
+
 
 		@foreach($branch->boss as $u)
+
 			@if($u->user->admin=='3')
 			{{ $u->user->name or '' }} <small>
 			<div>

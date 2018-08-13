@@ -515,8 +515,10 @@ class BranchController extends Controller
 
 	private function saveContacts($model, array $contacts) {
 		foreach ($contacts as $key => $contact) {
-			if (!empty($contact['number']))
+			if (!empty($contact['number'])) {
+				$contact['number'] = str_replace(['-', '(', ')', ' ', '.'], '', $contact['number']);
 				$model->contacts()->save(new \App\Models\Contact($contact));
+			}
 		}
 	}
 

@@ -91,18 +91,20 @@ class Branch extends BaseModel {
   public function fullAddress() {
     $u = $this->spaces;
     $ctr = count($u);
-
-    $a = '';
-    foreach ($u as $key => $s) {
-      if ($key==0)
-        $a = $s->unit;
-      else if (($ctr-1)==$key)
-        $a = $a.' and '.$s->unit;
-      else
-        $a = $a.', '.$s->unit;
-      # code...
+    if ($ctr>0) {
+      $a = '';
+      foreach ($u as $key => $s) {
+        if ($key==0)
+          $a = $s->unit;
+        else if (($ctr-1)==$key)
+          $a = $a.' and '.$s->unit;
+        else
+          $a = $a.', '.$s->unit;
+        # code...
+      }
+      return $a.', '.$this->address;
     }
-    return $a.', '.$this->address;
+    return $this->address;
   }
   
 }

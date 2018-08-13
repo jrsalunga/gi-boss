@@ -41,7 +41,7 @@ class UserOrdinal extends Command {
 			
 			}
 			
-			if ($user->admin = 3) {
+			if ($user->admin == 3) {
 
 				$ordinal = array_key_exists($pid, config('giligans.position')) 
 					? config('giligans.position')[$pid]['ordinal']

@@ -65,12 +65,13 @@
 
 
 		@foreach($branch->boss as $u)
-
+			@if(isset($u->user))
 			@if($u->user->admin=='3')
-			{{ $u->user->name or '' }} <small>
-			<div>
-				<em>{{ $u->user->email or '' }}</em></small>
-			</div>
+				{{ $u->user->name or '' }} <small>
+				<div>
+					<em>{{ $u->user->email or '' }}</em></small>
+				</div>
+				@endif
 			@endif
 		@endforeach
 	</div>

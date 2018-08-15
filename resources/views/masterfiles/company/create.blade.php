@@ -62,3 +62,11 @@
 </div>
 @endsection
 
+@section('js-external')
+  @parent
+  <script type="text/javascript">
+  $(document).ready(function() {
+  	$('#code').focus();
+  });
+@endsection
+

@@ -434,7 +434,7 @@ class BranchController extends Controller
       'date_reg'  		=> 'date',
       'date_start'  	=> 'date',
       'date_stop'  		=> 'date',
-      'status'  			=> 'status',
+      'status'  			=> 'max:3',
       'lessor_id'  		=> 'alpha_num|min:32:max:32',
     	'id' 						=> 'required|min:32:max:32',
     ];

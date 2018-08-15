@@ -44,6 +44,15 @@
 			    <input type="text" class="form-control" id="descriptor" name="descriptor" placeholder="Descriptor" maxlength="25" value="{{ request()->old('descriptor') }}">
 			  </div>
 			</div>  
+			<div class="col-md-4 col-md-push-2">
+				<div class="form-group">
+						<div>
+							<p>&nbsp;</p>
+						</div>
+    				<input type="checkbox" name="user"> Create users?
+  			
+  			</div>
+  		</div>
 		</div>
 			  <hr>
 		<div class="row">

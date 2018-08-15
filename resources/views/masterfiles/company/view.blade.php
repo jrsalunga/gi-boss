@@ -28,7 +28,7 @@
 		    <li role="presentation">
 		    	<a href="#gov" aria-controls="gov" role="tab" data-toggle="tab">
 		    		<i class="material-icons">account_balance</i>
-						<span class="hidden-xs hidden-sm">Government</span>
+						<span class="hidden-xs hidden-sm">Gov</span>
 		    	</a>
 		   	</li>
 		   	<li role="presentation">

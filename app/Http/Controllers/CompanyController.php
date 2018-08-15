@@ -64,30 +64,50 @@ class CompanyController extends Controller
       'descriptor' => 'required|max:50',
     ]);
 
-    $cc = $this->companyRepo->findWhere(['code'=>$request->input('code')])->first();
+    $cc = $this->companyBoss->findWhere(['code'=>$request->input('code')])->first();
     if (!is_null($cc))
 			return redirect()->back()->withErrors(strtoupper($request->input('code')).' already exist on Boss Module');
 
-		$hrComp = $this->companyBoss->findWhere(['code'=>$request->input('code')])->first();
-
+		$hrComp = $this->companyRepo->findWhere(['code'=>$request->input('code')])->first();
 		if (!is_null($hrComp))
 			return redirect()->back()->with('company.import', $hrComp);
 
 		DB::beginTransaction();
 
 		try {
-    	$company = $this->companyRepo->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
+    	$company = $this->companyBoss->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
 		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
-			return redirect('/masterfiles/company/create')->withErrors($e->previous->errorInfo[2]);
+			return redirect('/masterfiles/company/create')->withErrors($er);
+		}
+
+		try {
+			$this->companyRepo->modelCreate(['code'=>$company->code, 'descriptor'=>$company->descriptor, 'id'=>$company->id]);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect('/masterfiles/company/create')->withErrors($er);
 		}
 
 		DB::commit();
     return redirect('/masterfiles/company/'.$company->lid());
 	}
 
+	private function unset_blank_form_rules(Request $request, array $rules, $id=true) {
+		foreach ($rules as $key => $value) {
+			if (empty($request->{$key}))
+				unset($rules[$key]);
+		}
+
+		if ($id)
+			unset($rules['id']);
+		
+		return $rules;
+	}
+
 	private function process_full(Request $request) {
-		//return dd($request->all());
+		
 		if (!is_uuid($request->input('id')))
 			return redirect('/masterfiles/company')->withErrors('Something went wrong. Please try again');
 
@@ -112,19 +132,19 @@ class CompanyController extends Controller
 		} else  {
 			return redirect('/masterfiles/company')->withErrors('Something went wrong. Please try again');
 		}
-		unset($rules['id']);
 
-		$keys = array_keys($rules);
+		//unset($rules['id']);
+		//$keys = array_keys($rules);
+		$keys = array_keys($this->unset_blank_form_rules($request, $rules));
 
 		DB::beginTransaction();
 
 		try {
-    	$company = $this->companyRepo->update($request->only($keys), $request->input('id'));
+    	$company = $this->companyBoss->update($request->only($keys), $request->input('id'));
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
 			return redirect()->back()->withErrors($er);
-			//return redirect('/masterfiles/company/'.$request->input('id'))->withErrors($e->previous->errorInfo[2]);
 		}
 
 		try {
@@ -135,21 +155,52 @@ class CompanyController extends Controller
 			return redirect()->back()->withErrors($er);
 		}
 
-		
 		foreach ($request->input('contact') as $key => $v) {
 			if (!empty($v['number']))
 				$company->contacts()->save(new \App\Models\Contact($v));
+		}
+
+		try {
+    	$this->update_old_company($request);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
 		}
 
 		DB::commit();
     return redirect('/masterfiles/company/'.$company->lid())->with('alert-success', 'Record has been updated!');
 	}
 
+	private function update_old_company(Request $request) {
+
+		$attr = [];
+
+		 foreach (['code', 'descriptor', 'address', 'tin'] as $key => $value) {
+		 		if ($request->has($value) && !empty($request->input($value)))
+    			$attr[$value] = $request->input($value);
+		 }
+    
+    if ($request->input('contact')>0) {
+    	foreach ($request->input('contact') as $key => $contact) {
+    		if (!isset($attr['mobile']) && $contact['type']==1)
+    			$attr['mobile'] = $contact['number'];
+    		if (!isset($attr['phone']) && $contact['type']==2)
+    			$attr['phone'] = $contact['number'];
+    		if (!isset($attr['fax']) && $contact['type']==3)
+    			$attr['fax'] = $contact['number'];
+    	}
+    }
+
+    $this->companyRepo->update($attr, $request->input('id'));
+	}
+
 	private function process_import(Request $request) {
+		
 		if (!is_uuid($request->input('id')))
 			return abort('404');
 
-		$hrComp = $this->companyBoss->find($request->input('id'));
+		$hrComp = $this->companyRepo->find($request->input('id'));
 		if (is_null($hrComp))
 			return redirect()->back()->withErrors('Record not found on HRIS Database.');
 		
@@ -165,7 +216,7 @@ class CompanyController extends Controller
 		DB::beginTransaction();
 
 		try {
-			$company = $this->companyRepo->modelCreate($oc);
+			$company = $this->companyBoss->modelCreate($oc);
 		} catch (Exception $e) {
 			DB::rollBack();
 			return redirect('/masterfiles/company')->withErrors($e->previous->errorInfo[2]);

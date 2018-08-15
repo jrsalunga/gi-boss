@@ -4,6 +4,7 @@ use DB;
 use File;
 use Exception;
 use Validator;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,8 +14,7 @@ use App\Repositories\Boss\BranchRepository as BossBr;
 use App\Repositories\DateRange;
 use App\Repositories\DailySalesRepository as DSRepo;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
-use App\Repositories\CompanyRepository as CompRepo;
-//use App\Repositories\Boss\SectorRepository as SectorRepo;
+use App\Repositories\Boss\CompanyRepository as CompRepo;
 use App\Repositories\LessorRepository as LessorRepo;
 use App\Repositories\Boss\SectorRepository as SectorRepo;
 
@@ -333,10 +333,11 @@ class BranchController extends Controller
 
 
 	private function process_quick(Request $request) {
-		
+		//return $request->all();
 		$this->validate($request, [
     	'code' 				=> 'required|max:3',
       'descriptor' 	=> 'required|max:50',
+      'email' 			=> 'max:50',
     ]);
 
     $cb = $this->branchBoss->findWhere(['code'=>$request->input('code')])->first();
@@ -346,6 +347,11 @@ class BranchController extends Controller
 		$brBoss = $this->repository->findWhere(['code'=>$request->input('code')])->first();
 		if (!is_null($brBoss))
 			return redirect()->back()->with('branch.import', $brBoss);
+
+		$c = strtolower($request->input('code'));
+		$email = 'giligans.'.$c.'@gmail.com';
+		$brcode = strtoupper($request->input('code'));
+		$request->merge(['email'=>$email]);
 
 		DB::beginTransaction();
 
@@ -365,6 +371,42 @@ class BranchController extends Controller
 			return redirect('/masterfiles/branch/create')->withErrors($er);
 		}
 
+		if ($request->has('user') && $request->has('user')=='on') {
+			$cashier = new User;
+      $cashier->username = $c.'-cashier';
+      $cashier->name = $brcode.' Cashier';
+      $cashier->email = $email;
+      $cashier->admin = 5;
+      $cashier->branchid = $branch->id;
+      $cashier->password = bcrypt('giligans');
+      $cashier->id = \App\Models\Branch::get_uid();
+
+      try {
+				$cashier->save();
+			} catch (Exception $e) {
+
+			}
+      
+
+      $manager = new User;
+      $manager->setConnection('mysql-tk');
+      $manager->getTable(); // products
+      $manager->setTable('users');
+      $manager->username = $c.'-manager';
+      $manager->name = $brcode.' Manager';
+      $manager->email = $email;
+      $manager->branchid = $branch->id;
+      $manager->password = bcrypt('giligans');
+      $manager->id = \App\Models\Branch::get_uid();
+
+      try {
+				$manager->save();
+			} catch (Exception $e) {
+
+			}
+      
+      
+		}
 
 		DB::commit();
     return redirect('/masterfiles/branch/'.$branch->lid())->with('alert-success','Saved!');
@@ -531,6 +573,7 @@ class BranchController extends Controller
 
     $attr['sectorid'] = $request->input('sector_id');
     $attr['companyid'] = $request->input('company_id');
+    $attr['opendate'] = $request->input('date_start');
     
 
     $this->repository->update($attr, $request->input('id'));

@@ -33,13 +33,19 @@
 		    <li role="presentation">
 		    	<a href="#gov" aria-controls="gov" role="tab" data-toggle="tab">
 		    		<i class="material-icons">account_balance</i>
-						<span class="hidden-xs hidden-sm">BIR</span>
+						<span class="hidden-xs hidden-sm">Gov</span>
 		    	</a>
 		   	</li>
 		   	<li role="presentation">
 		    	<a href="#sec" aria-controls="sec" role="tab" data-toggle="tab">
 		    		<i class="material-icons">map</i>
 						<span class="hidden-xs hidden-sm">Sector</span>
+		    	</a>
+		   	</li>
+		   	<li role="presentation">
+		    	<a href="#oth" aria-controls="oth" role="tab" data-toggle="tab">
+		    		<i class="material-icons">domain</i>
+						<span class="hidden-xs hidden-sm">Other</span>
 		    	</a>
 		   	</li>
 		  </ul>
@@ -169,7 +175,7 @@
 						    <label for="reg_date">Registration Date</label>
 						    <div class="input-group datepicker">
 						    	
-						    <input type="text" class="form-control datepicker" id="reg_date" name="reg_date" placeholder="YYYY-MM-DD" maxlength="50" value="{{ $branch->reg_date }}" data-mask="0000-00-00" maxlength="10" readonly>
+						    <input type="text" class="form-control" id="reg_date" name="reg_date" placeholder="YYYY-MM-DD" value="{{ $branch->reg_date }}" data-mask="0000-00-00" maxlength="10">
 						  	<span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>	
@@ -253,11 +259,44 @@
 							  @endforeach
 							</select>
 							@else
-								Add Company
+								<div>
+									<a href="/masterfiles/company">Add Company</a>
+								</div>
 							@endif
 						</div>
 						</div><!-- end:.col-md-4 -->
 					</div><!-- end:.row -->
+				</div><!-- end:.tabpanel -->
+				<div role="tabpanel" class="tab-pane" id="oth">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="status">Pay Type</label>
+								<?php $_status = !is_null(old('status'))?old('status'):$branch->status; ?>
+								<select class="selectpicker form-control show-tick" name="status" id="status" data-live-search="true" data-size="10" data-paytype="{{ $_status }}">
+									@if($_status==0)
+										<option disabled selected>-- Select Status -- </option>
+									@endif
+									@foreach(['UNDER CONSTRUCTION', 'OPENED', 'CLOSED'] as $key => $pt)
+								  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_status)?'selected':'';?> data-tokens="{{ $pt }}">
+								  		{{ $pt }}
+								  	</option>
+								  @endforeach
+								</select>
+							</div>	
+						</div><!-- end: .col-md-3 -->
+						<div class="col-md-3">
+							<div class="form-group">
+						    <label for="date_start">Date Opened</label>
+						    <div class="input-group datepicker">
+							    <input type="text" class="form-control" id="date_start" name="date_start" placeholder="YYYY-MM-DD" value="{{ $branch->date_start }}" data-mask="0000-00-00" maxlength="10">
+							  	<span class="input-group-addon">
+	                  <span class="glyphicon glyphicon-calendar"></span>
+	                </span>	
+						    </div>
+						  </div>
+						</div><!-- end: .col-md-3 -->
+					</div>
 				</div><!-- end:.tabpanel -->
 			</div><!-- end:.tab-content -->
 		<hr>

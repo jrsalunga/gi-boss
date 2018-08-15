@@ -236,5 +236,14 @@ abstract class BaseModel extends Model {
 	public function getRefno($len = 8){
  		return str_pad((intval(\DB::table($this->table)->max('refno')) + 1), $len, '0', STR_PAD_LEFT);
  	}
+
+
+
+
+ 	public function get_date($field) {
+    return !is_null($this->{$field})&&is_iso_date($this->{$field}->format('Y-m-d'))
+      ? $this->{$field}->format('Y-m-d')
+      : NULL;
+  }
 	
 }

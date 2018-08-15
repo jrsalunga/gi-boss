@@ -582,7 +582,7 @@ class BranchController extends Controller
 		if (!is_uuid($request->input('id')))
 			return abort('404');
 
-		$hrBranch = $this->repository->find($request->input('id'));
+		$hrBranch = $this->repository->skipCriteria()->skipCache()->find($request->input('id'));
 		if (is_null($hrBranch))
 			return redirect()->back()->withErrors('Record not found on HRIS Database.');
 		

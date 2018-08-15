@@ -289,7 +289,7 @@
 							<div class="form-group">
 						    <label for="date_start">Date Opened</label>
 						    <div class="input-group datepicker">
-							    <input type="text" class="form-control" id="date_start" name="date_start" placeholder="YYYY-MM-DD" value="{{ $branch->date_start }}" data-mask="0000-00-00" maxlength="10">
+							    <input type="text" class="form-control" id="date_start" name="date_start" placeholder="YYYY-MM-DD" value="{{ $branch->date_start->format('Y-m-d') }}" data-mask="0000-00-00" maxlength="10">
 							  	<span class="input-group-addon">
 	                  <span class="glyphicon glyphicon-calendar"></span>
 	                </span>	

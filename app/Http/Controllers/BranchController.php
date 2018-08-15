@@ -432,6 +432,9 @@ class BranchController extends Controller
       'mancost'	    	=> 'numeric',
       'ophr'	    		=> 'integer',
       'date_reg'  		=> 'date',
+      'date_start'  	=> 'date',
+      'date_stop'  		=> 'date',
+      'status'  			=> 'status',
       'lessor_id'  		=> 'alpha_num|min:32:max:32',
     	'id' 						=> 'required|min:32:max:32',
     ];

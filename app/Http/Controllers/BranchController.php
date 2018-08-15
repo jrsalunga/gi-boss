@@ -334,6 +334,10 @@ class BranchController extends Controller
 
 	private function process_quick(Request $request) {
 		//return $request->all();
+		$brBoss = $this->repository->findWhere(['code'=>$request->input('code')])->first();
+		if (!is_null($brBoss))
+			return redirect()->back()->with('branch.import', $brBoss);
+		
 		$this->validate($request, [
     	'code' 				=> 'required|max:3',
       'descriptor' 	=> 'required|max:50',
@@ -344,9 +348,6 @@ class BranchController extends Controller
     if (!is_null($cb))
 			return redirect()->back()->withErrors(strtoupper($request->input('code')).' already exist on Boss Module');
 
-		$brBoss = $this->repository->findWhere(['code'=>$request->input('code')])->first();
-		if (!is_null($brBoss))
-			return redirect()->back()->with('branch.import', $brBoss);
 
 		$c = strtolower($request->input('code'));
 		$email = 'giligans.'.$c.'@gmail.com';
@@ -380,13 +381,9 @@ class BranchController extends Controller
       $cashier->branchid = $branch->id;
       $cashier->password = bcrypt('giligans');
       $cashier->id = \App\Models\Branch::get_uid();
-
       try {
 				$cashier->save();
-			} catch (Exception $e) {
-
-			}
-      
+			} 
 
       $manager = new User;
       $manager->setConnection('mysql-tk');
@@ -398,14 +395,9 @@ class BranchController extends Controller
       $manager->branchid = $branch->id;
       $manager->password = bcrypt('giligans');
       $manager->id = \App\Models\Branch::get_uid();
-
       try {
 				$manager->save();
-			} catch (Exception $e) {
-
-			}
-      
-      
+			} 
 		}
 
 		DB::commit();

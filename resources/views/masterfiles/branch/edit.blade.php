@@ -271,7 +271,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
-								<label for="status">Pay Type</label>
+								<label for="status">Status</label>
 								<?php $_status = !is_null(old('status'))?old('status'):$branch->status; ?>
 								<select class="selectpicker form-control show-tick" name="status" id="status" data-live-search="true" data-size="10" data-paytype="{{ $_status }}">
 									@if($_status==0)

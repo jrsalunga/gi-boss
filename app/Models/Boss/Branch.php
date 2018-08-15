@@ -9,7 +9,7 @@ class Branch extends BaseModel {
   use SoftDeletes;
 
   //protected $connection = 'mysql-hr';
-	protected $table = 'branch';
+	protected $table = 'boss.branch';
   //protected $fillable = ['code', 'descriptor'];
  	protected $guarded = ['id'];
   public $timestamps = true;

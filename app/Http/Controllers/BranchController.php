@@ -383,7 +383,9 @@ class BranchController extends Controller
       $cashier->id = \App\Models\Branch::get_uid();
       try {
 				$cashier->save();
-			} 
+			} catch (Exception $e) {
+				
+			}
 
       $manager = new User;
       $manager->setConnection('mysql-tk');
@@ -397,7 +399,9 @@ class BranchController extends Controller
       $manager->id = \App\Models\Branch::get_uid();
       try {
 				$manager->save();
-			} 
+			} catch (Exception $e) {
+				
+			}
 		}
 
 		DB::commit();

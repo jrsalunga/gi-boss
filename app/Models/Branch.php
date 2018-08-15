@@ -6,7 +6,8 @@ class Branch extends BaseModel {
 
   protected $connection = 'mysql-hr';
 	protected $table = 'hr.branch';
- 	protected $fillable = ['code', 'descriptor'];
+ //protected $fillable = ['code', 'descriptor'];
+  protected $guarded = ['id'];
   protected $appends = ['active'];
  	public static $header = ['code', 'descriptor'];
 

@@ -13,7 +13,7 @@ class Branch extends BaseModel {
   //protected $fillable = ['code', 'descriptor'];
  	protected $guarded = ['id'];
   public $timestamps = true;
-  protected $dates = ['created_at', 'updated_at', 'deleted_at', 'reg_date'];
+  protected $dates = ['created_at', 'updated_at', 'deleted_at', 'date_reg', 'date_start', 'date_end'];
 
 	public function employee() {
     return $this->hasMany('App\Models\Employee', 'employeeid');
@@ -28,7 +28,7 @@ class Branch extends BaseModel {
   }
 
   public function company() {
-    return $this->belongsTo('App\Models\Company');
+    return $this->belongsTo('App\Models\Boss\Company');
   }
 
   public function lessor() {

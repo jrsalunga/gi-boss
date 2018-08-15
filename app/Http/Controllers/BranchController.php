@@ -304,7 +304,7 @@ class BranchController extends Controller
 	}
 
 
-
+/******************* boss masterfiles stuff ***************************************************************/
 
 	public function create(Request $request) {
 		return view('masterfiles.branch.create');
@@ -356,6 +356,15 @@ class BranchController extends Controller
 			DB::rollBack();
 			return redirect('/masterfiles/branch/create')->withErrors($er);
 		}
+	
+		try {
+			$this->repository->modelCreate(['code'=>$branch->code, 'descriptor'=>$branch->descriptor, 'id'=>$branch->id]);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect('/masterfiles/branch/create')->withErrors($er);
+		}
+
 
 		DB::commit();
     return redirect('/masterfiles/branch/'.$branch->lid())->with('alert-success','Saved!');
@@ -384,19 +393,21 @@ class BranchController extends Controller
       'kit'	    			=> 'integer',
       'mancost'	    	=> 'numeric',
       'ophr'	    		=> 'integer',
-      'reg_date'  		=> 'date',
+      'date_reg'  		=> 'date',
       'lessor_id'  		=> 'alpha_num|min:32:max:32',
     	'id' 						=> 'required|min:32:max:32',
     ];
 	}
 
 
-	private function unset_blank_form_rules(Request $request, array $rules) {
+	private function unset_blank_form_rules(Request $request, array $rules, $id=true) {
 		foreach ($rules as $key => $value) {
 			if (empty($request->{$key}))
 				unset($rules[$key]);
 		}
-		unset($rules['id']);
+
+		if ($id)
+			unset($rules['id']);
 		
 		return $rules;
 	}
@@ -466,13 +477,67 @@ class BranchController extends Controller
 			return redirect()->back()->withErrors($er);
 		}
 
+		try {
+    	$this->update_old_branch($request);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
+
 		DB::commit();
     return redirect('/masterfiles/branch/'.$branch->lid())->with('alert-success', 'Record has been updated!');
-
-		return clean_number_format('2,4,44,000.01');
-		return dd($request->all());
-
 	}
+
+	private function update_old_branch(Request $request) {
+
+		$attr = [];
+
+		if ($request->has('code'))
+			$attr['code'] = $request->input('code');
+		if ($request->has('descriptor'))
+			$attr['descriptor'] = $request->input('descriptor');
+
+		$u = $request->input('space');
+    $ctr = count($u);
+    if ($ctr>0) {
+    	$a = '';
+      foreach ($u as $key => $s) {
+        if ($key==0)
+          $a = $s['unit'];
+        else if (($ctr-1)==$key)
+          $a = $a.' and '.$s['unit'];
+        else
+          $a = $a.', '.$s['unit'];
+      }
+      $attr['address'] = $a.', '.$request->input('address');
+    } else {
+    	$attr['address'] = $request->input('address');
+    }
+    
+    if ($request->input('contact')>0) {
+    	foreach ($request->input('contact') as $key => $contact) {
+    		if (!isset($attr['mobile']) && $contact['type']==1)
+    			$attr['mobile'] = $contact['number'];
+    		if (!isset($attr['phone']) && $contact['type']==2)
+    			$attr['phone'] = $contact['number'];
+    		if (!isset($attr['fax']) && $contact['type']==3)
+    			$attr['fax'] = $contact['number'];
+    	}
+    }
+
+    foreach (['email', 'tin', 'seating', 'mancost'] as $key => $value)
+    	$attr[$value] = $request->input($value);
+
+    $attr['sectorid'] = $request->input('sector_id');
+    $attr['companyid'] = $request->input('company_id');
+    
+
+    $this->repository->update($attr, $request->input('id'));
+		
+	}
+
+
 
 	private function process_import(Request $request) {
 		if (!is_uuid($request->input('id')))
@@ -488,6 +553,10 @@ class BranchController extends Controller
 			'address' => $hrBranch->address,
 			'email' => $hrBranch->email,
 			'tin' => $hrBranch->tin,
+			'mancost' => $hrBranch->mancost,
+			'date_start' => $hrBranch->opendate,
+			'date_end' => $hrBranch->closedate,
+			'seating' => $hrBranch->seating,
 			'mancost' => $hrBranch->mancost,
 			'company_id' => $hrBranch->companyid,
 			'id' => $hrBranch->id,

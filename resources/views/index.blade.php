@@ -227,7 +227,7 @@
             -->
             <a href="/employee/tracker" class="btn btn-default btn-sm">
               <span class="fa fa-street-view"></span> 
-              <span class="hidden-xs hidden-sm">Tracker <small><span class="label label-success">new</span></small></span>
+              <span class="hidden-xs hidden-sm">Tracker <small></small></span>
             </a> 
             
           </div>

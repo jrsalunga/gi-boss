@@ -8,19 +8,19 @@ use Illuminate\Http\Response;
 use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
 use App\Repositories\CompanyRepository as CompanyRepo;
-use App\Repositories\Hris\CompanyRepository as CompanyHris;
+use App\Repositories\Boss\CompanyRepository as CompanyBoss;
 
 class CompanyController extends Controller
 {
 
 	protected $dr;
 	protected $companyRepo;
-	protected $companyHris;
+	protected $companyBoss;
 
-	public function __construct(DateRange $dr, CompanyRepo $companyRepo, CompanyHris $companyHris) {
+	public function __construct(DateRange $dr, CompanyRepo $companyRepo, CompanyBoss $companyBoss) {
 		$this->dr = $dr;
 		$this->companyRepo = $companyRepo;
-		$this->companyHris = $companyHris;
+		$this->companyBoss = $companyBoss;
 	}
 
 
@@ -33,7 +33,7 @@ class CompanyController extends Controller
 	}
 
 	public function show(Request $request, $id) {
-		$company = $this->companyRepo->codeID($id);
+		$company = $this->companyBoss->codeID($id);
 		return is_null($company) ? abort('404') : view('masterfiles.company.view')->with('company', $company);
 	}
 
@@ -68,7 +68,7 @@ class CompanyController extends Controller
     if (!is_null($cc))
 			return redirect()->back()->withErrors(strtoupper($request->input('code')).' already exist on Boss Module');
 
-		$hrComp = $this->companyHris->findWhere(['code'=>$request->input('code')])->first();
+		$hrComp = $this->companyBoss->findWhere(['code'=>$request->input('code')])->first();
 
 		if (!is_null($hrComp))
 			return redirect()->back()->with('company.import', $hrComp);
@@ -149,7 +149,7 @@ class CompanyController extends Controller
 		if (!is_uuid($request->input('id')))
 			return abort('404');
 
-		$hrComp = $this->companyHris->find($request->input('id'));
+		$hrComp = $this->companyBoss->find($request->input('id'));
 		if (is_null($hrComp))
 			return redirect()->back()->withErrors('Record not found on HRIS Database.');
 		

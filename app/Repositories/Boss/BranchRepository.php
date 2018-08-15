@@ -24,7 +24,7 @@ class BranchRepository extends BaseRepository implements CacheableInterface
     'code'=>'like',
     'descriptor'=>'like',
     'company.descriptor'=>'like',
-    'sectorid'=>'like',
+    'sector.descriptor'=>'like',
   ];
 
 	public function __construct() {

@@ -334,7 +334,7 @@ class BranchController extends Controller
 
 	private function process_quick(Request $request) {
 		//return $request->all();
-		$brBoss = $this->repository->skipCriteria()->findWhere(['code'=>$request->input('code')])->first();
+		$brBoss = $this->repository->skipCriteria()->skipCache->findWhere(['code'=>$request->input('code')])->first();
 		if (!is_null($brBoss))
 			return redirect()->back()->with('branch.import', $brBoss);
 		

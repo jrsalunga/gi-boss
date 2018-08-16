@@ -16,6 +16,10 @@ class Sector extends BaseModel {
     return $this->hasMany('App\Models\Boss\Sector', 'parent_id', 'id')->orderBy('code');
   }
 
+  public function branch() {
+    return $this->hasMany('App\Models\Boss\Branch')->orderBy('code');
+  }
+
   public function is_parent() {
   	return empty($this->parent_id) ? true : false;
   }

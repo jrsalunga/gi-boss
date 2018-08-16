@@ -33,6 +33,7 @@
         <li role="presentation"><a href="/settings/password">Change Password</a></li>
         <li role="presentation"><a href="/settings/bossbranch">Branch</a></li>
 			  <li role="presentation"><a href="/settings/emp-import">Import Employee</a></li>
+        <li role="presentation"><a href="/masterfiles">Masterfiles</a></li>
 			</ul>
   	</div>
   	<div class="col-sm-9">

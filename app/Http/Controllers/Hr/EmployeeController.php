@@ -781,10 +781,10 @@ class EmployeeController extends Controller
 			? abort('404')
 			: view('hr.masterfiles.employee.edit-employment')
 						->with('employee', $employee)
-						->with('departments', $this->department->all())
-						->with('companies', $this->company->all())
-						->with('branches', $this->branch->skipCache()->orderBy('code')->all())
-						->with('positions', $this->position->all());
+						->with('departments', $this->department->orderBy('descriptor')->all())
+						->with('companies', $this->company->orderBy('code')->all())
+						->with('branches', $this->branch->orderBy('code')->all())
+						->with('positions', $this->position->orderBy('descriptor')->all());
 	}
 
 	public function editPersonal(Request $request, $id) {

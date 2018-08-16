@@ -783,7 +783,7 @@ class EmployeeController extends Controller
 						->with('employee', $employee)
 						->with('departments', $this->department->all())
 						->with('companies', $this->company->all())
-						->with('branches', $this->branch->all())
+						->with('branches', $this->branch->orderBy('code')->all())
 						->with('positions', $this->position->all());
 	}
 

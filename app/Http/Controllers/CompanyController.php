@@ -113,7 +113,7 @@ class CompanyController extends Controller
 
 		$rules =  [
     	'code' 					=> 'required|max:3',
-      'descriptor' 		=> 'required|max:25',
+      'descriptor' 		=> 'required|max:50',
       'address' 			=> 'max:120',
       'email' 				=> 'max:50|email',
       'tin' 					=> 'max:16',

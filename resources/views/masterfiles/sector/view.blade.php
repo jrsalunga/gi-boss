@@ -36,13 +36,13 @@
 		  <div class="panel-body">
 		    @if(count($sector->children)>0)
 		    <h4>{{ count($sector->children)>1?str_plural('Branch'):'Branch' }}</h4>
-					<ul class="list-unstyleds">
+					<ul class="list-unstyled">
 					@foreach($sector->children as $child)
-						<li>
-							<em><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }} - {{ $child->descriptor }}</a></em>
+						<li><i class="material-icons">pin_drop</i>
+							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b></em>
 							<?php $branches = $child->branch ?>
 							@if(count($branches)>0)
-								<ul class="list-unstyled">
+								<ul class="list-unstyled" style="margin-left: 15px;">
 								@foreach($branches as $k => $branch)
 									<li>{{ ($k+1) }}. <a href="/masterfiles/branch/{{ $branch->lid() }}" target="_blank">{{ $branch->code }} - {{ $branch->descriptor }}</a></li>
 								@endforeach

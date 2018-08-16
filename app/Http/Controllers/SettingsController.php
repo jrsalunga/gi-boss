@@ -550,6 +550,9 @@ class SettingsController extends Controller {
 			case "NEILZACH RESTAURANT":
 				return 'DB02D166D56A466D9804BEFD3589E432';
 				break;
+			case "GILIGAN'S ISLAND REST. & BAR CEBU, INC.":
+				return '6275CF5B673611E596ECDA40B3C0AA12';
+				break;
 			default:
 				return '';
 				break;

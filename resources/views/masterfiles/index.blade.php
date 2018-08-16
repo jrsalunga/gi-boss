@@ -7,11 +7,17 @@
 @section('content')
 <div class="row" style="margin-top: 20px;">
   <div class="col-md-12">
+    @include('_partials.alerts')
+  </div>
+</div>
+@if(is_null($active))
+
+@else
+<div class="row">
+  <div class="col-md-12">
     <h3 class="page-header">{{ nav_caption($active) }} List 
       <a href="/masterfiles/{{$active}}/create" class="pull-right" title="Add Record"><i class="material-icons">note_add</i></a>
     </h3>
-    @include('_partials.alerts')
-
     @if(count($datas)>0)        
     <div class="table-responsive">
     <table class="table table-striped">
@@ -40,6 +46,7 @@
     No Records Found!
   @endif
 </div>
+@endif
 @endsection
 
 

@@ -79,7 +79,7 @@ class MasterfilesController extends Controller {
 
 		$datas = null;
 
-		if($this->isValidTable($table))
+		if ($this->isValidTable($table))
 			$datas = $this->getRepositoryData($request, $table);
 
 		return view('masterfiles.index', compact('datas'))->with('tables', $this->tables)->with('active', $table);

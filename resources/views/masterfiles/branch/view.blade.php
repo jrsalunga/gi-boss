@@ -12,7 +12,7 @@
 	<div class="col-md-12">
 
 		
-		<h3 class="page-header text-success">
+		<h3 class="page-header text-{{ $branch->status=='3'?'muted':'success' }}">
 			<span class="gly gly-shop"></span> {{ $branch->descriptor }} <small>{{ $branch->code }}</small>
 
 		<a href="/masterfiles/branch/{{$branch->lid()}}/edit" data-toggle="loader"><i class="material-icons">edit</i></a>

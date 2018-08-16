@@ -34,6 +34,7 @@
         <li role="presentation"><a href="/settings/bossbranch">Branch</a></li>
   			<li role="presentation" class="active"><a href="/settings/emp-import">Import Employee</a></li>
         <li role="presentation"><a href="/masterfiles">Masterfiles</a></li>
+        <li role="presentation"><a href="/hr">HRIS</a></li>
 			</ul>
   	</div>
   	<div class="col-sm-9">

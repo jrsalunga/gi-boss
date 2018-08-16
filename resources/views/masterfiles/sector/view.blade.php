@@ -25,12 +25,81 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 		  <div class="panel-body">
-		  	<span>Main Area: </span>
-				<span class="gly gly-parents"></span> <a href="/masterfiles/sector/{{$sector->parent->lcode()}}"> {{ $sector->parent->code or '*' }}</a>
+		  	<table style="width: 100%;">
+		  		<tbody>
+		  			<tr>
+		  				<td style="width: 33%;">
+		  					<span>Main Area: </span>
+								<span class="gly gly-parents"></span> <a href="/masterfiles/sector/{{$sector->parent->lcode()}}"> {{ $sector->parent->code or '*' }}</a>
+		  				</td>
+		  				<td style="width: 33%;">
+								@if(isset($sector->parent->am))
+		  						@if(isset($sector->parent->am->position))
+		  							<span class="label label-default help" title="{{$sector->parent->am->position->descriptor}}" data-toggle="tooltip">{{$sector->parent->am->position->code}}</span>
+		  						@endif
+		  						<span>
+		  							<a href="/hr/masterfiles/employee/{{$sector->parent->am->lid() }}" target="_blank">
+		  							{{ $sector->parent->am->lastname }}, {{ $sector->parent->am->firstname }} {{ $sector->parent->am->middlename }}
+		  							</a>
+		  						</span>
+		  					@endif
+		  				</td>
+		  				<td>
+		  					@if(isset($sector->parent->kh))
+		  						@if(isset($sector->parent->kh->position))
+		  							<span class="label label-default help" title="{{$sector->parent->am->position->descriptor}}" data-toggle="tooltip">{{$sector->parent->kh->position->code}}</span>
+		  						@endif
+		  						<span>
+		  							<a href="/hr/masterfiles/employee/{{$sector->parent->kh->lid() }}" target="_blank">
+		  							{{ $sector->parent->kh->lastname }}, {{ $sector->parent->kh->firstname }} {{ $sector->parent->kh->middlename }}
+										</a>
+		  						</span>
+		  					@endif
+		  				</td>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+		  	
 			</div>
 		</div>
 	</div>
 	@endif
+	<div class="col-md-12">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<table style="width: 100%;">
+		  		<tbody>
+		  			<tr>
+		  				<td style="width: 50%;">
+								@if(isset($sector->am))
+		  						@if(isset($sector->am->position))
+		  							<span class="label label-default help" title="{{$sector->am->position->descriptor}}" data-toggle="tooltip">{{$sector->am->position->code}}</span>
+		  						@endif
+		  						<span>
+		  							<a href="/hr/masterfiles/employee/{{$sector->am->lid() }}" target="_blank">
+		  							{{ $sector->am->lastname }}, {{ $sector->am->firstname }} {{ $sector->am->middlename }}
+		  							</a>
+		  						</span>
+		  					@endif
+		  				</td>
+		  				<td>
+		  					@if(isset($sector->kh))
+		  						@if(isset($sector->kh->position))
+		  							<span class="label label-default help" title="{{$sector->am->position->descriptor}}" data-toggle="tooltip">{{$sector->kh->position->code}}</span>
+		  						@endif
+		  						<span>
+		  							<a href="/hr/masterfiles/employee/{{$sector->kh->lid() }}" target="_blank">
+		  							{{ $sector->kh->lastname }}, {{ $sector->kh->firstname }} {{ $sector->kh->middlename }}
+										</a>
+		  						</span>
+		  					@endif
+		  				</td>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+			</div>
+		</div>
+	</div>
 	<div class="col-md-8 col-sm-6">
 		<div class="panel panel-default">
 		  <div class="panel-body">

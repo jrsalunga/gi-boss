@@ -25,7 +25,7 @@ class SectorController extends Controller
 	}
 
 	public function show(Request $request, $id) {
-		$sector = $this->sector->with('children')->codeID($id);
+		$sector = $this->sector->with(['children', 'am', 'kh'])->codeID($id);
 		return is_null($sector) ? abort('404') : view('masterfiles.sector.view')->with('sector', $sector);
 	}
 
@@ -54,9 +54,11 @@ class SectorController extends Controller
 		//return $request->all();
 
 		$rules = [
-    	'code' => 'required|max:3',
-      'descriptor' => 'required|max:50',
-      'parent_id' 		=> 'max:32',
+    	'code' 				=> 'required|max:3',
+      'descriptor' 	=> 'required|max:50',
+      'parent_id' 	=> 'alpha_num|max:32',
+      'am_id'			 	=> 'alpha_num|max:32',
+      'kh_id' 			=> 'alpha_num|max:32',
     ];
 
 		$this->validate($request, $rules);
@@ -86,10 +88,12 @@ class SectorController extends Controller
 			return redirect('/masterfiles/sector')->withErrors('Something went wrong. Please try again');
 
 		$rules =  [
-    	'code' 					=> 'required|max:3',
-      'descriptor' 		=> 'required|max:25',
-      'parent_id' 		=> 'max:32',
-    	'id' 						=> 'required|min:32|max:32',
+    	'code' 				=> 'required|max:3',
+      'descriptor'	=> 'required|max:25',
+      'parent_id' 	=> 'alpha_num|max:32',
+      'am_id'			 	=> 'alpha_num|max:32',
+      'kh_id' 			=> 'alpha_num|max:32',
+    	'id' 					=> 'required|min:32|max:32',
     ];
 
 		if ($request->has('type') && $request->input('type')==='update') {
@@ -117,7 +121,7 @@ class SectorController extends Controller
 
 	public function edit(Request $request, $id) {
 		$parents = $this->sector->parents();
-		$sector = $this->sector->codeID($id);
+		$sector = $this->sector->with(['kh', 'am'])->codeID($id);
 		return view('masterfiles.sector.edit')->with('sector', $sector)->with('parents', $parents);
 	}
 

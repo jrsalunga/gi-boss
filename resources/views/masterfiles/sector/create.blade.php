@@ -25,7 +25,19 @@
 			    <input type="text" class="form-control" id="descriptor" name="descriptor" placeholder="Descriptor" maxlength="25" value="{{ request()->old('descriptor') }}">
 			  </div>
 			</div> 
-			<div class="col-md-4 col-md-push-2">
+			<div class="col-md-4">
+				<div class="form-group">
+			    <label for="am">RM/AM</label>
+			    <input type="text" class="form-control searchfield" data-input="#am_id" id="am" name="am" placeholder="Search RM/AM" maxlength="100" value="{{ old('am') }}">
+			    <input type="hidden" name="am_id" id="am_id">
+			  </div>
+			  <div class="form-group">
+			    <label for="descriptor">RKH/SKH/KH</label>
+			    <input type="kh" class="form-control searchfield" data-input="#kh_id" id="kh" name="kh" placeholder="Search RKH/SKH" maxlength="100" value="{{ old('kh') }}">
+			    <input type="hidden" name="kh_id" id="kh_id">
+			  </div>
+			</div> 
+			<div class="col-md-4">
 				<div class="form-group">
 					<label for="parent_id">Has parent sector?</label>
 					@if(count($parents)>0)
@@ -60,7 +72,66 @@
 
 @section('js-external')
   @parent
-
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+	 $(".searchfield").autocomplete({      
+      source: function( request, response ) {
+        $.when(
+          $.ajax({
+              type: 'GET',
+              url: "/api/search/employee",
+              dataType: "json",
+              data: {
+                maxRows: 20,
+                q: request.term
+              },
+              success: function( data ) {
+                response( $.map( data, function( item ) {
+                  return {
+                    label: item.lastname+ ', ' + item.firstname,
+                    value: item.lastname+ ', ' + item.firstname,
+                    id: item.id,
+                    ordinal: item.punching
+                  }
+                }));
+              }
+          })
+        ).then(function(data){
+          console.log(data);
+        });
+      },
+      minLength: 2,
+      select: function(e, ui) {     
+        var i = $(this).data('input');
+        $(i).val(ui.item.id);
+      },
+      open: function() {
+      	$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+      	var i = $(this).data('input');
+        $(i).val('')
+      },
+      close: function() {
+        $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+      },
+      focus: function (e, ui) {
+        $('.ui-helper-hidden-accessible').hide();
+      },
+      change: function( event, ui ) {
+
+      },
+      messages: {
+        noResults: '',
+        results: function() {}
+      }
+      
+    });
+
+})
+</script>
 
 @endsection

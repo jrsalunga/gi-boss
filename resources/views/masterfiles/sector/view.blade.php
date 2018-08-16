@@ -30,7 +30,7 @@
 		  			<tr>
 		  				<td style="width: 33%;">
 		  					<span>Main Area: </span>
-								<span class="gly gly-parents"></span> <a href="/masterfiles/sector/{{$sector->parent->lcode()}}"> {{ $sector->parent->code or '*' }}</a>
+								<span class="gly gly-parents"></span> <a href="/masterfiles/sector/{{$sector->parent->lcode()}}"> {{ $sector->parent->code or '*' }} - {{ $sector->parent->descriptor or '*' }} </a>
 		  				</td>
 		  				<td style="width: 33%;">
 								@if(isset($sector->parent->am))

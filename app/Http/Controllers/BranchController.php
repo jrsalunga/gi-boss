@@ -419,6 +419,7 @@ class BranchController extends Controller
     	'code' 					=> 'required|max:3',
       'descriptor' 		=> 'required|max:25',
       'trade_name' 		=> 'max:50',
+      'name'			 		=> 'max:50',
       'address' 			=> 'max:120',
       'email' 				=> 'max:50|email',
       'tin' 					=> 'max:16',
@@ -435,6 +436,7 @@ class BranchController extends Controller
       'date_start'  	=> 'date',
       'date_stop'  		=> 'date',
       'status'  			=> 'max:3',
+      'type'  			=> 'max:3',
       'lessor_id'  		=> 'alpha_num|min:32:max:32',
     	'id' 						=> 'required|min:32:max:32',
     ];

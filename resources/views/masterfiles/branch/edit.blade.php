@@ -166,11 +166,17 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
+						    <label for="name">Name</label>
+						    <input type="text" class="form-control" id="name" name="name" placeholder="Name" maxlength="50" value="{{ $branch->name }}">
+						  </div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
 						    <label for="trade_name">Trade Name</label>
 						    <input type="text" class="form-control" id="trade_name" name="trade_name" placeholder="Trade Name" maxlength="50" value="{{ $branch->trade_name }}">
 						  </div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-4 col-md-offset-4 col-md-pull-4">
 							<div class="form-group">
 						    <label for="reg_date">Registration Date</label>
 						    <div class="input-group datepicker">
@@ -182,7 +188,7 @@
 						    </div>
 						  </div>
 						</div>
-						<div class="col-md-4 col-md-offset-4 col-md-pull-4">
+						<div class="col-md-4 col-md-pull-4">
 							<div class="form-group">
 						    <label for="tin">TIN No.</label>
 						    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" value="{{ $branch->tin }}" data-mask="000-000-000-000" maxlength="15">
@@ -269,6 +275,22 @@
 				</div><!-- end:.tabpanel -->
 				<div role="tabpanel" class="tab-pane" id="oth">
 					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="type">Type</label>
+								<?php $_type = !is_null(old('type'))?old('type'):$branch->type; ?>
+								<select class="selectpicker form-control show-tick" name="type" id="type" data-live-search="true" data-size="10" data-paytype="{{ $_type }}">
+									@if($_type==0)
+										<option disabled selected>-- Select Branch Type -- </option>
+									@endif
+									@foreach(['BRANCH - STANDALONE', 'BRANCH - IN MALL', 'BRANCH - SIDE MALL', 'OFFICE', 'OTHERS'] as $key => $pt)
+								  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_type)?'selected':'';?> data-tokens="{{ $pt }}">
+								  		{{ $pt }}
+								  	</option>
+								  @endforeach
+								</select>
+							</div>	
+						</div><!-- end: .col-md-3 -->
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="status">Status</label>

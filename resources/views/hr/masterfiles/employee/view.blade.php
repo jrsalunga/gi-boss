@@ -14,7 +14,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-10">
 		<table>
 			<tbody>
 				<tr>
@@ -51,7 +51,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-2">
 		
 		
 

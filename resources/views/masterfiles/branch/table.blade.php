@@ -1,6 +1,12 @@
 <tr>
 	<td>
-		<a class="{{ $branch->status=='3'?'text-muted':(in_array($branch->type, ['5', '4'])?'text-primary':'text-sucess') }}" href="/masterfiles/branch/{{ strtolower($branch->code) }}">{{ $branch->code }}</a> - 
+		<a class="{{ $branch->status=='3'
+			? 'text-muted'
+			: (in_array($branch->type, ['5', '4']) 
+				? 'text-primary'
+				: ($branch->status=='1') 
+					? 'text-warning':
+						'text-sucess' }}" href="/masterfiles/branch/{{ strtolower($branch->code) }}">{{ $branch->code }}</a> - 
 		<a class="{{ $branch->status=='3'?'text-muted':(in_array($branch->type, ['5', '4'])?'text-primary':'text-sucess') }}" href="/masterfiles/branch/{{ $branch->lid() }}">{{ $branch->descriptor }}</a>
 
 		

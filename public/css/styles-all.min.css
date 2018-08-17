@@ -24,6 +24,14 @@ ul.nav-wizard{background-color:#f9f9f9;border:1px solid #d4d4d4;-webkit-border-r
 	margin: 0;
 }
 
+.text-warning2 {
+	color: #f0ad4e;
+}
+
+.text-warning2:hover {
+	color: #f0ad4e;
+}
+
 
 /* Medium devices (desktops, 768px and up) */
 @media (min-width: 768px) { 

@@ -78,7 +78,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
-
 	 $(".searchfield").autocomplete({      
       source: function( request, response ) {
         $.when(

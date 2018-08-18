@@ -75,7 +75,7 @@
             <div class="col-sm-10 col-md-12">
               <div class="form-group">
                 <label for="branchid" class="control-label">Branch</label>
-                <select class="form-control selectpicker" id="branchid" name="branchid" required>
+                <select class="form-control" id="branchid" name="branchid" required>
                   <option value="" readonly>-- Select Branch --</option>
                   @foreach($branches as $branch)
                     <option value="{{ $branch->id }}">{{ $branch->code }} - {{ $branch->descriptor }}</option>
@@ -149,8 +149,6 @@
 
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/vendors/bootstrap-datetimepicker.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
   <script>
   

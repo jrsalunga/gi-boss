@@ -139,6 +139,40 @@
 					  </div>
 				  </div>
 				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3">
+					<div class="form-group @include('_partials.input-error', ['field'=>'datehired'])">
+				    <label for="datehired" class="control-label">Date Hired</label>
+				    <div class="input-group datepicker">
+				    	<input type="text" class="form-control" id="datehired" name="datehired" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ !is_null(old('datehired'))?old('datehired'):$employee->get_date('datehired') }}">
+				    	<div class="input-group-addon">
+					        <span class="glyphicon glyphicon-calendar"></span>
+					    </div>
+					  </div>
+				  </div>
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3 col-md-push-1">
+					<div class="form-group @include('_partials.input-error', ['field'=>'date_reg'])">
+				    <label for="date_reg" class="control-label">Date Regularized</label>
+				    <div class="input-group datepicker">
+				    	<?php $dr = is_null(old('date_reg'))?(isset($employee->statutory)?$employee->statutory->get_date('date_reg'):''):old('date_reg'); ?>
+				    	<input type="text" class="form-control" id="date_reg" name="date_reg" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ $dr }}">
+				    	<div class="input-group-addon">
+					        <span class="glyphicon glyphicon-calendar"></span>
+					    </div>
+					  </div>
+				  </div>
+				</div><!-- end: .col-md-3 -->
+				<div class="col-md-3 col-md-push-2">
+					<div class="form-group @include('_partials.input-error', ['field'=>'datestop'])">
+				    <label for="datestop" class="control-label">Date Stop</label>
+				    <div class="input-group datepicker">
+				    	<input type="text" class="form-control" id="datestop" name="datestop" placeholder="YYYY-MM-DD" data-mask="0000-00-00" maxlength="10" value="{{ !is_null(old('datestop'))?old('datestop'):$employee->get_date('datestop') }}">
+				    	<div class="input-group-addon">
+					        <span class="glyphicon glyphicon-calendar"></span>
+					    </div>
+					  </div>
+				  </div>
+				</div><!-- end: .col-md-3 -->
 			</div>
 	  				  
 	  </div><!-- end: .panel-body -->

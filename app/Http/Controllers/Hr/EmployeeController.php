@@ -195,8 +195,24 @@ class EmployeeController extends Controller
       'id' 					=> 'required|max:32|alpha_num',
     ];
 
+    if ($request->input('empstatus')=='2')
+    	$rules['datehired'] = 'required|date_format:Y-m-d';
+    else
+    	$rules['datehired'] = 'date_format:Y-m-d';
+
+     if ($request->input('empstatus')=='3')
+    	$rules['date_reg'] = 'required|date_format:Y-m-d';
+    else
+    	$rules['date_reg'] = 'date_format:Y-m-d';
+
+    if (in_array($request->input('empstatus'), ['4', '5', '6']))
+    	$rules['datestop'] = 'required|date_format:Y-m-d';
+    else
+    	$rules['datestop'] = 'date_format:Y-m-d';
+
 
     $rules2 = [
+    	'date_reg'		=> 'date_format:Y-m-d',
       'meal' 			  => 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'ee_sss'		  => 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'er_sss'			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',

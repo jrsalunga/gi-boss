@@ -546,12 +546,14 @@ class BranchController extends Controller
     if ($ctr>0) {
     	$a = '';
       foreach ($u as $key => $s) {
-        if ($key==0)
-          $a = $s['unit'];
-        else if (($ctr-1)==$key)
-          $a = $a.' and '.$s['unit'];
-        else
-          $a = $a.', '.$s['unit'];
+      	if (!empty($s['unit'])) {
+	        if ($key==0)
+	          $a = $s['unit'];
+	        else if (($ctr-1)==$key)
+	          $a = $a.' and '.$s['unit'];
+	        else
+	          $a = $a.', '.$s['unit'];
+	      }
       }
       $attr['address'] = $a.', '.$request->input('address');
     } else {

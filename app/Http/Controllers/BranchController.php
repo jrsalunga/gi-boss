@@ -645,6 +645,9 @@ class BranchController extends Controller
 	public function edit(Request $request, $id) {
 		$branch = $this->branchBoss->codeID($id);
 
+		if ($request->has('raw') && $request->input('data')=='data')
+			return $branch;
+
 		if (is_null($branch))
 			return abort('404');
 

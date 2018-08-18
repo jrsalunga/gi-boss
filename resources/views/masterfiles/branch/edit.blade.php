@@ -320,13 +320,13 @@
 						</div><!-- end: .col-md-3 -->
 						<div class="col-md-3">
 						  <div class="form-group">
-						    <label for="mancost" class="control-label">Man Cost</label>
+						    <label for="mancost">Man Cost</label>
 						    <input type="text" class="form-control" id="mancost" name="mancost" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('mancost'))?old('rate')>0?old('mancost'):'':$branch->mancost }}">
 						  </div>
 						</div><!-- end: .col-md-3 -->
 						<div class="col-md-3">
 						  <div class="form-group">
-						    <label for="seating" class="control-label">Seating Capacity</label>
+						    <label for="seating">Seating Capacity</label>
 						    <input type="text" class="form-control" id="seating" name="seating" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('seating'))?old('rate')>0?old('seating'):'':$branch->seating }}">
 						  </div>
 						</div><!-- end: .col-md-3 -->

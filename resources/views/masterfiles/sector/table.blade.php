@@ -12,7 +12,14 @@
 	</td>
 	<td>
 		@if($sector->children->count()>0)
-			<span class="badge text-info help" title="{{ $sector->children->count() }} Sub Area" data-toggle="tooltip">{{ $sector->children->count() }}</span>
+			<span class="badge text-info help" title="{{ $sector->children->count() }} {{ $sector->children->count()>1?'Sub Areas':'Sub Area' }}" data-toggle="tooltip">{{ $sector->children->count() }}</span>
+			<i class="material-icons" style="top: 3px;">pin_drop</i>
+		@endif
+	</td>
+	<td>
+		@if($sector->branch_count()>0)
+			<span class="badge text-info help" title="{{ $sector->branch_count() }} {{ $sector->branch_count()>1?'Branches':'Branch' }}" data-toggle="tooltip">{{ $sector->branch_count() }}</span>
+			<span class="gly gly-shop" style="top: 3px;"></span>
 		@endif
 	</td>
 </tr>

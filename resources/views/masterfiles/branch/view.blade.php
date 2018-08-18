@@ -63,7 +63,7 @@
 		<br>
 	
 
-
+		<!--
 		@foreach($branch->boss as $u)
 			@if(isset($u->user))
 				@if($u->user->admin=='3')
@@ -74,6 +74,7 @@
 				@endif
 			@endif
 		@endforeach
+	-->
 	</div>
 	<br>
 	@include('_partials.pager', ['field'=>'code', 'model'=>$branch])

@@ -38,17 +38,13 @@ class Sector extends BaseModel {
 
   public function branch_count() {
     $ctr = 0;
-    if (is_null($this->parent_id)) {
-      foreach ($this->children as $key => $child) {
-        foreach ($child->branch as $key => $branch) {
-          $ctr++;
-        }
-      }
-      foreach ($this->branch as $key => $br) {
+    foreach ($this->children as $key => $child) {
+      foreach ($child->branch as $key => $branch) {
         $ctr++;
       }
-    } else {
-      
+    }
+    foreach ($this->branch as $key => $br) {
+      $ctr++;
     }
     return $ctr;
   }

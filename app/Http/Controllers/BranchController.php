@@ -555,7 +555,7 @@ class BranchController extends Controller
 	          $a = $a.', '.$s['unit'];
 	      }
       }
-      $attr['address'] = $a.', '.$request->input('address');
+      $attr['address'] = empty($a) ? $request->input('address') : $a.', '.$request->input('address');
     } else {
     	$attr['address'] = $request->input('address');
     }

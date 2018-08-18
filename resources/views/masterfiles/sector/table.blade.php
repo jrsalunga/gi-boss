@@ -12,7 +12,7 @@
 	</td>
 	<td>
 		@if($sector->children->count()>0)
-			<span class="badge text-info">{{ $sector->children->count() }}</span>
+			<span class="badge text-info help" title="{{ $sector->children->count() }} Sub Area" data-toggle="tooltip">{{ $sector->children->count() }}</span>
 		@endif
 	</td>
 </tr>

@@ -147,7 +147,7 @@
 								@endif
 				  		</div>
 				  		<div class="col-md-4">
-				  			@if(is_iso_date($employee->datehired->format('Y-m-d')))
+				  			@if(is_iso_date($employee->datehired->format('Y-m-d')) && $employee->empstatus>=2)
 								<div class="form-group">
 									<label>Hired</label>
 									<div>{{ $employee->datehired->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->datehired) }} ago)</em></small></div>
@@ -155,15 +155,17 @@
 								@endif
 				  		</div>
 				  		<div class="col-md-4">
-				  			@if(is_iso_date($employee->datestop->format('Y-m-d')) && $employee->empstatus==4)
-								<div class="form-group">
-									<label>Resigned</label>
-									<div>{{ $employee->datestop->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->datestop) }} ago)</em></small></div>
-								</div>
+				  			@if($employee->statutory)
+					  			@if(is_iso_date($employee->statutory->date_reg->format('Y-m-d')) && $employee->empstatus>=3)
+									<div class="form-group">
+										<label>Regularized</label>
+										<div>{{ $employee->statutory->date_reg->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->statutory->date_reg) }} ago)</em></small></div>
+									</div>
+									@endif
 								@endif
 				  		</div>
 				  		<div class="col-md-4">
-				  			@if(is_iso_date($employee->datestop->format('Y-m-d')) && $employee->empstatus==5)
+				  			@if(is_iso_date($employee->datestop->format('Y-m-d')) && $employee->empstatus<=6)
 								<div class="form-group">
 									<label>Terminated</label>
 									<div>{{ $employee->datestop->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->datestop) }} ago)</em></small></div>

@@ -45,7 +45,7 @@ class Sector extends BaseModel {
         }
       }
     } else {
-        foreach ($child->branch as $key => $branch) {
+        foreach ($this->branch as $key => $branch) {
           $ctr++;
       }
     }

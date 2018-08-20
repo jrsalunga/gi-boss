@@ -50,7 +50,7 @@ class EmployeeController extends Controller
 
 
 	public function show(Request $request, $id) {
-		$employee = $this->employee->codeID($id);
+		$employee = $this->employee->with('statutory')->codeID($id);
 
 		if ($request->has('raw') && $request->input('raw')=='data')
 			return $employee;

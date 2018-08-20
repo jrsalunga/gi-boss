@@ -39,7 +39,7 @@
 		  						@endif
 		  						<span>
 		  							<a href="/hr/masterfiles/employee/{{$sector->parent->am->lid() }}" target="_blank">
-		  							{{ $sector->parent->am->lastname }}, {{ $sector->parent->am->firstname }} {{ $sector->parent->am->middlename }}
+		  							{{ $sector->parent->am->lastname }}, {{ $sector->parent->am->firstname }} 
 		  							</a>
 		  						</span>
 		  					@endif
@@ -51,7 +51,7 @@
 		  						@endif
 		  						<span>
 		  							<a href="/hr/masterfiles/employee/{{$sector->parent->kh->lid() }}" target="_blank">
-		  							{{ $sector->parent->kh->lastname }}, {{ $sector->parent->kh->firstname }} {{ $sector->parent->kh->middlename }}
+		  							{{ $sector->parent->kh->lastname }}, {{ $sector->parent->kh->firstname }} 
 										</a>
 		  						</span>
 		  					@endif
@@ -80,7 +80,7 @@
 		  						@endif
 		  						<span>
 		  							<a href="/hr/masterfiles/employee/{{$sector->am->lid() }}" target="_blank">
-		  							{{ $sector->am->lastname }}, {{ $sector->am->firstname }} {{ $sector->am->middlename }}
+		  							{{ $sector->am->lastname }}, {{ $sector->am->firstname }} 
 		  							</a>
 		  						</span>
 		  					@endif
@@ -92,7 +92,7 @@
 		  						@endif
 		  						<span>
 		  							<a href="/hr/masterfiles/employee/{{$sector->kh->lid() }}" target="_blank">
-		  							{{ $sector->kh->lastname }}, {{ $sector->kh->firstname }} {{ $sector->kh->middlename }}
+		  							{{ $sector->kh->lastname }}, {{ $sector->kh->firstname }} 
 										</a>
 		  						</span>
 		  					@endif

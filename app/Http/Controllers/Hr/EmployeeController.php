@@ -351,6 +351,9 @@ class EmployeeController extends Controller
     else
     	$rules['email'] = 'max:80';
 
+    if ($request->has('weight') && $request->input('weight')>='90')
+    	$request->merge(['weight'=>($request->input('weight')*0.45359237)]);
+
 		$this->clean_request_to_number($request, ['mobile', 'phone', 'fax']);
 		$this->validate($request, $rules);
 

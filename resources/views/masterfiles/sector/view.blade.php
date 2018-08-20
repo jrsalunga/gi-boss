@@ -70,7 +70,10 @@
 		  	<table style="width: 100%;">
 		  		<tbody>
 		  			<tr>
-		  				<td style="width: 50%;">
+		  				<td style="width: 33%;">
+		  					&nbsp;
+		  				</td>
+		  				<td style="width: 33%;">
 								@if(isset($sector->am))
 		  						@if(isset($sector->am->position))
 		  							<span class="label label-default help" title="{{$sector->am->position->descriptor}}" data-toggle="tooltip">{{$sector->am->position->code}}</span>

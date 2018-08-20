@@ -51,6 +51,9 @@ class EmployeeController extends Controller
 
 	public function show(Request $request, $id) {
 		$employee = $this->employee->codeID($id);
+
+		if ($request->has('raw') && $request->input('raw')=='data')
+			return $employee;
 		//return $employee;
 		return is_null($employee) ? abort('404') : view('hr.masterfiles.employee.view')->with('employee', $employee);
 	}
@@ -195,9 +198,9 @@ class EmployeeController extends Controller
       'id' 					=> 'required|max:32|alpha_num',
     ];
 
-    if ($request->input('empstatus')=='2')
+    if ($request->input('empstatus')=='2') {
     	$rules['datehired'] = 'required|date_format:Y-m-d';
-    else
+    } else
     	$rules['datehired'] = 'date_format:Y-m-d';
 
      if ($request->input('empstatus')=='3')

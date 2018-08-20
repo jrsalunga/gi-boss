@@ -12,7 +12,7 @@ class Company extends BaseModel {
   
 
 	public function branches() {
-    return $this->hasMany('App\Models\Boss\Branch');
+    return $this->hasMany('App\Models\Boss\Branch')->orderBy('code');
   }
 
   public function contacts() {

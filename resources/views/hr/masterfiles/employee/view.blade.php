@@ -155,7 +155,7 @@
 								@endif
 				  		</div>
 				  		<div class="col-md-4">
-				  			@if($employee->statutory)
+				  			@if($employee->statutory && !is_null($employee->statutory->date_reg))
 					  			@if(is_iso_date($employee->statutory->date_reg->format('Y-m-d')) && $employee->empstatus>=3)
 									<div class="form-group">
 										<label>Regularized</label>

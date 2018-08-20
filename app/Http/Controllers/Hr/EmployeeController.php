@@ -50,11 +50,10 @@ class EmployeeController extends Controller
 
 
 	public function show(Request $request, $id) {
-		$employee = $this->employee->with('statutory')->codeID($id);
+		$employee = $this->employee->codeID($id);
 
 		if ($request->has('raw') && $request->input('raw')=='data')
 			return $employee;
-		//return $employee;
 		return is_null($employee) ? abort('404') : view('hr.masterfiles.employee.view')->with('employee', $employee);
 	}
 

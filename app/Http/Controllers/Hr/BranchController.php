@@ -60,7 +60,7 @@ class BranchController extends Controller
 			if (array_key_exists($dep, $data['deptd'])) {
 				$data['deptd'][$dep]['ctr'] += 1;
 			} else {
-				$data['deptd'][$dep]['deptd'] = $edd;
+				$data['deptd'][$dep]['deptd'] = $dd;
 				$data['deptd'][$dep]['ctr'] = 1;
 			}
 		}

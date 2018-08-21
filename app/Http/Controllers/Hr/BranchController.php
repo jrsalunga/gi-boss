@@ -46,19 +46,21 @@ class BranchController extends Controller
 			$data['employees'][$key] = $employee;
 
 			$pos = isset($employee->position) ? $employee->position->id : 'Unassigned';
+			$pd = isset($employee->position) ? $employee->position->descriptor : 'Unassigned';
 			$dep = isset($employee->department) ? $employee->department->id : 'Unassigned';
+			$dd = isset($employee->department) ? $employee->department->descriptor : 'Unassigned';
 
 			if (array_key_exists($pos, $data['positions'])) {
 				$data['positions'][$pos]['ctr'] += 1;
 			} else {
-				$data['positions'][$pos]['position'] = $employee->position->descriptor;
+				$data['positions'][$pos]['position'] = $pd;
 				$data['positions'][$pos]['ctr'] = 1;
 			}
 
 			if (array_key_exists($dep, $data['deptd'])) {
 				$data['deptd'][$dep]['ctr'] += 1;
 			} else {
-				$data['deptd'][$dep]['deptd'] = $employee->department->descriptor;
+				$data['deptd'][$dep]['deptd'] = $edd;
 				$data['deptd'][$dep]['ctr'] = 1;
 			}
 		}

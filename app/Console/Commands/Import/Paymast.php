@@ -83,46 +83,46 @@ class Paymast extends Command
         */
 
 
-      $employee->companyid    = trim($this->getCompanyId($row['CO_NAME']));
+      //$employee->companyid    = trim($this->getCompanyId($row['CO_NAME']));
         
-      $branch                 = Branch::where('code', trim($row['BRANCH']))->first();
-      $employee->branchid     = is_null($branch) ? '971077BCA54611E5955600FF59FBB323': $branch->id;
-      $employee->deptid       = $this->getDeptId(trim($row['DEPT']));
-      $employee->positionid   = $this->getPositionId(trim($row['POSITION']));
-      $employee->paytype      = 2;
-      $employee->ratetype     = $this->getRateType(trim($row['DEPT']));
-      $employee->rate         = trim($row['RATE_HR']);
-      $employee->ecola        = trim($row['ECOL_RATE']);
-      $employee->allowance1   = trim($row['ALW1_RATE']);
-      $employee->allowance2   = trim($row['ALW2_RATE']);
-      $employee->phicno       = trim($row['PHEALTH_NO']);
-      $employee->hdmfno       = trim($row['PBIG_NO']);
-      $employee->tin          = trim($row['WTAX_NO']);
-      $employee->sssno        = trim($row['SSS_NO']);
-      $employee->empstatus    = $this->getEmpstatus(trim($row['EMP_STUS']));
-      $employee->datestart    = Carbon::parse(trim($row['STARTED']));
-      $hired = empty(trim($row['HIRED'])) ? '0000-00-00' : Carbon::parse(trim($row['HIRED']));
+      //$branch                 = Branch::where('code', trim($row['BRANCH']))->first();
+      //$employee->branchid     = is_null($branch) ? '971077BCA54611E5955600FF59FBB323': $branch->id;
+      //$employee->deptid       = $this->getDeptId(trim($row['DEPT']));
+      //$employee->positionid   = $this->getPositionId(trim($row['POSITION']));
+      //$employee->paytype      = 2;
+      //$employee->ratetype     = $this->getRateType(trim($row['DEPT']));
+      //$employee->rate         = trim($row['RATE_HR']);
+      //$employee->ecola        = trim($row['ECOL_RATE']);
+      //$employee->allowance1   = trim($row['ALW1_RATE']);
+      //$employee->allowance2   = trim($row['ALW2_RATE']);
+      //$employee->phicno       = trim($row['PHEALTH_NO']);
+      //$employee->hdmfno       = trim($row['PBIG_NO']);
+      //$employee->tin          = trim($row['WTAX_NO']);
+      //$employee->sssno        = trim($row['SSS_NO']);
+      //$employee->empstatus    = $this->getEmpstatus(trim($row['EMP_STUS']));
+      $employee->datestart    = empty(trim($row['STARTED'])) ? NULL :  Carbon::parse(trim($row['STARTED']));
+      $hired = empty(trim($row['HIRED'])) ? NULL : Carbon::parse(trim($row['HIRED']));
       $employee->datehired    = $hired;
-      $stop = empty(trim($row['RESIGNED'])) ? '0000-00-00' : Carbon::parse(trim($row['RESIGNED']));
+      $stop = empty(trim($row['RESIGNED'])) ? NULL : Carbon::parse(trim($row['RESIGNED']));
       $employee->datestop     = $stop;
-      $employee->punching     = array_key_exists($employee->positionid, config('giligans.position')) ? config('giligans.position')[$employee->positionid]['ordinal']:99;
-      $employee->processing   = 1;
-      $employee->address      = trim($row['ADDRESS1']).', '.trim($row['ADDRESS2']).', '.trim($row['ADDRESS3']);
-      $employee->phone        = trim($row['TEL'])=='N/A' ? '':trim($row['TEL']);
+      //$employee->punching     = array_key_exists($employee->positionid, config('giligans.position')) ? config('giligans.position')[$employee->positionid]['ordinal']:99;
+      //$employee->processing   = 1;
+      //$employee->address      = trim($row['ADDRESS1']).', '.trim($row['ADDRESS2']).', '.trim($row['ADDRESS3']);
+      //$employee->phone        = trim($row['TEL'])=='N/A' ? '':trim($row['TEL']);
       //$employee->fax          = trim($row['TEL']);
-      $employee->mobile       = trim($row['CEL']);
-      $employee->email        = trim($row['EMAIL'])=='N/A' ? '':trim($row['EMAIL']);
-      $employee->gender       = trim($row['SEX'])=='M' ? 1:2;
-      $employee->civstatus    = trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
-      $employee->height       = $this->getHeight(trim($row['HEIGHT']));
-      $employee->weight       = $this->getWeight(trim($row['WEIGHT']));
-      $employee->birthdate    = Carbon::parse(trim($row['BIRTHDATE']));
-      $employee->birthplace   = trim($row['BIRTHPLC']);
-      $employee->religionid   = trim($this->getReligionId($row['RELIGION']));
-      $employee->hobby        = trim($row['HOBBIES']);
-      $employee->notes        = 'UNIFORM:'.trim($row['UNIFORM']).'; '.
-                                'SP_NOTES1:'.trim($row['SP_NOTES1']).'; '.
-                                'SP_NOTES2:'.trim($row['SP_NOTES2']).'; ';
+      //$employee->mobile       = trim($row['CEL']);
+      //$employee->email        = trim($row['EMAIL'])=='N/A' ? '':trim($row['EMAIL']);
+      //$employee->gender       = trim($row['SEX'])=='M' ? 1:2;
+      //$employee->civstatus    = trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
+      //$employee->height       = $this->getHeight(trim($row['HEIGHT']));
+      //$employee->weight       = $this->getWeight(trim($row['WEIGHT']));
+      //$employee->birthdate    = Carbon::parse(trim($row['BIRTHDATE']));
+      //$employee->birthplace   = trim($row['BIRTHPLC']);
+      //$employee->religionid   = trim($this->getReligionId($row['RELIGION']));
+      //$employee->hobby        = trim($row['HOBBIES']);
+      //$employee->notes        = 'UNIFORM:'.trim($row['UNIFORM']).'; '.
+      //                          'SP_NOTES1:'.trim($row['SP_NOTES1']).'; '.
+       //                         'SP_NOTES2:'.trim($row['SP_NOTES2']).'; ';
 
       if ($import) {
         try {
@@ -260,7 +260,7 @@ class Paymast extends Command
 
 
       $sttr = new \App\Models\Statutory;  
-      $sttr->date_reg = Carbon::parse(trim($row['REGULARED']));
+      $sttr->date_reg = empty(trim($row['REGULARED'])) ? NULL :  Carbon::parse(trim($row['REGULARED']));
       $sttr->meal     = trim($row['CA_BAL']);
       $sttr->ee_sss   = trim($row['SSS_EE']);
       $sttr->er_sss   = trim($row['SSS_ER']);
@@ -380,6 +380,8 @@ class Paymast extends Command
       return 'DC60EC42B0B143AFA7D42312DA5D80BF';
     if(starts_with($dept, 'ADM'))
       return 'D2E8E339A47B11E592E000FF59FBB323';
+    if(starts_with($dept, 'HAU'))
+      return '11E8A509EE9499B79E324523E0FA4464';
     return '';  
   
   }
@@ -562,9 +564,6 @@ class Paymast extends Command
         return '4C97B1DD673B11E596ECDA40B3C0AA12';
         break;
       case "Mngr Area":
-        return '565DE46943904A40AD2888463A79570C';
-        break;
-      case "Mngr Branch":
         return '565DE46943904A40AD2888463A79570C';
         break;
       default:

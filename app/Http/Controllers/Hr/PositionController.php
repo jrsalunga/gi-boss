@@ -52,8 +52,8 @@ class PositionController extends Controller
 	private function process_quick(Request $request) {
 		
 		$this->validate($request, [
-    	'code' 				=> 'required|anshu|max:3',
-      'descriptor' 	=> 'required|anshu|max:50',
+    	'code' 				=> 'required|max:3',
+      'descriptor' 	=> 'required|max:50',
     ]);
 
 		DB::beginTransaction();

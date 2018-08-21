@@ -62,7 +62,7 @@
                       <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 
                     </div>
                     <div>
-                      <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <span class="text-muted">{{ $employee->middlename }}</span></a> 
+                      <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <small class="text-muted">{{ $employee->middlename }}</small></a> 
                     </div>
                     @if(isset($employee->position))
                       <p><small>{{ $employee->position->descriptor }}</small></p>

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', '- Branch Timesheet')
+@section('title', '- Employee Watchlist')
 
 @section('body-class', 'br-ts')
 
@@ -103,6 +103,10 @@
                   <?php 
                     $src=$d['employee']->photo?'employees/'.$d['employee']->code.'.jpg':'login-avatar.png';
                   ?>
+                   <a href="/hr/masterfiles/employee/{{$d['employee']->lid()}}" target="_blank">
+                    {{$d['employee']->code  }}
+          </a>
+
                   <a href="/timelog/employee/{{$d['employee']->lid()}}?date={{ $date->format('Y-m-d') }}" rel="popover-img" data-img="http://cashier.giligansrestaurant.com/images/{{$src}}">
                     {{ $d['employee']->lastname }}, {{ $d['employee']->firstname }}
                   </a>

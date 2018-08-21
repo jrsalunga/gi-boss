@@ -45,11 +45,12 @@ class Paymast extends Command
 
       $row = dbase_get_record_with_names($db, $i);
     
-      $this->info($i.' '.$row['MAN_NO'].' '.$row['LAST_NAM']);
+      $this->info($i.' '.$row['BRANCH'].' '.$row['MAN_NO'].' '.$row['LAST_NAM'].' '.$row['FIRS_NAM'].' '.$row['MIDL_NAM']);
 
       $e = Employee::where('code', trim($row['MAN_NO']))->first();
       if (is_null($e)) {
 
+      //$this->info($i.' '.$row['BRANCH'].' '.$row['MAN_NO'].' '.$row['LAST_NAM'].' '.$row['FIRS_NAM'].' '.$row['MIDL_NAM']);
         $this->info('Employee '.$row['MAN_NO'].' do not exist!');
 
         $employee = new Employee;
@@ -73,19 +74,25 @@ class Paymast extends Command
         
         $exist_emp = true;
       }
-
+      /*
+      $this->info($employee->code.' '.$employee->lastname.' '.$employee->firstname);
+      if ($exist_emp)
+        $this->info('*');
+      else
+        $this->info('do not exist');
+        */
 
 
       $employee->companyid    = trim($this->getCompanyId($row['CO_NAME']));
         
       $branch                 = Branch::where('code', trim($row['BRANCH']))->first();
-      $employee->branchid     = is_null($branch) ? '': $branch->id;
-      $employee->deptid       = $this->getDeptId($row['DEPT']);
+      $employee->branchid     = is_null($branch) ? '971077BCA54611E5955600FF59FBB323': $branch->id;
+      $employee->deptid       = $this->getDeptId(trim($row['DEPT']));
       $employee->positionid   = $this->getPositionId(trim($row['POSITION']));
       $employee->paytype      = 2;
-      $employee->ratetype     = 2;
+      $employee->ratetype     = $this->getRateType(trim($row['DEPT']));
       $employee->rate         = trim($row['RATE_HR']);
-      $employee->ecola        = trim($row['RATE_HR']);
+      $employee->ecola        = trim($row['ECOL_RATE']);
       $employee->allowance1   = trim($row['ALW1_RATE']);
       $employee->allowance2   = trim($row['ALW2_RATE']);
       $employee->phicno       = trim($row['PHEALTH_NO']);
@@ -98,17 +105,17 @@ class Paymast extends Command
       $employee->datehired    = $hired;
       $stop = empty(trim($row['RESIGNED'])) ? '0000-00-00' : Carbon::parse(trim($row['RESIGNED']));
       $employee->datestop     = $stop;
-      $employee->punching     = 1;
+      $employee->punching     = array_key_exists($employee->positionid, config('giligans.position')) ? config('giligans.position')[$employee->positionid]['ordinal']:99;
       $employee->processing   = 1;
       $employee->address      = trim($row['ADDRESS1']).', '.trim($row['ADDRESS2']).', '.trim($row['ADDRESS3']);
-      $employee->phone        = trim($row['TEL']);
+      $employee->phone        = trim($row['TEL'])=='N/A' ? '':trim($row['TEL']);
       //$employee->fax          = trim($row['TEL']);
       $employee->mobile       = trim($row['CEL']);
-      $employee->email        = trim($row['EMAIL']);
+      $employee->email        = trim($row['EMAIL'])=='N/A' ? '':trim($row['EMAIL']);
       $employee->gender       = trim($row['SEX'])=='M' ? 1:2;
       $employee->civstatus    = trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
-      $employee->height       = str_replace("'",'.',trim($row['HEIGHT']));
-      $employee->weight       = trim($row['WEIGHT']);
+      $employee->height       = $this->getHeight(trim($row['HEIGHT']));
+      $employee->weight       = $this->getWeight(trim($row['WEIGHT']));
       $employee->birthdate    = Carbon::parse(trim($row['BIRTHDATE']));
       $employee->birthplace   = trim($row['BIRTHPLC']);
       $employee->religionid   = trim($this->getReligionId($row['RELIGION']));
@@ -128,7 +135,7 @@ class Paymast extends Command
 
       if (!$exist_emp) {
 
-          $childrens = [];
+        $childrens = [];
         if(!empty(trim($row['CHILDREN1'])) && trim($row['CHILDREN1'])!='N/A') {
           $c1 = new \App\Models\Children;
           $c1->firstname = trim($row['CHILDREN1']);
@@ -251,6 +258,29 @@ class Paymast extends Command
 
       } // end: if !exist
 
+
+      $sttr = new \App\Models\Statutory;  
+      $sttr->date_reg = Carbon::parse(trim($row['REGULARED']));
+      $sttr->meal     = trim($row['CA_BAL']);
+      $sttr->ee_sss   = trim($row['SSS_EE']);
+      $sttr->er_sss   = trim($row['SSS_ER']);
+      $sttr->SSS_TAG  = trim($row['SSS_TAG'])=='Y' ? 1 : 0;
+      $sttr->ee_phic  = trim($row['PH_EE']);
+      $sttr->er_phic  = trim($row['PH_ER']);
+      $sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;
+      $sttr->ee_hdmf  = trim($row['PBIG_EE']);
+      $sttr->er_hdmf  = trim($row['PBIG_ER']);
+      $sttr->hdmf_tag = trim($row['PBIG_TAG'])=='Y' ? 1 : 0;
+      $sttr->ee_tin   = trim($row['TAX_EE']);
+      $sttr->er_tin   = trim($row['TAX_ER']);
+      $sttr->wtax     = trim($row['WTAX']);
+      $sttr->wtax_tag = trim($row['WTAX_TAG'])=='Y' ? 1 : 0;
+      
+      $sttr->id = $sttr->get_uid();
+      
+      if($import)
+        $employee->statutory()->save($sttr);
+
     } // end: for 
     DB::commit();
 
@@ -330,6 +360,8 @@ class Paymast extends Command
       case "NEILZACH RESTAURANT":
         return 'DB02D166D56A466D9804BEFD3589E432';
         break;
+      case "GILIGAN'S ISLAND REST. & BAR CEBU, INC.":
+        return '6275CF5B673611E596ECDA40B3C0AA12';
       default:
         return '';
         break;
@@ -350,6 +382,14 @@ class Paymast extends Command
       return 'D2E8E339A47B11E592E000FF59FBB323';
     return '';  
   
+  }
+
+  public function getRateType($dept){
+    if(ends_with($dept, 'DAY'))
+      return '1';
+    if(ends_with($dept, 'MON'))
+      return '2';
+    return '';  
   }
 
 
@@ -518,11 +558,33 @@ class Paymast extends Command
       case "TRAINEE 4":
         return 'C6A67A2F280F4634A5AF1BBECF6D901B';
         break;
+      case "Kitchen Area":
+        return '4C97B1DD673B11E596ECDA40B3C0AA12';
+        break;
+      case "Mngr Area":
+        return '565DE46943904A40AD2888463A79570C';
+        break;
+      case "Mngr Branch":
+        return '565DE46943904A40AD2888463A79570C';
+        break;
       default:
         return '';
         break;
     }
 
+  }
+
+  public function getHeight($height) {
+    $h = str_replace('"', '', $height);
+    $r = array_search($h, config('giligans.meter_to_feet'));
+    return is_null($r) ? $height : $r;
+  }
+
+  public function getWeight($weight) {
+    $w = floatval($weight);
+    return ($w >= 90)
+      ? $w*0.45359237
+      : $w;
   }
 
 }

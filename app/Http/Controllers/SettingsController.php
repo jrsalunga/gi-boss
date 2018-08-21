@@ -302,7 +302,6 @@ class SettingsController extends Controller {
 		    $employee->gender 			= trim($row['SEX'])=='M' ? 1:2;
 		    $employee->civstatus 		= trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
 		    $employee->height 			= $this->getHeight(trim($row['HEIGHT']));
-		    //$employee->height 			= str_replace("'",'.',trim($row['HEIGHT']));
 		    $employee->weight 			= trim($row['WEIGHT']);
 		    $employee->birthdate		= Carbon::parse(trim($row['BIRTHDATE']));
 		    $employee->birthplace		= trim($row['BIRTHPLC']);
@@ -759,11 +758,15 @@ class SettingsController extends Controller {
 
 	public function getHeight($height) {
 		$h = str_replace('"', '', $height);
-
 		$r = array_search($h, config('giligans.meter_to_feet'));
-
 		return is_null($r) ? $height : $r;
+	}
 
+	public function getWeight($weight) {
+		$w = floatval($weight);
+		return ($w >= 90)
+			? $w*0.45359237
+			: $w;
 	}
 
 

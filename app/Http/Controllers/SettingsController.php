@@ -302,7 +302,7 @@ class SettingsController extends Controller {
 		    $employee->gender 			= trim($row['SEX'])=='M' ? 1:2;
 		    $employee->civstatus 		= trim($row['CIV_STUS'])=='SINGLE' ? 1:2;
 		    $employee->height 			= $this->getHeight(trim($row['HEIGHT']));
-		    $employee->weight 			= trim($row['WEIGHT']);
+		    $employee->weight 			= $this->getWeight(trim($row['WEIGHT']));
 		    $employee->birthdate		= Carbon::parse(trim($row['BIRTHDATE']));
 		    $employee->birthplace		= trim($row['BIRTHPLC']);
 		    $employee->religionid		= trim($this->getReligionId($row['RELIGION']));

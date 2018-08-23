@@ -80,7 +80,7 @@
 	
 
 		
-		
+		@include('_partials.pager', ['field'=>'code', 'model'=>$company])
 	</div>
 		
 

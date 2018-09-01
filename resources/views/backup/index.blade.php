@@ -154,7 +154,13 @@
             @endif
           </td>
           <?php  $x = explode(':', $backup->remarks) ?>
-          <td>{{ $backup->remarks }} </td>
+          <td>
+            @if(strlen($backup->remarks)>40)
+              <span class="help" data-toggle="tooltip" title="{{ $backup->remarks }}">{{ substr($backup->remarks, 0, 40) }}...</span>
+            @else
+              {{ $backup->remarks }}
+            @endif
+          </td>
           <td>
               {{ $backup->terminal }}
 

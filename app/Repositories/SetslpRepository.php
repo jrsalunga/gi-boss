@@ -15,12 +15,23 @@ class SetslpRepository extends BaseRepository implements CacheableInterface
 
   protected $order = ['created_at'];
 
-  
+  public function boot(){
+    $this->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+  }
   
   public function model() {
     return 'App\\Models\\Setslp';
   }
 
+  protected $fieldSearchable = [
+    'branch.code',
+    'branch.descriptor'=>'like',
+    'filename'=>'like',
+    'cashier'=>'like',
+    'date',
+    'terminal_id',
+    'fileUpload.terminal',
+  ];
 
 
   private function aggregateDailyLogs(Carbon $fr, Carbon $to) {

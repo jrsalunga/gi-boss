@@ -98,6 +98,11 @@ Route::post('delete/depslp', ['uses'=>'DepslpController@delete']);
 Route::get('download/DEPSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'DepslpController@getDownload']);
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
+Route::get('setslp/log', ['uses'=>'SetslpController@getHistory']);
+Route::get('setslp/{id?}/{action?}/{p?}', ['uses'=>'SetslpController@getAction']);
+Route::get('images/setslp/{id?}', ['uses'=>'SetslpController@getImage']);
+Route::put('put/setslp', ['uses'=>'SetslpController@put']);
+Route::post('delete/setslp', ['uses'=>'SetslpController@delete']);
 
 Route::get('timesheet/employee/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@employeeTimesheet']);
 Route::get('timesheet/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@getRoute']);

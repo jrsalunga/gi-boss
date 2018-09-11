@@ -190,6 +190,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/storage"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/setslp"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
               </ul>
             </div>
 
@@ -202,6 +203,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/setslp/checklist"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
                 <li><a href="/mansked"><span class="gly gly-notes-2"></span> Mansked</a></li>
               </ul>
             </div>
@@ -215,6 +217,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/storage/log"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/log"><span class="fa fa-bank"></span> Deposit Slip</a></li>
+                <li><a href="/setslp/log"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
                 <li><a href="/timesheet"><span class="gly gly-clock"></span> Timesheet</a></li>
                 <li><a href="/timelog"><span class="gly gly-stopwatch"></span> Timelogs</a></li>
               </ul>

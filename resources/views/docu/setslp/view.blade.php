@@ -83,7 +83,7 @@
             <h5><span class="gly gly-user"></span> {{ $setslp->cashier }}</h5>
             <h6><span class="gly gly-pencil"></span> {{ $setslp->remarks }}</h6>
             
-            <h6><span class="glyphicon glyphicon-cloud-upload"></span> {{ $setslp->created_at->format('D M j h:i:s A') }} <small>{{ diffForHumans($setslp->created_at) }}</small></h6>
+            <h6><span class="glyphicon glyphicon-cloud-upload"></span> {{ $setslp->created_at->format('D M j H:i:s') }} <small>{{ diffForHumans($setslp->created_at) }}</small></h6>
           </div>
           <div class="panel-footer">
             @if($setslp->verified || $setslp->matched)

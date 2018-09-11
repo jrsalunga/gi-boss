@@ -123,7 +123,7 @@
           <th>Business Date</th>
           <th class="text-right">POS Total Charge (A)</th>
           <th class="text-right">Settlement Total (B)</th>
-          <th class="text-right">Diff (A - B)</th>
+          <th class="text-right">Short/Over (A - B)</th>
           <th class="text-right">Settlement Slips</th>
           <th class="text-right">&nbsp;</th>
         </tr>
@@ -146,9 +146,14 @@
             <td class="text-right {{ $class }}">&nbsp;</td>
           @endif 
 
+
           @if($b['count']>0)
             <td class="text-right {{ $class }}">{{ number_format($b['slip_total'],2) }}</td>
-            <?php $tot_set += $b['slip_total']; ?>
+            <?php 
+              $tot_set += $b['slip_total']; 
+              $diff = $b['pos_total'] - $b['slip_total'];
+            ?>
+            <td class="text-right {{ $class }}">{{ $diff==0 ? '':number_format($diff,2) }}</td>
             <td class="text-right {{ $class }}">
               <span class="badge text-info help" title="" data-toggle="tooltip">{{ $b['count'] }}</span>
 
@@ -171,6 +176,7 @@
           @else
             <td class="text-right {{ $class }}">-</td>
             <td class="{{ $class }}"></td>
+            <td class="{{ $class }}"></td>
           @endif
           
             <td class="text-right {{ $class }}">&nbsp;</td>
@@ -182,6 +188,7 @@
           <td></td>
           <td class="text-right">{{ number_format($tot_pos,2) }}</td>
           <td class="text-right"><b>{{ number_format($tot_set,2) }}</b></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>

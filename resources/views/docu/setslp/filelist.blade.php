@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', '- Depslip Storage')
+@section('title', '- Setslp Storage')
 
 @section('body-class', 'depslp-storage')
 
@@ -57,7 +57,7 @@
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active">
         <a href="/backups" aria-controls="pos" role="tab">
-          Deposit Slip Archive
+          Card Settlement Slip Archive
         </a>
       </li>
     </ul>
@@ -72,7 +72,7 @@
         @if(count($data['breadcrumbs'])>1)
         <a href="{{ strtolower(endKey($data['breadcrumbs'])) }}" class="btn btn-default" title="Back">
           <span class="gly gly-unshare"></span>
-          <span class="gly gly-hdd"></span>{{ endKey($data['breadcrumbs']) }}
+          <span class="gly gly-hdd"></span>{{ strtoupper(endKey($data['breadcrumbs'])) }}
         </a>
         @else
 

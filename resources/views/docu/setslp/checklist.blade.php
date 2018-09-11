@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Depslip Checklist')
+@section('title', '- Card Settlement Checklist')
 
-@section('body-class', 'depslip-checklist')
+@section('body-class', 'setslp-checklist')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li><a href="/setslp/log">Deposit Slip</a></li>
+    <li><a href="/setslp/log">Card Settlement Slip</a></li>
     <li><a href="/setslp/checklist">Checklist</a></li>
     <li class="active">{{ $date->format('M Y') }}</li>
   </ol>
@@ -133,6 +133,7 @@
         @foreach($datas as $key => $b) 
         <?php
           $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d') ? 'bg-success':($b['date']->isSunday() ? 'bg-warning' : '');
+          $diff = $b['pos_total'] - $b['slip_total'];
         ?>
         <tr>
           <td class="{{ $class }}">{{ $b['date']->format('M j, D') }}</td>
@@ -151,7 +152,7 @@
             <td class="text-right {{ $class }}">{{ number_format($b['slip_total'],2) }}</td>
             <?php 
               $tot_set += $b['slip_total']; 
-              $diff = $b['pos_total'] - $b['slip_total'];
+              
             ?>
             <td class="text-right {{ $class }}">{{ $diff==0 ? '':number_format($diff,2) }}</td>
             <td class="text-right {{ $class }}">
@@ -175,7 +176,7 @@
             </td>
           @else
             <td class="text-right {{ $class }}">-</td>
-            <td class="{{ $class }}"></td>
+            <td class="text-right {{ $class }}">{{ $diff==0 ? '':number_format($diff,2) }}</td>
             <td class="{{ $class }}"></td>
           @endif
           
@@ -188,7 +189,7 @@
           <td></td>
           <td class="text-right">{{ number_format($tot_pos,2) }}</td>
           <td class="text-right"><b>{{ number_format($tot_set,2) }}</b></td>
-          <td></td>
+          <td class="text-right"><b>{{ number_format($tot_pos-$tot_set,2) }}</b></td>
           <td></td>
           <td></td>
         </tr>

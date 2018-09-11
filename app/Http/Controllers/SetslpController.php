@@ -528,8 +528,8 @@ class SetslpController extends Controller {
 			if ($this->files->exists($this->getPath($setslp)))
 				$this->files->deleteFile($this->getPath($setslp));
 
-			if (app()->environment()==='production')
-				event(new setslpDelete($setslp->toArray()));
+			//if (app()->environment()==='production')
+			//	event(new setslpDelete($setslp->toArray()));
 
 			return redirect('/setslp/log')
 							->with('setslp.delete', $setslp)

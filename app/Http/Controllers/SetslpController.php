@@ -156,7 +156,7 @@ class SetslpController extends Controller {
 			asort($z);
 
 			$data = [
-				'folder' 			=> "/setslp",
+				'folder' 			=> "/SETSLP",
 				'folderName' 	=> 'SETSLP',
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
@@ -175,11 +175,11 @@ class SetslpController extends Controller {
 			}
 
 			$data = [
-				'folder' 			=> "/setslp/".strtoupper($id),
+				'folder' 			=> "/SETSLP/".strtoupper($id),
 				'folderName' 	=> strtoupper($id),
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "setslp",
+					'/setslp'		=> "SETSLP",
 				],
 				'subfolders'	=> $dirs,
 				'files'				=> []
@@ -188,13 +188,13 @@ class SetslpController extends Controller {
 
 		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && is_null($p))  {
 
-			$root = $this->files->folderInfo('setslp/'.$action.'/'.strtoupper($id));
+			$root = $this->files->folderInfo('SETSLP/'.$action.'/'.strtoupper($id));
 			$data = [
-				'folder' 			=> "/setslp/".strtoupper($id).'/'.$action,
+				'folder' 			=> "/SETSLP/".strtoupper($id).'/'.$action,
 				'folderName' 	=> $action,
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "setslp",
+					'/setslp'		=> "SETSLP",
 					'/setslp/'.strtoupper($id) 	=> strtoupper($id),
 				],
 				'subfolders'	=> $root['subfolders'],
@@ -203,13 +203,13 @@ class SetslpController extends Controller {
 
 		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && (!is_null($p) && is_month($p)))  {
 
-			$root = $this->files->folderInfo('setslp/'.$action.'/'.strtoupper($id).'/'.$p);
+			$root = $this->files->folderInfo('SETSLP/'.$action.'/'.strtoupper($id).'/'.$p);
 			$data = [
-				'folder' 			=> "/setslp/".strtoupper($id).'/'.$action.'/'.$p,
+				'folder' 			=> "/SETSLP/".strtoupper($id).'/'.$action.'/'.$p,
 				'folderName' 	=> $p,
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "setslp",
+					'/setslp'		=> "SETSLP",
 					'/setslp/'.strtoupper($id) 	=> strtoupper($id),
 					'/setslp/'.strtoupper($id).'/'.$action 	=> $action,
 				],

@@ -179,7 +179,7 @@ class SetslpController extends Controller {
 				'folderName' 	=> strtoupper($id),
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "SETSLP",
+					'/setslp'		=> "setslp",
 				],
 				'subfolders'	=> $dirs,
 				'files'				=> []
@@ -194,7 +194,7 @@ class SetslpController extends Controller {
 				'folderName' 	=> $action,
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "SETSLP",
+					'/setslp'		=> "setslp",
 					'/setslp/'.strtoupper($id) 	=> strtoupper($id),
 				],
 				'subfolders'	=> $root['subfolders'],
@@ -209,7 +209,7 @@ class SetslpController extends Controller {
 				'folderName' 	=> $p,
 				'breadcrumbs' => [
 					'/' 				=> "Storage",
-					'/setslp'		=> "SETSLP",
+					'/setslp'		=> "setslp",
 					'/setslp/'.strtoupper($id) 	=> strtoupper($id),
 					'/setslp/'.strtoupper($id).'/'.$action 	=> $action,
 				],

@@ -62,7 +62,7 @@ class SetslpController extends Controller {
 
 
     if(!is_uuid($request->input('branchid'))
-    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
+    || !in_array(strtoupper($request->input('branchid')),  $bb->pluck('id')->all())) 
     {
       return redirect('/setslp/checklist')->with('alert-warning', 'Please select a branch.');
     } 
@@ -77,7 +77,7 @@ class SetslpController extends Controller {
   	$to = $date->copy()->lastOfMonth();
 
     //$setslps = $this->setslp->getByDr($fr, $to, $branch->id);
-    $dss = $this->ds->getByBranchDate($fr, $to, $branch->id, ['date', 'sales', 'depo_cash', 'depo_check']);
+    $dss = $this->ds->getByBranchDate($fr, $to, $branch->id, ['date', 'sales', 'sale_chg']);
 
 
    $datas = [];

@@ -545,7 +545,7 @@ class SetslpController extends Controller {
     	return abort('404');
     }
 
-    $path = 'setslp/'.$p1.'/'.$p2.'/'.$p3.'/'.$p4;
+    $path = 'SETSLP/'.$p1.'/'.$p2.'/'.$p3.'/'.$p4;
 
     if (!in_array($request->user()->username, ['jrsalunga', 'admin']))
 		logAction('backup:download', 'user:'.$request->user()->username.' '.$path);

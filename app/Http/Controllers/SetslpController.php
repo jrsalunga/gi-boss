@@ -76,12 +76,12 @@ class SetslpController extends Controller {
     $fr = $date->firstOfMonth();
   	$to = $date->copy()->lastOfMonth();
 
-    $setslps = $this->setslp->getByDr($fr, $to, $branch->id);
+    //$setslps = $this->setslp->getByDr($fr, $to, $branch->id);
     $dss = $this->ds->getByBranchDate($fr, $to, $branch->id, ['date', 'sales', 'depo_cash', 'depo_check']);
 
 
    $datas = [];
-   foreach ($this->setslp->monthlyLogs($date) as $key => $data) {
+   foreach ($this->setslp->monthlyLogs($date, $branch->id) as $key => $data) {
 
 			$d = $data['date'];
 			$datas[$key]['date'] = $data['date'];

@@ -33,10 +33,10 @@ class SetslpRepository extends BaseRepository implements CacheableInterface
   ];
 
 
-  private function aggregateDailyLogs(Carbon $fr, Carbon $to) {
-  	return $this->scopeQuery(function($query) use ($fr, $to) {
+  private function aggregateDailyLogs(Carbon $fr, Carbon $to, $branchid) {
+  	return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
     	return $query
-    						
+    						->where('branch_id', $branchid)
                 ->where(function ($query) use ($fr, $to){
                   $query->where(function ($query) use ($fr){
                     $query->where('date', '>=', $fr->format('Y-m-d'))
@@ -105,12 +105,12 @@ class SetslpRepository extends BaseRepository implements CacheableInterface
   }
 
 
-	public function monthlyLogs(Carbon $date) {
+	public function monthlyLogs(Carbon $date, $branchid) {
     $arr = [];
     $fr = $date->firstOfMonth();
     $to = $date->copy()->lastOfMonth();
 
-    $data = $this->aggregateDailyLogs($fr, $to);
+    $data = $this->aggregateDailyLogs($fr, $to, $branchid);
 
     for ($i=0; $i < $date->daysInMonth; $i++) { 
 

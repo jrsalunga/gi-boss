@@ -99,6 +99,7 @@ Route::get('download/DEPSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'
 Route::get('download/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'BackupController@getDownload']);
 
 Route::get('setslp/log', ['uses'=>'SetslpController@getHistory']);
+Route::get('setslp/checklist', ['uses'=>'SetslpController@getChecklist']);
 Route::get('setslp/{id?}/{action?}/{p?}', ['uses'=>'SetslpController@getAction']);
 Route::get('images/setslp/{id?}', ['uses'=>'SetslpController@getImage']);
 Route::put('put/setslp', ['uses'=>'SetslpController@put']);

@@ -43,62 +43,19 @@ class SetslpController extends Controller {
 		return view('docu.setslp.index')->with('setslps', $setslps);
 	}
 
+	
+
 	public function getChecklist(Request $request) {
 
 		$bb = $this->branch
   						->orderBy('code')
-  						->getByCriteria(new ActiveBranch)
-  						->all(['code', 'descriptor', 'id']);
+  						->getByCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
 		$date = carbonCheckorNow($request->input('date'));
 
 		if(!$request->has('branchid') && !isset($_GET['branchid'])) {
       return view('docu.setslp.checklist')
 						->with('date', $date)
-						->with('setslps', null)
-						->with('branches', $bb)
-						->with('branch', null);
-    } 
-
-
-    if(!is_uuid($request->input('branchid'))
-    || !in_array(strtoupper($request->input('branchid')),  $this->branch->all()->pluck('id')->all())) 
-    {
-      return redirect('/setslp/checklist')->with('alert-warning', 'Please select a branch.');
-    } 
-
-    try {
-      $branch = $this->branch->find(strtolower($request->input('branchid')));
-    } catch (Exception $e) {
-      return redirect('/backup/checklist')->with('alert-warning', 'Please select a branch.');
-    }
-
-    
-  	$setslps = $this->setslp->skipCache()->monthlyLogs($date, $branch);
-
-  	if($request->has('debug'))
-  		return $setslps;
-  	
-  	return view('docu.setslp.checklist')
-  					->with('date', $date)
-  					->with('branches', $bb)
-  					->with('branch', $branch)
-  					->with('setslps', $setslps);
-
-		
-	}
-
-	public function getChecklist2(Request $request) {
-
-		$bb = $this->branch
-  						->orderBy('code')
-  						->getByCriteria(new ActiveBranch)
-  						->all(['code', 'descriptor', 'id']);
-		$date = carbonCheckorNow($request->input('date'));
-
-		if(!$request->has('branchid') && !isset($_GET['branchid'])) {
-      return view('docu.setslp.checklist')
-						->with('date', $date)
-						->with('setslps', null)
+						->with('datas', null)
 						->with('branches', $bb)
 						->with('branch', null);
     } 
@@ -119,77 +76,42 @@ class SetslpController extends Controller {
     $fr = $date->firstOfMonth();
   	$to = $date->copy()->lastOfMonth();
 
-    $setslps = $this->setslp->branchByDR($fr, $to, $branch->id);
+    $setslps = $this->setslp->getByDr($fr, $to, $branch->id);
     $dss = $this->ds->getByBranchDate($fr, $to, $branch->id, ['date', 'sales', 'depo_cash', 'depo_check']);
 
 
-    $arr = [];
-    $gt = [];
-    for ($i=0; $i < $date->daysInMonth; $i++) { 
+   $datas = [];
+   foreach ($this->setslp->monthlyLogs($date) as $key => $data) {
 
-  		$date = $fr->copy()->addDays($i);
+			$d = $data['date'];
+			$datas[$key]['date'] = $data['date'];
+			$datas[$key]['count'] = $data['count'];
+			$datas[$key]['slip_total'] = $data['total'];
+			$datas[$key]['slips'] = $data['datas'];
 
-  		$arr[$i]['date'] = $date;
-  		$arr[$i]['depo_totamt'] = 0;
-  		$arr[$i]['pos_totamt'] = 0;
-  		$arr[$i]['depo_totcnt'] = 0;
+			$f = $dss->filter(function ($item) use ($d){
+	      return $item->date->format('Y-m-d') == $d->format('Y-m-d')
+	      	? $item : null;
+	    });
 
-  		$type = [];
-  		for ($j=0; $j<3; $j++) {
-  			$fd = $setslps->filter(function ($item) use ($date, $j){
-        				return $item->date->format('Y-m-d') == $date->format('Y-m-d') && $item->type==$j
-          			? $item : null;
-    					})->all();
-  			
-	  		if (count($fd)>0) {
-	  			$type[$j]['slips'] = $fd;
-	  			$amt = 0;
-	  			foreach ($fd as $key => $slip) {
-	  				$amt += $slip->amount;
-	  				$arr[$i]['depo_totcnt']++;
-	  			}
-	  			$type[$j]['amount'] = $amt;
-	  			$arr[$i]['depo_totamt'] += $amt;
-	  		} else
-	  			$type[$j]['slips'] = false;
-  		}
-    	$arr[$i]['depo_type'] = $type;
+	    $b = $f->first();
 
-    	$pos = [];
-    	$ds = $dss->filter(function ($item) use ($date){
-        				return $item->date->format('Y-m-d') == $date->format('Y-m-d')
-          			? $item : null;
-    					})->first();
-
-    	if (is_null($ds)) {
-    		$pos[0]['amount'] = false;
-    		$pos[1]['amount']	= false;
-    	} else {
-    		$pos[0]['amount'] = $ds->depo_cash>0 ? $ds->depo_cash:false;
-    		$pos[1]['amount']	= $ds->depo_check>0 ? $ds->depo_check:false;
-
-    		if ($pos[0]['amount'])
-    			$arr[$i]['pos_totamt'] += $pos[0]['amount'];
-
-    		if ($pos[1]['amount'])
-    			$arr[$i]['pos_totamt'] += $pos[1]['amount'];
-
-    	}
-    	$arr[$i]['pos'] = $pos;
-  		
-  	}
-
-  	//return $arr;
+			if(is_null($b))
+	  		$datas[$key]['pos_total'] = 0;
+	  	else
+	  		$datas[$key]['pos_total'] = $b->sale_chg;
+		
+		}
 
 
   	if($request->has('debug'))
-  		return $arr;
+  		return $datas;
   	
-  	return view('docu.setslp.checklist2')
+  	return view('docu.setslp.checklist')
   					->with('date', $fr)
   					->with('branches', $bb)
   					->with('branch', $branch)
-  					->with('datas', $arr);
+  					->with('datas', $datas);
 
 		
 	}

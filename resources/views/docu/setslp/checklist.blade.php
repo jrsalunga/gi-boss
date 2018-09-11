@@ -24,8 +24,8 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li><a href="/depslp/log">Deposit Slip</a></li>
-    <li><a href="/depslp/checklist">Checklist</a></li>
+    <li><a href="/setslp/log">Deposit Slip</a></li>
+    <li><a href="/setslp/checklist">Checklist</a></li>
     <li class="active">{{ $date->format('M Y') }}</li>
   </ol>
 
@@ -38,14 +38,18 @@
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
-            <a href="/depslp/log" class="btn btn-default" title="Deposit Slip Logs">
+            @if(is_null(($branch)))
+            <a href="/setslp/log" class="btn btn-default" title="Deposit Slip Logs">
+            @else
+            <a href="/setslp/log?search=branch.code:{{strtolower($branch->code)}}" class="btn btn-default" title="Deposit Slip Logs">
+            @endif
               <span class="fa fa-bank"></span>
               <span class="hidden-xs hidden-sm">Logs</span>
             </a> 
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/depslp/checklist', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/setslp/checklist', 'method' => 'get', 'id'=>'dp-form']) !!}
             <!--
             <button type="submit" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'disabled=disabled data-branchid="'. $branch->id  }}">
             -->  
@@ -86,7 +90,7 @@
           @if(is_null(($branch)))
 
           @else
-          <a href="/depslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
+          <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
           @endif
@@ -95,7 +99,7 @@
           @if(is_null(($branch)))
 
           @else
-          <a href="/depslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
+          <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
           @endif
@@ -113,80 +117,80 @@
 
     @else
     <div class="table-responsive">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped" style="font-family: 'Source Code Pro', monospace;">
       <thead>
         <tr>
-          <th>Deposit Date</th>
-          <th>Filename</th>
-          <th>
-            <span style="cursor: help;" title="Shows only the lastest uploader of the same backup.">
-              Cashier
-            </span>
-          </th>
-          <th>Upload Date</th>
-          <th>Log Count</th>
-          <th>
-            <span style="cursor: help;" title="Tells whether the actual physical backup file is in the server's file system.">
-              File in Server?
-            </span>
-          </th>
+          <th>Business Date</th>
+          <th class="text-right">POS Total Charge</th>
+          <th class="text-right">Settlement Total</th>
+          <th class="text-right">Settlement Slips</th>
+          <th class="text-right">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($depslips as $key => $b) 
+        <?php $tot_pos = $tot_set = 0; ?>
+        @foreach($datas as $key => $b) 
         <?php
-          $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d') ? 'class=bg-success':'';
+          $class = c()->format('Y-m-d')==$b['date']->format('Y-m-d') ? 'bg-success':($b['date']->isSunday() ? 'bg-warning' : '');
         ?>
         <tr>
-          <td {{ $class }}>{{ $b['date']->format('M j, D') }}</td>
-          @if(is_null($b['item']) || !$b['exist'])
-            <td {{ $class }}>-</td>
-            <td {{ $class }}>-</td>
-            <td {{ $class }}>-</td>
-            <td {{ $class }}>-</td>
-            <td {{ $class }}>-</td>
+          <td class="{{ $class }}">{{ $b['date']->format('M j, D') }}</td>
+           
+          @if($b['pos_total']>0) 
+          
+          <td class="text-right {{ $class }}">{{ number_format($b['pos_total'],2) }}</td>
+          
+          <?php $tot_pos += $b['pos_total']; ?>
           @else
-            <td {{ $class }}>
-              {{ $b['item']->filename }}
+            <td class="text-right {{ $class }}">&nbsp;</td>
+          @endif 
+
+          @if($b['count']>0)
+            <td class="text-right {{ $class }}">{{ number_format($b['slip_total'],2) }}</td>
+            <?php $tot_set += $b['slip_total']; ?>
+            <td class="text-right {{ $class }}">
+              <span class="badge text-info help" title="" data-toggle="tooltip">{{ $b['count'] }}</span>
+
+              <div class="btn-group">
+              <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="box-shadow: none; cursor: pointer;">
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                @foreach($b['slips'] as $slip)
+                  <li>
+                  <a href="/setslp/{{$slip->lid()}}" target="_blank" class="text-right">
+                  {{ number_format($slip->amount,2) }}
+                  </a>
+                </li>
+                @endforeach
+              </ul>
+              </div>
+
             </td>
-            <td title="Shows only the lastest uploader of the same backup." {{ $class }}>
-              {{ $b['item']->cashier }}
-            </td>
-            <td {{ $class }}>
-              <small>
-                <em>
-                  <span class="hidden-xs">
-                    @if($b['item']->created_at->format('Y-m-d')==now())
-                      {{ $b['item']->created_at->format('h:i A') }}
-                    @else
-                      {{ $b['item']->created_at->format('D M j') }}
-                    @endif
-                  </span> 
-                  <em>
-                    <small class="text-muted">
-                    {{ diffForHumans($b['item']->created_at) }}
-                    </small>
-                  </em>
-                </em>
-              </small>
-            </td>
-            <td {{ $class }}>
-              <span class="badge">{{ $b['item']->count }}</span>
-            </td>
-            <td {{ $class }}>
-              @if($b['exist'])
-                <span class="glyphicon glyphicon-ok text-success"></span>
-              @else
-                <span class="glyphicon glyphicon-remove text-danger"></span>
-              @endif
-            </td>
+          @else
+            <td class="text-right {{ $class }}">-</td>
+            <td class="{{ $class }}"></td>
           @endif
           
+            <td class="text-right {{ $class }}">&nbsp;</td>
         </tr>
         @endforeach
       </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <!--
+          <td class="text-right">{{ number_format($tot_pos,2) }}</td>
+          -->
+          <td class="text-right"><b>{{ number_format($tot_set,2) }}</b></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
     </div>
+    <h1>&nbsp;</h1>
     @endif
     
    
@@ -204,6 +208,8 @@
   <script type="text/javascript">
   $(document).ready(function(){
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('#dp-date').datetimepicker({
       //defaultDate: "2016-06-01",
       format: 'MM/YYYY',
@@ -213,7 +219,7 @@
     }).on('dp.change', function(e){
       var date = e.date.format('YYYY-MM-DD');
       @if(!is_null(($branch)))
-      document.location.href = '/depslp/checklist?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
+      document.location.href = '/setslp/checklist?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
       @endif
     });
 

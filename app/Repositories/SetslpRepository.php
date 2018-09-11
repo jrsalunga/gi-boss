@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 use App\Traits\Repository as RepoTrait;
-use App\Repositories\Criterias\ByBranch2;
 
 class SetslpRepository extends BaseRepository implements CacheableInterface
 //class MenucatRepository extends BaseRepository 
@@ -51,6 +50,24 @@ class SetslpRepository extends BaseRepository implements CacheableInterface
     						->orderBy('created_at', 'DESC');
     						//->orderBy('filedate', 'DESC');
 		})->skipCache()->all();
+  }
+
+  public function getByDr(Carbon $fr, Carbon $to, $branchid) {
+    return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
+      return $query
+                ->where('branch_id', $branchid)
+                ->where(function ($query) use ($fr, $to) {
+                  $query->where(function ($query) use ($fr, $to) {
+                    $query->whereBetween('date', [$fr->format('Y-m-d'), $to->copy()->addDay()->format('Y-m-d')])
+                          ->whereBetween('time', ['06:00:00', '23:59:59']);
+                  })
+                  ->orWhere(function ($query) use ($fr, $to) {
+                    $query->whereBetween('date', [$fr->format('Y-m-d'), $to->copy()->addDay()->format('Y-m-d')])
+                          ->whereBetween('time', ['00:00:00', '05:59:59']);
+                  });
+                })
+                ->orderBy('created_at', 'DESC');
+    })->skipCache()->all();
   }
 
   public function getByBizdate(Carbon $date) {

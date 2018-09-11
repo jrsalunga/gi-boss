@@ -100,7 +100,7 @@ class DepslpController extends Controller {
 		if(!$request->has('branchid') && !isset($_GET['branchid'])) {
       return view('docu.depslp.checklist')
 						->with('date', $date)
-						->with('depslips', null)
+						->with('datas', null)
 						->with('branches', $bb)
 						->with('branch', null);
     } 

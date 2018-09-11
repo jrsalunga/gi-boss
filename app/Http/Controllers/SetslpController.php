@@ -100,7 +100,10 @@ class SetslpController extends Controller {
 	  		$datas[$key]['pos_total'] = 0;
 	  	else
 	  		$datas[$key]['pos_total'] = $b->sale_chg;
-		
+
+	  	$datas[$key]['matched'] = number_format($data['total'], 2) == number_format($datas[$key]['pos_total'], 2)
+	  		? true : false ;
+			
 		}
 
 

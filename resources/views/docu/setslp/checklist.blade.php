@@ -121,8 +121,9 @@
       <thead>
         <tr>
           <th>Business Date</th>
-          <th class="text-right">POS Total Charge</th>
-          <th class="text-right">Settlement Total</th>
+          <th class="text-right">POS Total Charge (A)</th>
+          <th class="text-right">Settlement Total (B)</th>
+          <th class="text-right">Diff (A - B)</th>
           <th class="text-right">Settlement Slips</th>
           <th class="text-right">&nbsp;</th>
         </tr>
@@ -179,10 +180,7 @@
       <tfoot>
         <tr>
           <td></td>
-          <td></td>
-          <!--
           <td class="text-right">{{ number_format($tot_pos,2) }}</td>
-          -->
           <td class="text-right"><b>{{ number_format($tot_set,2) }}</b></td>
           <td></td>
           <td></td>

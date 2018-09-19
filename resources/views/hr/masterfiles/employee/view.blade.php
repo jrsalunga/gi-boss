@@ -167,7 +167,7 @@
 				  		<div class="col-md-4">
 				  			@if(is_iso_date($employee->datestop->format('Y-m-d')) && $employee->empstatus<=6)
 								<div class="form-group">
-									<label>Terminated</label>
+									<label>{{ $employee->empstatus==5 ? 'Termninated':'Resigned' }}</label>
 									<div>{{ $employee->datestop->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->datestop) }} ago)</em></small></div>
 								</div>
 								@endif

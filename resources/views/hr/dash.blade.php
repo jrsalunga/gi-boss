@@ -96,4 +96,16 @@
   <script>mdc.autoInit()</script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
+  <script type="text/javascript">
+  $(document).ready(function(){
+    @if(request()->has('search'))
+    $('.searchbar').focus();
+    var val = $('.searchbar').val();
+    $('.searchbar').val('');
+    $('.searchbar').val(val);
+    @endif
+
+  });
+  </script>
+
 @endsection

@@ -450,7 +450,7 @@ class SetslpController extends Controller {
 	public function put(Request $request) {
 		//return $request->all();
 		$rules = [
-			'date'				=> 'required|date',
+			'date'				=> 'required|date|regex:/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/',
 			'time'				=> 'required',
 			'amount'			=> 'required',
 			'cashier'			=> 'required',

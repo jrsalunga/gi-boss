@@ -89,6 +89,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                     ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->select(DB::raw('salesmtd.group, group_cnt as qty, sum(salesmtd.grsamt) as grsamt, cslipno'))
                     ->groupBy('salesmtd.group')
+                    ->groupBy('salesmtd.group_cnt')
                     ->groupBy('salesmtd.cslipno')
                     ->orderBy(DB::raw('salesmtd.group'), 'asc');
     })->skipOrder();
@@ -147,7 +148,7 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
         where salesmtd.orddate between '".$dr->fr->format('Y-m-d')."' and '".$dr->to->format('Y-m-d')."'
         and salesmtd.group = '".$filter."'
         and salesmtd.branch_id = '".$branchid."'
-        group by salesmtd.cslipno) AS a"))
+        group by salesmtd.group_cnt, salesmtd.cslipno) AS a"))
         ->select(DB::raw('SUM(a.qty) as qty, SUM(a.grsamt) as grsamt, count(a.cslipno) as trans_cnt, count(a.cslipno) as trans_actual, a.branch_id, 0 as neg_qty'))->first();
 
       return $res->qty > 0 ? $res : NULL;

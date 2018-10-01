@@ -93,12 +93,8 @@ class TransferController extends Controller
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
       } else {
 
-        $where['stocktransfer.branchid'] = $branch->id;
-        $ds = $this->ds
-                  ->pushCriteria(new \App\Repositories\Criterias\BranchId($branch))
-                  ->pushCriteria(new \App\Repositories\Criterias\DateRange($this->dr))
-                  ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal']))
-                  ->all();
+        $ds = $this->ds->branchWithDr($branch, $this->dr);
+        
                     //->skipCache()
                     //->branchByDR($branch, $this->dr);
                     //->withRelations()
@@ -106,6 +102,8 @@ class TransferController extends Controller
 
       }
     }
+
+    //return dd($ds);
 
     return $this->setViewWithDR(view('component.transfer.daily-summary')
                 ->with('branches', $this->bb)

@@ -145,6 +145,10 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        <div id="container" style="overflow: hidden;"></div>
+      </div>
+
+      <div class="col-md-12">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
@@ -160,30 +164,33 @@
           <tbody>
             
             @foreach($ds as $d)
-            <?php
-
-              $actual_tranfer = $d->transcos-$d->emp_meal;
-              $rs = $d->transcost-($d->transcos+$d->transncos);
-
-              $ttcost += $d->transcost;
-              $tac += $actual_tranfer;
-              $tnc += $d->transncos;
-              $trs += $rs;
-              $tem += $d->emp_meal;
-            ?>
               <tr>
                 <td>
                   {{ $d->date->format('M j, D') }}
                 </td>
+                @if(is_null($d->dailysale))
+                <td></td><td></td><td></td><td></td><td></td>
+                @else
+                <?php
+                  $actual_tranfer = $d->dailysale->transcos-$d->dailysale->emp_meal;
+                  $rs = $d->dailysale->transcost-($d->dailysale->transcos+$d->dailysale->transncos);
+
+                  $ttcost += $d->dailysale->transcost;
+                  $tac += $actual_tranfer;
+                  $tnc += $d->dailysale->transncos;
+                  $trs += $rs;
+                  $tem += $d->dailysale->emp_meal;
+                ?>
                 <td class="text-right">
                   <a href="/component/transfer?branchid={{ $branch->lid() }}&fr={{ $d->date->format('Y-m-d') }}&to={{ $d->date->format('Y-m-d') }}">
-                  {{ nf($d->transcost) }}
+                  {{ nf($d->dailysale->transcost) }}
                   </a>
                 </td>
                 <td class="text-right">{{ nf($actual_tranfer) }}</td>
-                <td class="text-right">{{ nf($d->transncos) }}</td>
+                <td class="text-right">{{ nf($d->dailysale->transncos) }}</td>
                 <td class="text-right">{{ nf($rs) }}</td>
-                <td class="text-right text-muted">{{ nf($d->emp_meal) }}</td>
+                <td class="text-right text-muted">{{ nf($d->dailysale->emp_meal) }}</td>
+                @endif
               </tr>
             @endforeach
           </tbody>
@@ -197,6 +204,45 @@
               <td class="text-right"><b class="text-muted">{{ nf($tem) }}</b></td>
             </tr>
           </tfoot>
+        </table>
+
+        <table id="datatable" class="tb-data table" style="display:none;">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Total Transfered Cost</th>
+              <th>Transfered Food Cost</th>
+              <th>Transfered  Drinks/Beers</th>
+              <th>Transfered Resto Supplies</th>
+              <th>Transfered Employee Meal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($ds as $d)
+            <tr>
+              <td>{{ $d->date->format('Y-m-d') }}</td>
+              @if(is_null($d->dailysale))
+                <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+              @else
+              <?php
+                  $actual_tranfer = $d->dailysale->transcos-$d->dailysale->emp_meal;
+                  $rs = $d->dailysale->transcost-($d->dailysale->transcos+$d->dailysale->transncos);
+
+                  $ttcost += $d->dailysale->transcost;
+                  $tac += $actual_tranfer;
+                  $tnc += $d->dailysale->transncos;
+                  $trs += $rs;
+                  $tem += $d->dailysale->emp_meal;
+                ?>
+              <td>{{ number_format($d->dailysale->transcost, '2', '.', '') }}</td>
+              <td>{{ number_format($actual_tranfer, '2', '.', '') }}</td>
+              <td>{{ number_format($d->dailysale->transncos, '2', '.', '') }}</td>
+              <td>{{ number_format($rs, '2', '.', '') }}</td>
+              <td>{{ number_format($d->dailysale->emp_meal, '2', '.', '') }}</td>
+              @endif
+              </tr>
+            @endforeach
+          </tbody>
         </table>
         </div><!-- table-responsive  -->
   
@@ -302,6 +348,163 @@
   initDatePicker();
   branchSelector();
   mdlBranchSelector();
+
+  Highcharts.setOptions({
+      chart: {
+          style: {
+              fontFamily: "Helvetica"
+          }
+      }
+  });
+
+  var arr = [];
+
+  $('#container').highcharts({
+    data: {
+      table: 'datatable'
+    },
+    chart: {
+      type: 'line',
+      height: 300,
+      spacingRight: 0,
+      marginTop: 40,
+      //marginRight: 20,
+      marginRight: 10,
+      zoomType: 'x',
+      panning: true,
+      panKey: 'shift'
+    },
+    colors: ['#15C0C2', '#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+    title: {
+        text: ''
+    },
+    xAxis: [
+      {
+        gridLineColor: "#CCCCCC",
+        type: 'datetime',
+        //tickInterval: 24 * 3600 * 1000, // one week
+        tickWidth: 0,
+        gridLineWidth: 0,
+        lineColor: "#C0D0E0", // line on X axis
+        labels: {
+          align: 'center',
+          x: 3,
+          y: 15,
+          formatter: function () {
+            //var date = new Date(this.value);
+            //console.log(date.getDay());
+            //console.log(date);
+            return Highcharts.dateFormat('%b %e', this.value);
+          }
+        },
+        plotLines: arr
+      },
+      { // slave axis
+        type: 'datetime',
+        linkedTo: 0,
+        opposite: true,
+        tickInterval: 7 * 24 * 3600 * 1000,
+        tickWidth: 0,
+        labels: {
+          formatter: function () {
+            arr.push({ // mark the weekend
+              color: "#CCCCCC",
+              width: 1,
+              value: this.value-86400000,
+              zIndex: 3
+            });
+            //return Highcharts.dateFormat('%a', (this.value-86400000));
+          }
+        }
+      }
+    ],
+    yAxis: [{ // left y axis
+      min: 0,
+      title: {
+        text: null
+      },
+      labels: {
+        align: 'left',
+        x: 3,
+        y: 16,
+        format: '{value:.,0f}'
+      },
+        showFirstLabel: false
+      },
+      { // right y axis
+      min: 0,
+        title: {
+          text: null
+        },
+        labels: {
+          align: 'right',
+          x: -10,
+          y: 15,
+          format: '{value:.,0f}'
+        },
+          showFirstLabel: false,
+          opposite: true
+        }], 
+    legend: {
+      align: 'left',
+      verticalAlign: 'top',
+      y: -10,
+      floating: true,
+      borderWidth: 0
+    },
+    tooltip: {
+      shared: true,
+      crosshairs: true
+    },
+    plotOptions: {
+      series: {
+        cursor: 'pointer',
+        point: {
+          events: {
+            click: function (e) {
+            }
+          }
+        },
+        marker: {
+          symbol: 'circle',
+          radius: 3
+        },
+        lineWidth: 2,
+        dataLabels: {
+            enabled: false,
+            align: 'right',
+            crop: false,
+            formatter: function () {
+              return this.series.name;
+            },
+            x: 1,
+            verticalAlign: 'middle'
+        }
+      }
+    },
+    exporting: {
+      enabled: false
+    },
+    series: [
+      {
+        type: 'line',
+        yAxis: 0
+      }, {
+        type: 'line',
+        yAxis: 0
+      }, {
+        type: 'line',
+        yAxis: 0,
+      }, {
+        type: 'line',
+        yAxis: 0,
+      }, {
+        type: 'line',
+         dashStyle: 'shortdot',
+        yAxis: 1
+      }
+    ]
+  });
 
   
   

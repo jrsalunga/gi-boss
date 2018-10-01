@@ -44,8 +44,6 @@
                 <span>{{ $branch->code }}</span>
               @endif
 
-              @endif
-
               
             </div>
           </div>

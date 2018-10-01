@@ -335,6 +335,8 @@ if (!function_exists('jquery_mask')) {
 
 if (!function_exists('nf')) {
   function nf($x='0.00', $d=2) {
+    if ($x==0)
+      return '';
     return number_format($x, $d);
   }
 }

@@ -7,6 +7,7 @@ use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
 use App\Repositories\StockTransferRepository as TransferRepo;
 use App\Repositories\BranchRepository as BranchRepo;
+use App\Repositories\DailySalesRepository as DS;
 
 class TransferController extends Controller
 {
@@ -14,10 +15,12 @@ class TransferController extends Controller
 	protected $dr;
 	protected $transfer;
 	protected $branch;
-	protected $bb;
+  protected $bb;
+	protected $ds;
 
-	public function __construct(DateRange $dr, TransferRepo $transfer, BranchRepo $branch) {
-		$this->dr = $dr;
+	public function __construct(DateRange $dr, TransferRepo $transfer, BranchRepo $branch, DS $ds) {
+    $this->dr = $dr;
+		$this->ds = $ds;
 		$this->transfer = $transfer;
 		$this->branch = $branch;
 		$this->bb = $this->getBranches();
@@ -74,6 +77,44 @@ class TransferController extends Controller
 								->withRelations()
 								->findWhere(['branchid'=> '0C17FE2D78A711E587FA00FF59FBB323', 'date'=>'2017-09-23']);
 	}
+
+
+  public function getDailySummary(Request $request) {
+
+    if ($request->has('branchid'))
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    else
+      $branch = null;
+
+    $ds = NULL;
+    
+    if (!is_null($branch)) {
+      if ($this->dr->diffInDays()>100) {
+        $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
+      } else {
+
+        $where['stocktransfer.branchid'] = $branch->id;
+        $ds = $this->ds
+                  ->pushCriteria(new \App\Repositories\Criterias\BranchId($branch))
+                  ->pushCriteria(new \App\Repositories\Criterias\DateRange($this->dr))
+                  ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal']))
+                  ->all();
+                    //->skipCache()
+                    //->branchByDR($branch, $this->dr);
+                    //->withRelations()
+                    //->findWhere($where);
+
+      }
+    }
+
+    return $this->setViewWithDR(view('component.transfer.daily-summary')
+                ->with('branches', $this->bb)
+                ->with('ds', $ds)
+                ->with('branch', $branch));
+
+    
+   
+  }
 
 
 

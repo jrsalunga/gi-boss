@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', '- Daily Tranfer')
+@section('title', '- Daily Transfer Details')
 
 @section('body-class', 'daily-transfers')
 
@@ -27,12 +27,8 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <li><a href="/component">Component</a></li>
-    @if($branch)
-    <li><a href="/component/transfer">Transfers</a></li>
-    <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
-    @else
-    <li class="active">Transfers</li>
-    @endif
+    <li><a href="/component/transfer/daily">Transfers</a></li>
+    <li class="active">Details @if(!is_null($branch))<small>({{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }})</small>@endif</li>
   </ol>
 
   <div>
@@ -221,7 +217,7 @@
               $cancel = $transfer->tcost>0 ? false:'text-decoration: line-through;';
             ?>
               <tr class="{{ !$cancel?'':'text-muted' }}">
-                <td style="{{ $cancel }}">{{ $transfer->date->format('Y-m-d') }}</td>
+                <td style="{{ $cancel }}">{{ $transfer->date->format('M j, D') }}</td>
                 <td style="{{ $cancel }}">{{ $transfer->component }}</td>
                 <td class="text-right text-muted">{{ number_format($transfer->qty,2)+0 }}</td>
                 <td><small class="text-muted">{{ strtolower($transfer->uom) }}@if($transfer->qty>1 && substr(strtolower($transfer->uom), -1)!='s')s

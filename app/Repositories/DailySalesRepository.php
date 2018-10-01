@@ -208,7 +208,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
             ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal']))
             ->all();
 
-    foreach ($dr->dateInterval() as $key => $date) {
+    foreach ($dr->dateInterval2() as $key => $date) {
       $filtered = $dss->filter(function ($item) use ($date){
           return $item->date->format('Y-m-d') == $date->format('Y-m-d')
                 ? $item : null;

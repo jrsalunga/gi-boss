@@ -91,6 +91,21 @@ trait Repository {
 
   }
 
+  public function branchByDr($fr, $to, $branchid, $field=['*']) {
+    return $this->scopeQuery(function($q) use ($fr, $to, $branchid, $field) {
+      return $q->select($field)
+                ->whereBetween('date', [$fr->format('Y-m-d'), $to->format('Y-m-d')])
+                ->Where('branchid', $branchid);
+    });
+  }
+
+  public function branchIdByDr($fr, $to, $branchid, $field=['*']) {
+    return $this->scopeQuery(function($q) use ($fr, $to, $branchid, $field) {
+      return $q->select($field)
+                ->whereBetween('date', [$fr->format('Y-m-d'), $to->format('Y-m-d')])
+                ->Where('branch_id', $branchid);
+    });
+  }
 
   public function modelCreate(array $attributes) {
 

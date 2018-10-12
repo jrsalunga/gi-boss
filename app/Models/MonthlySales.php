@@ -3,44 +3,53 @@
 use Carbon\Carbon;
 use App\Models\BaseModel;
 
-class DailySales extends BaseModel {
+class MonthlySales extends BaseModel {
 
 	//protected $connection = 'boss';
-	protected $table = 'dailysales';
+	protected $table = 'monthlysales';
 	public $timestamps = false;
- 	//protected $fillable = ['date', 'branchid', 'managerid', 'sales', 'cos', 'tips', 'custcount', 'empcount'];
-  protected $dates = ['opened_at', 'closed_at'];
-	protected $guarded = ['id'];
+  
+ 	protected $fillable = ['date', 'branch_id', 'sales', 'cos', 'food_sales', 'fc', 'tips', 'custcount', 'crew_din', 'crew_kit', 'empcount', 
+        'mancost', 'headspend', 'tipspct', 'mancostpct', 'cospct', 'purchcost', 'salesemp', 'slsmtd_totgrs', 
+        'chrg_total', 'chrg_csh', 'chrg_chrg', 'chrg_othr', 'bank_totchrg', 'disc_totamt', 'trans_cnt', 'man_hrs', 'man_pay', 'depo_cash', 'depo_check', 'sale_csh', 'sale_chg', 'sale_sig','transcost', 'transcos', 'transncos', 'opex', 'record_count', 'depslpk', 'depslpc', 'setslp'];
+	
+  //protected $guarded = ['id'];
+  protected $dates = ['date'];
 	protected $casts = [
     'sales' => 'float',
     'cos' => 'float',
+    'food_sales' => 'float',
+    'fc' => 'float',
     'tips' => 'float',
+    'crew_din' => 'integer',
+    'crew_kit' => 'integer',
     'custcount' => 'integer',
     'empcount' => 'integer',
     'headspend' => 'float',
     'tipspct' => 'float',
     'mancostpct' => 'float',
-    'mancost' => 'float',
     'cospct' => 'float',
     'purchcost' => 'float',
-    'crew_kit' => 'integer',
-    'crew_din' => 'integer',
     'salesemp' => 'float',
+    'slsmtd_totgrs' => 'float',
     'chrg_total' => 'float',
     'chrg_csh' => 'float',
     'chrg_chrg' => 'float',
     'chrg_othr' => 'float',
     'bank_totchrg' => 'float',
     'disc_totamt' => 'float',
-    'slsmtd_totgrs' => 'float',
-    'depo_check' => 'float',
     'depo_cash' => 'float',
+    'depo_check' => 'float',
     'sale_csh' => 'float',
     'sale_chg' => 'float',
     'sale_sig' => 'float',
     'transcost' => 'float',
     'transcos' => 'float',
+    'transncos' => 'float',
     'opex' => 'float',
+    'depslpk' => 'float',
+    'depslpc' => 'float',
+    'setslp' => 'float',
   ];
 
 
@@ -48,25 +57,13 @@ class DailySales extends BaseModel {
     return $this->belongsTo('App\Models\Branch', 'branchid');
   }
 
-  public function getDateAttribute($value){
-    return Carbon::parse($value.' 00:00:00');
-  }
+  
 
   public function getBeerPurch() {
     if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
       return 0;
     else
       return $this->purchcost - ($this->cos + $this->opex);
-  }
-
-  public function get_beerpurchpct($format=true) {
-    if ($this->sales>0) {
-      if ($format)
-        return number_format(($this->getBeerPurch()/$this->sales)*100, 2);
-      else
-        return ($this->getBeerPurch()/$this->sales)*100;
-    }
-    return 0;
   }
 
   public function getOpex() {
@@ -135,18 +132,6 @@ class DailySales extends BaseModel {
     }
     return 0;
   }
-
-  public function get_food_cost($format=true) {
-    if ($this->food_sales>0){
-      if ($format)
-        return number_format((($this->cos-$this->transcos)/$this->food_sales)*100, 2);
-      else
-        return (($this->cos-$this->transcos)/$this->food_sales)*100;
-    }
-    return 0;
-  }
-
-  
 
 	
 	

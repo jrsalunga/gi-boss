@@ -126,15 +126,15 @@
     @if(count($ds)>0)
     <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Transfered Emp Meal</p>
+        <p style="margin-bottom:0">Emp Meal</p>
         <h3 id="tem" style="margin:0"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Transfered Food Cost</p>
+        <p style="margin-bottom:0">Food Item Cost</p>
         <h3 id="tac" style="margin:0"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Transfered Resto Supplies </p>
+        <p style="margin-bottom:0">Resto Supplies </p>
         <h3 id="trs" style="margin:0"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -155,7 +155,7 @@
             <tr>
               <th>Date</th>
               <th class="text-right" style="width:17%;">Total Cost</th>
-              <th class="text-right" style="width:17%;">Food Cost</th>
+              <th class="text-right" style="width:17%;">Food Item Cost</th>
               <th class="text-right" style="width:17%;">Drinks/Beers</th>
               <th class="text-right" style="width:17%;">Resto Supplies</th>
               <th class="text-right" style="width:17%;">Trans Emp Meal</th>
@@ -198,21 +198,32 @@
             <tr>
               <td></td>
               <td class="text-right"><b class="text-muted">{{ nf($ttcost) }}</b></td>
-              <td class="text-right"><b class="text-muted">{{ nf($tac) }}</b></td>
+              <td class="text-right">
+                <b class="text-muted">{{ nf($tac) }}</b>
+                <div class="text-muted">
+                  +{{ nf($tem) }}
+                </div>
+                <div>
+                  <b class="text-muted">{{ nf($tac+$tem) }}</b>
+                </div>
+              </td>
               <td class="text-right"><b class="text-muted">{{ nf($tnc) }}</b></td>
               <td class="text-right"><b class="text-muted">{{ nf($trs) }}</b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tem) }}</b></td>
             </tr>
           </tfoot>
         </table>
-
+  
+        <?php
+          $ttcost = $tac = $trs = $tnc = $tem = 0;
+        ?>
         <table id="datatable" class="tb-data table" style="display:none;">
           <thead>
             <tr>
               <th>Date</th>
               <th>Total Transfered Cost</th>
-              <th>Transfered Food Cost</th>
-              <th>Transfered  Drinks/Beers</th>
+              <th>Transfered Food Item Cost</th>
+              <th>Transfered Drinks/Beers</th>
               <th>Transfered Resto Supplies</th>
               <th>Transfered Employee Meal</th>
             </tr>

@@ -87,23 +87,23 @@
 
 
           <div class="btn-group pull-right clearfix" role="group">
-          @if(is_null(($branch)))
+            @if(is_null(($branch)))
 
-          @else
-          <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-          </a>
-          @endif
-          <input type="text" class="btn btn-default" id="dp-date" value="{{ $date->format('m/Y') }}" style="max-width: 90px;" readonly>
-          <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
-          @if(is_null(($branch)))
+            @else
+            <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->subMonth()->format('Y-m-d') }}">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            @endif
+            <input type="text" class="btn btn-default" id="dp-date" value="{{ $date->format('m/Y') }}" style="max-width: 90px;" readonly>
+            <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
+            @if(is_null(($branch)))
 
-          @else
-          <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-          </a>
-          @endif
-        </div>
+            @else
+            <a href="/setslp/checklist?branchid={{$branch->lid()}}&amp;date={{ $date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $date->copy()->addMonth()->format('Y-m-d') }}">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+            @endif
+          </div>
 
 
         </div>

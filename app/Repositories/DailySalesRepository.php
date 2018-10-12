@@ -205,7 +205,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $arr = [];
     $dss = $this->pushCriteria(new \App\Repositories\Criterias\BranchId($branch))
             ->pushCriteria(new \App\Repositories\Criterias\DateRange($dr))
-            ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal']))
+            ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal', 'empcount']))
             ->all();
 
     foreach ($dr->dateInterval2() as $key => $date) {

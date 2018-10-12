@@ -64,6 +64,19 @@ class StockTransferRepository extends BaseRepository implements CacheableInterfa
                     ->orderBy('component.descriptor', 'asc');
     });
   }
+
+
+  public function getSumCosByDr($branchid, Carbon $fr, Carbon $to, $expcode) {
+    return $this->scopeQuery(function($query) use ($branchid, $fr, $to, $expcode) {
+      return $query->whereBetween('stocktransfer.date', [$fr->format('Y-m-d'), $to->format('Y-m-d')])
+                    ->where('stocktransfer.branchid', $branchid)
+                    ->where('expense.code', $expcode)
+                    ->leftJoin('component', 'component.id', '=', 'stocktransfer.componentid')
+                    ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
+                    ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
+                    ->select(DB::raw('sum(stocktransfer.tcost) as tcost'));
+    })->all();
+  }
 	
 
 }

@@ -12,7 +12,7 @@ class DateRange {
   public $date;
   public $now;
   protected $request;
-  protected $modes = ['daily', 'monthly', 'weekly', 'quarterly', 'yearly'];
+  protected $modes = ['daily', 'month', 'monthly', 'weekly', 'quarterly', 'yearly'];
   protected $mode;
   public $diffInDays;
 
@@ -230,6 +230,19 @@ class DateRange {
     $this->mode = $mode;
     $y=false;
     switch ($mode) {
+      case 'month':
+        $this->to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->endOfMonth();
+        $this->fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $this->to->copy()->startOfMonth();
+        if ($this->to->lt($this->fr)) {
+          $this->to = Carbon::now()->endOfMonth();
+          $this->fr = $this->to->copy()->startOfMonth(); //$this->to->copy()->startOfMonth();
+        } else {
+          $this->to = $this->to->endOfMonth();
+          $this->fr = $this->fr->startOfMonth();
+        }
+        $this->date = Carbon::now();
+        break;
+      
       case 'monthly':
         $this->to = !is_null($request->input('to')) ? carbonCheckorNow($request->input('to')) : Carbon::now()->endOfMonth();
         $this->fr = !is_null($request->input('fr')) ? carbonCheckorNow($request->input('fr')) : $this->to->copy()->subMonths(5)->startOfMonth();

@@ -89,21 +89,12 @@ class TransferController extends Controller
     $ds = NULL;
     
     if (!is_null($branch)) {
-      if ($this->dr->diffInDays()>100) {
+      if ($this->dr->diffInDays()>100) 
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
-      } else {
-
+      else
         $ds = $this->ds->branchWithDr($branch, $this->dr);
-        
-                    //->skipCache()
-                    //->branchByDR($branch, $this->dr);
-                    //->withRelations()
-                    //->findWhere($where);
-
-      }
+      
     }
-
-    //return dd($ds);
 
     return $this->setViewWithDR(view('component.transfer.daily-summary')
                 ->with('branches', $this->bb)

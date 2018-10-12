@@ -44,6 +44,8 @@ Route::get('pnl/branch/month', ['uses'=>'PnlController@getMonth']);
 
 Route::get('report/comp-purch', ['uses'=>'AnalyticsController@getCompPurch']);
 
+Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
+
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);
 Route::get('component/purchases', ['uses'=>'Purchase2Controller@getDaily']);

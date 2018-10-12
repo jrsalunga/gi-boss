@@ -126,7 +126,8 @@ class ExpenseController extends Controller
 		$ids = $exps->pluck('id')->toArray();
 
 		$mexps = $this->mExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
-		$fsales = $this->mProdcat->skipCache()->sumSalesByProdcatDr($branch->id, $this->dr->fr, $this->dr->to, '6270B37CBDF211E6978200FF18C615EC');
+		$prodcatid = app()->environment()=='local' ? '6270B37CBDF211E6978200FF18C615EC':'E838DA36BC3711E6856EC3CDBB4216A7';
+		$fsales = $this->mProdcat->skipCache()->sumSalesByProdcatDr($branch->id, $this->dr->fr, $this->dr->to, $prodcatid);
 	  $fs = $fsales->first();
 
 		foreach ($exps as $x => $exp) {

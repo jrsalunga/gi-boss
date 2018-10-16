@@ -134,7 +134,7 @@
         <h3 id="tac" style="margin:0"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Resto Supplies </p>
+        <p style="margin-bottom:0">Total Food Item Transfered</p>
         <h3 id="trs" style="margin:0"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -531,7 +531,8 @@
 
   $('#ttcost').text('{{ nf($ttcost) }}');
   $('#tac').text('{{ nf($tac) }}');
-  $('#trs').text('{{ nf($trs) }}');
+  //$('#trs').text('{{ nf($trs) }}');
+  $('#trs').text('{{ nf($tac+$tem) }}');
   $('#tem').text('{{ nf($tem) }}');
     
 

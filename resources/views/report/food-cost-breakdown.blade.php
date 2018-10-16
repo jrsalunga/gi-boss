@@ -95,7 +95,7 @@
             </a>
             @endif
             <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/Y') }}" style="max-width: 90px;" readonly>
-            <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
+            <label class="btn btn-default hidden-xs" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
             @if(is_null(($branch)))
 
             @else
@@ -134,7 +134,9 @@
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Cost</p>
-        <h3 style="margin:0">{{ nf($ms->fc) }}</h3>
+        <h3 style="margin:0" title="(({{$ms->cos}}-{{$ms->transcos}})/{{$ms->food_sales}})*100">
+          {{ nf($ms->fc) }}
+        </h3>
       </div>
 
     </div>
@@ -276,19 +278,15 @@
           </div>
           
           <div class="form-group">
-            <label>Date Range:</label>
+            <label>Month:</label>
             <div>
             <div class="btn-group" role="group">
             <label class="btn btn-default" for="mdl-dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date" value="{{ $dr->date->format('m/Y') }}" style="max-width: 110px;">
             
-            <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
-            <label class="btn btn-default" for="mdl-dp-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
+            
             </div>
             </div>
           </div>
@@ -343,8 +341,20 @@
     $('#date').val(date);
     @if(!is_null(($branch)))
     loader();
-    document.location.href = '/report/food-cost-breakdown?branchid={{$branch->lid()}}&date='+e.date.format('YYYY-MM-DD');
+
+    document.location.href = '/report/food-cost-breakdown?branchid='+$('#branchid').val()+'&date='+e.date.format('YYYY-MM-DD');
     @endif
+  });
+
+  $('#mdl-dp-date').datetimepicker({
+    //defaultDate: "2016-06-01",
+    format: 'MM/YYYY',
+    showTodayButton: true,
+    ignoreReadonly: true,
+    viewMode: 'months'
+  }).on('dp.change', function(e){
+    var date = e.date.format('YYYY-MM-DD');
+    $('#date').val(date);
   });
 
   initDatePicker();

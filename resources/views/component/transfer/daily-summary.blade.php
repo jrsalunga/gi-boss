@@ -197,7 +197,11 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"><b class="text-muted">{{ nf($ttcost) }}</b></td>
+              <td class="text-right"><b class="text-muted">
+                <a href="/component/transfer?branchid={{ $branch->lid() }}&fr={{ $d->date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $d->date->copy()->endOfMonth()->format('Y-m-d') }}">
+                {{ nf($ttcost) }}
+                </a>
+              </b></td>
               <td class="text-right">
                 <b class="text-muted">{{ nf($tac) }}</b>
                 <div class="text-muted">

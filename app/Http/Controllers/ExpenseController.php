@@ -173,6 +173,7 @@ class ExpenseController extends Controller
 		foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
 			$datas[$key]['prodcatcode'] = $prodcat->code;
 			$datas[$key]['prodcat'] = $prodcat->descriptor;
+			$datas[$key]['prodcatid'] = $prodcat->id;
 
 			$f = $prodcats->filter(function ($item) use ($prodcat){
 	      return $item->prodcat_id == $prodcat->id

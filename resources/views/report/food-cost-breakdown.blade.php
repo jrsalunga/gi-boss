@@ -165,7 +165,7 @@
           <tbody>
             
             @foreach($datas as $data)
-              <tr>
+              <tr data-expenseid="{{ $data['expenseid'] }}">
                 <td>{{ $data['expensecode'] }}</td>
                 <td>{{ $data['expense'] }}</td>
                 <td class="text-right">
@@ -226,7 +226,7 @@
               $tot_sales = $tot_pct = 0;
             ?>
             @foreach($prodcats as $data)
-              <tr>
+              <tr data-prodcatid="{{ $data['prodcatid'] }}">
                 <td>{{ $data['prodcatcode'] }}</td>
                 <td>{{ $data['prodcat'] }}</td>
                 <td class="text-right">{{ nf($data['sales']) }}</td>

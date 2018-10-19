@@ -121,8 +121,8 @@
     @if(!is_null($ms))
     <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Sales</p>
-        <h3 style="margin:0">{{ nf($ms->sales) }}</h3>
+        <p style="margin-bottom:0">Gross Sales</p>
+        <h3 style="margin:0">{{ nf($ms->slsmtd_totgrs) }}</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Sales</p>
@@ -130,7 +130,7 @@
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Sales %</p>
-        <h3 style="margin:0">{{ $ms->sales>0?nf(($ms->food_sales/$ms->sales)*100):0 }}</h3>
+        <h3 style="margin:0">{{ $ms->sales>0?nf(($ms->food_sales/$ms->slsmtd_totgrs)*100):0 }}</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Cost</p>
@@ -191,7 +191,11 @@
             <tr>
               <td></td>
               <td class="text-right"></td>
-              <td class="text-right"><b class="text-muted">{{ nf($tpurch) }}</b></td>
+              <td class="text-right">
+                <b class="text-muted">
+                    {{ nf($tpurch) }}
+                </b>
+              </td>
               <td class="text-right"><b class="text-muted">
                 <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
                 {{ nf($ttrans) }}
@@ -205,6 +209,48 @@
 
         
         </div><!-- table-responsive  -->
+      </div>
+      <div class="col-md-6" style="margin: 50px 0;">
+        <div class="table-responsive">
+        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Product Category</th>
+              <th class="text-right">Gross Sales</th>
+              <th class="text-right">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              $tot_sales = $tot_pct = 0;
+            ?>
+            @foreach($prodcats as $data)
+              <tr>
+                <td>{{ $data['prodcatcode'] }}</td>
+                <td>{{ $data['prodcat'] }}</td>
+                <td class="text-right">{{ nf($data['sales']) }}</td>
+                <td class="text-right">{{ nf($data['pct']) }}</td>
+              </tr>
+              <?php
+              $tot_sales += $data['sales'];
+              $tot_pct += $data['pct'];
+            ?>
+            @endforeach
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td></td>
+              <td class="text-right"><b class="text-muted">{{ nf($tot_sales) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($tot_pct)+0 }}</b></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        
+        </div><!-- table-responsive  -->
+
 
 
         <table id="datatable" class="tb-data table" style="display:none;">

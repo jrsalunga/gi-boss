@@ -18,12 +18,13 @@ class MonthProdcatRepository extends BaseRepository implements CacheableInterfac
   }
 
   public function sumSalesByProdcatDr($branchid, Carbon $fr, Carbon $to, $id) {
-  	return $this->scopeQuery(function($query) use ($id, $fr, $to) {
+  	return $this
+                ->scopeQuery(function($query) use ($branchid, $id, $fr, $to) {
 					      return $query->where('prodcat_id', $id)
+                            ->where('branch_id', $branchid)
 					      						->whereBetween('date', [$fr->format('Y-m-d'), $to->format('Y-m-d')])
   													->select(DB::raw('sum(sales) as sales'));
-					    })
-							->findWhere(['branch_id'=>$branchid]);
+					    })->skipCache()->all();
   }
 
 

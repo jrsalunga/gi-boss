@@ -64,10 +64,11 @@ class ExpenseController extends Controller
 
     	$exps = $this->expense->skipCache()->getCos();
 
-    	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'sales', 'food_sales', 'fc', 'transcos', 'cos'])->first();
+    	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'fc', 'transcos', 'cos'])->first();
 
 			$datas = $this->FCBreakdownData($branch, $exps);
     	$fc_hist = $this->getFCHist($branch, $exps);
+			$prodcats = $this->sales_cat($branch);
 							                 
 
 		//return $fc_hist;
@@ -76,6 +77,7 @@ class ExpenseController extends Controller
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)
                 ->with('datas', $datas)
+                ->with('prodcats', $prodcats)
                 ->with('ms', $ms)
                 ->with('branch', $branch));
 	}
@@ -89,7 +91,7 @@ class ExpenseController extends Controller
 
 		$mss = $this->ms->scopeQuery(function($query) use ($mfr, $mto) {
 									return $query->whereBetween('date', [$mfr->format('Y-m-d'), $mto->format('Y-m-d')]);
-								})->findWhere(['branch_id'=>$branch->id], ['date', 'sales', 'food_sales', 'fc']);
+								})->findWhere(['branch_id'=>$branch->id], ['date', 'sales', 'food_sales', 'fc', 'slsmtd_totgrs']);
 
 		foreach (range(0,$len) as $key => $value) {
 			$date = $mfr->copy()->addMonth($key)->endOfMonth();
@@ -160,6 +162,29 @@ class ExpenseController extends Controller
 	  	$datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];			
 	  	$datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;			
 		}
+		return $datas;
+	}
+
+	private function sales_cat($branch) {
+
+		$datas = [];
+
+		$prodcats = $this->mProdcat->skipCache()->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
+		foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
+			$datas[$key]['prodcatcode'] = $prodcat->code;
+			$datas[$key]['prodcat'] = $prodcat->descriptor;
+
+			$f = $prodcats->filter(function ($item) use ($prodcat){
+	      return $item->prodcat_id == $prodcat->id
+	      	? $item : null;
+	    });
+	    $b = $f->first();
+
+	    $datas[$key]['sales'] = is_null($b) ? 0 : $b->sales;
+	    $datas[$key]['pct'] = is_null($b) ? 0 : $b->pct;
+		}
+		
+		
 		return $datas;
 	}
 

@@ -60,6 +60,7 @@ class ExpenseController extends Controller
 
     $datas = [];
     $fc_hist = [];
+    $prodcats = [];
     if (!is_null($branch)) {
 
     	$exps = $this->expense->skipCache()->getCos();

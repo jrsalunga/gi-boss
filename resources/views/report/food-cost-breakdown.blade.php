@@ -157,9 +157,9 @@
               <th>Code</th>
               <th>Category</th>
               <th class="text-right" style="width:17%;">Purchased</th>
-              <th class="text-right" style="width:17%;">Food Item Transfered</th>
+              <th class="text-right" style="width:17%;">Transfered</th>
               <th class="text-right" style="width:17%;">Net</th>
-              <th class="text-right" style="width:17%;">% of Total Food Sales</th>
+              <th class="text-right" style="width:17%;">% on Food Sales</th>
             </tr>
           </thead>
           <tbody>

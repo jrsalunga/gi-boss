@@ -226,6 +226,7 @@
               $tot_sales = $tot_pct = 0;
             ?>
             @foreach($prodcats as $data)
+              @if(!empty($data['sales']))
               <tr data-prodcatid="{{ $data['prodcatid'] }}">
                 <td>{{ $data['prodcatcode'] }}</td>
                 <td>{{ $data['prodcat'] }}</td>
@@ -233,9 +234,10 @@
                 <td class="text-right">{{ nf($data['pct']) }}</td>
               </tr>
               <?php
-              $tot_sales += $data['sales'];
-              $tot_pct += $data['pct'];
-            ?>
+                $tot_sales += $data['sales'];
+                $tot_pct += $data['pct'];
+              ?>
+              @endif
             @endforeach
           </tbody>
           <tfoot>

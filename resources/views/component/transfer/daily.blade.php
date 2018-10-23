@@ -237,18 +237,18 @@
                 </td>
                 <td style="{{ $cancel }}">
                   <small class="text-muted help" title="{{ $transfer->suppliercode }} - {{ $transfer->supplier }}" data-toggle="tooltip">
-                  {{ $transfer->supplier }}
+                  {{ $transfer->suppliercode }}
                   </small>
                 </td>
                 <td style="{{ $cancel }}">
                   @if(!is_null($transfer->toBranch) && is_null($transfer->toSupplier))
                   <small class="text-muted help" title="{{ $transfer->toBranch->code }} - {{ $transfer->toBranch->descriptor }}" data-toggle="tooltip">
-                    {{ $transfer->toBranch->descriptor }}
+                    {{ $transfer->toBranch->code }}
                   @endif
 
                   @if(is_null($transfer->toBranch) && !is_null($transfer->toSupplier))
                   <small class="text-muted help" title="{{ $transfer->toSupplier->code }} - {{ $transfer->toSupplier->descriptor }}" data-toggle="tooltip">
-                    {{ $transfer->toSupplier->descriptor }}
+                    {{ $transfer->toSupplier->code }}
                   @endif
                   </small>
                 </td>
@@ -306,13 +306,13 @@
               </td>
               <td class="text-right">
                 <div>
-                  <strong title="Total Cost" data-toggle="tooltip">{{ number_format($tot_transcost, 2) }}</strong>
+                  {{ number_format($tot_transcost, 2) }}
                 </div>
                 <div>
                   <small>{{ number_format($tot_neg_transcost, 2) }}</small>
                 </div>
                 <div>
-                  <strong>{{ number_format($tot_transcost+$tot_neg_transcost, 2) }}</strong>
+                  <strong title="Total Cost" data-toggle="tooltip">{{ number_format($tot_transcost+$tot_neg_transcost, 2) }}</strong>
                 </div>
               </td>
               <td>&nbsp;</td>
@@ -440,7 +440,7 @@
   });
   
 
-  $('#tot-cost').text('{{ number_format($tot_transcost, 2) }}');
+  $('#tot-cost').text('{{ number_format($tot_transcost+$tot_neg_transcost, 2) }}');
     
 
     $('.show.toggle').on('click', function(){

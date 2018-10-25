@@ -118,6 +118,7 @@ class ExpenseController extends Controller
     $datas = [];
     $fc_hist = [];
     $prodcats = [];
+    $expense_data = [];
     if (!is_null($branch)) {
 
     	$exps = $this->expense->getCos();

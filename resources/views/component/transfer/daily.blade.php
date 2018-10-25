@@ -204,7 +204,9 @@
               <th class="text-right">Unit Cost</th>
               <th class="text-right">Total Cost</th>
               <th></th>
+              <!--
               <th>Supplier</th>
+            -->
               <th>Transfered To</th>
               <th>Comp Category</th>
               <th></th>
@@ -235,11 +237,13 @@
                       
                       style="cursor: help;"><small>{{ $transfer->terms }}</small></span>
                 </td>
+                <!--
                 <td style="{{ $cancel }}">
                   <small class="text-muted help" title="{{ $transfer->suppliercode }} - {{ $transfer->supplier }}" data-toggle="tooltip">
                   {{ $transfer->suppliercode }}
                   </small>
                 </td>
+              -->
                 <td style="{{ $cancel }}">
                   @if(!is_null($transfer->toBranch) && is_null($transfer->toSupplier))
                   <small class="text-muted help" title="{{ $transfer->toBranch->code }} - {{ $transfer->toBranch->descriptor }}" data-toggle="tooltip">
@@ -315,7 +319,6 @@
                   <strong title="Total Cost" data-toggle="tooltip">{{ number_format($tot_transcost+$tot_neg_transcost, 2) }}</strong>
                 </div>
               </td>
-              <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>

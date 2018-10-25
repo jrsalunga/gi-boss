@@ -32,6 +32,15 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
 
   }
 
+   public function getExpense() {
+    return $this->scopeQuery(function($query) {
+      return $query->where('ordinal', 'like', '8%')
+                    ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
+                    ->orderBy('ordinal');
+    })->all();
+
+  }
+
   public function getNonCos() {
     return $this->scopeQuery(function($query) {
       return $query->whereIn('code', $this->non_cos_array)

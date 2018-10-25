@@ -39,6 +39,63 @@ class ExpenseController extends Controller
 		return $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
 	}
 
+	
+	public function getMonthExpenseBreakdown(Request $request) {
+		
+		$date = carbonCheckorNow($request->input('date'));
+		$this->dr->date = $date;
+		$this->dr->fr = $date->copy()->startOfMonth();
+		$this->dr->to = $date->copy()->endOfMonth();
+
+		$datas = [];
+
+		if ($request->has('branchid') && is_uuid($request->input('branchid')))
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    else
+      $branch = null;
+
+    if (!is_null($branch))
+    	$datas = $this->expenseBreakdownData($branch, $this->expense->getExpense());
+
+    return $this->setViewWithDR(view('report.expense-breakdown')
+                ->with('branches', $this->bb)
+                ->with('datas', $datas)
+                ->with('branch', $branch));
+
+
+
+	}
+
+
+	private function expenseBreakdownData($branch, $exps) {
+		$datas = [];
+		$ids = $exps->pluck('id')->toArray();
+
+		$mexps = $this->mExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
+
+
+		foreach ($exps as $x => $exp) {
+			$f = $mexps->filter(function ($item) use ($exp){
+	      return $item->expense_id == $exp->id
+	      	? $item : null;
+	    });
+	    $b = $f->first();
+
+	    if(is_null($b)) 
+	  		$datas[$x]['amount'] = 0;
+	  	else
+	  		$datas[$x]['amount'] = $b->tcost;
+
+	  	$datas[$x]['expensecode'] = $exp->code;
+	  	$datas[$x]['expense'] = $exp->descriptor;
+	  	$datas[$x]['expenseid'] = $exp->id;
+
+	  }
+
+
+	  return $datas;
+	}
+
 
 	public function getMonthFoodCostBreakdown(Request $request) {
 
@@ -63,11 +120,12 @@ class ExpenseController extends Controller
     $prodcats = [];
     if (!is_null($branch)) {
 
-    	$exps = $this->expense->skipCache()->getCos();
+    	$exps = $this->expense->getCos();
 
     	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'fc', 'transcos', 'cos'])->first();
 
 			$datas = $this->FCBreakdownData($branch, $exps);
+			$expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
     	$fc_hist = $this->getFCHist($branch, $exps);
 			$prodcats = $this->sales_cat($branch);
 							                 
@@ -78,6 +136,7 @@ class ExpenseController extends Controller
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)
                 ->with('datas', $datas)
+                ->with('expense_data', $expense_data)
                 ->with('prodcats', $prodcats)
                 ->with('ms', $ms)
                 ->with('branch', $branch));

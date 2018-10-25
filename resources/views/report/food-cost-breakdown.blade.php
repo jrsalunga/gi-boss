@@ -144,7 +144,7 @@
     
     <div class="row">
       <div class="col-md-12">
-        <div id="containers" style="overflow: hidden;"></div>
+        <div id="container" style="overflow: hidden;"></div>
       </div>
 
 
@@ -624,20 +624,32 @@
           yAxis: 0
         }, {
           type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
           yAxis: 0,
         }, {
           type: 'line',
           yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
+          yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
+          yAxis: 0,
+          visible: false
         }, {
           type: 'line',
           dashStyle: 'shortdot',
           yAxis: 1,
+          dataLabels: {
+            enabled: true,
+            crop: false,
+            formatter: function () {
+              return this.y;
+            },
+            verticalAlign: "bottom",
+            align: "center"
+          }
         }
       ]
     });

@@ -119,6 +119,7 @@ class ExpenseController extends Controller
     $fc_hist = [];
     $prodcats = [];
     $expense_data = [];
+    $noncos_data = [];
     if (!is_null($branch)) {
 
     	$exps = $this->expense->getCos();
@@ -126,6 +127,7 @@ class ExpenseController extends Controller
     	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'fc', 'transcos', 'cos'])->first();
 
 			$datas = $this->FCBreakdownData($branch, $exps);
+			$noncos_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getNonCos());
 			$expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
     	$fc_hist = $this->getFCHist($branch, $exps);
 			$prodcats = $this->sales_cat($branch);
@@ -137,6 +139,7 @@ class ExpenseController extends Controller
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)
                 ->with('datas', $datas)
+                ->with('noncos_data', $noncos_data)
                 ->with('expense_data', $expense_data)
                 ->with('prodcats', $prodcats)
                 ->with('ms', $ms)

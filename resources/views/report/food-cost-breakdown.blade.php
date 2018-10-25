@@ -154,7 +154,7 @@
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
             <tr>
-              <th>Code</th>
+              <th style="width:5%;">Code</th>
               <th>Category</th>
               <th class="text-right" style="width:17%;">Purchased</th>
               <th class="text-right" style="width:17%;">Transfered</th>
@@ -203,6 +203,61 @@
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tnet) }}</b></td>
               <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td>
+            </tr>
+          </tfoot>
+        </table>
+        </div><!-- table-responsive  -->
+      </div><!-- end: .col-md-12  -->
+
+      <div class="col-md-12" style="margin: 10px 0;">
+        <div class="table-responsive">
+        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+          
+          <tbody>
+            <?php $ntpurch = $nttrans = $ntnet = $ntpct = 0; ?>
+            @foreach($noncos_data as $data)
+              @if($data['purch']>0)
+              <tr data-expenseid="{{ $data['expenseid'] }}">
+                <td style="width:5%;">{{ $data['expensecode'] }}</td>
+                <td>{{ $data['expense'] }}</td>
+                <td class="text-right" class="text-right" style="width:17%;">
+                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  {{ nf($data['purch']) }}
+                  </a>
+
+                </td>
+                <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['trans']) }}</td>
+                <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['net']) }}</td>
+                <td class="text-right" class="text-right" style="width:17%;"></td>
+                
+              </td>
+              </tr>
+              <?php
+                $ntpurch += $data['purch'];
+                $nttrans += $data['trans'];
+                $ntnet += $data['net'];
+                
+                $fs = $data['food_sales'];
+              ?>
+              @endif
+            @endforeach
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="text-right"></td>
+              <td class="text-right">
+                <b class="text-muted">
+                    {{ nf($ntpurch) }}
+                </b>
+              </td>
+              <td class="text-right"><b class="text-muted">
+                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                {{ nf($nttrans) }}
+                </a>
+              </b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($ntnet) }}</b></td>
+              <td class="text-right"></td>
             </tr>
           </tfoot>
         </table>

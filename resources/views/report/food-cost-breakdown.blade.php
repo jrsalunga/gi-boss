@@ -259,9 +259,9 @@
             <tr>
               <th>Code</th>
               <th>Expense</th>
-              <th class="text-right">Purchased</th>
+              <th class="text-right">Cost</th>
               <th class="text-right">Transfered</th>
-              <th class="text-right" title="Purchased - Transfered = Actual Used">Actual Used</th>
+              <th class="text-right" title="Purchased - Transfered = Actual Used">Actual Cost</th>
             </tr>
           </thead>
           <tbody>

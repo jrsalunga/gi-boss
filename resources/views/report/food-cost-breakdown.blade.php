@@ -644,9 +644,7 @@
           dataLabels: {
             enabled: true,
             crop: false,
-            formatter: function () {
-              return this.y;
-            },
+            format: '{y}%',
             verticalAlign: "bottom",
             align: "center"
           }

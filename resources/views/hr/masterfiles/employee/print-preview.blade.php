@@ -85,7 +85,7 @@ label {
 </style>
 <body>
 
-<a class="prn" href="javascript:window.print();">Print</a>
+<a class="prn" style="color: #fff; background-color: #428bca;" href="javascript:window.print();">Print</a>
 
 
 <div class="container">

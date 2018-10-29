@@ -36,9 +36,14 @@ table td.nbtl {
 }
 
 .prn:hover {
+	/*
 	color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
+  border-color: #8c8c8c;
+  */
+  color: #fff; 
+  background-color: #428bca;"
 }
 
 .container {
@@ -85,7 +90,7 @@ label {
 </style>
 <body>
 
-<a class="prn" style="color: #fff; background-color: #428bca;" href="javascript:window.print();">Print</a>
+<a class="prn" href="javascript:window.print();">Print</a>
 
 
 <div class="container">

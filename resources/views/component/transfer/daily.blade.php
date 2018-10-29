@@ -208,8 +208,8 @@
               <th>Supplier</th>
             -->
               <th>Transfered To</th>
-              <th>Comp Category</th>
-              <th></th>
+              <th>Comp Cat</th>
+              <th>Expense</th>
               <th></th>
             </tr>
           </thead>
@@ -471,7 +471,7 @@
           currentCategory = "";
         $.each(items, function(index, item) {
           var li;
-          if (item.category=='component') {
+          if (item.category=='component' || item.category=='expense') {
             if (item.category != currentCategory) {
               ul.append('<li class="ui-autocomplete-category"><span class="label label-success">' + item.category + '</span></li>' );
               currentCategory = item.category;

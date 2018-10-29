@@ -33,13 +33,16 @@ class TransferController extends Controller
 
 	public function getDaily(Request $request) {
 
-		$filter = $this->getFilter($request, ['component']);
+		$filter = $this->getFilter($request, ['component', 'expense']);
     $components = null;
     $transfers = [];
     $where = [];
 
+   // return dd($filter);
+
     if ($filter->isset)
-      $where['stocktransfer.'.$filter->table.'id'] = $filter->id;
+      $where[$filter->table.'.id'] = $filter->id;
+      //$where['stocktransfer.'.$filter->table.'id'] = $filter->id;
 
    	if ($request->has('branchid'))
       $branch = $this->branch->find(strtolower($request->input('branchid')));

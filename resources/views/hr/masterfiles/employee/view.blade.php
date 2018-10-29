@@ -79,7 +79,7 @@
 		    <!--
 		    <li><a href="javascript:void(0)" ><i class="glyphicon glyphicon-level-up"></i>  Promote</a></li>
 		  -->
-		    <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/print-preview" ><i class="gly gly-print"></i>  Print Preview</a></li>
+		    <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/print-preview" target="_blank" ><i class="gly gly-print"></i>  Print Preview</a></li>
 		    <li><a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/confirm" ><i class="gly gly-disk-saved"></i>  Confirm</a></li>
 		    <li role="separator" class="divider"></li>
 		    <li>

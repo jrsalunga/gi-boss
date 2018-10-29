@@ -150,9 +150,8 @@ label {
 								<div>
 									@if(is_iso_date($employee->datehired->format('Y-m-d')) && $employee->empstatus>=2)
 										{{ $employee->datehired->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->datehired) }} ago)</em></small>
-									@else
-									&nbsp;
 									@endif
+									&nbsp;
 								</div>
 						</div>
 					</td>
@@ -163,10 +162,9 @@ label {
 							@if($employee->statutory && !is_null($employee->statutory->date_reg))
 					  		@if(is_iso_date($employee->statutory->date_reg->format('Y-m-d')) && $employee->empstatus>=3)
 											{{ $employee->statutory->date_reg->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->statutory->date_reg) }} ago)</em></small>
-								@else
-								&nbsp;
 								@endif
 							@endif
+							&nbsp;
 							</div>
 						</div>
 					</td>
@@ -333,31 +331,313 @@ label {
 			</tbody>
 		</table>
 
-		<div class="panel-header">Contribution Details</div>
+		<div class="panel-header">Personal Info</div>
 		<table style="width: 100%; margin-top: 5px;">
 			<tbody>
 				<tr>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
+					<td colspan="4">
+						<div class="form-group">
+									<label>Address</label>
+									<div>{{ $employee->address }}</div>
+								</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><div class="form-group">
+									<label>Gender</label>
+									<div>{{ check_gender($employee->gender, true) }}&nbsp;</div>
+								</div></td>
+					<td>
+						<div class="form-group">
+									<label>Civil Status</label>
+									<div>{{ check_civil_status($employee->civstatus) }}&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Birthday</label>
+									@if(is_iso_date($employee->birthdate->format('Y-m-d')))
+										<div>{{ $employee->birthdate->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->birthdate) }} old)</em></small></div>
+									@endif
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Birth Place</label>
+									<div>{{ $employee->birthplace }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+									<label>Religion</label>
+									<div><?=isset($employee->religion)?$employee->religion->descriptor:'-';?></div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Height</label>
+									<div>{{ $employee->height() }}m <em>{{ isset(config('giligans.meter_to_feet')[$employee->height])?'('.config('giligans.meter_to_feet')[$employee->height].'")':'' }}</em></div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Weight</label>
+									<div>{{ $employee->weight() }}kg&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Email</label>
+									<div>{{ $employee->email }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Mobile</label>
+									<div>{{ $employee->mobile }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Phone</label>
+									<div>{{ $employee->phone }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Fax</label>
+									<div>{{ $employee->fax }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Hobbies</label>
+									<div>{{ $employee->hobby }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<div class="form-group">
+									<label>Notes</label>
+									<div>{{ $employee->notes }}&nbsp;</div>
+								</div>
+							</div>
+					</td>
+					
 				</tr>
 			</tbody>
 		</table>
 
-		<div class="panel-header">Contribution Details</div>
+		<div class="panel-header">Spouse</div>
+		@if(isset($employee->spouse))
 		<table style="width: 100%; margin-top: 5px;">
 			<tbody>
 				<tr>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
-					<td style="width:25%"></td>
+					<td style="width:50%" colspan="2">
+						<div class="form-group">
+									<label>Fullname</label>
+									<div>{{ $employee->spouse->lastname }}, {{ $employee->spouse->firstname }} {{ $employee->spouse->middlename }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Birthday</label>
+									@if(is_iso_date($employee->spouse->birthdate->format('Y-m-d')))
+										<div>{{ $employee->spouse->birthdate->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($employee->spouse->birthdate) }} old)</em></small>&nbsp;
+										</div>
+									@endif
+									
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Mobile</label>
+									<div>{{ $employee->spouse->mobile }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="form-group">
+									<label>Address</label>
+									<div>{{ $employee->spouse->address }}&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Email</label>
+									<div>{{ $employee->spouse->email }}&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Phone</label>
+									<div>{{ $employee->spouse->phone }}&nbsp;</div>
+								</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
-	
+		@endif
+
+		<div class="panel-header">Children</div>
+		@if(isset($employee->childrens) && count($employee->childrens)>0)
+		<table style="width: 100%; margin-top: 5px;">
+			<tbody>
+				@foreach($employee->childrens as $k => $c)
+				<tr>
+					<td>{{ ($k+1) }}. {{ $c->lastname }}, {{ $c->firstname }} {{ $c->middlename }}</td>
+					<td>
+						@if(is_iso_date($c->birthdate->format('Y-m-d')))
+							<div>{{ $c->birthdate->format('M j, Y') }} <small class="text-muted"><em>({{ diffForHumans($c->birthdate) }} old)</em></small></div>
+						@endif
+					</td>
+					<td>{{ check_gender($c->gender, true) }}</td>
+					
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		@endif
+
+		<div class="panel-header">Emergency Contact</div>
+		@if(isset($employee->spouse))
+		<table style="width: 100%; margin-top: 5px;">
+			<tbody>
+				<tr>
+					<td style="width:50%" colspan="2">
+						<div class="form-group">
+									<label>Fullname</label>
+									<div>{{ $employee->ecperson->lastname }}, {{ $employee->ecperson->firstname }} {{ $employee->ecperson->middlename }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Relationship</label>
+									<div>{{ $employee->ecperson->relation }}&nbsp;</div>
+								</div>
+					</td>
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Mobile</label>
+									<div>{{ $employee->ecperson->mobile }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="form-group">
+									<label>Address</label>
+									<div>{{ $employee->ecperson->address }}&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Email</label>
+									<div>{{ $employee->ecperson->email }}&nbsp;</div>
+								</div>
+					</td>
+					<td>
+						<div class="form-group">
+									<label>Phone</label>
+									<div>{{ $employee->ecperson->phone }}&nbsp;</div>
+								</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		@endif
+
+		<div class="panel-header">Work Experince</div>
+		@if(isset($employee->workexps) && count($employee->workexps)>0)
+		<table style="width: 100%; margin-top: 5px;">
+			<tbody>
+				@foreach($employee->workexps as $k => $w)
+				<tr>
+					<td>
+						@if(!$w->getPeriodFrom())
+							*											
+						@else
+							{{ $w->getPeriodFrom()->format('M Y') }}
+						@endif
+						-
+						@if(!$w->getPeriodTo())
+							*											
+						@else
+							{{ $w->getPeriodTo()->format('M Y') }}
+						@endif
+
+						@if($w->getPeriodFrom() instanceof \Carbon\Carbon && $w->getPeriodTo() instanceof \Carbon\Carbon)
+							<small class="text-muted">
+								<?php
+									$m =$w->getPeriodTo()->diffInMonths($w->getPeriodFrom());
+								?>
+							<em>
+								({{ $m }} month<?=$m>1?'s':''?>)
+							</em>
+						</small>
+						@endif
+					</td>
+					<td>{{ $w->company }}</td>
+					<td>{{ $w->position }}</td>
+					<td>{{ $w->remarks }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		@endif
 		
+		<div class="panel-header">Educational Attainment</div>
+		@if(isset($employee->educations) && count($employee->educations)>0)
+		<table style="width: 100%; margin-top: 5px;">
+			<tbody>
+				@foreach($employee->educations as $k => $e)
+				<tr>
+					<td>
+						@if(!$e->getPeriodFrom())
+							*											
+						@else
+							{{ $e->getPeriodFrom()->format('M Y') }}
+						@endif
+						-
+						@if(!$e->getPeriodTo())
+							*											
+						@else
+							{{ $e->getPeriodTo()->format('M Y') }}
+						@endif
+
+						@if($e->getPeriodFrom() instanceof \Carbon\Carbon && $e->getPeriodTo() instanceof \Carbon\Carbon)
+							<small class="text-muted">
+							<em>
+								<?php
+									$i = ($e->getPeriodTo()->year - $e->getPeriodFrom()->year);
+								?>
+								({{ $i }} year<?=$i>1?'s':''?>)
+							</em>
+						</small>
+						@endif
+					</td>
+					<td>
+					@if(isset($e->acadlevel))
+						{{ $e->acadlevel->descriptor }}
+					@endif
+					</td>
+					<td>{{ $e->school }}</td>
+					<td>{{ $e->course }}</td>
+					<td>{{ $e->remarks }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		@endif
+
+
 	</div>
 </div>
 

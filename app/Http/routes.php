@@ -155,6 +155,7 @@ Route::get('masterfiles/employee/{id}/edit/personal', 'Hr\EmployeeController@edi
 Route::get('masterfiles/employee/{id}/edit/family', 'Hr\EmployeeController@editFamily');
 Route::get('masterfiles/employee/{id}/edit/workedu', 'Hr\EmployeeController@editWorkedu');
 Route::get('masterfiles/employee/{id}/edit/confirm', 'Hr\EmployeeController@editConfirm');
+Route::get('masterfiles/employee/{id}/print-preview', 'Hr\EmployeeController@printPreview');
 Route::delete('masterfiles/employee/child', 'Hr\EmployeeController@deleteChild');
 Route::resource('masterfiles/employee', 'Hr\EmployeeController');
 Route::get('masterfiles/employee/branch/{branchid?}', 'Hr\BranchController@branchEmployee');

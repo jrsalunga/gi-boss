@@ -934,6 +934,18 @@ class EmployeeController extends Controller
 
 
 
+	public function printPreview(Request $request, $id) {
+	
+		$employee = $this->employee->codeID($id);
+
+		return is_null($employee)
+			? abort('404')
+			: view('hr.masterfiles.employee.print-preview')
+						->with('employee', $employee);
+	}
+
+
+
 
 
 

@@ -420,7 +420,7 @@ class SettingsController extends Controller {
 		    	$sttr->meal 		= trim($row['CA_BAL']);
 		    	$sttr->ee_sss 	= trim($row['SSS_EE']);
 		    	$sttr->er_sss 	= trim($row['SSS_ER']);
-		    	$sttr->SSS_TAG 	= trim($row['SSS_TAG'])=='Y' ? 1 : 0;
+		    	$sttr->sss_tag 	= trim($row['SSS_TAG'])=='Y' ? 1 : 0;
 		    	$sttr->ee_phic 	= trim($row['PH_EE']);
 		    	$sttr->er_phic 	= trim($row['PH_ER']);
 		    	$sttr->phic_tag = trim($row['PH_TAG'])=='Y' ? 1 : 0;

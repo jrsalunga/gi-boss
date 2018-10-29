@@ -390,7 +390,7 @@ label {
 					<td>
 						<div class="form-group">
 									<label>Weight</label>
-									<div>{{ $employee->weight() }}kg&nbsp;</div>
+									<div>{{ $employee->weight() }} {{ $employee->weight()>=90 ? 'lbs':'kgs' }}&nbsp;</div>
 								</div>
 					</td>
 					<td>

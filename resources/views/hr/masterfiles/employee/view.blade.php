@@ -409,7 +409,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>Weight</label>
-									<div>{{ $employee->weight() }}kg</div>
+									<div>{{ $employee->weight() }}{{ $employee->weight()>=90 ? 'lbs':'kgs' }}</div>
 								</div>
 							</div>
 							<div class="col-md-3">

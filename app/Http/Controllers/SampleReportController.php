@@ -44,7 +44,7 @@ class SampleReportController extends Controller
   	$datas = [];
 
   	$branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3'])->orderBy('code')->get();
-  	$components = \App\Models\Component::whereIn('compcatid', ['3DE82C56636311E5B83800FF59FBB323', '3DEDA602636311E5B83800FF59FBB323'])
+  	$components = \App\Models\Component::whereIn('compcatid', ['3E01825B636311E5B83800FF59FBB323', '3E026572636311E5B83800FF59FBB323'])
   																		->orderBy('descriptor')->get();
 
 
@@ -53,7 +53,7 @@ class SampleReportController extends Controller
 
   		$mcs = $this->mComponent->skipCache()->scopeQuery(function($query) use ($branch){ 
   												return $query->leftJoin('component', 'component.id', '=', 'month_component.component_id')
-  																		->whereIn('component.compcatid', ['3DE82C56636311E5B83800FF59FBB323', '3DEDA602636311E5B83800FF59FBB323'])
+  																		->whereIn('component.compcatid', ['3E01825B636311E5B83800FF59FBB323', '3E026572636311E5B83800FF59FBB323'])
   																		->where('month_component.branch_id', $branch->id)
   																		->where('month_component.date', '2018-09-30');
   												})->all();

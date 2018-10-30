@@ -205,6 +205,7 @@ class AnalyticsController extends Controller
     }
 
     $dailysales = $this->ds
+                      ->skipCache()
                       ->pushCriteria(new BranchCriteria($branch))
                       ->getMonth($request, $this->dr);
 

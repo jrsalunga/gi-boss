@@ -13,6 +13,7 @@ class DailySales extends BaseModel {
 	protected $guarded = ['id'];
 	protected $casts = [
     'sales' => 'float',
+    'food_sales' => 'float',
     'cos' => 'float',
     'tips' => 'float',
     'custcount' => 'integer',
@@ -40,6 +41,7 @@ class DailySales extends BaseModel {
     'sale_sig' => 'float',
     'transcost' => 'float',
     'transcos' => 'float',
+    'transncos' => 'float',
     'opex' => 'float',
   ];
 
@@ -87,11 +89,11 @@ class DailySales extends BaseModel {
   }
 
   public function get_cospct($format=true) {
-    if ($this->sales>0) {
+    if ($this->food_sales>0) {
       if ($format)
-        return number_format(($this->cos/$this->sales)*100, 2);
+        return number_format((($this->cos-$this->transcos)/$this->food_sales)*100, 2);
       else
-        return ($this->cos/$this->sales)*100;
+        return (($this->cos-$this->transcos)/$this->food_sales)*100;
     }
     return 0;
   }
@@ -139,9 +141,9 @@ class DailySales extends BaseModel {
   public function get_food_cost($format=true) {
     if ($this->food_sales>0){
       if ($format)
-        return number_format((($this->cos-$this->transcos)/$this->food_sales)*100, 2);
+        return number_format(($this->netCos()/$this->food_sales)*100, 2);
       else
-        return (($this->cos-$this->transcos)/$this->food_sales)*100;
+        return ($this->netCos()/$this->food_sales)*100;
     }
     return 0;
   }
@@ -150,7 +152,7 @@ class DailySales extends BaseModel {
 
   
   public function grossOpex() {
-    return $this->opex + $this->emp_meal;
+    return $this->opex;
   }
 
   public function transOpex() {
@@ -159,6 +161,10 @@ class DailySales extends BaseModel {
 
   public function netOpex() {
     return $this->grossOpex()-$this->transOpex();
+  }
+
+  public function netCos() {
+    return $this->cos-$this->transcos;
   }
 
 	

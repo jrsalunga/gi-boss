@@ -229,6 +229,7 @@
             <tbody>
               <?php
                 $tot_sales = 0;
+                $tot_fsales = 0;
                 $tot_purchcost = 0;
                 $tot_custcount = 0;
                 $tot_empcount = 0;
@@ -294,7 +295,7 @@
                   @if($d->dailysale->get_cospct()=='0.00')
                       -
                   @else      
-                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale->cos,2) }}">
+                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale->netCos(),2) }}" data-foodsales="{{ number_format($d->dailysale['food_sales'],2) }}">
                     {{ $d->dailysale->get_cospct() }}
                     </span>              
                   @endif
@@ -397,6 +398,7 @@
 
                 <?php
                   $tot_sales      += $d->dailysale['sales'];
+                  $tot_fsales     += $d->dailysale['food_sales'];
                   $tot_purchcost  += $d->dailysale['purchcost'];
                   $tot_custcount  += $d->dailysale['custcount'];
                   $tot_headspend  += $d->dailysale['headspend'];
@@ -410,7 +412,8 @@
                   $tot_mancostpct += $d->dailysale['mancostpct'];
                   $tot_tips       += $d->dailysale['tips'];
                   $tot_tipspct    += $d->dailysale['tipspct'];
-                  $tot_cos        += $d->dailysale['cos'];
+                  //$tot_cos        += $d->dailysale['cos'];
+                  $tot_cos        += $d->dailysale->netCos();
                   $tot_opex       += $d->dailysale->getOpex();
                   $tot_trans      += $d->dailysale['trans_cnt'];
                   $tot_receipt    += $d->dailysale->get_receipt_ave();
@@ -479,7 +482,7 @@
                   <div>
                     <em><small title="({{$tot_cos}}/{{$tot_sales}})*100" data-toggle="tooltip">
                       @if($tot_sales!='0')
-                      {{ number_format(($tot_cos/$tot_sales)*100,2) }}%
+                      {{ number_format(($tot_cos/$tot_fsales)*100,2) }}%
                       @else
                         0
                       @endif

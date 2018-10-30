@@ -61,8 +61,8 @@ class SampleReportController extends Controller
   		foreach ($components as $c => $component) {
   			$datas[$key]['components'][$c]['component'] = $component->descriptor;
   			
-  			$f = $mcs->filter(function ($item) use ($component){
-		      return $item->component_id == $component->id
+  			$f = $mcs->filter(function ($item) use ($component, $branch){
+		      return $item->component_id == $component->id && $item->branch_id == $branch->id
 		      	? $item : null;
 		    });
 		    $b = $f->first();

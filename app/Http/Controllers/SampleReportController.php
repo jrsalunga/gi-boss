@@ -67,7 +67,7 @@ class SampleReportController extends Controller
 		    });
 		    $b = $f->first();
 
-  			$datas[$key]['components'][$c]['qty'] = is_null($b) ? 0 : $b->qty;
+  			$datas[$key]['components'][$c]['qty'] = is_null($b) ? '': $b->qty;
   		}
   	}
 

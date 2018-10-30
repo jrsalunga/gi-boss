@@ -266,7 +266,7 @@
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0;
                 $div_cos+=($d->dailysale['cos']!=0)?1:0;
-                $div_opex+=($d->opex!=0)?1:0;
+                $div_opex+=($d->netOpex()!=0)?1:0;
                 $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
                 $div_drinks+=(!is_null($d->dailysale)  && $d->dailysale->getBeerPurch()!=0)?1:0; 
                 $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
@@ -662,7 +662,7 @@
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
               <td>{{ $d->dailysale['cos'] }}</td>
-              <td>{{ $d->opex }}</td>
+              <td>{{ $d->netOpex() }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
               <td>{{ $d->dailysale['mancost'] }}</td>

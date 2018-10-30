@@ -51,7 +51,7 @@ class SampleReportController extends Controller
   	foreach ($branches as $key => $branch) {
   		$datas[$key]['code'] = $branch->code;
 
-  		$mcs = $this->mComponent->scopeQuery(function($query) use ($branch){ 
+  		$mcs = $this->mComponent->skipCache()->scopeQuery(function($query) use ($branch){ 
   												return $query->leftJoin('component', 'component.id', '=', 'month_component.component_id')
   																		->whereIn('component.compcatid', ['3DE82C56636311E5B83800FF59FBB323', '3DEDA602636311E5B83800FF59FBB323'])
   																		->where('month_component.branch_id', $branch->id)
@@ -61,8 +61,8 @@ class SampleReportController extends Controller
   		foreach ($components as $c => $component) {
   			$datas[$key]['components'][$c]['component'] = $component->descriptor;
   			
-  			$f = $mcs->filter(function ($item) use ($component, $branch){
-		      return $item->component_id == $component->id && $item->branch_id == $branch->id
+  			$f = $mcs->filter(function ($item) use ($component){
+		      return $item->component_id == $component->id
 		      	? $item : null;
 		    });
 		    $b = $f->first();

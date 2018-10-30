@@ -71,7 +71,9 @@ class SampleReportController extends Controller
   		}
   	}
 
-  	return $datas;
+  	return view('sample-report.meat')
+  							->with('datas', $datas)
+  							->with('components', $components);
   }
 
   

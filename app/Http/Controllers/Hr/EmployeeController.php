@@ -393,7 +393,7 @@ class EmployeeController extends Controller
     if ($request->has('spouse.lastname') || $request->has('spouse.firstname')) {
     	$rules['spouse.lastname'] = 'required|max:30';
     	$rules['spouse.firstname'] = 'required|max:30';
-    	$rules['spouse.birthdate'] = 'required|date_format:Y-m-d';
+    	$rules['spouse.birthdate'] = 'date_format:Y-m-d';
     } else {
     	$rules['spouse.lastname'] = 'max:30';
     	$rules['spouse.firstname'] = 'max:30';

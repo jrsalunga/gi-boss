@@ -73,15 +73,15 @@ class DailySales extends BaseModel {
     if(Carbon::parse($this->date->format('Y-m-d'))->lt(Carbon::parse('2016-01-01')))
       return 0;
     else
-      return $this->opex;
+      return $this->netOpex(); //return $this->opex;
   }
 
   public function get_opexpct($format=true) {
     if ($this->sales>0) {
       if ($format)
-        return number_format(($this->opex/$this->sales)*100, 2);
+        return number_format(($this->netOpex()/$this->sales)*100, 2);
       else
-        return ($this->opex/$this->sales)*100;
+        return ($this->netOpex()/$this->sales)*100;
     }
     return 0;
   }
@@ -146,7 +146,20 @@ class DailySales extends BaseModel {
     return 0;
   }
 
+  /********************** real computation based on new db ***************/
+
   
+  public function grossOpex() {
+    return $this->opex + $this->emp_meal;
+  }
+
+  public function transOpex() {
+    return ($this->transcost - ($this->transcos+$this->transncos));
+  }
+
+  public function netOpex() {
+    return $this->grossOpex()-$this->transOpex();
+  }
 
 	
 	

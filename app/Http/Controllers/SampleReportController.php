@@ -43,7 +43,7 @@ class SampleReportController extends Controller
   public function getMeat(Request $request) {
   	$datas = [];
 
-  	$branches = \App\Models\Boss\Branch::whereStatus('2')->orderBy('code')->get();
+  	$branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3'])->orderBy('code')->get();
   	$components = \App\Models\Component::whereIn('compcatid', ['3DE82C56636311E5B83800FF59FBB323', '3DEDA602636311E5B83800FF59FBB323'])
   																		->orderBy('descriptor')->get();
 

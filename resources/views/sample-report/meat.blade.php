@@ -3,14 +3,14 @@
 		<tr>
 		<th>Branch</th>
 		@foreach($components as $component)
-		<th>{{ $component->descriptor }}</th>
+		<th>{{ $component->descriptor }}  ({{ strtolower($component->uom) }})</th>
 		@endforeach
 		</tr>
 	</thead>
 	<tbody>
 			@foreach($datas as $key => $data)
 			<tr>
-			<td>{{ $data['code'] }}</td>
+				<td>{{ $data['code'] }}</td>
 				@foreach($data['components'] as $k => $c)
 					<td>{{ $c['qty'] }}</td>
 				@endforeach

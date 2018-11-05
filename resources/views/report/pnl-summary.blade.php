@@ -212,7 +212,7 @@
         </div><!-- table-responsive  -->
       
         
-        <div class="table-responsive">
+        <div class="table-responsive" style="margin-top: 10px;">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           
           <tbody>

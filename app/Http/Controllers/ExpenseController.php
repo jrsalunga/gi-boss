@@ -135,7 +135,7 @@ class ExpenseController extends Controller
 
 		//return $fc_hist;
     }
-    return $this->setViewWithDR(view('report.food-cost-breakdown')
+    return $this->setViewWithDR(view('report.pnl-summary')
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)
                 ->with('datas', $datas)

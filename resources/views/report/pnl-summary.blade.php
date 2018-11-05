@@ -27,7 +27,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
-    <li><a href="/report/food-cost-breakdown">Food Cost Breakdown</a></li>
+    <li><a href="/report/pnl-summary">Food Cost Breakdown</a></li>
     <li class="active">Month @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
   </ol>
 
@@ -53,7 +53,7 @@
             </button>
           </div>
           <div class="btn-group btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/report/food-cost-breakdown', 'method' => 'get', 'id'=>'filter-form']) !!}
+            {!! Form::open(['url' => '/report/pnl-summary', 'method' => 'get', 'id'=>'filter-form']) !!}
             <button type="submit" data-toggle="loader" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
@@ -90,7 +90,7 @@
             @if(is_null(($branch)))
 
             @else
-            <a href="/report/food-cost-breakdown?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" data-toggle="loader">
+            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" data-toggle="loader">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
             @endif
@@ -99,7 +99,7 @@
             @if(is_null(($branch)))
 
             @else
-            <a href="/report/food-cost-breakdown?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" data-toggle="loader">
+            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" data-toggle="loader">
               <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
             @endif
@@ -150,6 +150,9 @@
 
 
       <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">Summary of Purchases</div>
+          <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
@@ -158,7 +161,7 @@
               <th>Category</th>
               <th class="text-right" style="width:17%;">Purchased</th>
               <th class="text-right" style="width:17%;">Transfered</th>
-              <th class="text-right" style="width:17%;" title="Purchased - Transfered = Actual Used">Actual Used</th>
+              <th class="text-right" style="width:17%;" title="Purchased - Transfered = Net Purchased">Purchases less Transfers</th>
               <th class="text-right" style="width:17%;">% on Food Sales</th>
             </tr>
           </thead>
@@ -190,7 +193,7 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"></td>
+              <td class="text-right"><b>Total:</b></td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($tpurch) }}
@@ -207,9 +210,8 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
-      </div><!-- end: .col-md-12  -->
-
-      <div class="col-md-12" style="margin: 10px 0;">
+      
+        
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           
@@ -245,7 +247,7 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"></td>
+              <td class="text-right"><b>Total:</b></td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($ntpurch) }}
@@ -262,9 +264,15 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
+      </div>
+      </div>
       </div><!-- end: .col-md-12  -->
 
       <div class="col-md-5 " style="margin: 50px 0;">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Category</div>
+          <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
@@ -297,17 +305,22 @@
           <tfoot>
             <tr>
               <td></td>
-              <td></td>
+              <td class="text-right"><b>Total:</b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tot_sales) }}</b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tot_pct)+0 }}</b></td>
             </tr>
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
+        </div>
+        </div>
       </div><!-- end: .col-md-5  -->
 
 
       <div class="col-md-6 col-md-offset-1" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="panel panel-default">
+          <div class="panel-heading">Expense Summary</div>
+          <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
@@ -316,7 +329,7 @@
               <th>Expense</th>
               <th class="text-right">Cost</th>
               <th class="text-right">Transfered</th>
-              <th class="text-right" title="Purchased - Transfered = Actual Used">Actual Cost</th>
+              <th class="text-right" title="Cost - Transfered = Net Cost">Cost less Transfers</th>
             </tr>
           </thead>
           <tbody>
@@ -348,7 +361,7 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"></td>
+              <td class="text-right"><b>Total:</b></td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($xtpurch) }}
@@ -364,6 +377,8 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
+      </div>
+      </div>
       </div><!-- end: .col-md-12  -->
 
       <table id="datatable" class="tb-data table" style="display:none;">
@@ -500,7 +515,7 @@
     @if(!is_null(($branch)))
     loader();
 
-    document.location.href = '/report/food-cost-breakdown?branchid='+$('#branchid').val()+'&date='+e.date.format('YYYY-MM-DD');
+    document.location.href = '/report/pnl-summary?branchid='+$('#branchid').val()+'&date='+e.date.format('YYYY-MM-DD');
     @endif
   });
 

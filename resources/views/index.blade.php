@@ -73,9 +73,9 @@
                 <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
                 <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
                 <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
-                <li><a href="/report/food-cost-breakdown">Food Cost Breakdown (By Branch) <small><span class="label label-success">new</span></small></a></li>
                 <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
                 <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
+                <li><a href="/report/pnl-summary">PNL Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
               </ul>
             </div>
           </div> 

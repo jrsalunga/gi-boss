@@ -480,8 +480,8 @@
                     </small></em>
                   </div>
                   <div>
-                    <em><small title="({{$tot_cos}}/{{$tot_sales}})*100" data-toggle="tooltip">
-                      @if($tot_sales!='0')
+                    <em><small title="({{$tot_cos}}/{{$tot_fsales}})*100" data-toggle="tooltip">
+                      @if($tot_fsales!='0')
                       {{ number_format(($tot_cos/$tot_fsales)*100,2) }}%
                       @else
                         0

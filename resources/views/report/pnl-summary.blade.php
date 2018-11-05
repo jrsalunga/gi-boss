@@ -149,7 +149,7 @@
 
 
 
-      <div class="col-md-12">
+      <div class="col-md-12"style="margin-top: 30px;">
         <div class="panel panel-default">
           <div class="panel-heading">Summary of Purchases</div>
           <div class="panel-body">
@@ -268,7 +268,7 @@
       </div>
       </div><!-- end: .col-md-12  -->
 
-      <div class="col-md-5 " style="margin: 50px 0;">
+      <div class="col-md-5 " style="margin: 30px 0;">
 
         <div class="panel panel-default">
           <div class="panel-heading">Sales Summary by Category</div>
@@ -317,7 +317,7 @@
       </div><!-- end: .col-md-5  -->
 
 
-      <div class="col-md-6 col-md-offset-1" style="margin-top: 50px; margin-bottom: 50px;">
+      <div class="col-md-6 col-md-offset-1" style="margin-top: 30px; margin-bottom: 50px;">
         <div class="panel panel-default">
           <div class="panel-heading">Expense Summary</div>
           <div class="panel-body">

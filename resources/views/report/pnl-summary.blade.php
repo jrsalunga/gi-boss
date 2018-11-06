@@ -27,7 +27,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
-    <li><a href="/report/pnl-summary">Food Cost Breakdown</a></li>
+    <li><a href="/report/pnl-summary">PNL Summary</a></li>
     <li class="active">Month @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
   </ol>
 
@@ -319,7 +319,7 @@
 
       <div class="col-md-6 col-md-offset-1" style="margin-top: 30px; margin-bottom: 50px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Expense Summary</div>
+          <div class="panel-heading">Expenses Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">

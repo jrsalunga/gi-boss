@@ -75,7 +75,7 @@
                 <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
                 <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
                 <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
-                <li><a href="/report/pnl-summary">PNL Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
+                <li><a href="/report/pnl-summary">Direct P&amp;L Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
               </ul>
             </div>
           </div> 

@@ -146,8 +146,8 @@
       <div class="col-md-12">
         <div id="container" style="overflow: hidden;"></div>
       </div>
-
-
+  
+      <?php $ttpurch = $tttrans = 0 ?>
 
       <div class="col-md-12"style="margin-top: 30px;">
         <div class="panel panel-default">
@@ -187,13 +187,17 @@
                 $tnet += $data['net'];
                 $tpct += $data['pct'];
                 $fs = $data['food_sales'];
+
+                
+                $ttpurch += $data['purch'];
+                $tttrans += $data['trans'];
               ?>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"><b>Total:</b></td>
+              <td class="text-right">Total:</td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($tpurch) }}
@@ -210,11 +214,9 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
-      
         
         <div class="table-responsive" style="margin-top: 10px;">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
-          
           <tbody>
             <?php $ntpurch = $nttrans = $ntnet = $ntpct = 0; ?>
             @foreach($noncos_data as $data)
@@ -239,6 +241,9 @@
                 $nttrans += $data['trans'];
                 $ntnet += $data['net'];
                 
+                $ttpurch += $data['purch'];
+                $tttrans += $data['trans'];
+                
                 $fs = $data['food_sales'];
               ?>
               @endif
@@ -247,7 +252,7 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right"><b>Total:</b></td>
+              <td class="text-right">Total:</td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($ntpurch) }}
@@ -263,13 +268,36 @@
             </tr>
           </tfoot>
         </table>
-        </div><!-- table-responsive  -->
-      </div>
-      </div>
+
+        <div class="table-responsive" style="margin-top: 10px;">
+        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+          <tfoot>
+            <tr>
+              <td style="width:5%;"></td>
+              <td class="text-right"><b>Total:</b></td>
+              <td class="text-right" style="width:17%;">
+                <b class="text-muted">
+                    {{ nf($ttpurch) }}
+                </b>
+              </td>
+              <td class="text-right" style="width:17%;"><b class="text-muted">
+                {{ nf($tttrans) }}
+              </b></td>
+              <td class="text-right" style="width:17%;"><b class="text-muted">{{ nf($ttpurch-$tttrans) }}</b></td>
+              <td class="text-right" style="width:17%;"></td>
+            </tr>
+          </tfoot>
+        </table>
+        </div><!-- table-responsivee  -->
+
+
+
+
+      </div><!-- end: .panel-body  -->
+      </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-12  -->
 
       <div class="col-md-5 " style="margin: 30px 0;">
-
         <div class="panel panel-default">
           <div class="panel-heading">Sales Summary by Category</div>
           <div class="panel-body">
@@ -312,8 +340,8 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
-        </div>
-        </div>
+        </div><!-- end: .panel-body  -->
+        </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-5  -->
 
 
@@ -377,8 +405,8 @@
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
-      </div>
-      </div>
+      </div><!-- end: .panel-body  -->
+      </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-12  -->
 
       <table id="datatable" class="tb-data table" style="display:none;">

@@ -751,7 +751,7 @@ class EmployeeController extends Controller
 	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
 	        $message->from('giligans.app@gmail.com', 'Giligans HRIS');
 	       	//$message->to('giligans.app@gmail.com');
-	       	$message->to($$data['to']);
+	       	$message->to($data['to']);
 	       	$message->cc('giligans.hris@gmail.com');
 	       	$message->replyTo($data['email'], $data['user']);
 

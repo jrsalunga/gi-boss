@@ -34,18 +34,20 @@
 </div>
 <?php
 	$f = 'field is';
-	if(count($invalid_fields)>1)
+	if(count($invalid_fields)>1) {
 		$f = 'fields are';
+		$valid = false;
+	}
 
 	$c = '';
 	$g = '';
 	if ($employee->isConfirm() && $employee->hasEmpfile('MAS'))
-		$valid = false;
+		$valid = true;
 	elseif ($employee->isConfirm() && !$employee->hasEmpfile('MAS')) {
-		$valid = false;
+		$valid = true;
 		$g = 'text-muted';
 	}	elseif (!$employee->isConfirm() && $employee->hasEmpfile('MAS')) {
-		$valid = false;
+		$valid = true;
 		$c = 'text-muted';
 	}
 ?>

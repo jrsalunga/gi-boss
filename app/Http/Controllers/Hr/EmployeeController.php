@@ -694,8 +694,6 @@ class EmployeeController extends Controller
 
 		$email_add = !is_null($o->branch->email) ? $o->branch->email : 'jefferson.salunga@yahoo.com';
 
-		return $email_add;
-		
 		try {
 			return $this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
     } catch (Exception $e) {

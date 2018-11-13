@@ -656,8 +656,8 @@ class EmployeeController extends Controller
     $o = $this->employee->find($request->input('id'));
 		if (is_null($o))
 			return redirect()->back()->withErrors('Employee not found.');
-		if ($o->isConfirm() || $o->hasEmpfile('MAS'))
-			return redirect()->back()->withErrors('Employee already confirm or has .MAS file.');
+		//if ($o->isConfirm() || $o->hasEmpfile('MAS'))
+		//	return redirect()->back()->withErrors('Employee already confirm or has .MAS file.');
 
     $empCtrl = new EmpCtrl($this->employee);
     $dest = config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.'MAS';

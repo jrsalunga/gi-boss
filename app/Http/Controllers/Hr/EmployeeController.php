@@ -698,7 +698,7 @@ class EmployeeController extends Controller
 
 		
 		try {
-			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
+			return $this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
@@ -744,7 +744,9 @@ class EmployeeController extends Controller
 			'remarks'			=> $fileupload->user_remarks,
 			'email'				=> request()->user()->email
 		];
-		
+			
+		return $data['to'];
+
 		try {
 
 			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {

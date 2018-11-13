@@ -106,7 +106,7 @@
 		@if(request()->has('raw') && request()->input('raw')=='true')
 			<input type="hidden" name="_raw" value="true">
 		@endif
-		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader">
+		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader" {{ $valid ? '':'disabled' }}>
 			<span class="gly gly-disk-saved" data-toggle="loader"></span> 
 			<span class="{{ $c }}">Confirm</span> & 
 			<span class="{{ $g }}">Generate .MAS File</span>

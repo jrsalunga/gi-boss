@@ -583,9 +583,9 @@
 													?>
 												<em>
 													@if($m>11)
-													({{ $i }} year<?=$i>1?'s':''?>)
+													({{ $i }} yr<?=$i>1?'s':''?>)
 													@else
-													({{ $m }} month<?=$m>1?'s':''?>)
+													({{ $m }} mon<?=$m>1?'s':''?>)
 													@endif
 												</em>
 											</small>
@@ -630,7 +630,7 @@
 													<?php
 														$i = ($e->getPeriodTo()->year - $e->getPeriodFrom()->year);
 													?>
-													({{ $i }} year<?=$i>1?'s':''?>)
+													({{ $i }} yr<?=$i>1?'s':''?>)
 												</em>
 											</small>
 											@endif

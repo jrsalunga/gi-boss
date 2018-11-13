@@ -67,7 +67,7 @@
 	
 
 	@if($employee->isConfirm() && $employee->hasEmpfile('MAS'))
-		<h4 class="text-success">Employee is already confirmed and has .MAS file</h4>
+		<h4 class="text-success">.MAS file already generated.</h4>
 	@elseif($employee->isConfirm() && !$employee->hasEmpfile('MAS'))
 		<h4 class="text-info">Employee is already confirmed but missing .MAS file</h4>
 	@elseif(!$employee->isConfirm() && $employee->hasEmpfile('MAS'))

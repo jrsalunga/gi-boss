@@ -29,7 +29,7 @@
 <form action="/hr/masterfiles/employee" method="POST">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">
-		<div class="panel-heading">Work Experinces</div>
+		<div class="panel-heading">Work Experiences</div>
 	  <div class="panel-body">
 	  	<div class="w_input_fields_wrap">
 	  		@if(count($employee->workexps)>0)
@@ -90,7 +90,7 @@
 					@endforeach
 	  		@endif
 	  	</div>
-			<a class="w_add_field_button" href="javascript:void(0)" style="font-size: smaller;">Add Work Experince</a>
+			<a class="w_add_field_button" href="javascript:void(0)" style="font-size: smaller;">Add Work Experience</a>
 		</div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-default -->
 

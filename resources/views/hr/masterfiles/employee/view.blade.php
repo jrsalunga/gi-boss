@@ -554,7 +554,7 @@
 	    </div><!-- end: .tab-pane -->
 	    <div role="tabpanel" class="tab-pane <?=request()->input('tab')=='workedu'?'active':'';?>" id="workeduc">
 	    	<div class="panel panel-primary">
-				  <div class="panel-heading">Work Experinces</div>
+				  <div class="panel-heading">Work Experiences</div>
 				  <div class="panel-body">
 						@if(isset($employee->workexps) && count($employee->workexps)>0)
 						<div class="table-responsive">

@@ -691,9 +691,12 @@ class EmployeeController extends Controller
 		$this->employee->update(['processing'=>1], $o->id);
 		
 		DB::commit();
+
+		$email_add = !is_null($this->employee->branch->email) ?: 'jefferson.salunga@yahoo.com';
+
 		
 		try {
-			$this->email($o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
+			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
@@ -724,9 +727,10 @@ class EmployeeController extends Controller
     return $fileUploadRepo->create($data)?:NULL;
   }
 
-  private function email($brcode, $man_no, $name, $fileupload, $filepath) {
+  private function email($to, $brcode, $man_no, $name, $fileupload, $filepath) {
 		
 		$data = [
+			'to' 					=> $to,
 			'branchcode' 	=> $brcode,
 			'man_no' 			=> $man_no,
 			'name' 				=> $name,
@@ -744,8 +748,9 @@ class EmployeeController extends Controller
 			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {
 	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
 	        $message->from('giligans.app@gmail.com', 'Giligans HRIS');
-	       	$message->to('giligans.app@gmail.com');
-	       	$message->cc('giligans.app@gmail.com');
+	       	//$message->to('giligans.app@gmail.com');
+	       	$message->to($$data['to']);
+	       	$message->cc('giligans.hris@gmail.com');
 	       	$message->replyTo($data['email'], $data['user']);
 
 	        //if (app()->environment()==='production')

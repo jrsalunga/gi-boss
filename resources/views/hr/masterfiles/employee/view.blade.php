@@ -583,9 +583,9 @@
 													?>
 												<em>
 													@if($m>11)
-													({{ $m }} month<?=$m>1?'s':''?>)
-													@else
 													({{ $i }} year<?=$i>1?'s':''?>)
+													@else
+													({{ $m }} month<?=$m>1?'s':''?>)
 													@endif
 												</em>
 											</small>

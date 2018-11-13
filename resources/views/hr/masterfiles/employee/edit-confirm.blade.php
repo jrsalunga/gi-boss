@@ -112,9 +112,15 @@
 			<span class="{{ $g }}">Generate .MAS File</span>
 		</button>
 		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}" class="btn btn-default" data-toggle="loader"><span class="gly gly-remove"></span> Cancel</a>
+		
 		<a href="/hr/masterfiles/employee/{{ $employee->lid() }}/edit/workedu" class="btn btn-default pull-right" data-toggle="loader" style="margin-right: 5px;">
 			<span class="gly gly-rewind"></span> 
 			<span class="hidden-xs hidden-sm">Back</span>
+		</a>
+
+		<a href="/hr/masterfiles/employee/create" class="btn btn-primary pull-right" data-toggle="loader" style="margin-right: 5px;">
+			<i class="material-icons">note_add</i> 
+			<span class="hidden-xs hidden-sm">Create New Employee Record</span>
 		</a>
 	</div>
 </div>

@@ -692,7 +692,7 @@ class EmployeeController extends Controller
 		
 		DB::commit();
 
-		//return $o->branch->email;
+		return $o->branch->email;
 
 		$email_add = !is_null($o->branch->email) ?: 'jefferson.salunga@yahoo.com';
 

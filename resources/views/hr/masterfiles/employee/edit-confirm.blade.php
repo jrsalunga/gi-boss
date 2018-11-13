@@ -73,6 +73,8 @@
 	@elseif(!$employee->isConfirm() && $employee->hasEmpfile('MAS'))
 		<h4 class="text-info">Employee is not confirmed but has .MAS file</h4>
 	@else
+
+	@endif
 		<div class="panel panel-info">
 			<div class="panel-heading">E-mail to Branch</div>
 		  <div class="panel-body">
@@ -95,7 +97,6 @@
 		  	</div>
 		 	</div>
 		</div>
-	@endif
 @endif
 <hr>
 <div class="row" style="margin-bottom: 50px;">
@@ -105,7 +106,7 @@
 		@if(request()->has('raw') && request()->input('raw')=='true')
 			<input type="hidden" name="_raw" value="true">
 		@endif
-		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader" {{ $valid ? '':'disabled' }}>
+		<button type="submit" name="_submit" value="submit" class="btn btn-success" data-toggle="loader">
 			<span class="gly gly-disk-saved" data-toggle="loader"></span> 
 			<span class="{{ $c }}">Confirm</span> & 
 			<span class="{{ $g }}">Generate .MAS File</span>

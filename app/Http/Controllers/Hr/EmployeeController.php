@@ -688,7 +688,7 @@ class EmployeeController extends Controller
 			return redirect()->back()->withErrors($er);
 		}
 
-		$this->employee->update(['processing'=>1], $o->id);
+		$this->employee->update(['processing'=>0], $o->id);
 		
 		DB::commit();
 

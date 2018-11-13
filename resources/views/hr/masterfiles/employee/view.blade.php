@@ -579,9 +579,14 @@
 												<small class="text-muted">
 													<?php
 														$m =$w->getPeriodTo()->diffInMonths($w->getPeriodFrom());
+														$i = ($w->getPeriodTo()->year - $w->getPeriodFrom()->year);
 													?>
 												<em>
+													@if($m>11)
 													({{ $m }} month<?=$m>1?'s':''?>)
+													@else
+													({{ $i }} year<?=$i>1?'s':''?>)
+													@endif
 												</em>
 											</small>
 											@endif

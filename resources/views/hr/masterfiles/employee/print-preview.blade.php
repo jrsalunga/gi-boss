@@ -559,7 +559,7 @@ label {
 		</table>
 		@endif
 
-		<div class="panel-header">Work Experince</div>
+		<div class="panel-header">Work Experience</div>
 		@if(isset($employee->workexps) && count($employee->workexps)>0)
 		<table style="width: 100%; margin-top: 5px;">
 			<tbody>

@@ -346,6 +346,11 @@ class EmployeeController extends Controller
       'id' 					=> 'required|max:32|alpha_num',
     ];
 
+    $rules2 = [
+    	'uniform'  		=> 'max:50',
+      'employee_id' => 'required|max:32|alpha_num',
+    ];
+
     if ($request->has('email'))
     	$rules['email'] = 'email|max:80';
     else
@@ -358,6 +363,15 @@ class EmployeeController extends Controller
     	$request->merge(['weight'=>($request->input('weight')*0.45359237)]);
 
 		$new = $this->update_record($request, $rules);
+		$request->merge(['employee_id'=>$new->id]);
+
+		try {
+			$s = $this->statutory->firstOrNewField($request->only(array_keys($rules2)), ['employee_id']);
+		} catch (Exception $e) {
+			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
+			DB::rollBack();
+			return redirect()->back()->withErrors($er);
+		}
 
     if ($request->input('_submit')==='next')
     	return redirect('/hr/masterfiles/employee/'.$new->lid().'/edit/family');

@@ -179,16 +179,23 @@
 	<div class="panel panel-primary">
 	  <div class="panel-body">
 	  	<div class="row">
-	  		<div class="col-md-5">
+	  		<div class="col-md-6">
 					<div class="form-group @include('_partials.input-error', ['field'=>'notes'])">
 				    <label for="notes" class="control-label">Notes</label>
-				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="220" style="max-width: 100%; min-width: 100%;" rows="4">{{ !is_null(old('notes'))?old('notes'):$employee->notes }}</textarea>
+				    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="220" style="max-width: 100%; min-width: 100%;" rows="5">{{ !is_null(old('notes'))?old('notes'):$employee->notes }}</textarea>
 				  </div>
 				</div>
 				<div class="col-md-4">
 				  <div class="form-group @include('_partials.input-error', ['field'=>'hobby'])">
 				    <label for="hobby" class="control-label">Hobbies</label>
 				    <input type="text" class="form-control" id="hobby" name="hobby" placeholder="Hobbies" maxlength="50" value="{{ !is_null(old('hobby'))?old('hobby'):$employee->hobby }}">
+				  </div>
+				</div><!-- end: .col-md-3 -->
+
+				<div class="col-md-4">
+				  <div class="form-group @include('_partials.input-error', ['field'=>'uniform'])">
+				    <label for="uniform" class="control-label">Uniform</label>
+				    <input type="text" class="form-control" id="uniform" name="uniform" placeholder="Uniform" maxlength="50" value="{{ is_null(old('uniform'))?isset($employee->statutory)?$employee->statutory->uniform:'':(old('uniform')>0?old('uniform'):'') }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div><!-- end: .row -->

@@ -396,7 +396,7 @@ label {
 					<td>
 						<div class="form-group">
 									<label>Email</label>
-									<div>{{ $employee->email }}&nbsp;</div>
+									<div>{{ strtolower($employee->email) }}&nbsp;</div>
 								</div>
 					</td>
 				</tr>

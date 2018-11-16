@@ -676,6 +676,7 @@ class EmployeeController extends Controller
     $empCtrl = new EmpCtrl($this->employee);
     $dest = config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.'MAS';
 
+		return 'fdsfafa';
     try {
     	$res = $empCtrl->exportByManNo(pad($o->code,6), 'MAS', $dest);
 		} catch (Exception $e) {
@@ -693,7 +694,6 @@ class EmployeeController extends Controller
 			DB::rollBack();
 			return redirect()->back()->withErrors($er);
 		}
-		return 'fdsfafa';
 
 		try {
     	$empfile = $this->createEmpfile($o->id, $fileupload);

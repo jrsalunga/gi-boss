@@ -415,10 +415,16 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>Hobbies</label>
-									<div>{{ $employee->hobby }}</div>
+									<div>{{ empty($employee->hobby) ? '&nbsp;':$employee->hobby }}</div>
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-3">
+				  			<div class="form-group">
+									<label>Uniform</label>
+									<div>{{ $employee->statutory ? $employee->statutory->uniform:'&nbsp;' }}</div>
+								</div>
+				  		</div>
+							<div class="col-md-9">
 								<div class="form-group">
 									<label>Notes</label>
 									<div>{{ $employee->notes }}</div>

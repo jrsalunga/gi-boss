@@ -221,6 +221,7 @@ class EmpController extends Controller
 		$ph_tag 		= 'N';
 		$pbig_tag 	= 'N';
 		$tax_tag 		= 'N';
+		$uniform 		= '';
 
 		if (!is_null($employee->statutory)) {
 			$meal			= $employee->statutory->meal;
@@ -237,6 +238,17 @@ class EmpController extends Controller
 			$ph_tag 		= $employee->statutory->phic_tag=='1' ? 'Y':'N';
 			$pbig_tag 	= $employee->statutory->hdmf_tag=='1' ? 'Y':'N';
 			$tax_tag 		= $employee->statutory->wtax_tag=='1' ? 'Y':'N';
+			$uniform		= $employee->statutory->uniform;
+		}
+
+		$strpos = strpos($employee->notes, ';', 0);
+		if ($strpos) {
+			$a = explode($employee->notes, ';');
+			$sp1 = substr($a[0], 0, 40);
+			$sp2 = substr($a[1], 0, 40);
+		} else {
+			$sp1 = substr($employee->notes, 0, 40);
+			$sp2 = substr($employee->notes, 40, 40);
 		}
 
 
@@ -319,12 +331,12 @@ class EmpController extends Controller
 			'HEIGHT'			=> $employee->height, //['HEIGHT', 'C', 10],	
 			'WEIGHT'			=> $employee->weight, //['WEIGHT', 'C', 10],	
 			'CIV_STUS'		=> up(substr(check_civil_status($employee->civstatus), 0, 10)), //['CIV_STUS', 'C', 10],	
-			'UNIFORM'			=> ' ',//['UNIFORM', 	'C', 10],	
+			'UNIFORM'			=> $uniform,//['UNIFORM', 	'C', 10],	
 			'EMER_NO'			=> substr($emer_no, 0, 16), //['EMER_NO', 	'C', 16],	
 			'EMER_NAM'		=> substr($emer_name, 0, 20), //['EMER_NAM', 	'C', 20],	
 			'HOBBIES'			=> substr($employee->hobby, 0, 40), //['HOBBIES', 	'C', 40],	
-			'SP_NOTES1'		=> ' ', //['SP_NOTES1', 'C', 40],	
-			'SP_NOTES2'		=> ' ', //['SP_NOTES2', 'C', 40],	
+			'SP_NOTES1'		=> $sp1, //['SP_NOTES1', 'C', 40],	
+			'SP_NOTES2'		=> $sp2, //['SP_NOTES2', 'C', 40],	
 			'CA_PRIN'			=> number_format(0, 2, '.', ''), //['CA_PRIN', 	'N', 10,2],	
 			'CA_RUND'			=> number_format(0, 2, '.', ''), //['CA_RUND', 	'N', 10,2],	
 			'CA_CBAL'			=> number_format(0, 2, '.', ''), //['CA_CBAL', 	'N', 10,2],	

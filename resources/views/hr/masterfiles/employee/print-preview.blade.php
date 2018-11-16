@@ -322,7 +322,7 @@ label {
 					<td>
 						<div class="form-group">
 									<label>W/Tax</label>
-									<div>{{ $employee->statutory ? nf($employee->statutory->wtax):'&nbsp;' }}</div>
+									<div>{{ $employee->statutory ? nf($employee->statutory->wtax):'&nbsp;' }}&nbsp;</div>
 								</div>
 					</td>
 					<td></td>
@@ -421,13 +421,19 @@ label {
 					</td>
 					<td style="width:25%">
 						<div class="form-group">
-									<label>Hobbies</label>
-									<div>{{ $employee->hobby }}&nbsp;</div>
+									<label>Fax</label>
+									<div>{{ $employee->fax }}&nbsp;</div>
 								</div>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4">
+					<td style="width:25%">
+						<div class="form-group">
+									<label>Uniform</label>
+									<div>{{ $employee->statutory ? $employee->statutory->uniform:'&nbsp;' }}&nbsp;</div>
+								</div>
+					</td>
+					<td colspan="3">
 						<div class="form-group">
 									<label>Notes</label>
 									<div>{{ $employee->notes }}&nbsp;</div>

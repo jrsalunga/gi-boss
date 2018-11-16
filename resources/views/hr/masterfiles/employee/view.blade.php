@@ -470,7 +470,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Email</label>
-									<div>{{ $employee->spouse->email }}</div>
+									<div>{{ strtolower($employee->spouse->email) }}</div>
 								</div>
 							</div>
 							<div class="col-md-4">

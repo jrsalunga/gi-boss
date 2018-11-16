@@ -243,7 +243,7 @@ class EmpController extends Controller
 
 		$strpos = strpos($employee->notes, ';', 0);
 		if ($strpos) {
-			$a = explode($employee->notes, ';');
+			$a = explode(';', $employee->notes);
 			$sp1 = substr($a[0], 0, 40);
 			$sp2 = substr($a[1], 0, 40);
 		} else {

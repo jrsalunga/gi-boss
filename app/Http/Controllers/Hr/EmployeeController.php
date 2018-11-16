@@ -676,13 +676,12 @@ class EmployeeController extends Controller
     $empCtrl = new EmpCtrl($this->employee);
     $dest = config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.'MAS';
 
-		return 'fdsfafa';
     try {
     	$res = $empCtrl->exportByManNo(pad($o->code,6), 'MAS', $dest);
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
-			return redirect()->back()->withErrors($er);
+			return redirect()->back()->withErrors('Error: unable to create .MAS file. ('.$er.')');
 		}
 
 		$filename = $o->code.'.MAS';

@@ -53,7 +53,7 @@ class SampleReportController extends Controller
 
       $a = '';
       try {
-        $branch->sector->parent->code;
+        $a = $branch->sector->parent->code;
       } catch (\Exception $e) {
 
       }

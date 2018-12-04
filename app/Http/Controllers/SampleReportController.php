@@ -49,7 +49,8 @@ class SampleReportController extends Controller
 
 
   	foreach ($branches as $key => $branch) {
-  		$datas[$key]['code'] = $branch->code;
+      $datas[$key]['code'] = $branch->code;
+  		$datas[$key]['area'] = $branch->sector->parent->code;
 
   		$mcs = $this->mComponent->skipCache()->scopeQuery(function($query) use ($branch){ 
   												return $query->leftJoin('component', 'component.id', '=', 'month_component.component_id')

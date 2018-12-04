@@ -124,6 +124,8 @@ Route::post('timelog', ['uses'=>'TimelogController@manualPost']);
 Route::get('mansked/manday/{mandayid}', ['uses'=>'ManskedhdrController@getManday']);
 Route::get('mansked/{param1?}', ['uses'=>'ManskedhdrController@getRoute']);
 
+
+/************ manual special reports ****************/
 Route::get('sample-report/meat', ['uses'=>'SampleReportController@getMeat']);
 
 /******************* API  *************************************************/

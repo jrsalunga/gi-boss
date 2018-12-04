@@ -43,8 +43,8 @@ class SampleReportController extends Controller
   public function getMeat(Request $request) {
   	$datas = [];
 
-  	$branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3'])->orderBy('code')->get();
-  	$components = \App\Models\Component::whereIn('compcatid', ['3DEB3311636311E5B83800FF59FBB323'])
+  	$branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3','4', '5'])->orderBy('code')->get();
+  	$components = \App\Models\Component::whereIn('compcatid', ['3DEDA602636311E5B83800FF59FBB323'])
   																		->orderBy('descriptor')->get();
 
 
@@ -62,7 +62,7 @@ class SampleReportController extends Controller
 
   		$mcs = $this->mComponent->skipCache()->scopeQuery(function($query) use ($branch){ 
   												return $query->leftJoin('component', 'component.id', '=', 'month_component.component_id')
-  																		->whereIn('component.compcatid', ['3DEB3311636311E5B83800FF59FBB323'])
+  																		->whereIn('component.compcatid', ['3DEDA602636311E5B83800FF59FBB323'])
   																		->where('month_component.branch_id', $branch->id)
   																		->where('month_component.date', '2018-11-30');
   												})->all();

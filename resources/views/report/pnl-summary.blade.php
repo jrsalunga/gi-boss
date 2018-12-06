@@ -130,7 +130,7 @@
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Sales %</p>
-        <h3 style="margin:0">{{ $ms->sales>0?nf(($ms->food_sales/$ms->slsmtd_totgrs)*100):0 }}</h3>
+        <h3 style="margin:0">{{ $ms->slsmtd_totgrs>0?nf(($ms->food_sales/$ms->slsmtd_totgrs)*100):0 }}</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Cost %</p>

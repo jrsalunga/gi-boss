@@ -708,9 +708,18 @@ class EmployeeController extends Controller
 
 		$email_add = !is_null($o->branch->email) ? $o->branch->email : 'jefferson.salunga@yahoo.com';
 
+		$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
+		$am_email = NULL;
+		if (!is_null($bb))
+			$am = \App\User::where('admin', '3')->whereIn('ordinal', ['14', '16'])->orderBy('ordinal')->first();
+
+		if (!is_null($am))
+			if (!empty($am->email))
+				$am_email = $am->email;
+
 
 		try {
-			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename);
+			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename, $am_email);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
@@ -741,7 +750,7 @@ class EmployeeController extends Controller
     return $fileUploadRepo->create($data)?:NULL;
   }
 
-  private function email($to, $brcode, $man_no, $name, $fileupload, $filepath) {
+  private function email($to, $brcode, $man_no, $name, $fileupload, $filepath, $am_email) {
 		
 		$data = [
 			'to' 					=> $to,
@@ -754,7 +763,8 @@ class EmployeeController extends Controller
 			'cashier'			=> '',
 			'filename'		=> $fileupload->filename,
 			'remarks'			=> $fileupload->user_remarks,
-			'email'				=> request()->user()->email
+			'email'				=> request()->user()->email,
+			'am_email' 			=> $am_email,
 		];
 			
 		try {
@@ -765,6 +775,13 @@ class EmployeeController extends Controller
 	       	//$message->to('giligans.app@gmail.com');
 	       	$message->to($data['to']);
 	       	$message->cc('giligans.hris@gmail.com');
+
+	       	if (!empty($data['am_email']))  {
+	       		//$message->cc($data['am_email']);
+	       		$message->cc('jefferson.salunga@gmail.com');
+	       	}
+	       		
+
 	       	$message->replyTo($data['email'], $data['user']);
 
 	        //if (app()->environment()==='production')

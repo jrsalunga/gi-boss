@@ -711,7 +711,7 @@ class EmployeeController extends Controller
 		$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
 		$am_email = NULL;
 		if (!is_null($bb))
-			$am = \App\User::where('admin', '3')->whereIn('ordinal', ['14', '16'])->orderBy('ordinal')->first();
+			$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
 
 		if (!is_null($am))
 			if (!empty($am->email))

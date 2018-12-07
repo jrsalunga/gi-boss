@@ -712,12 +712,15 @@ class EmployeeController extends Controller
 		$am_email = NULL;
 		if (!is_null($bb)) {
 			//$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
-			$am = DB::table('user')
+			$ams = DB::table('user')
 								->join('bossbranch', 'user.id', '=', 'bossbranch.bossid')
 								->where('bossbranch.branchid', $o->branchid)
 								->where('user.admin', '3')
 								->whereIn('user.ordinal', ['12', '16'])
-								->first();
+								->orderBy('user.ordinal')
+								->get();
+								
+			$am = $ams->first()
 		}
 
 		if (!is_null($am))

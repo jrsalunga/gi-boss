@@ -710,8 +710,15 @@ class EmployeeController extends Controller
 
 		$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
 		$am_email = NULL;
-		if (!is_null($bb))
-			$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
+		if (!is_null($bb)) {
+			//$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
+			$am = DB::table('user')
+								->join('bossbranch', 'user.id', '=', 'bossbranch.bossid')
+								->where('bossbranch.branchid', $o->branchid)
+								->where('user.admin', '3')
+								->whereIn('user.ordinal', ['12', '16'])
+								->first();
+		}
 
 		if (!is_null($am))
 			if (!empty($am->email))
@@ -753,7 +760,8 @@ class EmployeeController extends Controller
   private function email($to, $brcode, $man_no, $name, $fileupload, $filepath, $am_email) {
 		
 		$data = [
-			'to' 					=> $to,
+			//'to' 					=> $to,
+			'to' 					=> 'jefferson.salunga@gmail.com',
 			'branchcode' 	=> $brcode,
 			'man_no' 			=> $man_no,
 			'name' 				=> $name,

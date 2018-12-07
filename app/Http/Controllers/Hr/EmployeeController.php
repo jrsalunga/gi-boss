@@ -718,9 +718,7 @@ class EmployeeController extends Controller
 								->where('user.admin', '3')
 								->whereIn('user.ordinal', ['12', '16'])
 								->orderBy('user.ordinal')
-								->get();
-
-			$am = $ams->first();
+								->first();
 		}
 
 		if (!is_null($am))

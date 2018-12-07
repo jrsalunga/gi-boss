@@ -761,8 +761,8 @@ class EmployeeController extends Controller
   private function email($to, $brcode, $man_no, $name, $fileupload, $filepath, $am_email) {
 		
 		$data = [
-			//'to' 					=> $to,
-			'to' 					=> 'jefferson.salunga@gmail.com',
+			'to' 					=> $to,
+			//'to' 					=> 'jefferson.salunga@gmail.com',
 			'branchcode' 	=> $brcode,
 			'man_no' 			=> $man_no,
 			'name' 				=> $name,

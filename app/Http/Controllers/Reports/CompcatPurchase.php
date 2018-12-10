@@ -75,6 +75,7 @@ class CompcatPurchase extends Controller
     else
       $datas['components'] = $datas['datas'] = NULL;
 
+    return $datas['datas'];
     return $this->setViewWithDR(view('report.compcat-purchase')
                 ->with('compcats', $this->compcat->orderBy('descriptor')->findWhere(['valid'=>'1']))
                 ->with('branches', $this->bb)

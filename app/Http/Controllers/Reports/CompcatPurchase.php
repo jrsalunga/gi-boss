@@ -72,6 +72,8 @@ class CompcatPurchase extends Controller
 
     if (!is_null($compcat))
       $datas = $this->getCompcatPurchasedata($date, $branch, $compcat);
+    else
+      $datas['components'] = $datas['datas'] = NULL;
 
     return $this->setViewWithDR(view('report.compcat-purchase')
                 ->with('compcats', $this->compcat->orderBy('descriptor')->findWhere(['valid'=>'1']))

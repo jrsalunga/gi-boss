@@ -165,9 +165,7 @@
               <tr>
                 <td>{{ $data['code'] }}</td>
                 <td>{{ $data['area'] }}</td>
-                @foreach($data['components'] as $k => $c)
-                  <td>{{ $c['qty'] }}</td>
-                @endforeach
+               
               </tr>
               @endforeach
           </tbody>

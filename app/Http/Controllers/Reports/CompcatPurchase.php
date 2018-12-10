@@ -84,6 +84,8 @@ class CompcatPurchase extends Controller
   
   public function getCompcatPurchasedata($date, $branch, $compcat) {
   	$datas = [];
+    $datas['datas'] = NULL;
+    $datas['components'] = NULL;
 
     $branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3'])->orderBy('code')->get();
     $components = \App\Models\Component::where('compcatid', [$compcat->id])

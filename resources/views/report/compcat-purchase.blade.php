@@ -161,6 +161,7 @@
             </tr>
           </thead>
           <tbody>
+            {{ dd($datas) }}
               @foreach($datas['components'] as $key => $data)
               <tr>
                 <td>{{ $data['code'] }}</td>

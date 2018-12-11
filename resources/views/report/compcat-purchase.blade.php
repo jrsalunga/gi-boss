@@ -161,7 +161,7 @@
             </tr>
           </thead>
           <tbody>
-              @foreach($datas as $key => $data)
+              @foreach($datas['components'] as $key => $data)
               <tr>
                 <td>{{ $data['code'] }}</td>
                 <td>{{ $data['area'] }}</td>

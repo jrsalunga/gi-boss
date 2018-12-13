@@ -195,9 +195,9 @@
             <td class="text-right">{{ $ds['ds']->empcount }}</td>
             <td class="text-right">{{ $ds['ds']->empcount=='0' ? '0.00':number_format(($ds['ds']->sales/$ds['ds']->empcount),2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->mancost,2) }}</td>
-            <td class="text-right">{{ $ds['ds']->mancostpct }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->mancostpct,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->tips,2) }}</td>
-            <td class="text-right">{{ $ds['ds']->tipspct }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->tipspct,2) }}</td>
           @endif
           
         </tr>

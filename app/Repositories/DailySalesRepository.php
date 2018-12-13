@@ -290,6 +290,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= '((SUM(mancost)/SUM(sales))*100) as mancostpct, ((SUM(tips)/SUM(sales))*100) as tipspct, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {

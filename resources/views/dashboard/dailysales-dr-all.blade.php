@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', ' - Daily Sales')
+@section('title', ' - Daily Sales by Date Range')
 
 @section('css-internal')
 
@@ -28,7 +28,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
     <li>Daily Sales</li>
-    <li class="active">{{ $dr->date->format('M j, Y') }}</li>
+    <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
   </ol>
 
     
@@ -51,16 +51,31 @@
             <span class="hidden-xs hidden-sm">All</span>
           </button>
         </div>
-        <div class="btn-group pull-right clearfix" role="group">
-          <a href="/dailysales/all?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-          </a>
-          <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/d/Y') }}" style="max-width: 110px;" readonly>
-          <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
-          <a href="/dailysales/all?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-          </a>
-        </div>
+
+        <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
+            {!! Form::open(['url' => '/dailysales/dr-all', 'method' => 'get', 'id'=>'dp-form']) !!}
+            <button type="submit" class="btn btn-success btn-go" title="Go">
+              <span class="gly gly-search"></span>
+              <span class="hidden-xs hidden-sm">Go</span>
+            </button> 
+            <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}" data-fr="{{ $dr->fr->format('Y-m-d') }}">
+            <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}" data-to="{{ $dr->to->format('Y-m-d') }}">
+            {!! Form::close() !!}
+          </div> <!-- end btn-grp -->
+        
+        <div class="btn-group pull-right clearfix dp-container" role="group">
+            
+            <label class="btn btn-default" for="dp-date-fr">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            <div class="btn btn-default" style="pointer-events: none;">-</div>
+            <input readonly type="text" class="btn btn-default dp" id="dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
+            <label class="btn btn-default" for="dp-date-to">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+        
+          </div><!-- end btn-grp -->
       </div>
     </div>
   </nav>
@@ -105,7 +120,7 @@
         
         <tr>
           <td>
-            <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
+            <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
             <span data-toggle="tooltip" title="{{ $ds['br']->descriptor }}" class="help">
             {{ $key }} 
             </span>
@@ -149,7 +164,7 @@
             @if(number_format($ds['ds']->sales,2)=='0.00')
               {{ number_format($ds['ds']->sales,2)  }}
             @else
-              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
               {{ number_format($ds['ds']->sales,2) }}
               </a>
             @endif
@@ -159,14 +174,14 @@
                 {{ number_format($ds['ds']->cos,2) }}
               @else
                 <!--
-                <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+                <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
                 </a>-->
                   {{ number_format($ds['ds']->cos,2) }}
               @endif
             </td>
             <td class="text-right">
             @if($ds['ds']->purchcost>0)
-              <a href="/component/purchases?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              <a href="/component/purchases?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
               {{ number_format($ds['ds']->purchcost,2) }}
               </a>
             @else
@@ -269,7 +284,10 @@
 <script src="/js/dr-picker.js"></script>
 
 <script>
-    
+   moment.locale('en', { week : {
+      dow : 1 // Monday is the first day of the week.
+    }});  
+
   $(document).ready(function(){
 
     $('.table-sort-all').tablesorter({
@@ -282,14 +300,40 @@
       } 
     });
     
-    $('#dp-date').datetimepicker({
-      defaultDate: "{{ $dr->date->format('Y-m-d') }}",
-      format: 'MM/DD/YYYY',
-      showTodayButton: true,
-      ignoreReadonly: true
-    }).on('dp.change', function(e){
-      document.location.href = '/dailysales/all?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
-    });
+    $('#dp-date-fr').datetimepicker({
+        //defaultDate: "{{ $dr->fr->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        ignoreReadonly: true,
+        //calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        console.log(date);
+        $('#dp-date-to').data("DateTimePicker").minDate(e.date);
+        $('#fr').val(date);
+        if($('#fr').data('fr')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
+
+
+      $('#dp-date-to').datetimepicker({
+       // defaultDate: "{{ $dr->to->format('Y-m-d') }}",
+        format: 'MM/DD/YYYY',
+        showTodayButton: true,
+        useCurrent: false,
+        ignoreReadonly: true,
+        //calendarWeeks: true,
+      }).on('dp.change', function(e){
+        var date = e.date.format('YYYY-MM-DD');
+        $('#dp-date-fr').data("DateTimePicker").maxDate(e.date);
+        $('#to').val(date);
+        if($('#to').data('to')==date)
+          $('.btn-go').prop('disabled', true);
+        else
+          $('.btn-go').prop('disabled', false);
+      });
 
 
   });

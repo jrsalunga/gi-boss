@@ -144,6 +144,12 @@ class DashboardController extends Controller
 		//return view()->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 
+	public function getDailyRangeSalesAll(Request $request) {
+		$dailysales = $this->repo->skipCache()->allBranchByDateRange($this->dr->fr, $this->dr->to);
+		return $this->setViewWithDR(view('dashboard.dailysales-dr-all')->with('dailysales', $dailysales));
+		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
+	}
+
 	public function getDailySalesAll(Request $request) {
 		$dailysales = $this->repo->allBranchByDate($this->dr->date);
 		return $this->setViewWithDR(view('dashboard.dailysales-all')->with('dailysales', $dailysales));

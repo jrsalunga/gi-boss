@@ -105,6 +105,42 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     });
   }
 
+
+  /**
+   * all braches by date //dailysales/dr-all
+   */
+  public function allBranchByDateRange(Carbon $fr, Carbon $to) {
+    $ads = []; // array of dailysales
+    //$bb = Branch::orderBy('code', 'ASC')->get();
+    $bb = $this->branch->all(['code', 'descriptor', 'mancost', 'id']);
+    //return $bb = $this->branch->getByCriteria(new ActiveBranch)->all(['code', 'descriptor', 'mancost', 'id']);
+
+    $dss = $this->getAggregateBranchByDateRange($fr, $to)->all();
+
+    foreach ($bb as $key => $b) { // each bossbranch
+      
+      $filtered = $dss->filter(function ($item) use ($b){
+          return $item->branchid == $b->id
+                ? $item : null;
+      });
+      
+      $ds = $filtered->first();
+      
+    
+      
+      if(is_null($ds))
+        $ads[$b->code]['ds'] = NULL;
+
+      $ads[$b->code]['ds'] = $ds;
+      $ads[$b->code]['br'] = $b;
+    }
+
+    return array_sort_recursive($ads);
+    return array_sort($ads, function($value){
+      return $value;
+    });
+  }
+
   public function getSign($x=0) {
 
         if ($x > 0)
@@ -246,6 +282,22 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     }
 
     return collect($arr);
+
+  }
+
+  private function getAggregateBranchByDateRange($fr, $to) {
+
+    $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
+    $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, branchid';
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
+      return $query->select(DB::raw($sql))
+        ->whereBetween('date', [$fr, $to])
+        ->groupBy(DB::raw('branchid, MONTH(date), YEAR (date)'))
+        ->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+    });
 
   }
   

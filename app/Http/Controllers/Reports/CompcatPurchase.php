@@ -75,7 +75,7 @@ class CompcatPurchase extends Controller
     else
       $datas['components'] = $datas['datas'] = NULL;
 
-    return dd($datas['datas']);
+    //return dd($datas['datas']);
     return $this->setViewWithDR(view('report.compcat-purchase')
                 ->with('compcats', $this->compcat->orderBy('descriptor')->findWhere(['valid'=>'1']))
                 ->with('branches', $this->bb)
@@ -86,9 +86,9 @@ class CompcatPurchase extends Controller
   }
   
   public function getCompcatPurchasedata($date, $branch, $compcat) {
-  	$datas = [];
-    $datas['datas'] = NULL;
-    $datas['components'] = NULL;
+  	$arr = [];
+    $arr['datas'] = NULL;
+    $arr['components'] = NULL;
 
     $branches = \App\Models\Boss\Branch::whereStatus('2')->whereIn('type', ['0', '1', '2', '3'])->orderBy('code')->get();
     $components = \App\Models\Component::where('compcatid', [$compcat->id])

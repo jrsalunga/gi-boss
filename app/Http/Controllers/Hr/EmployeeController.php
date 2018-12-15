@@ -779,7 +779,8 @@ class EmployeeController extends Controller
 		try {
 
 			Mail::queue('emails.hris.man_no', $data, function ($message) use ($data) {
-	        $message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
+	        //$message->subject('Man# '.$data['man_no'].' '.$data['name'].' ('.$data['branchcode'].')');
+	        $message->subject($data['branchcode'].' MAN# '.$data['man_no'].' '.$data['name']);
 	        $message->from('giligans.app@gmail.com', 'Giligans HRIS');
 	       	//$message->to('giligans.app@gmail.com');
 	       	$message->to($data['to']);

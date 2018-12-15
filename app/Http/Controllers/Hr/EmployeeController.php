@@ -773,7 +773,7 @@ class EmployeeController extends Controller
 			'filename'		=> $fileupload->filename,
 			'remarks'			=> $fileupload->user_remarks,
 			'email'				=> request()->user()->email,
-			'am_email' 			=> $am_email,
+			'am_email' 		=> $am_email,
 		];
 			
 		try {
@@ -791,7 +791,8 @@ class EmployeeController extends Controller
 	       	}
 	       		
 
-	       	$message->replyTo($data['email'], $data['user']);
+	       	$message->replyTo('gi.hrd01@gmail.com', $data['user']);
+	       	//$message->replyTo($data['email'], $data['user']);
 
 	        //if (app()->environment()==='production')
 	        	//$message->to('gi.hrd01@gmail.com');

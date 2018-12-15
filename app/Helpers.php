@@ -491,6 +491,18 @@ if (!function_exists('emp_ratetype2')) {
   }
 }
 
+if (!function_exists('enye')) {
+  function enye($x) {
+    return str_replace('¥', 'Ñ', utf8_encode(trim($x)));
+  }
+}
+
+if (!function_exists('eyne')) {
+  function enye($x) {
+    return str_replace('Ñ', '¥', utf8_encode(trim($x)));
+  }
+}
+
 
 
 

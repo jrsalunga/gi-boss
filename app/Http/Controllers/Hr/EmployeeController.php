@@ -725,12 +725,13 @@ class EmployeeController extends Controller
 			if (!empty($am->email))
 				$am_email = $am->email;
 
-
+		/*
 		try {
 			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename, $am_email);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
+    */
     
     return redirect()->back()->with('alert-success', 'Employee has been confirmed and generated .MAS file.');
   }

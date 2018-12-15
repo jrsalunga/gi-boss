@@ -500,7 +500,7 @@ if (!function_exists('enye')) {
 
 if (!function_exists('eyne')) {
   function eyne($x) {
-    return str_replace('Ñ', '¥', utf8_encode(trim($x)));
+    return str_replace('Ñ', '¥', trim($x));
   }
 }
 

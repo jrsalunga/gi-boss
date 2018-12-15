@@ -676,8 +676,10 @@ class EmployeeController extends Controller
     $empCtrl = new EmpCtrl($this->employee);
     $dest = config('giligans.path.files.'.app()->environment()).'EMPFILE'.DS.'MAS';
 
+    $ext = app()->environment('local') ? 'DBF' : 'MAS'; 
+
     try {
-    	$res = $empCtrl->exportByManNo(pad($o->code,6), 'MAS', $dest);
+    	$res = $empCtrl->exportByManNo(pad($o->code,6), $ext, $dest);
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
@@ -709,7 +711,7 @@ class EmployeeController extends Controller
 		$email_add = !is_null($o->branch->email) ? $o->branch->email : 'jefferson.salunga@yahoo.com';
 
 		$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
-		$am_email = NULL;
+		$am_email = $am = NULL;
 		if (!is_null($bb)) {
 			//$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
 			$am = DB::table('user')
@@ -725,13 +727,13 @@ class EmployeeController extends Controller
 			if (!empty($am->email))
 				$am_email = $am->email;
 
-		/*
+		
 		try {
 			$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename, $am_email);
     } catch (Exception $e) {
 			return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
     }
-    */
+    
     
     return redirect()->back()->with('alert-success', 'Employee has been confirmed and generated .MAS file.');
   }

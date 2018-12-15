@@ -497,6 +497,7 @@ if (!function_exists('enye')) {
   }
 }
 
+
 if (!function_exists('eyne')) {
   function enye($x) {
     return str_replace('Ñ', '¥', utf8_encode(trim($x)));

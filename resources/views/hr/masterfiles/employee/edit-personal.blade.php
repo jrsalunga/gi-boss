@@ -23,7 +23,8 @@
 		@include('_partials.alerts')
 	</div>
 </div>
-<h3 class="text-success" style="margin: 15px 0;"> {{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
+<h3 class="text-success" style="margin: 15px 0;">
+	<a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }}</a>
 	<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 </h3>
 <form action="/hr/masterfiles/employee" method="POST">

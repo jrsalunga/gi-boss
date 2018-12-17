@@ -29,7 +29,7 @@
 	<div class="panel-heading">Employee</div>
   <div class="panel-body">
   	<h4>Man #: {{ $employee->code }}</h4>
-  	<h3>{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }}</h3>
+  	<h3><a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }}</a></h3>
  	</div>
 </div>
 <?php

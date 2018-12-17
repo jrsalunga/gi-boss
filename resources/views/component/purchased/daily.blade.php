@@ -237,6 +237,7 @@
                     <th class="text-right">Unit Cost</th>
                     <th class="text-right" class="text-right">Total Cost</th>
                     <th></th>
+                    <th>Supp Ref #</th>
                     <th>Supplier</th>
                     <th>Component Category</th>
                     <th>Expense</th>
@@ -270,6 +271,7 @@
                       
                       style="cursor: help;"><small>{{ $purchase->terms }}</small></span>
                     </td>
+                    <td class="text-muted" data-sort="{{ $purchase->supprefno }}"><small>{{ $purchase->supprefno }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small>{{ $purchase->supplier }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->compcat) }}"><small>{{ $purchase->compcat }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->expense) }}"><small>{{ $purchase->expense }}</small></td>

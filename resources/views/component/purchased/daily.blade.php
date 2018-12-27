@@ -273,8 +273,8 @@
                     </td>
                     <td class="text-muted" data-sort="{{ $purchase->supprefno }}"><small>{{ $purchase->supprefno }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small>{{ $purchase->supplier }}</small></td>
-                    <td class="text-muted" data-sort="{{ strtolower($purchase->compcat) }}"><small>{{ $purchase->compcat }}</small></td>
-                    <td class="text-muted" data-sort="{{ strtolower($purchase->expense) }}"><small>{{ $purchase->expense }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->compcatcode) }}"><small>{{ $purchase->compcatcode }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->expensecode) }}"><small>{{ $purchase->expensecode }}</small></td>
                     <td data-sort="{{ $purchase->expscatcode+0 }}">
                       <span class="label 
                     @if($purchase->expscatcode=='05')

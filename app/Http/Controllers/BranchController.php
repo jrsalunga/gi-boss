@@ -434,7 +434,7 @@ class BranchController extends Controller
       'ophr'	    		=> 'integer',
       'date_reg'  		=> 'date',
       'date_start'  	=> 'date',
-      'date_stop'  		=> 'date',
+      'date_end'  		=> 'date',
       'status'  			=> 'max:3',
       'type'  				=> 'max:3',
       'lessor_id'  		=> 'alpha_num|min:32:max:32',
@@ -577,6 +577,7 @@ class BranchController extends Controller
     $attr['sectorid'] = $request->input('sector_id');
     $attr['companyid'] = $request->input('company_id');
     $attr['opendate'] = $request->input('date_start');
+    $attr['closedate'] = $request->input('date_end');
     
 
     $this->repository->update($attr, $request->input('id'));

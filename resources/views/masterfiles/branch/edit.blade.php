@@ -330,6 +330,17 @@
 						    <input type="text" class="form-control" id="seating" name="seating" placeholder="0.00" data-mask="0,000.00" data-mask-reverse="true" maxlength="8" value="{{ !is_null(old('seating'))?old('rate')>0?old('seating'):'':$branch->seating }}">
 						  </div>
 						</div><!-- end: .col-md-3 -->
+						<div class="col-md-3">
+							<div class="form-group">
+						    <label for="date_end">Date Closed</label>
+						    <div class="input-group datepicker">
+							    <input type="text" class="form-control" id="date_end" name="date_end" placeholder="YYYY-MM-DD" value="{{ $branch->get_date('date_end') }}" data-mask="0000-00-00" maxlength="10">
+							  	<span class="input-group-addon">
+	                  <span class="glyphicon glyphicon-calendar"></span>
+	                </span>	
+						    </div>
+						  </div>
+						</div><!-- end: .col-md-3 -->
 					</div>
 				</div><!-- end:.tabpanel -->
 			</div><!-- end:.tab-content -->

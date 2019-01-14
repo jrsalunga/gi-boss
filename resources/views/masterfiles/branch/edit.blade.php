@@ -178,10 +178,10 @@
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-md-pull-4">
 							<div class="form-group">
-						    <label for="reg_date">Registration Date</label>
+						    <label for="date_reg">Registration Date</label>
 						    <div class="input-group datepicker">
 						    	
-						    <input type="text" class="form-control" id="reg_date" name="reg_date" placeholder="YYYY-MM-DD" value="{{ $branch->reg_date }}" data-mask="0000-00-00" maxlength="10">
+						    <input type="text" class="form-control" id="date_reg" name="date_reg" placeholder="YYYY-MM-DD" value="{{ $branch->date_reg }}" data-mask="0000-00-00" maxlength="10">
 						  	<span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>	

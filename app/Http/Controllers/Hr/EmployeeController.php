@@ -792,6 +792,7 @@ class EmployeeController extends Controller
 
 	       	if (!empty($data['am_email']))  {
 	       		$message->cc($data['am_email']);
+	       		$message->cc('gi.hrd01@gmail.comm');
 	       		//$message->cc('jefferson.salunga@gmail.com');
 	       	}
 	       		

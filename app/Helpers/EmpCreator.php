@@ -198,7 +198,7 @@ class EmpCreator {
 			['ECOL_RATE', 'N', 8,2],	
 			['ALW1_RATE', 'N', 8,2],	
 			['ALW2_RATE', 'N', 8,2],	
-			['CA_BAL', 		'N', 10,2],	
+			['CA_BAL', 		'C', 10,0],	
 			['CHIT_BAL', 	'N', 12,2],	
 			['MTD_GRS', 	'N', 12,2],	
 			['YTD_GRS', 	'N', 12,2],	

@@ -502,6 +502,12 @@ if (!function_exists('eyne')) {
   function eyne($x) {
     return str_replace('Ñ', utf8_decode('¥'), trim($x));
   }
+}  
+
+if (!function_exists('remove_nl')) {
+  function remove_nl($x) {
+    return trim(preg_replace('/\s+/', ' ', $x));
+  }
 }
 
 

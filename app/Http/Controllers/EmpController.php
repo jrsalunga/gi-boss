@@ -127,7 +127,7 @@ class EmpController extends Controller
 
 		$educs = $employee->educations()->get();
 		$educ = '';
-		$educ_idx = ['MBA', 'GS', 'TS', 'TEC', 'HS', 'ELE', 'TOD', 'INF'];
+		$educ_idx = ['MBA', 'GS', 'COL', 'TS', 'TEC', 'HS', 'ELE', 'TOD', 'INF'];
 		//$cmd->info('EDUCS:'. count($educs));
 		$exit = false;
 		//if (count($educs)==1)
@@ -139,7 +139,13 @@ class EmpController extends Controller
 					foreach ($educs as $key => $value) {
 						//$cmd->info($value->acadlevel->code);
 						if (count($educs)==1 && $key==0) {
-							$educ = $value->course.', '.$value->school;
+							if (in_array(strtolower($value), ['tec', 'gs', 'mba', 'col', 'ts'])) // degree holder
+								if (empty($value->course))
+									$educ = $value->school;
+								else
+									$educ = $value->course.', '.$value->school;
+							else // bata pa
+									$educ = $value->acadlevel->code.', '.$value->school;
 							$exit = true;
 							continue;
 						}
@@ -147,7 +153,15 @@ class EmpController extends Controller
 						if (isset($value->acadlevel->code) && $e == $value->acadlevel->code) {
 							//$cmd->info('CODE:'. $value->acadlevel->code);
 							//$cmd->info('EDUC:'. $value->course.', '.$value->school);
-							$educ = $value->course.', '.$value->school;
+
+							if (in_array(strtolower($value->acadlevel->code), ['tec', 'gs', 'mba', 'col', 'ts'])) // degree holder
+								if (empty($value->course))
+									$educ = $value->school;
+								else
+									$educ = $value->course.', '.$value->school;
+							else // bata pa
+									$educ = $value->acadlevel->code.', '.$value->school;
+
 							$exit = true;
 							continue;
 						}
@@ -278,7 +292,7 @@ class EmpController extends Controller
 			'DEPT'				=> up(substr($employee->department->code, 0, 3)).'-'.emp_ratetype($employee->ratetype), //['DEPT', 	'C', 10],	
 			'POSITION'		=> up(substr($position, 0, 12)), //['POSITION', 	'C', 12],	
 			'BRANCH'			=> up(substr($brcode, 0, 3)), //['BRANCH', 	'C', 3],	
-			'CO_NAME'			=> up(substr($company, 0, 50)), //['CO_NAME', 	'C', 50],	
+			'CO_NAME'			=> up(html_entity_decode(substr($company, 0, 50))), //['CO_NAME', 	'C', 50],	
 			'CO_ADD1'			=> substr($comp_add, 0, 40), //['CO_ADD1', 	'C', 40],	
 			'CO_ADD2'			=> substr($comp_add, 40, 40), //['CO_ADD2', 	'C', 40],	
 			'TIN_ER'			=> substr($employee->company->tin, 0, 16), //['TIN_ER', 	'C', 14],	
@@ -315,9 +329,9 @@ class EmpController extends Controller
 			'BIRTHPLC'		=> eyne(up(substr($employee->birthplace, 0, 10))), //	['BIRTHPLC', 	'C', 10],	
 			'RELIGION'		=> up(substr($religion, 0, 10)), //	['RELIGION', 	'C', 10],	
 			'SPOUS_NAM'		=> eyne(up(substr($spouse, 0, 32))), //['SPOUS_NAM', 'C', 32],	
-			'ADDRESS1'		=> eyne(substr($employee->address, 0, 40)), //['ADDRESS1', 	'C', 40],	
-			'ADDRESS2'		=> eyne(substr($employee->address, 40, 40)), //['ADDRESS2', 	'C', 40],	
-			'ADDRESS3'		=> eyne(substr($employee->address, 80, 40)), //['ADDRESS3', 	'C', 40],	
+			'ADDRESS1'		=> remove_nl(eyne(substr($employee->address, 0, 40))), //['ADDRESS1', 	'C', 40],	
+			'ADDRESS2'		=> remove_nl(eyne(substr($employee->address, 40, 40))), //['ADDRESS2', 	'C', 40],	
+			'ADDRESS3'		=> remove_nl(eyne(substr($employee->address, 80, 40))), //['ADDRESS3', 	'C', 40],	
 			'CEL'					=> up(substr($employee->mobile, 0, 40)), //['CEL', 			'C', 40],	
 			'TEL'					=> up(substr($employee->phone, 0, 40)), //['TEL', 			'C', 40],	
 			'EMAIL'				=> up(substr($employee->email, 0, 40)), //['EMAIL', 		'C', 40],	
@@ -335,8 +349,8 @@ class EmpController extends Controller
 			'EMER_NO'			=> substr($emer_no, 0, 16), //['EMER_NO', 	'C', 16],	
 			'EMER_NAM'		=> substr($emer_name, 0, 20), //['EMER_NAM', 	'C', 20],	
 			'HOBBIES'			=> substr($employee->hobby, 0, 40), //['HOBBIES', 	'C', 40],	
-			'SP_NOTES1'		=> $sp1, //['SP_NOTES1', 'C', 40],	
-			'SP_NOTES2'		=> $sp2, //['SP_NOTES2', 'C', 40],	
+			'SP_NOTES1'		=> remove_nl($sp1), //['SP_NOTES1', 'C', 40],	
+			'SP_NOTES2'		=> remove_nl($sp2), //['SP_NOTES2', 'C', 40],	
 			'CA_PRIN'			=> number_format(0, 2, '.', ''), //['CA_PRIN', 	'N', 10,2],	
 			'CA_RUND'			=> number_format(0, 2, '.', ''), //['CA_RUND', 	'N', 10,2],	
 			'CA_CBAL'			=> number_format(0, 2, '.', ''), //['CA_CBAL', 	'N', 10,2],	

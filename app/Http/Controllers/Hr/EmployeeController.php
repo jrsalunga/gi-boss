@@ -708,35 +708,43 @@ class EmployeeController extends Controller
 		
 		DB::commit();
 
-		$email_add = !is_null($o->branch->email) ? $o->branch->email : 'jefferson.salunga@yahoo.com';
 
-		$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
-		$am_email = $am = NULL;
-		if (!is_null($bb)) {
-			//$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
-			$am = DB::table('user')
-								->join('bossbranch', 'user.id', '=', 'bossbranch.bossid')
-								->where('bossbranch.branchid', $o->branchid)
-								->where('user.admin', '3')
-								->whereIn('user.ordinal', ['12', '16'])
-								->orderBy('user.ordinal')
-								->first();
-		}
+		// send email?? 
 
-		if (!is_null($am))
-			if (!empty($am->email))
-				$am_email = $am->email;
+		if ($request->input('email')==1) {
 
-		if (app()->environment('production')) {
-			try {
-				$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename, $am_email);
-	    } catch (Exception $e) {
-				return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
-	    }
+			$email_add = !is_null($o->branch->email) ? $o->branch->email : 'jefferson.salunga@yahoo.com';
+
+			$bb = \App\Models\BossBranch::where('branchid', $o->branchid)->first();
+			$am_email = $am = NULL;
+			if (!is_null($bb)) {
+				//$am = \App\User::where('admin', '3')->whereIn('ordinal', ['12', '16'])->orderBy('ordinal')->first();
+				$am = DB::table('user')
+									->join('bossbranch', 'user.id', '=', 'bossbranch.bossid')
+									->where('bossbranch.branchid', $o->branchid)
+									->where('user.admin', '3')
+									->whereIn('user.ordinal', ['12', '16'])
+									->orderBy('user.ordinal')
+									->first();
+			}
+
+			if (!is_null($am))
+				if (!empty($am->email))
+					$am_email = $am->email;
+
+			if (app()->environment('production')) {
+				try {
+					$this->email($email_add, $o->branch->code, $o->code, $o->firstname.' '.$o->lastname, $fileupload, $dest.DS.$filename, $am_email);
+		    } catch (Exception $e) {
+					return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+		    }
+			}
+
+    	return redirect()->back()->with('alert-success', 'Employee .MAS file has been generated and forward to branch!.');
 		}
     
     
-    return redirect()->back()->with('alert-success', 'Employee has been confirmed and generated .MAS file.');
+    return redirect()->back()->with('alert-success', 'Employee .MAS file has been generated!');
   }
 
 

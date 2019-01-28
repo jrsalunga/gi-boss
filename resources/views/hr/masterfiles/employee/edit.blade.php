@@ -53,7 +53,7 @@
 			<div class="col-md-3">
 				<div class="form-group @include('_partials.input-error', ['field'=>'code'])">
 					<label for="code" class="control-label">Man No</label>
-					<input type="text" class="form-control" id="code" placeholder="Man No" maxlength="6" value="{{ $employee->code }}" readonly>
+					<input type="text" class="form-control" id="code" placeholder="Man No" maxlength="6" value="{{ $employee->code }}" readonly style="cursor: default;">
 				</div>
 			</div><!-- end:.col-md-4 -->
 			

@@ -12,11 +12,11 @@
 	<div class="col-md-12">
 		<ul class='nav nav-wizard'>
 		  <li class='active'><a href="javascript:void(0)" data-toggle="tab"><span class="gly gly-user"></span> <span class="hidden-xs hidden-sm">General</span></a></li>
-		  <li><a href="javascript:void(0)"><span class="gly gly-folder-closed"></span> <span class="hidden-xs hidden-sm">Employment</span></a></li>
-			<li><a href="javascript:void(0)"><span class="gly gly-nameplate-alt"></span> <span class="hidden-xs hidden-sm">Personal</span></a></li>
-		  <li><a href="javascript:void(0)"><span class="gly gly-group"></span> <span class="hidden-xs hidden-sm">Family</span></a></li>
-		  <li><a href="javascript:void(0)"><span class="gly gly-certificate"></span> <span class="hidden-xs hidden-sm">Work & Education</span></a></li>
-		  <li><a href="javascript:void(0)"><span class="gly gly-disk-saved"></span> <span class="hidden-xs hidden-sm">Confirmation</span></a></li>
+		  <li><a href="javascript:void(0)" style="cursor: default;"><span class="gly gly-folder-closed"></span> <span class="hidden-xs hidden-sm">Employment</span></a></li>
+			<li><a href="javascript:void(0)" style="cursor: default;"><span class="gly gly-nameplate-alt"></span> <span class="hidden-xs hidden-sm">Personal</span></a></li>
+		  <li><a href="javascript:void(0)" style="cursor: default;"><span class="gly gly-group"></span> <span class="hidden-xs hidden-sm">Family</span></a></li>
+		  <li><a href="javascript:void(0)" style="cursor: default;"><span class="gly gly-certificate"></span> <span class="hidden-xs hidden-sm">Work & Education</span></a></li>
+		  <li><a href="javascript:void(0)" style="cursor: default;"><span class="gly gly-disk-saved"></span> <span class="hidden-xs hidden-sm">Confirmation</span></a></li>
 		</ul>
 	</div>
 	<div class="col-md-12">
@@ -50,8 +50,8 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="form-group @include('_partials.input-error', ['field'=>'code'])">
-			<label for="code" class="control-label">Man No: <span class="text-success help" title="This Man # will be used if the field is blank" data-toggle="tooltip">{{ $code }}</span></label>
-			<input type="text" class="form-control" id="code" name="code" placeholder="Man No" maxlength="6" value="{{ request()->old('code') }}">
+			<label for="code" class="control-label">Man No: <!--<span class="text-success help" title="Next Man No. based on the last." data-toggle="tooltip">{{ $code }}</span>--></label>
+			<input type="text" class="form-control" id="code" name="code" placeholder="Man No" maxlength="6" value="{{ is_null(request()->old('code'))?$code:request()->old('code') }}">
 		</div>
 	</div><!-- end:.col-md-4 -->
 	

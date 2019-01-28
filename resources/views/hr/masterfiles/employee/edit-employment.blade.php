@@ -356,7 +356,7 @@
 				<div class="col-md-3 col-md-offset-1 col-md-pull-1">
 					<div class="form-group @include('_partials.input-error', ['field'=>'tin'])">
 				    <label for="tin" class="control-label">TIN #</label>
-				    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" data-mask="000-000-000-000" maxlength="15" value="{{ !is_null(old('tin'))?old('tin'):$employee->tin }}">
+				    <input type="text" class="form-control" id="tin" name="tin" placeholder="000-000-000-000" data-mask="000-000-000-000" maxlength="15" value="{{ !is_null(old('tin'))?old('tin'):(empty($employee->tin)?'000000000000':$employee->tin) }}">
 				  </div>
 				</div><!-- end: .col-md-3 -->
 				<div class="col-md-3 col-md-pull-1">

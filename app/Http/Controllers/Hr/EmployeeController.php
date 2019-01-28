@@ -212,6 +212,8 @@ class EmployeeController extends Controller
     else
     	$rules['datestop'] = 'date_format:Y-m-d';
 
+    if (!$request->has('tin'))
+    	$request->merge(['tin'=>'000000000000']);
 
     $rules2 = [
     	'date_reg'		=> 'date_format:Y-m-d',

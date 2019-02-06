@@ -113,7 +113,7 @@
 						<li><i class="material-icons">pin_drop</i>
 							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
 							</em>
-								<small>
+								<small style="margin-right: 15px; ">
 									@if(isset($child->am))
 									{{ $child->am->position->code }}: {{ $child->am->lastname }}, {{ $child->am->firstname }}: 
 									/
@@ -121,7 +121,6 @@
 									
 									@if(isset($child->kh))
 									{{ $child->kh->position->code }}: {{ $child->kh->lastname }}, {{ $child->kh->firstname }}: 
-									/
 									@endif 
 								</small>
 							<?php $branches = $child->branch ?>

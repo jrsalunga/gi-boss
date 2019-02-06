@@ -112,17 +112,18 @@
 					@foreach($sector->children as $child)
 						<li><i class="material-icons">pin_drop</i>
 							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
+							</em>
 								<small>
 									@if(isset($child->am))
 									{{ $child->am->position->code }}: {{ $child->am->lastname }}, {{ $child->am->firstname }}: 
 									/
 									@endif 
 									
-									{{ $child->kh->position->code }}: 
-							
+									@if(isset($child->kh))
+									{{ $child->kh->position->code }}: {{ $child->kh->lastname }}, {{ $child->kh->firstname }}: 
+									/
+									@endif 
 								</small>
-								)
-							</em>
 							<?php $branches = $child->branch ?>
 							@if(count($branches)>0)
 								<ul class="list-unstyled" style="margin-left: 15px;">

@@ -115,12 +115,18 @@
 							</em>
 								<small style="margin-left: 15px; ">
 									@if(isset($child->am))
-									{{ $child->am->position->code }}: {{ $child->am->lastname }}, {{ $child->am->firstname }} 
+									{{ $child->am->position->code }}: 
+		  							<a href="/hr/masterfiles/employee/{{$child->am->lid() }}" target="_blank">
+										{{ $child->am->lastname }}, {{ $child->am->firstname }} 
+										</a>
 									@endif 
 								<small style="margin-left: 15px; ">
 								</small>
 									@if(isset($child->kh))
-									{{ $child->kh->position->code }}: {{ $child->kh->lastname }}, {{ $child->kh->firstname }}
+									{{ $child->kh->position->code }}: 
+										{{ $child->kh->lastname }}, {{ $child->kh->firstname }}
+		  							<a href="/hr/masterfiles/employee/{{$child->kh->lid() }}" target="_blank">
+		  							</a>
 									@endif 
 								</small>
 							<?php $branches = $child->branch ?>

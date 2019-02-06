@@ -124,8 +124,8 @@
 								</small>
 									@if(isset($child->kh))
 									{{ $child->kh->position->code }}: 
-										{{ $child->kh->lastname }}, {{ $child->kh->firstname }}
 		  							<a href="/hr/masterfiles/employee/{{$child->kh->lid() }}" target="_blank">
+										{{ $child->kh->lastname }}, {{ $child->kh->firstname }}
 		  							</a>
 									@endif 
 								</small>

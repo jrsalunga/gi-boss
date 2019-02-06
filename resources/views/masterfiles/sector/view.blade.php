@@ -129,7 +129,10 @@
 						@if(count($branches)>0)
 							<ul class="list-unstyled">
 							@foreach($branches as $k => $branch)
-								<li>{{ ($k+1) }}. <a href="/masterfiles/branch/{{ $branch->lid() }}" target="_blank">{{ $branch->code }} - {{ $branch->descriptor }}</a></li>
+								<li>{{ ($k+1) }}. 
+									<a href="/masterfiles/branch/{{ $branch->lid() }}" target="_blank">{{ $branch->code }}</a> -
+									<a href="/hr/masterfiles/employee/branch/{{ $branch->lid() }}" target="_blank">{{ $branch->descriptor }}</a>
+								</li>
 							@endforeach
 							</ul>
 						@endif

@@ -111,7 +111,11 @@
 					<ul class="list-unstyled">
 					@foreach($sector->children as $child)
 						<li><i class="material-icons">pin_drop</i>
-							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b></em>
+							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
+								(<span class="label label-default help" title="{{$child->am->position->descriptor}}" data-toggle="tooltip">{{$child->kh->position->code}}</span>
+							
+								)
+							</em>
 							<?php $branches = $child->branch ?>
 							@if(count($branches)>0)
 								<ul class="list-unstyled" style="margin-left: 15px;">

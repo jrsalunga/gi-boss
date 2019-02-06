@@ -112,8 +112,11 @@
 					@foreach($sector->children as $child)
 						<li><i class="material-icons">pin_drop</i>
 							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
-								(<span class="label label-default help" title="{{$child->am->position->descriptor}}" data-toggle="tooltip">{{$child->kh->position->code}}</span>
+								<small>
+									(<span class="label label-default help" title="{{$child->am->position->descriptor}}" data-toggle="tooltip">{{$child->am->position->code}}</span>
+									
 							
+								</small>
 								)
 							</em>
 							<?php $branches = $child->branch ?>

@@ -113,8 +113,12 @@
 						<li><i class="material-icons">pin_drop</i>
 							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
 								<small>
-									(<span class="label label-default help" title="{{$child->am->position->descriptor}}" data-toggle="tooltip">{{$child->am->position->code}}</span>
+									@if(isset($child->am))
+									{{ $child->am->position->code }}: {{ $child->am->lastname }}, {{ $child->am->firstname }}: 
+									/
+									@endif 
 									
+									{{ $child->kh->position->code }}: 
 							
 								</small>
 								)

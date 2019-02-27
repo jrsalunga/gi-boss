@@ -113,7 +113,7 @@
 						<li><i class="material-icons">pin_drop</i>
 							<em><b><a href="/masterfiles/sector/{{ $child->lid() }}">{{ $child->code }}</a></b>
 							</em>
-								<small style="margin-left: 15px; ">
+								<small style="margin-left: 25px; ">
 									@if(isset($child->am))
 									{{ $child->am->position->code }}: 
 		  							<a href="/hr/masterfiles/employee/{{$child->am->lid() }}" target="_blank">

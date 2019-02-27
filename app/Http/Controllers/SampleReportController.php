@@ -64,7 +64,7 @@ class SampleReportController extends Controller
   												return $query->leftJoin('component', 'component.id', '=', 'month_component.component_id')
   																		->whereIn('component.compcatid', ['3DF8FB71636311E5B83800FF59FBB323'])
   																		->where('month_component.branch_id', $branch->id)
-  																		->where('month_component.date', '2019-01-31');
+  																		->where('month_component.date', '2018-10-31');
   												})->all();
 
   		foreach ($components as $c => $component) {

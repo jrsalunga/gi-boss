@@ -296,8 +296,9 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
       return $query->select(DB::raw($sql))
         ->whereBetween('date', [$fr, $to])
-        ->groupBy(DB::raw('branchid, MONTH(date), YEAR (date)'))
-        ->orderBy(DB::raw('YEAR (date), MONTH(date)'));
+        ->groupBy(DB::raw('branchid'));
+        //->groupBy(DB::raw('branchid, MONTH(date), YEAR (date)'))
+        //->orderBy(DB::raw('YEAR (date), MONTH(date)'));
     });
 
   }

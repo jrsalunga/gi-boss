@@ -14,7 +14,6 @@ class Company extends BaseModel {
 	public function branches() {
     return $this->hasMany('App\Models\Boss\Branch')
               ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'id'])
-              ->where('status','<', '3')
               ->orderBy('code');
   }
 

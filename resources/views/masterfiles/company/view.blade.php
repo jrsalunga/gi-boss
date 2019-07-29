@@ -61,7 +61,7 @@
 		    	</ul>
 		    </div><!-- end:#gov -->
 		     <div role="tabpanel" class="tab-pane" id="branches">
-		     	<?php $company->load('branches') ?>
+		     	<?php $company->load('all_branches') ?>
 
 		     	<table class="table table-condensed">
 		     		<tbody>

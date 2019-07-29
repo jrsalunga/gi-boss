@@ -18,6 +18,12 @@ class Company extends BaseModel {
               ->orderBy('code');
   }
 
+  public function all_branches() {
+    return $this->hasMany('App\Models\Boss\Branch')
+              ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'id'])
+              ->orderBy('tin');
+  }
+
   public function contacts() {
     return $this->morphMany('App\Models\Contact', 'contactable');
   }

@@ -17,7 +17,7 @@ class Company extends BaseModel {
               ->orderBy('code');
   }
 
-  public function all_branches() {
+  public function branches_tin() {
     return $this->hasMany('App\Models\Boss\Branch')
               ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'id'])
               ->orderBy('tin');

@@ -17,16 +17,16 @@
 	</td>
 	<td>
 		@if($branch->status=='1')
-			<span class="label label-warning pull-right">Under Construction</span>
+			<span class="label label-warning pull-left">Under Construction</span>
 		@endif
 		@if($branch->status=='3')
-			<span class="label label-default pull-right">Closed</span>
+			<span class="label label-default pull-left">Closed</span>
 		@endif
 		@if($branch->type=='4')
-			<span class="label label-primary pull-right" style="margin-right: 3px;">Office</span>
+			<span class="label label-primary pull-left" style="margin-left: 3px;">Office</span>
 		@endif
 		@if($branch->type=='5')
-			<span class="label label-info pull-right" style="margin-right: 3px;">Other</span>
+			<span class="label label-info pull-left" style="margin-left: 3px;">Other</span>
 		@endif
 	</td>
 </tr>

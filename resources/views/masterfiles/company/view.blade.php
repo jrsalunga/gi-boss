@@ -64,7 +64,7 @@
 		     	
 		     	<table class="table table-condensed">
 		     		<tbody>
-		    		@foreach($company->all_branches as $branch)
+		    		@foreach($company->branches_tin as $branch)
 		     			<tr data-id="{{ $branch->id }}" data-status="{{ $branch->status}}" >
 		     				<td>
 		     					<a class="{{ $branch->status=='3'?'text-muted':(in_array($branch->type, ['5', '4'])?'text-primary':($branch->status=='1'?'text-warning2':'text-sucess')) }}" href="/masterfiles/branch/{{ strtolower($branch->code) }}">{{ $branch->code }}</a>

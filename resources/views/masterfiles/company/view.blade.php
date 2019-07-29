@@ -71,6 +71,18 @@
 		     				</td>
 		     				<td>
 		     					<a class="{{ $branch->status=='3'?'text-muted':(in_array($branch->type, ['5', '4'])?'text-primary':($branch->status=='1'?'text-warning2':'text-sucess')) }}" href="/masterfiles/branch/{{ $branch->lid() }}">{{ $branch->descriptor }}</a>
+		     					@if($branch->status=='1')
+										<span class="label label-warning pull-right">Under Construction</span>
+									@endif
+									@if($branch->status=='3')
+										<span class="label label-default pull-right">Closed</span>
+									@endif
+									@if($branch->type=='4')
+										<span class="label label-primary pull-right" style="margin-right: 3px;">Office</span>
+									@endif
+									@if($branch->type=='5')
+										<span class="label label-info pull-right" style="margin-right: 3px;">Other</span>
+									@endif
 		     				</td>
 		     				<td>{{ $branch->tin }}</td>
 		     			</tr>

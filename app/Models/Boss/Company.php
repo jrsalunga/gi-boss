@@ -10,17 +10,24 @@ class Company extends BaseModel {
   protected $guarded = ['id'];
   
   
-
-	public function branches() {
+  public function branches() {
     return $this->hasMany('App\Models\Boss\Branch')
               ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'type', 'id'])
+              ->orderBy('code');
+  }
+
+  public function active_branches() {
+    return $this->hasMany('App\Models\Boss\Branch')
+              ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'type', 'id'])
+              ->where('status','<', '3')
               ->orderBy('code');
   }
 
   public function branches_tin() {
     return $this->hasMany('App\Models\Boss\Branch')
               ->select(['code', 'descriptor', 'company_id', 'tin', 'status', 'type', 'id'])
-              ->orderBy('tin');
+              ->orderBy('tin')
+              ->orderBy('code');
   }
 
   public function contacts() {

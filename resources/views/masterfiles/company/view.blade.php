@@ -62,13 +62,18 @@
 		    </div><!-- end:#gov -->
 		     <div role="tabpanel" class="tab-pane" id="branches">
 		     	<?php $company->load('branches') ?>
-		    	<ul class="list-unstyled">
+
+		     	<table class="table table-condensed">
+		     		<tbody>
 		    		@foreach($company->branches as $branch)
-		    		<li>
-		    			<a href="/masterfiles/branch/{{ strtolower($branch->code) }}">{{ $branch->code }}</a> - 
-		    			<a href="/masterfiles/branch/{{ $branch->lid() }}">{{ $branch->descriptor }}</a>
-		    		</li>
+		     			<tr data-id="{{ $branch->id }}" data-status="{{ $branch->status}}" >
+		     				<td><a href="/masterfiles/branch/{{ strtolower($branch->code) }}">{{ $branch->code }}</a></td>
+		     				<td><a href="/masterfiles/branch/{{ $branch->lid() }}">{{ $branch->descriptor }}</a></td>
+		     				<td>{{ $branch->tin }}</td>
+		     			</tr>
 		    		@endforeach
+		     		</tbody>
+		     	</table>
 		    	</ul>
 		    </div><!-- end:#branches -->
 		  </div>

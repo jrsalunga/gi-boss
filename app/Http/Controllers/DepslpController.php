@@ -54,7 +54,7 @@ class DepslpController extends Controller {
 		$date = carbonCheckorNow($request->input('date'));
 
 		if(!$request->has('branchid') && !isset($_GET['branchid'])) {
-      return view('docu.depslp.checklist')
+      return view('docu.depslp.checklist2')
 						->with('date', $date)
 						->with('depslips', null)
 						->with('branches', $bb)

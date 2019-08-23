@@ -188,8 +188,8 @@
     	@if(is_null($purchases))
 
       @else
-
-      <div class="col-md-12">
+    
+      <div class="col-md-4">
         <ul class="nav nav-pills" role="tablist">
           <li role="presentation" class="active">
             <a href="#items" aria-controls="items" role="tab" data-toggle="tab">
@@ -220,19 +220,19 @@
           <li role="presentation" style="float: right;">
             <div>
             Total : 
-            <h3 id="tot-purch-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+            <h3 id="tot-purch-cost" class="text-right" style="margin:0 50px 10px 0;">0.00</h3>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             Trans Emp Meal: 
-            <h3 id="tot-emp" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+            <h3 id="tot-emp" class="text-right" style="margin:0 50px 10px 0;">0.00</h3>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             POS Purchased Cost: 
-            <h3 id="tot-pos-purch" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+            <h3 id="tot-pos-purch" class="text-right" style="margin:0 50px 10px 0;">0.00</h3>
             </div>
           </li>
         </ul>

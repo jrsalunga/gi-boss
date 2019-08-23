@@ -246,7 +246,7 @@
                 </thead>
                 <tbody>
                   @foreach($purchases as $purchase)
-                  <tr>
+                  <tr data-componentid="{{ $purchase->componentid }}" >
                     <td data-sort="{{ $purchase->date->format('Y-m-d') }}" style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}">
                       {{ $purchase->date->format('Y-m-d') }}
                     </td>

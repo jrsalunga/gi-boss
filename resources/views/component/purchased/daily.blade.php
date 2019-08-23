@@ -226,13 +226,13 @@
           <li role="presentation" style="float: right;">
             <div>
             Trans Emp Meal: 
-            <h3 id="tot-emp" class="text-right" style="margin:0 25% 10px 0;">0.00</h3>
+            <h3 id="tot-emp" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             POS Purchased Cost: 
-            <h3 id="tot-pos-purch" class="text-right" style="margin:0 50% 10px 0;">0.00</h3>
+            <h3 id="tot-pos-purch" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
             </div>
           </li>
         </ul>

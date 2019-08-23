@@ -189,7 +189,7 @@
 
       @else
     
-      <div class="col-md-4">
+      <div class="col-md-12">
         <ul class="nav nav-pills" role="tablist">
           <li role="presentation" class="active">
             <a href="#items" aria-controls="items" role="tab" data-toggle="tab">

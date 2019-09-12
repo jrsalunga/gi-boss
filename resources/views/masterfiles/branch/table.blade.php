@@ -15,10 +15,20 @@
 			<a href="/masterfiles/lessor/{{ $branch->lessor->lid() }}">{{ $branch->lessor->code }}</a>
 		@endif
 	</td>
-	<td>
-		@foreach($branch->contacts() as $contact)
-			<span>{{ $contact->number }}</span>
+	<td style="line-height: 1;">
+
+		@foreach($branch->contacts as $c)
+			<span style="margin-right: 5px;">{!! contact_icon($c->type, true) !!}<a href="#" style="font-size: smaller;" >{{ $c->getNumber() }}</a></span>
 		@endforeach
+	</td>
+	<td>
+		@if (!is_null($branch->date_start))
+			{{ $branch->date_start->format('j M Y') }}
+		@endif
+
+		@if (!is_null($branch->service_period()))
+		<em style="font-size: smaller; color: #888;">({{ $branch->service_period(true) }} {{ ($branch->service_period(true)>1) ? 'yrs':'yr' }})</em>
+		@endif
 	</td>
 	<td>
 		@if($branch->status=='1')

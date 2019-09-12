@@ -8,7 +8,7 @@ class Branch extends BaseModel {
 
   use SoftDeletes;
 
-  //protected $connection = 'mysql-hr';
+  // protected $connection = 'boss-live';
 	protected $table = 'branch';
   //protected $fillable = ['code', 'descriptor'];
  	protected $guarded = ['id'];
@@ -108,6 +108,27 @@ class Branch extends BaseModel {
       return $a.', '.$this->address;
     }
     return $this->address;
+  }
+
+
+  public function service_period($format=false) {
+    $fr = $to = NULL;
+    $mon = 0;
+
+
+
+    if (!is_null($this->date_start) && is_iso_date($this->date_start->format('Y-m-d')))
+      $fr = $this->date_start;
+    if (!is_null($this->date_end) && is_iso_date($this->date_end->format('Y-m-d')))
+      $to = $this->date_end;
+
+    if (!is_null($fr) && !is_null($to))
+      return $format ? number_format($fr->diffInMonths($to)/12, 2) : $fr->diffInMonths($to);
+
+    if(!is_null($fr) && is_null($to))
+      return $format ? number_format($fr->diffInMonths(Carbon::now())/12, 2) : $fr->diffInMonths(Carbon::now());
+
+    return NULL;
   }
   
 }

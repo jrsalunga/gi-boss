@@ -26,7 +26,7 @@
 			{{ $branch->date_start->format('j M Y') }}
 		@endif
 
-		@if (!is_null($branch->service_period()))
+		@if (!is_null($branch->service_period()) && ($branch->service_period(true)>1))
 		<em style="font-size: smaller; color: #888;">({{ $branch->service_period(true)+0 }} {{ ($branch->service_period(true)>1) ? 'yrs':'yr' }})</em>
 		@endif
 	</td>

@@ -16,6 +16,11 @@
 		@endif
 	</td>
 	<td>
+		@foreach($branch->contacts() as $contact)
+			<span>{{ $contact->number }}</span>
+		@endforeach
+	</td>
+	<td>
 		@if($branch->status=='1')
 			<span class="label label-warning pull-left">Under Construction</span>
 		@endif

@@ -27,7 +27,7 @@
 		@endif
 
 		@if (!is_null($branch->service_period()))
-		<em style="font-size: smaller; color: #888;">({{ $branch->service_period(true) }} {{ ($branch->service_period(true)>1) ? 'yrs':'yr' }})</em>
+		<em style="font-size: smaller; color: #888;">({{ $branch->service_period(true)+0 }} {{ ($branch->service_period(true)>1) ? 'yrs':'yr' }})</em>
 		@endif
 	</td>
 	<td>

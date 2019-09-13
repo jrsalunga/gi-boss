@@ -16,10 +16,14 @@
 		@endif
 	</td>
 	<td style="line-height: 1;">
-
 		@foreach($branch->contacts as $c)
-			<span style="margin-right: 5px;">{!! contact_icon($c->type, true) !!}<a href="#" style="font-size: smaller;" >{{ $c->getNumber() }}</a></span>
+			<span style="margin-right: 5px;">{!! contact_icon($c->type, true) !!}<a href="tel:{{$c->getNumber()}}" style="font-size: smaller;" >{{ $c->getNumber() }}</a></span>
 		@endforeach
+	</td>
+	<td>
+		<a href="mailto:{{$branch->email}}" style="font-size: smaller;" >
+		{{ $branch->email }}
+		</a>
 	</td>
 	<td>
 		@if (!is_null($branch->date_start))

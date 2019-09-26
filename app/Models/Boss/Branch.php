@@ -114,6 +114,8 @@ class Branch extends BaseModel {
   public function service_period($format=false) {
     $fr = $to = NULL;
     $mon = 0;
+    $res = NULL;
+    $y = $m = '';
 
 
 
@@ -122,11 +124,30 @@ class Branch extends BaseModel {
     if (!is_null($this->date_end) && is_iso_date($this->date_end->format('Y-m-d')))
       $to = $this->date_end;
 
-    if (!is_null($fr) && !is_null($to))
-      return $format ? number_format($fr->diffInMonths($to)/12, 2) : $fr->diffInMonths($to);
+    if (!is_null($fr)) {
 
-    if(!is_null($fr) && is_null($to))
-      return $format ? number_format($fr->diffInMonths(Carbon::now())/12, 2) : $fr->diffInMonths(Carbon::now());
+      $to = is_null($to) ? Carbon::now() : $to;
+
+      if ($format) {
+
+        $yr = floor($fr->diffInMonths($to)/12);
+        $mon = $fr->diffInMonths($to) % 12;
+
+        if ($yr>0) {
+          $s = $yr > 1 ? 'yrs':'yr';
+          $y = $yr.$s;
+        }
+
+        if ($mon>0) {
+          $s = $mon > 1 ? 'mons':'mon';
+          $m = $mon.$s;
+        }        
+
+        return empty($y) && empty($m) ? NULL : trim($y.' '.$m); 
+      } else {
+        return $fr->diffInMonths($to);
+      }
+    }
 
     return NULL;
   }

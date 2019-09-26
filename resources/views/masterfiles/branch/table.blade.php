@@ -28,10 +28,16 @@
 	<td>
 		@if (!is_null($branch->date_start))
 			{{ $branch->date_start->format('j M Y') }}
-		@endif
 
-		@if (!is_null($branch->service_period()) && ($branch->service_period(true)>1))
-		<em style="font-size: smaller; color: #888;">({{ $branch->service_period(true)+0 }} {{ ($branch->service_period(true)>1) ? 'yrs':'yr' }})</em>
+			@if($branch->status=='3' && !is_null($branch->date_end))
+				- {{ $branch->date_end->format('j M Y') }}
+				@endif
+			@endif
+
+		@if (!empty($branch->service_period()))
+			<em style="font-size: smaller; color: #888;">
+				({{ $branch->service_period(true) }})
+			</em>
 		@endif
 	</td>
 	<td>
@@ -39,7 +45,7 @@
 			<span class="label label-warning pull-left">Under Construction</span>
 		@endif
 		@if($branch->status=='3')
-			<span class="label label-default pull-left">Closed</span>
+			<span class="label label-default pull-left" style="cursor: help">Closed</span>
 		@endif
 		@if($branch->type=='4')
 			<span class="label label-primary pull-left" style="margin-left: 3px;">Office</span>

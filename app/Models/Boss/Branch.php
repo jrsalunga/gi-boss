@@ -117,8 +117,6 @@ class Branch extends BaseModel {
     $res = NULL;
     $y = $m = '';
 
-
-
     if (!is_null($this->date_start) && is_iso_date($this->date_start->format('Y-m-d')))
       $fr = $this->date_start;
     if (!is_null($this->date_end) && is_iso_date($this->date_end->format('Y-m-d')))
@@ -148,7 +146,6 @@ class Branch extends BaseModel {
         return $fr->diffInMonths($to);
       }
     }
-
     return NULL;
   }
   

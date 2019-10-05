@@ -181,7 +181,7 @@ class EmployeeController extends Controller
       'branchid' 		=> 'required|max:32|alpha_num',
       'positionid' 	=> 'required|max:32|alpha_num',
       'deptid'			=> 'required|max:32|alpha_num',
-      'empstatus' 	=> 'required|regex:/^[0-5]{1}$/',
+      'empstatus' 	=> 'required|regex:/^[0-7]{1}$/',
       'datestart' 	=> 'required|date_format:Y-m-d',
       'paytype' 		=> 'required|regex:/^[0-3]{1}$/',
       'ratetype' 		=> 'required|regex:/^[0-2]{1}$/',
@@ -207,7 +207,7 @@ class EmployeeController extends Controller
     else
     	$rules['date_reg'] = 'date_format:Y-m-d';
 
-    if (in_array($request->input('empstatus'), ['4', '5', '6']))
+    if (in_array($request->input('empstatus'), ['4', '5', '6', '7']))
     	$rules['datestop'] = 'required|date_format:Y-m-d';
     else
     	$rules['datestop'] = 'date_format:Y-m-d';

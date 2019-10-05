@@ -386,6 +386,10 @@ if (!function_exists('emp_status')) {
     		return 'RESIGNED';
     	case '5':
     		return 'TERMINATED';
+      case '6':
+        return 'END OF TRAINEE CONTRACT';
+      case '7':
+        return 'END OF CONTRACT (ENDO)';
     	default:
     		return '';
         break;

@@ -22,7 +22,7 @@
 						<img src="{{ $employee->getPhotoUrl() }}" style="margin-right: 5px; width: 100px;" class="img-responsive">
 					</td>
 					<td>
-						<h3 class="text-success" style="margin-top: 10px;">
+						<h3 class="text-{{$employee->isActive()?'success':'muted'}}" style="margin-top: 10px;">
 							{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }} 
 							<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 						</h3>

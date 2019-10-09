@@ -357,7 +357,7 @@ class BranchController extends Controller
 		DB::beginTransaction();
 
 		try {
-    	$branch = $this->branchBoss->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor]);
+    	$branch = $this->branchBoss->create(['code'=>strtoupper($request->code), 'descriptor'=>$request->descriptor, 'email'=>$request->email]);
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();
@@ -365,7 +365,7 @@ class BranchController extends Controller
 		}
 	
 		try {
-			$this->repository->modelCreate(['code'=>$branch->code, 'descriptor'=>$branch->descriptor, 'id'=>$branch->id]);
+			$this->repository->modelCreate(['code'=>$branch->code, 'descriptor'=>$branch->descriptorr, 'email'=>$request->email, 'id'=>$branch->id]);
 		} catch (Exception $e) {
 			$er = isset($e->previous->errorInfo[2]) ? $e->previous->errorInfo[2] : $e->getMessage();
 			DB::rollBack();

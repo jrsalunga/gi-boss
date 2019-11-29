@@ -417,7 +417,7 @@ class BranchController extends Controller
 	private function get_rules() {
 		return $rules = [
     	'code' 					=> 'required|max:3',
-      'descriptor' 		=> 'required|max:25',
+      'descriptor' 		=> 'required|max:50',
       'trade_name' 		=> 'max:50',
       'name'			 		=> 'max:50',
       'address' 			=> 'max:120',

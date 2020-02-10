@@ -29,7 +29,7 @@
 				<div class="form-group">
 			    <label for="am">RM/AM</label>
 			    <input type="text" class="form-control searchfield" data-input="#am_id" id="am" name="am" placeholder="Search RM/AM" maxlength="100" value="{{ is_null($sector->am)?'':$sector->am->lastname.', '.$sector->am->firstname }}">
-			    <input type="hidden" name="am_id" id="am_id" value="{{ $sector->kh_id }}">
+			    <input type="hidden" name="am_id" id="am_id" value="{{ $sector->am_id }}">
 			  </div>
 			  <div class="form-group">
 			    <label for="descriptor">RKH/SKH/KH</label>

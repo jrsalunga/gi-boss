@@ -84,7 +84,7 @@ $(document).ready(function(){
         $.when(
           $.ajax({
               type: 'GET',
-              url: "/api/search/employee",
+              url: "/api/search/mancom",
               dataType: "json",
               data: {
                 maxRows: 20,

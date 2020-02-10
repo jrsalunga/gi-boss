@@ -175,6 +175,26 @@ class EmployeeController extends Controller
 		return $res;
 	}
 
+  public function mancom(Request $request, $param1=null) {
+
+    $limit = empty($request->input('maxRows')) ? 10:$request->input('maxRows'); 
+    $res = Employee::where('empstatus', '<>', '4')
+            ->where('empstatus', '<>', '5')
+            ->where(function ($query) use ($request) {
+              $query->orWhere('code', 'like', '%'.$request->input('q').'%')
+                ->orWhere('lastname', 'like',  '%'.$request->input('q').'%')
+                ->orWhere('firstname', 'like',  '%'.$request->input('q').'%')
+                //->orWhere('middlename',  'like', '%'.$request->input('q').'%')
+                ->orWhere('rfid',  'like', '%'.$request->input('q').'%');
+            })
+            ->orderBy('lastname')
+            ->orderBy('firstname')
+            ->take($limit)
+            ->get();
+
+    return $res;
+  }
+
 
 
 }

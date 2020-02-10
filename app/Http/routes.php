@@ -130,11 +130,13 @@ Route::get('mansked/{param1?}', ['uses'=>'ManskedhdrController@getRoute']);
 
 /************ manual special reports ****************/
 Route::get('sample-report/meat', ['uses'=>'SampleReportController@getMeat']);
+Route::get('sample-report/prodcat', ['uses'=>'SampleReportController@getProdcat']);
 
 /******************* API  *************************************************/
 Route::group(['prefix'=>'api'], function(){
 
 Route::get('search/employee', ['uses'=>'EmployeeController@search']);
+Route::get('search/mancom', ['uses'=>'EmployeeController@mancom']);
 Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 
 
@@ -159,6 +161,10 @@ get('/', function () {
 Route::get('masterfiles/employee/branch', 'Hr\BranchController@getBranch');
 
 Route::get('masterfiles/{table?}', ['uses'=>'Hr\MasterfilesController@getIndex']);
+
+Route::get('/masterfiles/employee/employment-activity/{id}', ['uses'=>'Hr\EmploymentActivityController@getIndex']);
+Route::put('/masterfiles/employee/employment-activity', ['uses'=>'Hr\EmploymentActivityController@action']);
+
 Route::get('masterfiles/employee/{id}/edit/employment', 'Hr\EmployeeController@editEmployment');
 Route::get('masterfiles/employee/{id}/edit/personal', 'Hr\EmployeeController@editPersonal');
 Route::get('masterfiles/employee/{id}/edit/family', 'Hr\EmployeeController@editFamily');

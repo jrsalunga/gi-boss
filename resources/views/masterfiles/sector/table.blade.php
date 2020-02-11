@@ -22,4 +22,7 @@
 			<span class="gly gly-shop" style="top: 3px;"></span>
 		@endif
 	</td>
+  <td>
+   <small><a href="/hr/masterfiles/employee/{{ $sector->am->lid() }}" target="_blank">{{ $sector->am->lastname }}, {{ $sector->am->firstname }}</a></small>
+  </td>
 </tr>

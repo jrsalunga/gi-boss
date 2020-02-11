@@ -14,13 +14,13 @@ class Sector extends BaseModel {
 
   public function am() {
     return $this->belongsTo('App\Models\Employee', 'am_id')
-              ->select(['firstname', 'lastname', 'middlename', 'positionid', 'id'])
+              ->select(['firstname', 'lastname', 'middlename', 'positionid', 'email', 'mobile', 'id'])
               ->with('position');
   }
 
   public function kh() {
     return $this->belongsTo('App\Models\Employee', 'kh_id')
-              ->select(['firstname', 'lastname', 'middlename', 'positionid', 'id'])
+              ->select(['firstname', 'lastname', 'middlename', 'positionid', 'email', 'mobile', 'id'])
               ->with('position');
   }
 

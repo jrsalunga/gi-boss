@@ -37,7 +37,7 @@ class SectorRepository extends BaseRepository implements CacheableInterface
 		->paginate($this->getLimit($request));
 	}
 
-	private function getLimit(Request $request, $limit = 10) {
+	private function getLimit(Request $request, $limit = 15) {
 
 		if ( $request->has('limit')
 		&& filter_var($request->input('limit'), FILTER_VALIDATE_INT, ['options'=>['min_range'=>1, 'max_range'=>100]]) ) {

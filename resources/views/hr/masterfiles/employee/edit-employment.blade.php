@@ -43,11 +43,9 @@
 								<option disabled selected>-- Select Company -- </option>
 							@endif
 							@foreach($companies as $company)
-								@if($company->code!='GHC')
 						  	<option value="{{$company->id}}" <?=($company->id==$_companyid)?'selected':'';?> data-tokens="{{ $company->code }} {{ $company->descriptor }}">
 						  		{{ $company->code }} - {{ $company->descriptor }}
 						  	</option>
-						  	@endif
 						  @endforeach
 						</select>
 						@else

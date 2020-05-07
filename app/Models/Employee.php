@@ -19,7 +19,7 @@ class Employee extends BaseModel {
     if (app()->environment()==='production')
       $this->setConnection('mysql-hr');
     else  
-      $this->setConnection('hr-live');
+      $this->setConnection('hr-lives');
   }
 
 
@@ -85,9 +85,12 @@ class Employee extends BaseModel {
     return $this->hasOne('App\Models\Statutory');
   }
 
-
   public function empfile() {
     return $this->hasOne('App\Models\Empfile');
+  }
+
+  public function branch_min() {
+    return $this->belongsTo('App\Models\Branch', 'branchid')->select(['code', 'descriptor', 'email', 'id']);
   }
 
 

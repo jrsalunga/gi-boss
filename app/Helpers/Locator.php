@@ -7,18 +7,22 @@ use Dflydev\ApacheMimeTypes\PhpRepository;
 
 class Locator 
 {
-	protected $storage;
+  protected $storage;
 
-	public function __construct($storage=null) {
-		if (!is_null($storage))
-			$this->setStorage($storage);
-	}
+  public function __construct($storage=null) {
+    if (!is_null($storage))
+      $this->setStorage($storage);
+  }
 
-	public function setStorage($storage) {
-		$this->storage = new StorageRepository(new PhpRepository, $storage.'.'.app()->environment());
-	}
+  public function setStorage($storage) {
+    $this->storage = new StorageRepository(new PhpRepository, $storage.'.'.app()->environment());
+  }
 
-	public function exists($filepath) {
-		return $this->storage->exists($filepath);
-	}
+  public function exists($filepath) {
+    return $this->storage->exists($filepath);
+  }
+
+  public function realFullPath($path) {
+    return $this->storage->realFullPath($path);
+  }
 }

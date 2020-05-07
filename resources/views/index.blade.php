@@ -72,10 +72,11 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
                 <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
-                <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
+                <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch)</a></li>
                 <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
                 <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
                 <li><a href="/report/pnl-summary">Direct P&amp;L Summary (By Branch) <small><span class="label label-success">new</span></small></a></li>
+                <li><a href="/kitlog/month">Kitchen Log Month Summary <small><span class="label label-success">new</span></small></a></li>
               </ul>
             </div>
           </div> 
@@ -205,7 +206,8 @@
               <ul class="dropdown-menu">
                 <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
-                <li><a href="/setslp/checklist"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
+                <li><a href="/setslp/checklist"><span class="fa fa-credit-card"></span>Card Settlement Slip</a></li>
+                <li><a href="/kitlog/checklist"><span class="gly gly-cutlery"></span> Kitchen Log</a></li>
                 <li><a href="/mansked"><span class="gly gly-notes-2"></span> Mansked</a></li>
               </ul>
             </div>

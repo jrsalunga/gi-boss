@@ -5,7 +5,7 @@ use App\Models\BaseModel;
 
 class MonthlySales extends BaseModel {
 
-	//protected $connection = 'boss';
+	//protected $connection = 'boss-live';
 	protected $table = 'monthlysales';
 	public $timestamps = false;
   

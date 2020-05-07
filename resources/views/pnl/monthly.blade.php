@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- By Month Analytics')
+@section('title', '- Direct P&L Summary')
 
-@section('body-class', 'analytics-month')
+@section('body-class', 'pnl')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 

@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://gi-boss.dev'),
+    'url' => env('APP_URL', 'http://gi-boss.devs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'log' => 'single',
+    'log' => 'daily',
 
     /*
     |--------------------------------------------------------------------------
@@ -152,7 +152,9 @@ return [
         GrahamCampbell\Flysystem\FlysystemServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class
+        Yajra\Datatables\DatatablesServiceProvider::class,
+
+        App\Providers\LocatorServiceProvider::class,
 
     ],
 

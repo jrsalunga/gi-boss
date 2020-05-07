@@ -4,6 +4,7 @@ use App\Models\BaseModel;
 
 class Prodcat extends BaseModel {
 
+	// protected $connection = 'boss-live';
 	protected $table = 'prodcat';
 	//protected $guarded = ['id'];
 	protected $fillable = ['code', 'descriptor'];

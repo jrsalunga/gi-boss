@@ -514,8 +514,92 @@ if (!function_exists('remove_nl')) {
   }
 }
 
+function test_log($log, $logfile=NULL) {
+  $logfile = !is_null($logfile) 
+    ? $logfile
+    : base_path().DS.'logs'.DS.now().'-test-log.txt';
 
+  $dir = pathinfo($logfile, PATHINFO_DIRNAME);
 
+  if(!is_dir($dir))
+    mkdir($dir, 0777, true);
 
+  $new = file_exists($logfile) ? false : true;
+  if($new){
+    $handle = fopen($logfile, 'w+');
+    chmod($logfile, 0777);
+  } else
+    $handle = fopen($logfile, 'a');
 
+  //$ip = clientIP();
+  //$brw = $_SERVER['HTTP_USER_AGENT'];
+  //$content = date('r')." | {$ip} | {$action} | {$log} \t {$brw}\n";
+  $content = "{$log}\n";
+  fwrite($handle, $content);
+  fclose($handle);
+} 
+
+if (!function_exists('to_time')) {
+  function to_time($x, $full=false) {
+    $h = floor($x/60);
+    $m = $x % 60;
+    $s = number_format(($x - floor($x)) * 60,0);
+
+    $t = str_pad($h,2,"0",STR_PAD_LEFT).':'.str_pad($m,2,"0",STR_PAD_LEFT).':'.str_pad($s,2,"0",STR_PAD_LEFT);
+
+    return $full===true 
+    ? $t
+    : (starts_with($t,'00:') ? substr($t, 3) : $t);
+  }
+}
+
+if (!function_exists('kit_area')) {
+  function kit_area($x) {
+    switch (strtolower($x)) {
+      case 'c':
+        return 'Center';
+      case 'd':
+        return 'Dispatching';
+      case 'f':
+        return 'Frying';
+      case 'g':
+        return 'Grilling';
+      default:
+        return '';
+        break;
+    }
+  }
+}
+
+if (!function_exists('stl')) {
+    function stl($str) {
+        return strtolower($str);
+    }
+}
+
+if (!function_exists('dateInterval')) {
+  function dateInterval($fr, $to) {
+
+    try {
+      $fr = Carbon\Carbon::parse($fr);
+    } catch (Exception $e) {
+      throw $e;
+      return false;
+    }
+
+    try {
+      $to = Carbon\Carbon::parse($to);
+    } catch (Exception $e) {
+      throw $e;
+      return false;
+    }
+
+    $fr = $fr->copy();
+    $arr = [];
+    do {
+      array_push($arr, Carbon\Carbon::parse($fr->format('Y-m-d').' 00:00:00'));
+    } while ($fr->addDay() <= $to);
+    return $arr;
+  }
+}
 

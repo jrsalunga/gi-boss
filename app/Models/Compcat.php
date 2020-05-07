@@ -4,6 +4,7 @@ use App\Models\BaseModel;
 
 class Compcat extends BaseModel {
 
+  //protected $connection = 'boss-live';
 	protected $table = 'compcat';
   public $timestamps = false;
   //protected $appends = ['date'];

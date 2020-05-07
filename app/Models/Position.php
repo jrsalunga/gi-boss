@@ -17,7 +17,7 @@ class Position extends BaseModel {
     if (app()->environment()==='production')
       $this->setConnection('mysql-hr');
     else  
-      $this->setConnection('hr-live');
+      $this->setConnection('hr-lives');
   }
 
 

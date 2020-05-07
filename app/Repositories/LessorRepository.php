@@ -30,11 +30,4 @@ class LessorRepository extends BaseRepository implements CacheableInterface
 			return $limit;
 		}
 	}
-
-  
-
-
-  
-	
-
 }

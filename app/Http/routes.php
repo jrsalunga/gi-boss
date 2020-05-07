@@ -127,6 +127,10 @@ Route::post('timelog', ['uses'=>'TimelogController@manualPost']);
 Route::get('mansked/manday/{mandayid}', ['uses'=>'ManskedhdrController@getManday']);
 Route::get('mansked/{param1?}', ['uses'=>'ManskedhdrController@getRoute']);
 
+Route::get('kitlog', ['uses'=>'KitlogController@index']);
+Route::get('kitlog/month', ['uses'=>'KitlogController@getMonth']);
+Route::get('kitlog/logs', ['uses'=>'KitlogController@getLogs']);
+Route::get('kitlog/checklist', ['uses'=>'KitlogController@getChecklist']);
 
 /************ manual special reports ****************/
 Route::get('sample-report/meat', ['uses'=>'SampleReportController@getMeat']);
@@ -136,6 +140,7 @@ Route::get('sample-report/prodcat', ['uses'=>'SampleReportController@getProdcat'
 Route::group(['prefix'=>'api'], function(){
 
 Route::get('search/employee', ['uses'=>'EmployeeController@search']);
+Route::get('s/filter/kitlog', ['uses'=>'KitlogController@searchProduct']);
 Route::get('search/mancom', ['uses'=>'EmployeeController@mancom']);
 Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 

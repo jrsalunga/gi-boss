@@ -4,6 +4,7 @@ use App\Models\BaseModel;
 
 class MonthProdcat extends BaseModel {
 
+  // protected $connection = 'boss-live';
   protected $table = 'month_prodcat';
   public $timestamps = false;
   //protected $appends = ['date'];

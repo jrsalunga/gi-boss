@@ -145,9 +145,9 @@
                 $ctr = $tot_qty = $tot_minute = 0;
               ?>
               @foreach($kitlogs as $data)
-              <tr>
+              <tr data-id="{{ $data->id }}">
                 <td>{{ $data->date->format('Y-m-d') }}</td>
-                <td>
+                <td data-productid="{{ $data->product_id }}">
                   {{ is_null($data->product) ? $data->product_id : $data->product->descriptor }}
                   @if($data->iscombo)
                     <span class="label label-success">G</span>

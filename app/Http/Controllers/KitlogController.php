@@ -210,7 +210,7 @@ class KitlogController extends Controller {
               $query->orWhere('code', 'like', '%'.$request->input('q').'%')
                 ->orWhere('descriptor', 'like',  '%'.$request->input('q').'%');
             })
-            ->where('menucat_id', '<>', (app()->environment('local')?'11E7509A985A1C1B0D85A7E0C073910B':'A197E8FFBC7F11E6856EC3CDBB4216A7'))
+            ->whereNotIn('menucat_id', ['A197E8FFBC7F11E6856EC3CDBB4216A7', '24F15101E45111E69815D19988DDBE1E'])
             ->orderBy('descriptor')
             ->take($limit)
             ->get();

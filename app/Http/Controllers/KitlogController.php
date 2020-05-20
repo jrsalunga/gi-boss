@@ -46,17 +46,44 @@ class KitlogController extends Controller {
     return view('kitlog.index');
   }
 
+  private function toDatatables($array) {
+    $datas = [];
+
+    foreach($array as $f) {
+
+      if (is_null($f->product->menucat)) {
+        $datas[99]['menucat'] = 'UNKNOWN';
+        $datas[99]['line']++;
+        array_push($datas[99]['items'], $f);
+      } else {
+        $mid = $f->product->menucat->id;
+        $k = $f->product->menucat->seqno;          
+        if(array_key_exists($k, $datas)) {
+          array_push($datas[$k]['items'], $f);
+          $datas[$k]['line']++;
+        } else {
+          $datas[$k]['items'] = [];
+          $datas[$k]['menucat'] = $f->product->menucat->descriptor;
+          array_push($datas[$k]['items'], $f);
+          $datas[$k]['line'] = 1;
+        }
+      }
+    }
+
+    return $datas;
+  }
+
   public function getMonth(Request $request) {
 
     $bb = $this->branch->active()->all(['code', 'descriptor', 'id']);
     $d = carbonCheckorNow($request->input('date'));
     $date = $d->copy()->endOfMonth();
 
-
+    $dts = [];
     if(!$request->has('branchid') && !isset($_GET['branchid'])) 
     {    
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
-      $foods = $this->datasetFood->with(['product'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+      $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
       return view('kitlog.month')
                 ->with('branches', $bb)
                 ->with('branch', NULL)
@@ -69,7 +96,16 @@ class KitlogController extends Controller {
     || !in_array(strtoupper($request->input('branchid')), collect($bb)->pluck('id')->all())) 
     {
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
-      $foods = $this->datasetFood->with(['product'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+      $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+
+      return view('kitlog.month-menucat')
+                ->with('branches', $bb)
+                ->with('branch', NULL)
+                ->with('date', $date)
+                ->with('areas', $areas)
+                ->with('foods', $foods)
+                ->with('datatables', $this->toDatatables($foods));
+
       return view('kitlog.month')
                 ->with('branches', $bb)
                 ->with('branch', NULL)
@@ -85,7 +121,7 @@ class KitlogController extends Controller {
     }
 
     $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>$branch->id]);
-    $foods = $this->datasetFood->with(['product'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>$branch->id]);
+    $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>$branch->id]);
 
     return view('kitlog.month')
                 ->with('branches', $bb)
@@ -132,19 +168,38 @@ class KitlogController extends Controller {
       $where['iscombo'] = $request->input('iscombo');
 
     $kitlogs = [];
+    $datatables = [];
     if (count($where)>0) {
-      $kitlogs = $this->kitlog
-                  //->skipCache()
-                  ->with(['product', 'menucat'])
+      $relation = is_null($branch) ? ['product', 'menucat', 'branch'] : ['product', 'menucat'];
+      try {
+        $kitlogs = $this->kitlog
+                  ->skipCache()
+                  ->with($relation)
                   ->scopeQuery(function($query){
                     return $query->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
                   })
                   ->orderBy('date')
                   ->orderBy('ordtime')
                   ->findWhere($where);
+      } catch (\Exception $e) {
+        throw new \Exception("Error Processing Request: ".$e->getMessage(), 1);
+        
+      }
+
+      foreach($kitlogs as $kl) {
+        if(array_key_exists($kl->menucat_id, $datatables)) {
+          array_push($datatables[$kl->menucat_id]['items'], $kl);
+        } else {
+          $datatables[$kl->menucat_id]['items'] = [];
+          $datatables[$kl->menucat_id]['menucat'] = $kl->menucat->descriptor;
+          array_push($datatables[$kl->menucat_id]['items'], $kl);
+        }
+      }
     }
 
-   return $this->setViewWithDR(view('kitlog.logs')
+    // return $datatables;
+
+    return $this->setViewWithDR(view('kitlog.logs')
                   ->with('days_diff', $days_diff)
                   ->with('kitlogs', $kitlogs)
                   ->with('branches', $bb)

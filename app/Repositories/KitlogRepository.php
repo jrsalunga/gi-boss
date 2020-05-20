@@ -43,6 +43,7 @@ class KitlogRepository extends BaseRepository implements CacheableInterface
     */
 
     $product_id = is_null($product) ? '11EA7D951C1B0D85A7E00911249AB5' : $product->id;
+    $menucat_id = is_null($product) ? 'A197E8FFBC7F11E6856EC3CDBB4216A7' : $product->menucat_id;
 
     $attr = [
       'date'      => $attributes['date'],
@@ -55,6 +56,7 @@ class KitlogRepository extends BaseRepository implements CacheableInterface
       'iscombo'   => $attributes['iscombo'],
       'product_id'=> $product_id,
       'branch_id' => $attributes['branch_id'],
+      'menucat_id'=> $menucat_id,
     ];
 
     try {

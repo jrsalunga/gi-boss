@@ -206,7 +206,7 @@
               <ul class="dropdown-menu">
                 <li><a href="/backup/checklist"><span class="fa fa-file-archive-o"></span> Backup</a></li>
                 <li><a href="/depslp/checklist"><span class="fa fa-bank"></span> Deposit Slip</a></li>
-                <li><a href="/setslp/checklist"><span class="fa fa-credit-card"></span>Card Settlement Slip</a></li>
+                <li><a href="/setslp/checklist"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
                 <li><a href="/kitlog/checklist"><span class="gly gly-cutlery"></span> Kitchen Log</a></li>
                 <li><a href="/mansked"><span class="gly gly-notes-2"></span> Mansked</a></li>
               </ul>

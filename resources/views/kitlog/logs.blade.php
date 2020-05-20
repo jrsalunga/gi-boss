@@ -127,11 +127,15 @@
     <div class="row">
       <div class="col-md-12">
         @if(count($kitlogs)>0)
+        <div class="table-responsive">
           <table class="table table-condensed tablesorter" style="margin-top: 0;">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Product</th>
+                @if(is_null($branch))
+                  <td>Branch</td>
+                @endif
                 <th>Area</th>
                 <th>Qty</th>
                 <th>Order Time</th>
@@ -153,6 +157,9 @@
                     <span class="label label-success">G</span>
                   @endif
                 </td>
+                @if(is_null($branch))
+                  <td>{{ is_null($data->branch) ? $data->branch_id : $data->branch->code }}</td>
+                @endif
                 <td>{{ $data->area }}</td>
                 <td>{{ $data->qty+0 }}</td>
                 <td>{{ $data->ordtime }}</td>
@@ -170,6 +177,9 @@
             <tfoot>
               <tr>
                 <td><b data-toggle="tooltip" title="# of transactions" class="help">{{ $ctr }} trans</b></td>
+                @if(is_null($branch))
+                  <td></td>
+                @endif
                 <td></td><td></td>
                 <td>
                   <b data-toggle="tooltip" title="Total Quantity" class="help">{{ $tot_qty }}</b>
@@ -200,6 +210,7 @@
               </tr>
             </tfoot>
           </table>
+        </div>
         @else
           {{ is_null($branch) ? '':'No Data'  }}
         @endif

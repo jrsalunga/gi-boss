@@ -14,7 +14,7 @@ class Kitlog extends BaseModel {
   ];
 
 	public function product() {
-    return $this->belongsTo('App\Models\Product');
+    return $this->belongsTo('App\Models\Product')->select(['code', 'descriptor', 'id']);
   }
 
   public function product_min() {
@@ -26,6 +26,10 @@ class Kitlog extends BaseModel {
   }
 
   public function menucat() {
-    return $this->belongsTo('App\Models\Menucat');
+    return $this->belongsTo('App\Models\Menucat')->select(['code', 'descriptor', 'id']);
+  }
+
+  public function menucat_min() {
+    return $this->belongsTo('App\Models\Menucat')->select(['code', 'descriptor', 'id']);
   }
 }

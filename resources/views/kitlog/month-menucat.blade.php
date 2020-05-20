@@ -184,46 +184,60 @@
       </div>
       <div class="col-md-6">
         @if(count($foods)>0)
-          <table class="table table-condensed table-sort-all">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th class="text-right" data-sorter="false"></th>
-                <th class="text-right">Total Qty</th>
-                <th class="text-right">Average Time</th>
-                <th class="text-right">Peak Time</th>
-                <th class="text-right">Min Prep</th>
-                <th class="text-right">Max Prep</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($foods as $i => $data)
-              <?php
-                $product = is_null($data->product) ? $data->product_id : $data->product->descriptor;
-              ?>
-              <tr data-product_id="{{ $data->product_id }}">
-                <td data-sort-value="{{ $product }}">
-                  <a href="/kitlog/logs?branchid={{ stl($data->branch_id) }}&productid={{ stl($data->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $data->iscombo }}">
-                  {{ $product }}
-                  </a>
-                  @if($data->iscombo)
-                    <span class="label label-success">G</span>
-                  @endif
-                </td>
-                <td>
-                  <a href="#" data-toggle="modal" data-target="#{{ $data->id }}">
-                    <span class="gly gly-stats" data-toggle="tooltip" title="Show graph" class="help"></span>
-                  </a>
-                </td>
-                <td class="text-right" data-sort-value="{{ $data->qty+0 }}">{{ $data->qty+0 }}</td>
-                <td class="text-right" data-sort-value="{{ to_time($data->ave, true) }}">{{ to_time($data->ave) }}</td>
-                <td class="text-right" data-sort-value="{{ to_time($data->peak, true) }}">{{ to_time($data->peak) }}</td>
-                <td class="text-right" data-sort-value="{{ to_time($data->min, true) }}">{{ to_time($data->min) }}</td>
-                <td class="text-right" data-sort-value="{{ to_time($data->max, true) }}">{{ to_time($data->max) }}</td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All Product</a></li>
+            <li role="presentation"><a href="#menucat" aria-controls="menucat" role="tab" data-toggle="tab">By Category <span class="caret"></span></a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="all">
+              <div class="table-responsive">
+                <table class="table table-condensed table-sort-all">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th class="text-right" data-sorter="false"></th>
+                      <th class="text-right">Total Qty</th>
+                      <th class="text-right">Average Time</th>
+                      <th class="text-right">Peak Time</th>
+                      <th class="text-right">Min Prep</th>
+                      <th class="text-right">Max Prep</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($foods as $i => $data)
+                    <?php
+                      $product = is_null($data->product) ? $data->product_id : $data->product->descriptor;
+                    ?>
+                    <tr data-product_id="{{ $data->product_id }}">
+                      <td data-sort-value="{{ $product }}">
+                        <a href="/kitlog/logs?branchid={{ stl($data->branch_id) }}&productid={{ stl($data->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $data->iscombo }}">
+                        {{ $product }}
+                        </a>
+                        @if($data->iscombo)
+                          <span class="label label-success">G</span>
+                        @endif
+                      </td>
+                      <td>
+                        <a href="#" data-toggle="modal" data-target="#{{ $data->id }}">
+                          <span class="gly gly-stats" data-toggle="tooltip" title="Show graph" class="help"></span>
+                        </a>
+                      </td>
+                      <td class="text-right" data-sort-value="{{ $data->qty+0 }}">{{ $data->qty+0 }}</td>
+                      <td class="text-right" data-sort-value="{{ to_time($data->ave, true) }}">{{ to_time($data->ave) }}</td>
+                      <td class="text-right" data-sort-value="{{ to_time($data->peak, true) }}">{{ to_time($data->peak) }}</td>
+                      <td class="text-right" data-sort-value="{{ to_time($data->min, true) }}">{{ to_time($data->min) }}</td>
+                      <td class="text-right" data-sort-value="{{ to_time($data->max, true) }}">{{ to_time($data->max) }}</td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div> <!-- end: .table-responsive -->
+            </div>
+            <div role="tabpanel" class="tab-pane" id="menucat">...</div>
+          </div>
+
+          
         @else
           {{ is_null($branch) ? '':'No Data'  }}
         @endif

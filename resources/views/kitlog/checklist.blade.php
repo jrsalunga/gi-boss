@@ -113,6 +113,7 @@
       <div class="col-md-12">
 
         @if(count($datas)>0)
+        <div class="table-responsive">
           <table class="table table-condensed tablesorter" style="margin-top: 0;">
             <thead>
               <tr>
@@ -198,6 +199,7 @@
               </tr>
             </tfoot>
           </table>
+        </div>
         @else
           {{ is_null($branch) ? '':'No Data'  }}
         @endif

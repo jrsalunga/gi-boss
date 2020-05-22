@@ -49,28 +49,39 @@ class KitlogController extends Controller {
   private function toDatatables($array) {
     $datas = [];
 
-    foreach($array as $f) {
+    foreach($array as $k => $f) {
 
+      $null_ctr = 0;
       if (is_null($f->product->menucat)) {
         $datas[99]['menucat'] = 'UNKNOWN';
-        $datas[99]['line']++;
+        $datas[99]['items'] = [];
+        if ($null_ctr==0) {
+          $datas[99]['line'] = 1;
+          $datas[99]['qty'] = $f->qty;
+        } else {
+          $datas[99]['line']++;
+          $datas[99]['qty'] += $f->qty;
+        }
         array_push($datas[99]['items'], $f);
+        $null_ctr++;
       } else {
         $mid = $f->product->menucat->id;
         $k = $f->product->menucat->seqno;          
         if(array_key_exists($k, $datas)) {
           array_push($datas[$k]['items'], $f);
           $datas[$k]['line']++;
+          $datas[$k]['qty'] += $f->qty;
         } else {
-          $datas[$k]['items'] = [];
           $datas[$k]['menucat'] = $f->product->menucat->descriptor;
-          array_push($datas[$k]['items'], $f);
           $datas[$k]['line'] = 1;
+          $datas[$k]['qty'] = $f->qty;
+          $datas[$k]['items'] = [];
+          array_push($datas[$k]['items'], $f);
         }
       }
     }
 
-    return $datas;
+    return array_values($datas);
   }
 
   public function getMonth(Request $request) {
@@ -96,7 +107,9 @@ class KitlogController extends Controller {
     || !in_array(strtoupper($request->input('branchid')), collect($bb)->pluck('id')->all())) 
     {
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
-      $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+      $foods = $this->datasetFood->skipCache()->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+
+      // return $this->toDatatables($foods);
 
       return view('kitlog.month-menucat')
                 ->with('branches', $bb)

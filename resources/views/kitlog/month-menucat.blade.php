@@ -184,10 +184,22 @@
       </div>
       <div class="col-md-6">
         @if(count($foods)>0)
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All Product</a></li>
-            <li role="presentation"><a href="#menucat" aria-controls="menucat" role="tab" data-toggle="tab">By Category <span class="caret"></span></a></li>
-          </ul>
+          <div>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active">
+                <a href="#all" role="tab" data-toggle="tab">All Products</a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">By Category <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" id="dd-menucat-contents">
+                  @foreach($datatables as $k => $dt)
+                  <li><a href="#tab{{$k}}" role="tab" data-toggle="tab" >{{ $dt['menucat'] }} <span class="badge">{{ nf($dt['line'],0) }}</span></a></li>
+                  @endforeach
+                </ul>
+              </li>
+            </ul>
+          </div>
 
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="all">
@@ -234,7 +246,52 @@
                 </table>
               </div> <!-- end: .table-responsive -->
             </div>
-            <div role="tabpanel" class="tab-pane" id="menucat">...</div>
+            @foreach($datatables as $k => $dt)
+              <div role="tabpanel" class="tab-pane" id="tab{{$k}}">
+                <div class="table-responsive">
+                  <table class="table table-condensed table-sort-all">
+                    <thead>
+                      <tr>
+                        <th>{{ $dt['menucat'] }}</th>
+                        <th class="text-right" data-sorter="false"></th>
+                        <th class="text-right">Total Qty</th>
+                        <th class="text-right">Average Time</th>
+                        <th class="text-right">Peak Time</th>
+                        <th class="text-right">Min Prep</th>
+                        <th class="text-right">Max Prep</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($dt['items'] as $i => $item)
+                      <?php
+                        $product = is_null($item->product) ? $item->product_id : $item->product->descriptor;
+                      ?>
+                      <tr data-product_id="{{ $item->product_id }}">
+                        <td data-sort-value="{{ $product }}">
+                          <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}">
+                          {{ $product }}
+                          </a>
+                          @if($item->iscombo)
+                            <span class="label label-success">G</span>
+                          @endif
+                        </td>
+                        <td>
+                          <a href="#" data-toggle="modal" data-target="#{{ $item->id }}">
+                            <span class="gly gly-stats" data-toggle="tooltip" title="Show graph" class="help"></span>
+                          </a>
+                        </td>
+                        <td class="text-right" data-sort-value="{{ $item->qty+0 }}">{{ $item->qty+0 }}</td>
+                        <td class="text-right" data-sort-value="{{ to_time($item->ave, true) }}">{{ to_time($item->ave) }}</td>
+                        <td class="text-right" data-sort-value="{{ to_time($item->peak, true) }}">{{ to_time($item->peak) }}</td>
+                        <td class="text-right" data-sort-value="{{ to_time($item->min, true) }}">{{ to_time($item->min) }}</td>
+                        <td class="text-right" data-sort-value="{{ to_time($item->max, true) }}">{{ to_time($item->max) }}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            @endforeach
           </div>
 
           
@@ -364,6 +421,8 @@
   });
 
 
+
+
   Highcharts.setOptions({
     lang: {
       thousandsSep: ','
@@ -477,9 +536,34 @@
   var chart_{{ $food->id }} = new Chart.Line(ctx_{{ $food->id }},{data:dt,options:opt2});
   <?php } ?>
 
+  console.log('test');
 
 
+  $(document).ready(function(e){
 
+
+    // // $('.dropdown').on('click', function(e) {
+    // //   e.preventDefault();
+     
+    // //   console.log($(this).hasClass('active'));
+    // //   console.log($(this).hasClass('open'));
+
+    // //   if ($(this).hasClass('active') && ($(this).hasClass('open')==false)) {
+    // //     $(this).removeClass('active');
+    // //     $(this).addClass('open');
+    // //   }
+
+    // // });
+
+    // $('.nav').on('shown.bs.tab', 'a', function (e) {
+    //     console.log(e.relatedTarget);
+    //     if (e.relatedTarget) {
+    //         $(e.relatedTarget).removeClass('active in');
+    //     }
+    //   console.log('fdasfsadfadsf');
+    // });
+
+  });
 
 
 

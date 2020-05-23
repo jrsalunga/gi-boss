@@ -275,7 +275,7 @@
                       <tr data-product_id="{{ $item->product_id }}">
                         <td data-sort-value="{{ $product }}" data-productcode="{{ $productcode }}">
                           <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}">
-                          <span class="hidden-xs hidden-sm">{{ $productcode }} -</span> {{ $product }}
+                          {{ $product }}
                           </a>
                           @if($item->iscombo)
                             <span class="label label-success">G</span>

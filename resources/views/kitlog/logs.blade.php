@@ -149,10 +149,19 @@
                 $ctr = $tot_qty = $tot_minute = 0;
               ?>
               @foreach($kitlogs as $data)
+              <?php
+                $product = $productcode = NULL;
+                if (is_null($data->product)) {
+                  $product = $data->product_id;
+                } else {
+                  $productcode = $data->product->code;
+                  $product = $data->product->descriptor;
+                }
+              ?>
               <tr data-id="{{ $data->id }}">
                 <td>{{ $data->date->format('Y-m-d') }}</td>
                 <td data-productid="{{ $data->product_id }}">
-                  {{ is_null($data->product) ? $data->product_id : $data->product->descriptor }}
+                  <span class="hidden-xs hidden-sm">{{ $productcode }} - </span>{{ $product }}
                   @if($data->iscombo)
                     <span class="label label-success">G</span>
                   @endif

@@ -194,7 +194,7 @@
                 </a>
                 <ul class="dropdown-menu" id="dd-menucat-contents">
                   @foreach($datatables as $k => $dt)
-                  <li><a href="#tab{{$k}}" role="tab" data-toggle="tab" >{{ $dt['menucat'] }} <span class="badge">{{ nf($dt['line'],0) }}</span></a></li>
+                  <li><a href="#tab{{$k}}" role="tab" data-toggle="tab" >{{ $k }}  {{ $dt['menucat'] }} <span class="badge">{{ nf($dt['line'],0) }}</span></a></li>
                   @endforeach
                 </ul>
               </li>
@@ -219,11 +219,17 @@
                   <tbody>
                     @foreach($foods as $i => $data)
                     <?php
-                      $product = is_null($data->product) ? $data->product_id : $data->product->descriptor;
-                    ?>
+                        $product = $productcode = NULL;
+                        if (is_null($data->product)) {
+                          $product = $data->product_id;
+                        } else {
+                          $productcode = $data->product->code;
+                          $product = $data->product->descriptor;
+                        }
+                      ?>
                     <tr data-product_id="{{ $data->product_id }}">
                       <td data-sort-value="{{ $product }}">
-                        <a href="/kitlog/logs?branchid={{ stl($data->branch_id) }}&productid={{ stl($data->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $data->iscombo }}">
+                        <a href="/kitlog/logs?branchid={{ stl($data->branch_id) }}&productid={{ stl($data->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $data->iscombo }}" title="{{ $productcode }} - {{ $product }}" data-toggle="tooltip">
                         {{ $product }}
                         </a>
                         @if($data->iscombo)
@@ -273,8 +279,8 @@
                         }
                       ?>
                       <tr data-product_id="{{ $item->product_id }}">
-                        <td data-sort-value="{{ $product }}" data-productcode="{{ $productcode }}">
-                          <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}">
+                        <td data-sort-value="{{ $product }}">
+                          <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}" data-productcode="{{ $productcode }}" title="{{ $productcode }} - {{ $product }}" data-toggle="tooltip">
                           {{ $product }}
                           </a>
                           @if($item->iscombo)

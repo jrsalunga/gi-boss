@@ -204,7 +204,7 @@ class KitlogController extends Controller {
           array_push($datatables[$kl->menucat_id]['items'], $kl);
         } else {
           $datatables[$kl->menucat_id]['items'] = [];
-          $datatables[$kl->menucat_id]['menucat'] = $kl->menucat->descriptor;
+          $datatables[$kl->menucat_id]['menucat'] = is_null($kl->menucat) ? $kl->menucat_id : $kl->menucat->descriptor;
           array_push($datatables[$kl->menucat_id]['items'], $kl);
         }
       }

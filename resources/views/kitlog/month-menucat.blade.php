@@ -266,14 +266,14 @@
                       <?php
                         $product = $productcode = NULL;
                         if (is_null($item->product)) {
-                           $product = $item->product_id;
+                          $product = $item->product_id;
                         } else {
-                           $productcode = $item->product->code;
-                           $product = $item->product->descriptor;
+                          $productcode = $item->product->code;
+                          $product = $item->product->descriptor;
                         }
                       ?>
                       <tr data-product_id="{{ $item->product_id }}">
-                        <td data-sort-value="{{ $product }}">
+                        <td data-sort-value="{{ $product }}" data-productcode="{{ $productcode }}">
                           <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}">
                           <span class="hidden-xs hidden-sm">{{ $productcode }} -</span> {{ $product }}
                           </a>

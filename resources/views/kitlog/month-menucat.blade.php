@@ -264,12 +264,18 @@
                     <tbody>
                       @foreach($dt['items'] as $i => $item)
                       <?php
-                        $product = is_null($item->product) ? $item->product_id : $item->product->descriptor;
+                        $product = $productcode = NULL;
+                        if (is_null($item->product)) {
+                           $product = $item->product_id;
+                        } else {
+                           $productcode = $item->product->code;
+                           $product = $item->product->descriptor;
+                        }
                       ?>
                       <tr data-product_id="{{ $item->product_id }}">
                         <td data-sort-value="{{ $product }}">
                           <a href="/kitlog/logs?branchid={{ stl($item->branch_id) }}&productid={{ stl($item->product_id) }}&fr={{ $date->copy()->startOfMonth()->format('Y-m-d') }}&to={{ $date->copy()->endOfMonth()->format('Y-m-d') }}&iscombo={{ $item->iscombo }}">
-                          {{ $product }}
+                          <span class="hidden-xs hidden-sm">{{ $productcode }} -</span> {{ $product }}
                           </a>
                           @if($item->iscombo)
                             <span class="label label-success">G</span>

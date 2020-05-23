@@ -49,11 +49,12 @@ class KitlogController extends Controller {
   private function toDatatables($array) {
     $datas = [];
 
-    foreach($array as $k => $f) {
+    foreach($array as $i => $f) {
 
       $null_ctr = 0;
       if (is_null($f->product->menucat)) {
         $datas[99]['menucat'] = 'UNKNOWN';
+        $datas[99]['seqno'] = 99;
         $datas[99]['items'] = [];
         if ($null_ctr==0) {
           $datas[99]['line'] = 1;
@@ -75,13 +76,16 @@ class KitlogController extends Controller {
           $datas[$k]['menucat'] = $f->product->menucat->descriptor;
           $datas[$k]['line'] = 1;
           $datas[$k]['qty'] = $f->qty;
+          $datas[$k]['seqno'] = $k;
           $datas[$k]['items'] = [];
           array_push($datas[$k]['items'], $f);
         }
       }
     }
 
-    return array_values($datas);
+    ksort($datas);
+    return $datas;
+    return array_keys($datas);
   }
 
   public function getMonth(Request $request) {
@@ -95,6 +99,15 @@ class KitlogController extends Controller {
     {    
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
       $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+      
+      return view('kitlog.month-month')
+                ->with('branches', $bb)
+                ->with('branch', NULL)
+                ->with('date', $date)
+                ->with('areas', $areas)
+                ->with('foods', $foods)
+                ->with('datatables', $this->toDatatables($foods));
+
       return view('kitlog.month')
                 ->with('branches', $bb)
                 ->with('branch', NULL)
@@ -135,6 +148,14 @@ class KitlogController extends Controller {
 
     $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>$branch->id]);
     $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>$branch->id]);
+
+    return view('kitlog.month-menucat')
+                ->with('branches', $bb)
+                ->with('branch', $branch)
+                ->with('date', $date)
+                ->with('areas', $areas)
+                ->with('foods', $foods)
+                ->with('datatables', $this->toDatatables($foods));
 
     return view('kitlog.month')
                 ->with('branches', $bb)

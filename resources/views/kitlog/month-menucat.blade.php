@@ -194,7 +194,7 @@
                 </a>
                 <ul class="dropdown-menu" id="dd-menucat-contents">
                   @foreach($datatables as $k => $dt)
-                  <li><a href="#tab{{$k}}" role="tab" data-toggle="tab" >{{ $k }}  {{ $dt['menucat'] }} <span class="badge">{{ nf($dt['line'],0) }}</span></a></li>
+                  <li><a href="#tab{{$k}}" role="tab" data-toggle="tab" data-index="{{ $k }}">{{ $dt['menucat'] }} <span class="badge">{{ nf($dt['line'],0) }}</span></a></li>
                   @endforeach
                 </ul>
               </li>

@@ -100,7 +100,7 @@ class KitlogController extends Controller {
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
       $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
       
-      return view('kitlog.month-month')
+      return view('kitlog.month-menucat')
                 ->with('branches', $bb)
                 ->with('branch', NULL)
                 ->with('date', $date)

@@ -87,6 +87,41 @@ class KitlogController extends Controller {
     return $datas;
   }
 
+  public function toArea($array) {
+    $datas = [];
+
+    $areas = ['C'=>'Center', 'D'=>'Dispatching', 'F'=>'Frying', 'G'=>'Grilling', 'X'=>'Not Set'];
+
+    foreach($areas as $k => $area) {
+      $datas[$k]['area'] = $area;
+      $datas[$k]['qty'] = 0;
+      $datas[$k]['line'] = 0;
+      $datas[$k]['items'] = [];
+      $datas[$k]['status'] = NULL;
+    }
+
+    foreach($array as $i => $f) {
+      if (array_key_exists($f->area, $areas)) {
+        if (is_null($datas[$f->area]['status'])) {
+          $datas[$f->area]['area'] = $areas[$f->area];
+          $datas[$f->area]['status'] = 1;
+        }
+        $datas[$f->area]['qty'] += $f->qty;
+        $datas[$f->area]['line']++;
+        array_push($datas[$f->area]['items'], $f);
+      } else {
+        if (is_null($datas['X']['status'])) {
+          $datas['X']['area'] = $areas['X'];
+          $datas['X']['status'] = 1;
+        }
+        $datas['X']['qty'] += $f->qty;
+        $datas['X']['line']++;
+        array_push($datas['X']['items'], $f);
+      }     
+    }
+    return $datas;
+  }
+
   public function getMonth(Request $request) {
 
     $bb = $this->branch->active()->all(['code', 'descriptor', 'id']);
@@ -105,6 +140,7 @@ class KitlogController extends Controller {
                 ->with('date', $date)
                 ->with('areas', $areas)
                 ->with('foods', $foods)
+                ->with('dtareas', $this->toArea($foods))
                 ->with('datatables', $this->toDatatables($foods));
 
       return view('kitlog.month')
@@ -122,6 +158,7 @@ class KitlogController extends Controller {
       $foods = $this->datasetFood->skipCache()->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
 
       // return $this->toDatatables($foods);
+      // return $this->toArea($foods);
 
       return view('kitlog.month-menucat')
                 ->with('branches', $bb)
@@ -129,6 +166,7 @@ class KitlogController extends Controller {
                 ->with('date', $date)
                 ->with('areas', $areas)
                 ->with('foods', $foods)
+                ->with('dtareas', $this->toArea($foods))
                 ->with('datatables', $this->toDatatables($foods));
 
       return view('kitlog.month')
@@ -154,6 +192,7 @@ class KitlogController extends Controller {
                 ->with('date', $date)
                 ->with('areas', $areas)
                 ->with('foods', $foods)
+                ->with('dtareas', $this->toArea($foods))
                 ->with('datatables', $this->toDatatables($foods));
 
     return view('kitlog.month')

@@ -155,7 +155,7 @@ class KitlogController extends Controller {
     || !in_array(strtoupper($request->input('branchid')), collect($bb)->pluck('id')->all())) 
     {
       $areas = $this->datasetArea->orderBy('area')->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
-      $foods = $this->datasetFood->skipCache()->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
+      $foods = $this->datasetFood->with(['product.menucat'])->findWhere(['date'=>$date->format('Y-m-d'), 'branch_id'=>'all']);
 
       // return $this->toDatatables($foods);
       // return $this->toArea($foods);

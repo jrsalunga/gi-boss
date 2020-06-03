@@ -89,7 +89,7 @@ class TransferController extends Controller
     else
       $branch = null;
 
-    return $ds = NULL;
+    $ds = NULL;
     
     if (!is_null($branch)) {
       if ($this->dr->diffInDays()>100) 

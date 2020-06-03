@@ -123,7 +123,7 @@
     <?php
       $ttcost = $tac = $trs = $tnc = $tem = 0;
     ?>
-    @if($ds>0)
+    @if(count($ds)>0)
     <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Emp Meal</p>

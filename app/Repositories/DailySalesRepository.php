@@ -239,12 +239,11 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
   public function branchWithDr(Branch $branch, DateRange $dr) {
     $arr = [];
-    // return collect($arr);
     $dss = $this->pushCriteria(new \App\Repositories\Criterias\BranchId($branch))
             ->pushCriteria(new \App\Repositories\Criterias\DateRange($dr))
             ->pushCriteria(new \App\Repositories\Criterias\SqlSelect(['date', 'sales', 'cos', 'opex', 'cospct', 'purchcost', 'transcost', 'transcos', 'transncos', 'emp_meal', 'empcount']))
             ->all();
-    return $dss;
+
     foreach ($dr->dateInterval2() as $key => $date) {
       $filtered = $dss->filter(function ($item) use ($date){
           return $item->date->format('Y-m-d') == $date->format('Y-m-d')

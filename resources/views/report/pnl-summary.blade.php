@@ -335,7 +335,7 @@
               <td></td>
               <td class="text-right"><b>Total:</b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tot_sales) }}</b></td>
-              <td class="text-right"><b class="text-muted">{{ nf($tot_pct)+0 }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
             </tr>
           </tfoot>
         </table>

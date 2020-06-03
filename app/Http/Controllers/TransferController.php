@@ -95,7 +95,8 @@ class TransferController extends Controller
       if ($this->dr->diffInDays()>100) 
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
       else
-        $ds = $this->ds->branchWithDr($branch, $this->dr);
+        return 'fadsfsa';
+        // $ds = $this->ds->branchWithDr($branch, $this->dr);
       
     }
 

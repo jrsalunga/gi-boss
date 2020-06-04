@@ -47,6 +47,7 @@ Route::get('report/compcat-purchase', ['uses'=>'ReportsController@getCompcatPurc
 
 Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
 Route::get('report/pnl-summary', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
+Route::get('report/pnl/daily', ['uses'=>'ExpenseController@getPnlDaily']);
 //Route::get('report/expense-breakdown', ['uses'=>'ExpenseController@getMonthExpenseBreakdown']);
 
 
@@ -73,6 +74,7 @@ Route::get('sales', ['uses'=>'DashboardController@getSales']);
 Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);
 Route::get('dailysales/all', ['uses'=>'DashboardController@getDailySalesAll']);
 Route::get('dailysales/dr-all', ['uses'=>'DashboardController@getDailyRangeSalesAll']);
+Route::get('sales/all', ['uses'=>'DashboardController@getSalesAll']);
 Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);
 

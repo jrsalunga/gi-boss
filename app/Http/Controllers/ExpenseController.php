@@ -11,6 +11,9 @@ use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\StockTransferRepository as Transfer;
 use App\Repositories\MonthProdcatRepository as mProdcat;
 use App\Repositories\MonthlySalesRepository as MS;
+use App\Repositories\DailySalesRepository as DS;
+use App\Repositories\DayExpenseRepository as dExpense;
+use App\Repositories\DayProdcatRepository as dProdcat;
 
 class ExpenseController extends Controller
 {
@@ -20,17 +23,21 @@ class ExpenseController extends Controller
 	protected $expense;
 	protected $mExpense;
 	protected $mProdcat;
+  protected $dProdcat;
 	protected $branch;
 	protected $bb;
 	protected $ms;
 
-	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms) {
+	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms, DS $ds, dExpense $dExpense, dProdcat $dProdcat) {
 		$this->dr = $dr;
 		$this->ms = $ms;
+    $this->ds = $ds;
 		$this->expense = $expense;
 		$this->transfer = $transfer;
 		$this->mExpense = $mExpense;
+    $this->dExpense = $dExpense;
 		$this->mProdcat = $mProdcat;
+    $this->dProdcat = $dProdcat;
 		$this->branch = $branch;
 		$this->bb = $this->getBranches();
 	}
@@ -39,7 +46,6 @@ class ExpenseController extends Controller
 		return $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
 	}
 
-	
 	public function getMonthExpenseBreakdown(Request $request) {
 		
 		$date = carbonCheckorNow($request->input('date'));
@@ -61,11 +67,7 @@ class ExpenseController extends Controller
                 ->with('branches', $this->bb)
                 ->with('datas', $datas)
                 ->with('branch', $branch));
-
-
-
 	}
-
 
 	private function expenseBreakdownData($branch, $exps) {
 		$datas = [];
@@ -96,7 +98,6 @@ class ExpenseController extends Controller
 	  return $datas;
 	}
 
-
 	public function getMonthFoodCostBreakdown(Request $request) {
 
 		$date = carbonCheckorNow($request->input('date'));
@@ -104,12 +105,8 @@ class ExpenseController extends Controller
 		$this->dr->fr = $date->copy()->startOfMonth();
 		$this->dr->to = $date->copy()->endOfMonth();
 
-
-
 		$ms = null;
 
-		//return dd($this->dr);
-			
 		if ($request->has('branchid') && is_uuid($request->input('branchid')))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
     else
@@ -259,6 +256,122 @@ class ExpenseController extends Controller
     $response->withCookie(cookie('fr', $this->dr->fr->format('Y-m-d'), 45000));
     $response->withCookie(cookie('date', $this->dr->date->format('Y-m-d'), 45000));
     return $response;
+  }
+
+
+  private function FCBreakdownDayData($branch, $exps) {
+
+    $datas = [];
+
+    
+    $ids = $exps->pluck('id')->toArray();
+
+    $mexps = $this->dExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
+    $prodcatid = app()->environment()=='local' ? 'E838DA36BC3711E6856EC3CDBB4216A7':'E838DA36BC3711E6856EC3CDBB4216A7';
+    $fsales = $this->dProdcat->skipCache()->sumSalesByProdcatDr($branch->id, $this->dr->fr, $this->dr->to, $prodcatid);
+    $fs = $fsales->first();
+
+    foreach ($exps as $x => $exp) {
+      $f = $mexps->filter(function ($item) use ($exp){
+        return $item->expense_id == $exp->id
+          ? $item : null;
+      });
+      $b = $f->first();
+
+      $datas[$x]['expensecode'] = $exp->code;
+      $datas[$x]['expense'] = $exp->descriptor;
+      $datas[$x]['expenseid'] = $exp->lid();
+      
+      if(is_null($b)) 
+        $datas[$x]['purch'] = 0;
+      else
+        $datas[$x]['purch'] = $b->tcost;
+
+      $trns = $this->transfer->skipCache()->getSumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $exp->code);
+
+      $c = $trns->first();
+
+      if(is_null($c)) 
+        $datas[$x]['trans'] = 0;
+      else
+        $datas[$x]['trans'] = is_null($c->tcost) ? 0 : $c->tcost;     
+      
+      $sales = is_null($fs->sales) ? 0 : $fs->sales;
+      $datas[$x]['food_sales'] = $sales;
+      $datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];      
+      $datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;      
+    }
+    return $datas;
+  }
+
+  public function getPnlDaily(Request $request) {
+
+    $date = carbonCheckorNow($request->input('date'));
+    $this->dr->date = $date;
+    $this->dr->fr = $date;
+    $this->dr->to = $date;
+
+    $ms = null;
+
+    if ($request->has('branchid') && is_uuid($request->input('branchid')))
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    else
+      $branch = null;
+
+    $datas = [];
+    $fc_hist = [];
+    $prodcats = [];
+    $expense_data = [];
+    $noncos_data = [];
+    if (!is_null($branch)) {
+
+      $exps = $this->expense->getCos();
+
+      $ms = $this->ds->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branchid'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'transcos', 'cos'])->first();
+
+      $datas = $this->FCBreakdownDayData($branch, $exps);
+      $noncos_data = $this->FCBreakdownDayData($branch, $this->expense->skipCache()->getNonCos());
+      $expense_data = $this->FCBreakdownDayData($branch, $this->expense->skipCache()->getExpense());
+      // $fc_hist = $this->getFCHist($branch, $exps);
+      $prodcats = $this->sales_cat_day($branch);
+                               
+
+    //return $fc_hist;
+    }
+    return $this->setViewWithDR(view('report.pnl-daily')
+                ->with('branches', $this->bb)
+                ->with('hist', $fc_hist)
+                ->with('datas', $datas)
+                ->with('noncos_data', $noncos_data)
+                ->with('expense_data', $expense_data)
+                ->with('prodcats', $prodcats)
+                ->with('ms', $ms)
+                ->with('branch', $branch));
+
+  }
+
+  private function sales_cat_day($branch) {
+
+    $datas = [];
+
+    $prodcats = $this->dProdcat->skipCache()->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
+    foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
+      $datas[$key]['prodcatcode'] = $prodcat->code;
+      $datas[$key]['prodcat'] = $prodcat->descriptor;
+      $datas[$key]['prodcatid'] = $prodcat->id;
+
+      $f = $prodcats->filter(function ($item) use ($prodcat){
+        return $item->prodcat_id == $prodcat->id
+          ? $item : null;
+      });
+      $b = $f->first();
+
+      $datas[$key]['sales'] = is_null($b) ? 0 : $b->sales;
+      $datas[$key]['pct'] = is_null($b) ? 0 : $b->pct;
+    }
+    
+    
+    return $datas;
   }
 
   

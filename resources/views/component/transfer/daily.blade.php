@@ -221,7 +221,7 @@
               <tr class="{{ !$cancel?'':'text-muted' }}">
                 <td style="{{ $cancel }}">{{ $transfer->date->format('M j, D') }}</td>
                 <td style="{{ $cancel }}">{{ $transfer->component }}</td>
-                <td class="text-right text-muted">{{ number_format($transfer->qty,2)+0 }}</td>
+                <td class="text-right text-muted">{{ number_format($transfer->qty,2) }}</td>
                 <td><small class="text-muted">{{ strtolower($transfer->uom) }}@if($transfer->qty>1 && substr(strtolower($transfer->uom), -1)!='s')s
                         @endif</small></td>
                 <td class="text-right text-muted">{{ number_format($transfer->ucost,2) }}</td>

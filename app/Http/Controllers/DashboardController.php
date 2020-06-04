@@ -237,4 +237,8 @@ class DashboardController extends Controller
   	//$response->header('Content-Disposition', 'attachment; filename="data.csv"');
 	  //return $response;
 	}
+
+  public function getSalesAll(Request $request) {
+    return $request;
+  }
 }

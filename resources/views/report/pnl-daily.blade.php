@@ -114,7 +114,7 @@
     @include('_partials.alerts')
 
     <?php
-      $tpurch = $ttrans = $tnet = $tpct = $direct_cost = $direct_profit = $dailysales = 0;
+      $tpurch = $ttrans = $tnet = $tpct = $direct_cost = $direct_profit = $dailysales = $xtnet = 0;
     ?>
     @if(count($datas)>0)
    

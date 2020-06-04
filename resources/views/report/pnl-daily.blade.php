@@ -121,8 +121,8 @@
     @if(!is_null($ms))
     <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Gross Sales</p>
-        <h3 style="margin:0">{{ nf($ms->slsmtd_totgrs) }}</h3>
+        <p style="margin-bottom:0">Dailysales</p>
+        <h3 style="margin:0">{{ nf($ms->sales) }}</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Food Sales</p>

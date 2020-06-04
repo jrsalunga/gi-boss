@@ -114,29 +114,30 @@
     @include('_partials.alerts')
 
     <?php
-      $tpurch = $ttrans = $tnet = $tpct = 0;
+      $tpurch = $ttrans = $tnet = $tpct = $direct_cost = $direct_profit = $dailysales = 0;
     ?>
     @if(count($datas)>0)
    
     @if(!is_null($ms))
     <div class="row">
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Dailysales</p>
+        <p style="margin-bottom:0">Daily Sales</p>
         <h3 style="margin:0">{{ nf($ms->sales) }}</h3>
+        <?php
+          $dailysales = $ms->sales;
+        ?>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Food Sales</p>
-        <h3 style="margin:0">{{ nf($ms->food_sales) }}</h3>
+        <p style="margin-bottom:0">Direct Cost</p>
+        <h3 style="margin:0" id="view-directcost"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Food Sales %</p>
-        <h3 style="margin:0">{{ $ms->slsmtd_totgrs>0?nf(($ms->food_sales/$ms->slsmtd_totgrs)*100):0 }}</h3>
+        <p style="margin-bottom:0">Total Expense</p>
+        <h3 style="margin:0" id="view-totexpense"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Food Cost %</p>
-        <h3 style="margin:0" title="(({{$ms->cos}}-{{$ms->transcos}})/{{$ms->food_sales}})*100">
-          {{ nf($ms->fc) }}
-        </h3>
+        <p style="margin-bottom:0">Direct Profit</p>
+        <h3 style="margin:0" id="view-directprofit"></h3>
       </div>
 
     </div>
@@ -283,7 +284,10 @@
               <td class="text-right" style="width:17%;"><b class="text-muted">
                 {{ nf($tttrans) }}
               </b></td>
-              <td class="text-right" style="width:17%;"><b class="text-muted">{{ nf($ttpurch-$tttrans) }}</b></td>
+              <?php
+                $direct_cost = $ttpurch-$tttrans;
+              ?>
+              <td class="text-right" style="width:17%;"><b class="text-muted" id="source-">{{ nf($direct_cost) }}</b></td>
               <td class="text-right" style="width:17%;"></td>
             </tr>
           </tfoot>
@@ -767,7 +771,14 @@
   $('#ttcost').text('{{ nf($tpurch) }}');
   $('#tac').text('{{ nf($ttrans) }}');
   $('#trs').text('{{ nf($tnet) }}');
+
+  <?php  
+    $direct_profit = $dailysales - ($direct_cost + $xtnet);
+  ?>
     
+  $('#view-directcost').text('{{ nf($direct_cost) }}');
+  $('#view-totexpense').text('{{ nf($xtnet) }}');
+  $('#view-directprofit').text('{{ nf($direct_profit) }}');
 
     $('.show.toggle').on('click', function(){
       var div = $(this).siblings('div.show');

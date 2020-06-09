@@ -14,6 +14,7 @@ use App\Repositories\MonthlySalesRepository as MS;
 use App\Repositories\DailySalesRepository as DS;
 use App\Repositories\DayExpenseRepository as dExpense;
 use App\Repositories\DayProdcatRepository as dProdcat;
+use App\Repositories\CashAuditRepository as CashAudit;
 
 class ExpenseController extends Controller
 {
@@ -27,8 +28,9 @@ class ExpenseController extends Controller
 	protected $branch;
 	protected $bb;
 	protected $ms;
+  protected $cashAudit;
 
-	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms, DS $ds, dExpense $dExpense, dProdcat $dProdcat) {
+	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms, DS $ds, dExpense $dExpense, dProdcat $dProdcat, CashAudit $cashAudit) {
 		$this->dr = $dr;
 		$this->ms = $ms;
     $this->ds = $ds;
@@ -39,6 +41,7 @@ class ExpenseController extends Controller
 		$this->mProdcat = $mProdcat;
     $this->dProdcat = $dProdcat;
 		$this->branch = $branch;
+    $this->cashAudit = $cashAudit;
 		$this->bb = $this->getBranches();
 	}
 
@@ -319,10 +322,10 @@ class ExpenseController extends Controller
       $branch = null;
 
     $datas = [];
-    $fc_hist = [];
     $prodcats = [];
     $expense_data = [];
     $noncos_data = [];
+    $cash_audit = NULL;
     if (!is_null($branch)) {
 
       $exps = $this->expense->getCos();
@@ -332,15 +335,14 @@ class ExpenseController extends Controller
       $datas = $this->FCBreakdownDayData($branch, $exps);
       $noncos_data = $this->FCBreakdownDayData($branch, $this->expense->skipCache()->getNonCos());
       $expense_data = $this->FCBreakdownDayData($branch, $this->expense->skipCache()->getExpense());
-      // $fc_hist = $this->getFCHist($branch, $exps);
       $prodcats = $this->sales_cat_day($branch);
-                               
-
-    //return $fc_hist;
+      $cash_audit = $this->cashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')])->first();
     }
+
+
     return $this->setViewWithDR(view('report.pnl-daily')
                 ->with('branches', $this->bb)
-                ->with('hist', $fc_hist)
+                ->with('cash_audit', $cash_audit)
                 ->with('datas', $datas)
                 ->with('noncos_data', $noncos_data)
                 ->with('expense_data', $expense_data)

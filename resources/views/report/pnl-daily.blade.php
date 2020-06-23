@@ -128,11 +128,11 @@
         ?>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Direct Cost</p>
+        <p style="margin-bottom:0">Cost of Goods</p>
         <h3 style="margin:0" id="view-directcost"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Expense</p>
+        <p style="margin-bottom:0">Operational Expense</p>
         <h3 style="margin:0" id="view-totexpense"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -144,15 +144,120 @@
     @endif
     
     <div class="row">
+      
+
+
       <div class="col-md-12">
         <div id="container-x" style="overflow: hidden;"></div>
       </div>
   
       <?php $ttpurch = $tttrans = 0 ?>
 
-      <div class="col-md-12"style="margin-top: 30px;">
+
+      <!--
+      <div class="col-md-6" style="margin-top: 30px;">
+        @if(!is_null($cash_audit))
         <div class="panel panel-default">
-          <div class="panel-heading">Summary of Purchases</div>
+          <div class="panel-heading">Cash Status</div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th class="text-right">#Pcs</th>
+                    <th class="text-right">Peso Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-right">P1000</td><td class="text-right">{{ $cash_audit->p1000_pcs }}</td><td class="text-right">{{ nf($cash_audit->p1000_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">500</td><td class="text-right">{{ $cash_audit->p500_pcs }}</td><td class="text-right">{{ nf($cash_audit->p500_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">200</td><td class="text-right">{{ $cash_audit->p200_pcs }}</td><td class="text-right">{{ nf($cash_audit->p200_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">100</td><td class="text-right">{{ $cash_audit->p100_pcs }}</td><td class="text-right">{{ nf($cash_audit->p100_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">50</td><td class="text-right">{{ $cash_audit->p50_pcs }}</td><td class="text-right">{{ nf($cash_audit->p50_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">20</td><td class="text-right">{{ $cash_audit->p20_pcs }}</td><td class="text-right">{{ nf($cash_audit->p20_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">10</td><td class="text-right">{{ $cash_audit->p10_pcs }}</td><td class="text-right">{{ nf($cash_audit->p10_amt, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Coins</td><td class="text-right"></td><td class="text-right">{{ nf($cash_audit->coins, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right" colspan="2">Actual Cash Count</td><td class="text-right"><b>{{ nf($cash_audit->p1000_amt+$cash_audit->p500_amt+$cash_audit->p200_amt+$cash_audit->p100_amt+$cash_audit->p50_amt+$cash_audit->p20_amt+$cash_audit->p10_amt+$cash_audit->coins, 2, true) }}</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><!-- end: .panel-body  -->
+        <!-- </div>end: .panel.panel-default  -->
+        <!-- @endif -->
+      <!-- </div> -->
+
+      <!-- 
+      <div class="col-md-6" style="margin-top: 30px;">
+        @if(!is_null($cash_audit))
+        <div class="panel panel-default">
+          <div class="panel-heading"><div class="text-right"><span>Forwarded: <b>{{ nf($cash_audit->csh_fwdd, 2, true) }}</b></span><span style="clear: both;"></span></div></div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Collection</th>
+                    <th class="text-right">Cash</th>
+                    <th class="text-right">Check</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Backard C.Cards</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>BDO C.Cards</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Other Cards</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Func/F.O. Sales</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Breakages</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        @endif
+      </div> -->
+
+
+      <div class="col-md-12" style="margin-top: 30px;">
+        <div class="panel panel-default">
+          <div class="panel-heading">Cost of Goods Purchases Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
@@ -178,7 +283,11 @@
                   </a>
 
                 </td>
-                <td class="text-right">{{ nf($data['trans']) }}</td>
+                <td class="text-right">
+                  <a href="/component/transfer?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  {{ nf($data['trans']) }}
+                  </a>
+                </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
                 <td class="text-right" title="({{ $data['net'] }}/{{ $data['food_sales'] }} )*100={{$data['pct']}}" data-toogle="tooltip">{{ nf($data['pct']) }}</td>
               </tr>
@@ -341,7 +450,9 @@
                     <td class="text-right"><b>Total:</b></td>
                     <td class="text-right">
                       <b class="text-muted">
-                        <a href="">{{ nf($tot_sales) }}</a>
+                        <a href="/product/sales??branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Daily Sales Summary">
+                        {{ nf($tot_sales) }}
+                        </a>
                       </b>
                     </td>
                     <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
@@ -352,59 +463,13 @@
           </div><!-- end: .panel-body  -->
         </div><!-- end: .panel.panel-default  -->
 
-        @if(!is_null($cash_audit))
-        <div class="panel panel-default">
-          <div class="panel-heading">Cash Status</div>
-          <div class="panel-body">
-            <div class="table-responsive">
-              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th class="text-right">#Pcs</th>
-                    <th class="text-right">Peso Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-right">P1000</td><td class="text-right">{{ $cash_audit->p1000_pcs }}</td><td class="text-right">{{ nf($cash_audit->p1000_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">500</td><td class="text-right">{{ $cash_audit->p500_pcs }}</td><td class="text-right">{{ nf($cash_audit->p500_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">200</td><td class="text-right">{{ $cash_audit->p200_pcs }}</td><td class="text-right">{{ nf($cash_audit->p200_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">100</td><td class="text-right">{{ $cash_audit->p100_pcs }}</td><td class="text-right">{{ nf($cash_audit->p100_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">50</td><td class="text-right">{{ $cash_audit->p50_pcs }}</td><td class="text-right">{{ nf($cash_audit->p50_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">20</td><td class="text-right">{{ $cash_audit->p20_pcs }}</td><td class="text-right">{{ nf($cash_audit->p20_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">10</td><td class="text-right">{{ $cash_audit->p10_pcs }}</td><td class="text-right">{{ nf($cash_audit->p10_amt, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right">Coins</td><td class="text-right"></td><td class="text-right">{{ nf($cash_audit->coins, 2, true) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-right" colspan="2">Actual Cash Count</td><td class="text-right"><b>{{ nf($cash_audit->p1000_amt+$cash_audit->p500_amt+$cash_audit->p200_amt+$cash_audit->p100_amt+$cash_audit->p50_amt+$cash_audit->p20_amt+$cash_audit->p10_amt+$cash_audit->coins, 2, true) }}</b></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div><!-- end: .panel-body  -->
-        </div><!-- end: .panel.panel-default  -->
-        @endif
+        
       </div><!-- end: .col-md-5  -->
 
 
       <div class="col-md-6 col-md-offset-1" style="margin-top: 30px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Expenses Summary</div>
+          <div class="panel-heading">Operational Expense Summary</div>
           <div class="panel-body">
             <div class="table-responsive">
             <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
@@ -453,7 +518,7 @@
                     </b>
                   </td>
                   <td class="text-right"><b class="text-muted">
-                    <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                    <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Daily Sales Summary">
                     {{ nf($xttrans) }}
                     </a>
                   </b></td>
@@ -466,14 +531,14 @@
         </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-12  -->
 
-      <div class="col-md-6" style="margin-top: 30px; margin-bottom: 50px;">
+      <!-- <div class="col-md-6" style="margin-top: 30px; margin-bottom: 50px;">
         <div class="panel panel-default">
           <div class="panel-heading">Expenses Summary</div>
           <div class="panel-body">
             DSAFFDSA
-          </div><!-- end: .panel-body  -->
-        </div><!-- end: .panel.panel-default  -->
-      </div><!-- end: .col-md-12  -->
+          </div>end: .panel-body
+        </div>end: .panel.panel-default
+      </div>end: .col-md-12 -->
 
 
 

@@ -132,7 +132,7 @@
         <h3 style="margin:0" id="view-directcost"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Expense</p>
+        <p style="margin-bottom:0">Operational Expense</p>
         <h3 style="margin:0" id="view-totexpense"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -152,7 +152,7 @@
 
       <div class="col-md-12"style="margin-top: 30px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Summary of Purchases</div>
+          <div class="panel-heading">Cost of Goods Purchases Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
@@ -173,12 +173,16 @@
                 <td>{{ $data['expensecode'] }}</td>
                 <td>{{ $data['expense'] }}</td>
                 <td class="text-right">
-                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="Link to Purchases Report">
                   {{ nf($data['purch']) }}
                   </a>
 
                 </td>
-                <td class="text-right">{{ nf($data['trans']) }}</td>
+                <td class="text-right">
+                  <a href="/component/transfer?table=expense&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}&skipname=true" target="_blank" title="Link to Stock Transfer Raw Log Report">
+                  {{ nf($data['trans']) }}
+                  </a>
+                </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
                 <td class="text-right" title="({{ $data['net'] }}/{{ $data['food_sales'] }} )*100={{$data['pct']}}" data-toogle="tooltip">{{ nf($data['pct']) }}</td>
               </tr>
@@ -205,7 +209,7 @@
                 </b>
               </td>
               <td class="text-right"><b class="text-muted">
-                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Stock Transfer Summary">
                 {{ nf($ttrans) }}
                 </a>
               </b></td>
@@ -338,7 +342,11 @@
             <tr>
               <td></td>
               <td class="text-right"><b>Total:</b></td>
-              <td class="text-right"><b class="text-muted">{{ nf($tot_sales) }}</b></td>
+              <td class="text-right"><b class="text-muted">
+                <a href="/product/sales?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Daily Sales Summary">
+                {{ nf($tot_sales) }}
+                </a>
+              </b></td>
               <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
             </tr>
           </tfoot>
@@ -351,7 +359,7 @@
 
       <div class="col-md-6 col-md-offset-1" style="margin-top: 30px; margin-bottom: 50px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Expenses Summary</div>
+          <div class="panel-heading">Operational Expense Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">

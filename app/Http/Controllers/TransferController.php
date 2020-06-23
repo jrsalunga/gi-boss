@@ -119,14 +119,20 @@ class TransferController extends Controller
 	private function getFilter(Request $request, $tables) {
     $filter = new StdClass;
     $table = strtolower($request->input('table'));
-    if($request->has('itemid') && $request->has('table') && $request->has('item') && in_array($table, $tables)) {
+    // if($request->has('itemid') && $request->has('table') && $request->has('item') && in_array($table, $tables)) {
+    if($request->has('itemid') && $request->has('table') && in_array($table, $tables)) {
       
       $id = strtolower($request->input('itemid'));
 
       $c = '\App\Models\\'.ucfirst($table);
       $i = $c::find($id);
 
-      if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
+      if ($request->has('skipname')) {
+        $filter->table = $table;
+        $filter->id = $id;
+        $filter->item = $i->descriptor;
+        $filter->isset = true;
+      } else if (strtolower($request->input('item'))==strtolower($i->descriptor)) {
         $item = $request->input('item');
         /*
         if(is_uuid($id) && in_array($table, $tables))

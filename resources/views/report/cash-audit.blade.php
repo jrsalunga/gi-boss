@@ -554,16 +554,10 @@
             <label class="btn btn-default" for="mdl-dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date" value="{{ $dr->date->format('m/D/Y') }}" style="max-width: 110px;">
-            
-            
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date" value="{{ $dr->date->format('m/d/Y') }}" style="max-width: 110px;">
             </div>
             </div>
           </div>
-
-          
-            
-
         </div>
       </div>
       <div class="modal-footer">

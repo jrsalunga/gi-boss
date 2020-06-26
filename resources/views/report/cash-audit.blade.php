@@ -417,7 +417,7 @@
                   <tr>
                     <td class="text-right">CA/Signed</td>
                     <td class="text-right">{{ nf($month_cashaudit->col_ca, 2, true) }}</td>
-                    <td class="text-right">{{ nf($month_cashaudit->col_cak, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_cak+$month_cashaudit->col_bdok+$month_cashaudit->col_dink, 2, true) }}</td>
                   </tr>
                   <tr>
                     <td class="text-right">Others</td>
@@ -463,7 +463,7 @@
                   </tr>
                   <tr>
                     <td> Total Excl. Check Disb.</td>
-                    <td colspan="2" class="text-right"><b>{{ nf($month_cashaudit->tot_out+$month_cashaudit->tot_outk, 2, true) }}</b></td>
+                    <td colspan="2" class="text-right"><b>{{ nf($month_cashaudit->tot_out+$month_cashaudit->tot_outk+$month_cashaudit->csh_disb, 2, true) }}</b></td>
                   </tr>
                   <tr>
                     <td>&nbsp</td><td></td><td></td>

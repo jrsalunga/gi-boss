@@ -370,7 +370,145 @@
           </div>
         </div>
         @endif
-      </div> 
+      </div>
+
+      <div class="col-md-4" style="margin-top: 20px;">
+        @if(!is_null($month_cashaudit) && !is_null($cash_audit))
+        <div class="panel panel-primary">
+          <div class="panel-heading">Cash Audit Summary ({{ $dr->date->copy()->startOfMonth()->format('M d') }}-{{ $dr->date->format('d Y') }})</div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed table-striped" style="margin-top: 0;">
+                <tbody>
+                  <tr>
+                    <td class="text-right">Sales - Cash</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->csh_sale, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Charged</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->chg_sale, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Signed</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->sig_sale, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Sales</td>
+                    <td colspan="2" class="text-right"><b>{{ nf($month_cashaudit->csh_sale+$month_cashaudit->chg_sale+$month_cashaudit->sig_sale, 2, true) }}</b></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center">Collections</td>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center">Cash</td>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center">Check</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Credit Card</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_card, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_cardk, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">FO/Catering</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_food, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_foodk, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">CA/Signed</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_ca, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->col_cak, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Others</td>
+                    <td class="text-right">{{ nf($month_cashaudit->othr, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->othrk, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Sub-total</td>
+                    <td class="text-right"><b>{{ nf($month_cashaudit->tot_coll, 2, true) }}</b></td>
+                    <td class="text-right"><b>{{ nf($month_cashaudit->tot_collk, 2, true) }}</b></td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="2" class="text-right"><b>{{ nf($month_cashaudit->tot_coll+$month_cashaudit->tot_collk, 2, true) }}</b></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center"></td>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center">Cash</td>
+                    <td style="color: #95A5A6; font-weight: bold;" class="text-center">Check</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Disbursement</td>
+                    <td class="text-right">{{ nf($month_cashaudit->csh_disb, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->chk_disb, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">Deposits</td>
+                    <td class="text-right">{{ nf($month_cashaudit->deposit, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->depositk, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right">CO/Refund</td>
+                    <td class="text-right">{{ nf($month_cashaudit->csh_out, 2, true) }}</td>
+                    <td class="text-right">{{ nf($month_cashaudit->csh_outk, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Sub-total</td>
+                    <td class="text-right"><b>{{ nf($month_cashaudit->tot_out+$month_cashaudit->csh_disb, 2, true) }}</b></td>
+                    <td class="text-right"><b>{{ nf($month_cashaudit->tot_outk, 2, true) }}</b></td>
+                  </tr>
+                  <tr>
+                    <td> Total Excl. Check Disb.</td>
+                    <td colspan="2" class="text-right"><b>{{ nf($month_cashaudit->tot_out+$month_cashaudit->tot_outk, 2, true) }}</b></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td>Charged Sale</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->chg_sale*-1, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Signed Sale</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->sig_sale*-1, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td style="color: #95A5A6; font-weight: bold;">Summary</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td>Ending Balance</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->comp_bal, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Actual Balance</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->csh_cnt+$month_cashaudit->checks+$month_cashaudit->forex, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>(Short) / Over</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->shrt_ovr, 2, true) }}</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp</td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td>Cummulative  (Short) / Over</td>
+                    <td colspan="2" class="text-right">{{ nf($month_cashaudit->shrt_cumm, 2, true) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        @endif
+      </div>
+
 
     </div>
   </div>

@@ -9,6 +9,7 @@ use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Reports\CompcatPurchase;
 use App\Repositories\CashAuditRepository as CashAudit;
+use App\Repositories\MonthCashAuditRepository as MonthCashAudit;
 use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
 
@@ -20,11 +21,13 @@ class ReportsController extends Controller
   protected $cashAudit;
   protected $branch;
   protected $dr;
+  protected $mCashAudit;
 
-	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch) {
+	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch, MonthCashAudit $mCashAudit) {
 		$this->ctrlCompcatPurchase = $ctrlCompcatPurchase;
     $this->dr = $dr;
     $this->cashAudit = $cashAudit;
+    $this->mCashAudit = $mCashAudit;
     $this->branch = $branch;
     $this->bb = $this->getBranches();
     $this->branch->pushCriteria(new ActiveBranch);
@@ -44,6 +47,7 @@ class ReportsController extends Controller
     $this->dr->fr = $date;
     $this->dr->to = $date;
     $cash_audit = NULL;
+    $month_cashaudit = NULL;
 
     if ($request->has('branchid') && is_uuid($request->input('branchid')))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
@@ -52,14 +56,18 @@ class ReportsController extends Controller
 
      $datas = [];
 
+
     if (!is_null($branch)) {
 
       $cash_audit = $this->cashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')])->first();
+      //$month_cashaudit = $this->mCashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->copy()->endOfMonth()->format('Y-m-d')])->first();
+      $month_cashaudit = $this->cashAudit->aggregateByDr($date->copy()->startOfMonth(), $date, $branch->id);
     }
 
     return $this->setViewWithDR(view('report.cash-audit')
                 ->with('branches', $this->bb)
                 ->with('cash_audit', $cash_audit)
+                ->with('month_cashaudit', $month_cashaudit)
                 ->with('datas', $datas)
                 ->with('branch', $branch));
 

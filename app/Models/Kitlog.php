@@ -2,7 +2,7 @@
 
 use App\Models\BaseModel;
 
-class Doctype extends BaseModel {
+class Kitlog extends BaseModel {
 
 	protected $table = 'doctype';
 	public $timestamps = false;

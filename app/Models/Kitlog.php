@@ -12,4 +12,16 @@ class Kitlog extends BaseModel {
     'minute' => 'float',
     'iscombo' => 'boolean',
   ];
+
+  public function product() {
+    return $this->belongsTo('App\Models\Product');
+  }
+
+  public function branch() {
+    return $this->belongsTo('App\Models\Branch')->select(['code', 'descriptor', 'id']);
+  }
+
+  public function menucat() {
+    return $this->belongsTo('App\Models\Menucat');
+  }
 }

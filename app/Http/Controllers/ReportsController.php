@@ -12,6 +12,8 @@ use App\Repositories\CashAuditRepository as CashAudit;
 use App\Repositories\MonthCashAuditRepository as MonthCashAudit;
 use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
+use App\Repositories\SetslpRepository as Setslp;
+use App\Repositories\DepslipRepository as Depslip;
 
 
 class ReportsController extends Controller
@@ -22,13 +24,17 @@ class ReportsController extends Controller
   protected $branch;
   protected $dr;
   protected $mCashAudit;
+  protected $setslp;
+  protected $depslip;
 
-	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch, MonthCashAudit $mCashAudit) {
+	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch, MonthCashAudit $mCashAudit, Setslp $setslp, Depslip $depslip) {
 		$this->ctrlCompcatPurchase = $ctrlCompcatPurchase;
     $this->dr = $dr;
     $this->cashAudit = $cashAudit;
     $this->mCashAudit = $mCashAudit;
     $this->branch = $branch;
+    $this->setslp = $setslp;
+    $this->depslip = $depslip;
     $this->bb = $this->getBranches();
     $this->branch->pushCriteria(new ActiveBranch);
 	}
@@ -46,8 +52,11 @@ class ReportsController extends Controller
     $this->dr->date = $date;
     $this->dr->fr = $date;
     $this->dr->to = $date;
+    
     $cash_audit = NULL;
     $month_cashaudit = NULL;
+    $setslps = NULL;
+    $depslips = NULL;
 
     if ($request->has('branchid') && is_uuid($request->input('branchid')))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
@@ -62,6 +71,9 @@ class ReportsController extends Controller
       $cash_audit = $this->cashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')])->first();
       //$month_cashaudit = $this->mCashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->copy()->endOfMonth()->format('Y-m-d')])->first();
       $month_cashaudit = $this->cashAudit->aggregateByDr($date->copy()->startOfMonth(), $date, $branch->id);
+
+      $depslips = $this->depslip->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
+      $setslps = $this->setslp->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
     }
 
     return $this->setViewWithDR(view('report.cash-audit')
@@ -69,6 +81,8 @@ class ReportsController extends Controller
                 ->with('cash_audit', $cash_audit)
                 ->with('month_cashaudit', $month_cashaudit)
                 ->with('datas', $datas)
+                ->with('depslips', $depslips)
+                ->with('setslps', $setslps)
                 ->with('branch', $branch));
 
   }

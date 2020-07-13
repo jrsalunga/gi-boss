@@ -245,7 +245,7 @@ class KitlogController extends Controller {
       $relation = is_null($branch) ? ['product', 'menucat', 'branch'] : ['product', 'menucat'];
       try {
         $kitlogs = $this->kitlog
-                  // ->skipCache()
+                  ->skipCache()
                   ->with($relation)
                   ->scopeQuery(function($query){
                     return $query->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);

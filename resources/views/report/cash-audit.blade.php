@@ -369,6 +369,45 @@
             </div>
           </div>
         </div>
+
+
+        <div class="panel panel-info">
+          <div class="panel-heading">File Upload</div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed table-striped" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Deposit Slip</th>
+                    <th>Type</th>
+                    <th class="text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($depslips as $d)
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" target="popup" onclick='window.open("/images/depslp/{{ $d->lid() }}.jpg", "_blank", "width=auto,height=auto"); return false'>
+                      {{ $d->filename }}
+                      </a>
+                    </td>
+                    <td>
+                      @if($d->type=='1')
+                        Cash
+                      @elseif ($d->type=='2')
+                        Cheque
+                      @else
+
+                      @endif
+                    </td>
+                    <td class="text-right">{{ nf($d->amount) }}</td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
         @endif
       </div>
 

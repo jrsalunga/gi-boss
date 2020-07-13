@@ -4,7 +4,7 @@ use App\Models\BaseModel;
 
 class Kitlog extends BaseModel {
 
-	protected $table = 'doctype';
+	protected $table = 'kitlog';
 	public $timestamps = false;
   protected $dates = ['date'];
 	protected $guarded = ['id'];

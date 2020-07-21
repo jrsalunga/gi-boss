@@ -162,6 +162,12 @@ class DashboardController extends Controller
     return $this->setViewWithDR(view('dashboard.deliverysales-all')->with('dailysales', $dailysales));
   }
 
+
+  public function getDeliveryRangeSalesAll(Request $request) {
+    $dailysales = $this->repo->skipCache()->allBranchByDateRange($this->dr->fr, $this->dr->to);
+    return $this->setViewWithDR(view('dashboard.deliverysales-dr-all')->with('dailysales', $dailysales));
+  }
+
 	public function getDashboardTSV(Request $request) {
 
 		$date = carbonCheckorNow($request->input('date'));

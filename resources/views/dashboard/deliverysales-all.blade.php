@@ -42,7 +42,7 @@
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
           </a>  -->
-          <!-- <a href="/dailysales" class="btn btn-default" title="All Branches">
+          <!-- <a href="/delivery" class="btn btn-default" title="All Branches">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
           </a>
@@ -52,12 +52,12 @@
           </button> -->
         </div>
         <div class="btn-group pull-right clearfix" role="group">
-          <a href="/dailysales/all?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
+          <a href="/delivery/all?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
           <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/d/Y') }}" style="max-width: 110px;" readonly>
           <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
-          <a href="/dailysales/all?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
+          <a href="/delivery/all?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
         </div>
@@ -71,7 +71,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="date-type">
                   <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="/dailysales/dr-all" data-date-type="weekly">Date Range</a></li>
+                  <li><a href="/delivery/dr-all" data-date-type="weekly">Date Range</a></li>
                 </ul>
               </div>
             </div>
@@ -101,7 +101,7 @@
           $tot_grabc = 0;
           $tot_panda = 0;
         ?>
-        @foreach($dailysales as $key => $ds) 
+        @foreach($delivery as $key => $ds) 
         
         <tr>
           <td>
@@ -163,8 +163,8 @@
         <tr>
           <td>
             <strong>
-              {{ count($dailysales) }}
-              {{ count($dailysales) > 1 ? 'branches':'branch' }}
+              {{ count($delivery) }}
+              {{ count($delivery) > 1 ? 'branches':'branch' }}
             </strong>
           </td>
           <td class="text-right">
@@ -245,7 +245,7 @@
       showTodayButton: true,
       ignoreReadonly: true
     }).on('dp.change', function(e){
-      document.location.href = '/dailysales/all?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
+      document.location.href = '/delivery/all?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
     });
 
 

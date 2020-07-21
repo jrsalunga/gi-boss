@@ -151,7 +151,7 @@
                 <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
               @endif
             </td>
-            <td class="text-right">{{ number_format($ds['ds']->grab,0) }}</td>
+            <td class="text-right">{{ number_format($ds['ds']->grab, 2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->grabc,2) }}</td>
             <td class="text-right">{{ number_format($ds['ds']->panda,2) }}</td>
           @endif

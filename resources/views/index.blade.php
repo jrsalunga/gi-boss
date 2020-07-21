@@ -47,16 +47,16 @@
             </a> 
             <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs">All Branches</span>
+              <span class="hidden-xs">All Branches Sales</span>
             </a>
             <a href="/status/branch" class="btn btn-default btn-sm">
               <span class="gly gly-cardio"></span> 
-              <span class="hidden-xs">Branch Analytics</span>
+              <span class="hidden-xs">Branch Daily Sales</span>
             </a>
-            <a href="/status/comparative" class="btn btn-default btn-sm">
+            <!-- <a href="/status/comparative" class="btn btn-default btn-sm">
               <span class="gly gly-stats"></span> 
               <span class="hidden-xs">Comparative Analytics</span>
-            </a>
+            </a> -->
             <!--
             <a href="/component/price/comparative" class="btn btn-default btn-sm">
               <span class="fa fa-line-chart"></span> 

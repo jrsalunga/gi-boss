@@ -102,7 +102,8 @@
         <tr>
           <th>Branch</th>
           <th class="text-right">Sales</th>
-          <th class="text-right">Food Cost</th>
+          <!-- <th class="text-right">Food Cost</th> -->
+          <th class="text-right">Delivery Sales</th>
           <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>
@@ -119,6 +120,7 @@
       <tbody>
         <?php
           $tot_sales = 0;
+          $tot_deliver = 0;
           $tot_gross = 0;
           $tot_purchcost = 0;
           $tot_custcount = 0;
@@ -163,6 +165,7 @@
           @else
             <?php 
               $tot_sales      += $ds['ds']->sales;
+              $tot_deliver    += $ds['ds']->totdeliver;
               $tot_gross      += $ds['ds']->slsmtd_totgrs;
               $tot_purchcost  += $ds['ds']->purchcost;
               $tot_custcount  += $ds['ds']->custcount;
@@ -186,13 +189,24 @@
             @endif
             </td>
             <td class="text-right">
-              @if(number_format($ds['ds']->cos,2)=='0.00')
-                {{ number_format($ds['ds']->cos,2) }}
+              @if(number_format($ds['ds']->totdeliver,2)=='0.00')
+                {{ number_format($ds['ds']->totdeliver,2) }}
               @else
                 <!--
                 <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
                 </a>-->
-                  {{ number_format($ds['ds']->cos,2) }}
+                @if($ds['ds']->sales>0)
+                  <small><em class="text-muted"><small>({{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }}%)</small></em></small>
+                @endif
+                {{ number_format($ds['ds']->totdeliver,2) }}
+              @endif
+              @if(number_format($ds['ds']->cos,2)=='0.00')
+                <!-- {{ number_format($ds['ds']->cos,2) }} -->
+              @else
+                <!--
+                <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
+                </a>-->
+                <!--  {{ number_format($ds['ds']->cos,2) }} -->
               @endif
             </td>
             <td class="text-right">
@@ -233,8 +247,12 @@
             </strong>
           </td>
           <td class="text-right">
+             @if($tot_sales>0)
+                  <small><em class="text-muted">({{ number_format(($tot_deliver/$tot_sales)*100,2) }}%)</em></small>
+                @endif
             <strong>
-              {{ number_format($tot_cos,2) }}
+              <!-- {{ number_format($tot_cos,2) }} -->
+              {{ number_format($tot_deliver,2) }}
             </strong>
           </td>
           <td class="text-right">

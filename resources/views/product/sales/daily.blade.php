@@ -190,10 +190,22 @@
         @if(!request()->has('table'))
         <li role="presentation" style="float: right;margin-right:20px;">
           <div>
-          Net Sales:
+          Daily Sales:
           <h3 id="tot-salesmtd-cost" class="text-right" style="margin:0 0 20px 0;">{{ number_format($ds->sales,2) }}</h3>
           </div>
-          
+        </li>
+        @endif
+        @if(!request()->has('table'))
+        <li role="presentation" style="float: right;margin-right:20px;">
+          <div>
+          Delivery Sales:
+          <h3 id="tot-salesmtd-cost" class="text-right" style="margin:0 0 10px 0;">
+            {{ number_format($ds->totdeliver,2) }}
+          </h3>
+            @if($ds->sales>0)
+              <div class="text-right text-muted" style="font-size:12px; margin-top:-10px;"><b><em>({{ number_format(($ds->totdeliver/$ds->sales)*100,2) }}%)</em></b></div>
+            @endif
+          </div>
         </li>
         @endif
       </ul>
@@ -211,6 +223,7 @@
                 <thead>
                   <tr>
                     <th>Order Time</th>
+                    <th>Trans Type</th>
                     <th>Slip No</th>
                     <th>Grp</th>
                     <th>Product</th>
@@ -243,6 +256,13 @@
                       </td>
                       <td>
                         <small>
+                          <span class="label bg-{{strtolower($sale->trans_type())}}">
+                            {{ $sale->trans_type() }}
+                          </span>
+                        </small>
+                      </td>
+                      <td>
+                        <small>
                           <span class="label"  style="background-color: {{$color}}; color:#fff;">
                             {{ $sale->cslipno }}
                           </span>
@@ -264,6 +284,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

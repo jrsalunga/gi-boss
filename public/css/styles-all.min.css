@@ -181,3 +181,18 @@ ul.nav-wizard{background-color:#f9f9f9;border:1px solid #d4d4d4;-webkit-border-r
 .tab-wrap .tab-content .form-group label{
 	margin-bottom: 0px;
 }
+
+.bg-grab {
+  background-color:#009C49;
+  color:#fff;
+}
+
+.bg-panda {
+  background-color:#C60D5C;
+  color:#fff;
+}
+
+.bg-takeout {
+  background-color:#CF6E58;
+  color:#fff;
+}

@@ -370,10 +370,12 @@
           </div>
         </div>
 
-
+        
+        @if(count($depslps)>0 || count($setslps)>0)
         <div class="panel panel-info">
           <div class="panel-heading">File Upload</div>
           <div class="panel-body">
+            @if(count($depslps)>0)
             <div class="table-responsive">
               <table class="table table-condensed table-striped" style="margin-top: 0;">
                 <thead>
@@ -384,7 +386,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($depslips as $d)
+                  @foreach($depslps as $d)
                   <tr>
                     <td>
                       <a href="javascript:void(0)" target="popup" onclick='window.open("/images/depslp/{{ $d->lid() }}.jpg", "_blank", "width=auto,height=auto"); return false'>
@@ -406,8 +408,10 @@
                 </tbody>
               </table>
             </div>
+            @endif
           </div>
         </div>
+        @endif
         @endif
       </div>
 

@@ -33,6 +33,27 @@ class Salesmtd extends BaseModel {
     return $this->belongsTo('App\Models\Product');
   }
 
+  public function trans_type($flag=false) {
+
+    if (starts_with(strtolower($this->tblno), 'g'))
+      return 'Grab';
+    if (starts_with(strtolower($this->tblno), 'p'))
+      return 'Panda';
+    if (starts_with(strtolower($this->tblno), 'to'))
+      return 'Takeout';
+
+    if ($flag)
+      return 'Dine In';
+    else
+      return '';
+  }
+
+  public function delivery_pct() {
+    if ($this->sales>0)
+      return number_format(($this->totdeliver/$this->sales)*100,2);
+    return 0;
+  }
+
  
 
 

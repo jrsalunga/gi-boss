@@ -127,7 +127,7 @@ class SaleController extends Controller {
     $where['salesmtd.branch_id'] = $branch->id;
 
     $ds = $this->ds
-          //->skipCache()
+          ->skipCache()
           ->sumByDateRange($this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d'))
           ->findWhere(['branchid'=>$branch->id])->all();
 

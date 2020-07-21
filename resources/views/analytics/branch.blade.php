@@ -170,8 +170,11 @@
         <h3 id="h-tot-sales" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Food Cost</p>
-        <h3 id="h-tot-mancost" style="margin:0">0</h3>
+        <p style="margin-bottom:0">Total Delivery Sales</p>
+          <h3 style="margin:0">
+          <small id="h-tot-totdeliver-pct"></small>
+          <span id="h-tot-totdeliver">0</span>
+        </h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Purchased</p>
@@ -197,7 +200,8 @@
               <tr>
                   <th>Date</th>
                   <th class="text-right">Sales</th>
-                  <th class="text-right">Food Cost</th>
+                  <!-- <th class="text-right">Food Cost</th> -->
+                  <th class="text-right">Delivery Sales</th>
                   <th class="text-right">Purchased</th>
                   <th class="text-right">Customers</th>
                   <th class="text-right">Head Spend</th>
@@ -221,6 +225,7 @@
             <tbody>
               <?php
                 $tot_sales = 0;
+                $tot_totdeliver = 0;
                 $tot_purchcost = 0;
                 $tot_custcount = 0;
                 $tot_headspend = 0;
@@ -235,6 +240,7 @@
                 $tot_trans = 0;
 
                 $div_sales = 0;
+                $div_totdeliver = 0;
                 $div_purchcost = 0;
                 $div_custcount = 0;
                 $div_headspend = 0;
@@ -248,6 +254,7 @@
             @foreach($dailysales as $d)
               <?php 
                 $div_sales+=($d->dailysale['sales']!=0)?1:0; 
+                $div_totdeliver+=($d->dailysale['totdeliver']!=0)?1:0; 
                 $div_purchcost+=($d->dailysale['purchcost']!=0)?1:0; 
                 $div_custcount+=($d->dailysale['custcount']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0; 
@@ -272,13 +279,20 @@
                   {{ number_format($d->dailysale['sales'], 2) }}
                 @endif
               </td>
-              <td class="text-right" data-sort="{{ number_format($d->dailysale['cos'], 2,'.','') }}">
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['totdeliver'], 2,'.','') }}">
+                @if(number_format($d->dailysale['totdeliver'], 2)=='0.00')
+                  -
+                @else               
+                  {{ number_format($d->dailysale['totdeliver'], 2) }}
+                @endif
+              </td>
+              <!-- <td class="text-right" data-sort="{{ number_format($d->dailysale['cos'], 2,'.','') }}">
                 @if(number_format($d->dailysale['cos'], 2)=='0.00')
                   -
                 @else               
                   {{ number_format($d->dailysale['cos'], 2) }}
                 @endif
-              </td>
+              </td> -->
               <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
                 @if(number_format($d->dailysale['purchcost'])=='0.00')
                   {{ number_format($d->dailysale['purchcost'], 2) }}
@@ -326,6 +340,7 @@
               </td>
               <?php
                 $tot_sales      += $d->dailysale['sales'];
+                $tot_totdeliver += $d->dailysale['totdeliver'];
                 $tot_purchcost  += $d->dailysale['purchcost'];
                 $tot_custcount  += $d->dailysale['custcount'];
                 $tot_headspend  += $d->dailysale['headspend'];
@@ -384,12 +399,18 @@
               <td class="text-right">
                 <strong>
                   
-                  {{ number_format($tot_cos, 2) }}
+                 <!--  {{ number_format($tot_cos, 2) }} -->
+
+                @if($tot_sales>0)
+                  <small><em class="text-muted" id="f-tot-totdeliver-pct">({{ number_format(($tot_totdeliver/$tot_sales)*100,2) }}%)</em></small>
+                @endif
+                <span id="f-tot-totdeliver">{{ number_format($tot_totdeliver, 2) }}</span>
                  
                 </strong>
                 <div>
                 <em><small title="{{$tot_cos}}/{{$div_cos}}">
-                  {{ $div_cos!=0?number_format($tot_cos/$div_cos,2):0 }}
+                  {{ $div_totdeliver!=0?number_format($tot_totdeliver/$div_totdeliver,2):0 }}
+                  <!-- {{ $div_cos!=0?number_format($tot_cos/$div_cos,2):0 }} -->
                 </small></em>
                 </div>
               </td>
@@ -1628,6 +1649,8 @@
     
 
       $('#h-tot-sales').text($('#f-tot-sales').text());
+      $('#h-tot-totdeliver').text($('#f-tot-totdeliver').text());
+      $('#h-tot-totdeliver-pct').text($('#f-tot-totdeliver-pct').text());
       $('#h-tot-purch').text($('#f-tot-purch').text());
       $('#h-tot-mancost').text($('#f-tot-mancost').text());
       $('#h-tot-tips').text($('#f-tot-tips').text());

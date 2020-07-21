@@ -78,7 +78,8 @@ abstract class BaseModel extends Model {
 		//return str_replace("-", "", $uid);
 		
 		/* for ramsey/uuid */
-		return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 24).SUBSTR($uid, 0, 8).SUBSTR($uid, 19, 4));
+    return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 24).SUBSTR($uid, 0, 8).SUBSTR($uid, 19, 4)); // 3 - 2 - 5 - 1 - 4 (sequential)
+    return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 24).SUBSTR($uid, 19, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 0, 8)); // 3 - 5 - 4 - 2 - 1
 	}
 
 	public static function raw_uid() {
@@ -107,8 +108,21 @@ abstract class BaseModel extends Model {
 		 	*/
 		} catch (UnsatisfiedDependencyException $e) {
 		 
-		 	//throw $e;
-		  $id = \DB::select('SELECT CONCAT(substr(UUID(),15,4),substr(UUID(),10,4),substr(UUID(),25,12),substr(UUID(),1,8),substr(UUID(),20,4)) as id');
+		 	 // 3 - 5 - 4 - 2 - 1 (Correct Format)
+      // select CONCAT(
+      // UPPER(substr(UUID(),15,4)),   /* 3 */
+      // UPPER(substr(UUID(),10,4)),   /* 2 */
+      // UPPER(substr(UUID(),25,12)),  /* 5 */
+      // UPPER(substr(UUID(),1,8))     /* 1 */
+      // UPPER(substr(UUID(),20,4)),   /* 4 */
+      // ) AS UID, UUID(),
+      // UPPER(substr(UUID(),15,4)) as t3,
+      // UPPER(substr(UUID(),10,4)) as t2,
+      // UPPER(substr(UUID(),25,12)) as t5,
+      // UPPER(substr(UUID(),1,8)) as t1
+      // UPPER(substr(UUID(),20,4)) as t4,
+     
+      $id = DB::select('SELECT CONCAT(substr(UUID(),15,4),substr(UUID(),10,4),substr(UUID(),25,12),substr(UUID(),1,8),substr(UUID(),20,4)) as id');
 			$id = array_shift($id);
 			return $id->id;
 		}

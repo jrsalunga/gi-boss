@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', ' - Daily Sales')
+@section('title', ' - All Branches Daily Sales')
 
 @section('css-internal')
 
@@ -27,8 +27,8 @@
   
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li>Daily Sales</li>
-    <li class="active">{{ $dr->date->format('M j, Y') }}</li>
+    <li>All Branches Sales</li>
+    <li class="active">{{ $dr->date->format('D, M j, Y') }}</li>
   </ol>
 
     
@@ -38,10 +38,10 @@
     <div class="container-fluid">
       <div class="navbar-form">
         <div class="btn-group" role="group">
-          <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
+          <!-- <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
-          </a> 
+          </a>  -->
           <a href="/dailysales" class="btn btn-default" title="All Branches">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>

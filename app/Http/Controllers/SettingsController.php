@@ -99,7 +99,7 @@ class SettingsController extends Controller {
 		$bb = $this->repository->skipCache()->all(['branchid']);
 		//return $bb;
 		
-		$branchs = $this->branch->all(['code', 'descriptor', 'id']);
+		$branchs = $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
 		$i = 0;
 		foreach ($branchs as $branch) {
 			$b = $bb->where('branchid', $branch->id)->first();

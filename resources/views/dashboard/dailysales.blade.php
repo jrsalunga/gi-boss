@@ -27,7 +27,7 @@
 	
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li class="active">Daily Sales</li>
+    <li class="active">Starred Branches Sales</li>
   </ol>
 
   <nav id="nav-action" class="navbar navbar-default">
@@ -35,10 +35,10 @@
       <div class="navbar-form">
         
         <div class="btn-group" role="group">
-          <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
+          <!-- <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
-          </a> 
+          </a>  -->
           <button type="button" class="btn btn-default active" title="Strarred Branches">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
@@ -77,7 +77,8 @@
         <tr>
           <th>Branch</th>
           <th class="text-right">Sales</th>
-          <th class="text-right">Food Cost</th>
+          <!-- <th class="text-right">Food Cost</th> -->
+          <th class="text-right">Delivery Sales</th>
           <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>
@@ -130,12 +131,16 @@
             @endif
             </td>
             <td class="text-right">
+              @if($ds['ds']->sales>0)
+                <small><em class="text-muted"><small>({{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }}%)</small></em></small>
+              @endif
+              {{ number_format($ds['ds']->totdeliver,2) }}
               @if(number_format($ds['ds']->cos,2)=='0.00')
-                {{ number_format($ds['ds']->cos,2) }}
+                <!-- {{ number_format($ds['ds']->cos,2) }} -->
               @else
-                <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+               <!--  <a href="/component/purchases?table=expscat&item=Food+Cost&itemid=7208aa3f5cf111e5adbc00ff59fbb323&branchid={{$ds['br']->lid()}}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
                   {{ number_format($ds['ds']->cos,2) }}
-                </a>
+                </a> -->
               @endif
             </td>
             <td class="text-right">

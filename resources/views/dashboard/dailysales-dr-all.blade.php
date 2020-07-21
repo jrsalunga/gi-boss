@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', ' - Daily Sales by Date Range')
+@section('title', ' - All Branches Sales by Date Range')
 
 @section('css-internal')
 
@@ -27,7 +27,7 @@
   
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li>Daily Sales</li>
+    <li>All Branches Sales</li>
     <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
   </ol>
 
@@ -38,10 +38,10 @@
     <div class="container-fluid">
       <div class="navbar-form">
         <div class="btn-group" role="group">
-          <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
+          <!-- <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
-          </a> 
+          </a>  -->
           <a href="/dailysales" class="btn btn-default" title="All Branches">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
@@ -247,9 +247,9 @@
             </strong>
           </td>
           <td class="text-right">
-             @if($tot_sales>0)
-                  <small><em class="text-muted">({{ number_format(($tot_deliver/$tot_sales)*100,2) }}%)</em></small>
-                @endif
+              @if($tot_sales>0)
+                <small><em class="text-muted">({{ number_format(($tot_deliver/$tot_sales)*100,2) }}%)</em></small>
+              @endif
             <strong>
               <!-- {{ number_format($tot_cos,2) }} -->
               {{ number_format($tot_deliver,2) }}

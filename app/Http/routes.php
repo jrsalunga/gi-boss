@@ -75,6 +75,7 @@ Route::get('sales', ['uses'=>'DashboardController@getSales']);
 Route::get('dailysales', ['uses'=>'DashboardController@getDailySales']);
 Route::get('dailysales/all', ['uses'=>'DashboardController@getDailySalesAll']);
 Route::get('dailysales/dr-all', ['uses'=>'DashboardController@getDailyRangeSalesAll']);
+Route::get('delivery/all', ['uses'=>'DashboardController@getDeliverySalesAll']);
 Route::get('sales/all', ['uses'=>'DashboardController@getSalesAll']);
 Route::get('api/tsv', ['uses'=>'DashboardController@getDashboardTSV']);
 Route::get('api/csv', ['uses'=>'DashboardController@getDashboardCSV']);

@@ -79,6 +79,7 @@
                 <li><a href="/report/pnl-summary">Monthly P&amp;L Summary (By Branch) </a></li>
                 <li><a href="/kitlog/month">Kitchen Log Month Summary <small><span class="label label-success">new</span></small></a></li>
                 <li><a href="/report/cash-audit">Daily Cash Audit <small><span class="label label-success">new</span></small></a></li>
+                <li><a href="/delivery/all">All Branches Delivery Sales <small><span class="label label-success">new</span></small></a></li>
               </ul>
             </div>
           </div> 

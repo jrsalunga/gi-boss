@@ -101,7 +101,7 @@
           $tot_grabc = 0;
           $tot_panda = 0;
         ?>
-        @foreach($delivery as $key => $ds) 
+        @foreach($dailysales as $key => $ds) 
         
         <tr>
           <td>
@@ -163,8 +163,8 @@
         <tr>
           <td>
             <strong>
-              {{ count($delivery) }}
-              {{ count($delivery) > 1 ? 'branches':'branch' }}
+              {{ count($dailysales) }}
+              {{ count($dailysales) > 1 ? 'branches':'branch' }}
             </strong>
           </td>
           <td class="text-right">

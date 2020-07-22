@@ -139,21 +139,21 @@
               </a>
             @endif
             </td>
-            <td class="text-right" data-sort="{{ number_format($ds['ds']->totdeliver,0) }}">
+            <td class="text-right" data-sort="{{ $ds['ds']->totdeliver>0?number_format($ds['ds']->totdeliver,0):'' }}">
               @if(number_format($ds['ds']->totdeliver,2)=='0.00')
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @else
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @endif
             </td>
-            <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):0) }}">
+            <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}">
               @if($ds['ds']->sales>0)
                 <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
               @endif
             </td>
-            <td class="text-right" data-sort="{{ number_format($ds['ds']->grab,0) }}">{{ number_format($ds['ds']->grab, 2) }}</td>
-            <td class="text-right" data-sort="{{ number_format($ds['ds']->grabc,0) }}">{{ number_format($ds['ds']->grabc,2) }}</td>
-            <td class="text-right" data-sort="{{ number_format($ds['ds']->panda,0) }}">{{ number_format($ds['ds']->panda,2) }}</td>
+            <td class="text-right" data-sort="{{ $ds['ds']->grab>0?number_format($ds['ds']->grab,0):'' }}">{{ number_format($ds['ds']->grab, 2) }}</td>
+            <td class="text-right" data-sort="{{ $ds['ds']->grabc>0?number_format($ds['ds']->grabc,0):'' }}">{{ number_format($ds['ds']->grabc,2) }}</td>
+            <td class="text-right" data-sort="{{ $ds['ds']->panda>0?number_format($ds['ds']->panda,0):'' }}">{{ number_format($ds['ds']->panda,2) }}</td>
           @endif
           
         </tr>

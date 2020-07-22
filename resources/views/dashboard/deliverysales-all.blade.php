@@ -132,7 +132,7 @@
             ?>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if(number_format($ds['ds']->sales,2)=='0.00')
-              {{ number_format($ds['ds']->sales,2)  }}
+              -
             @else
               <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
               {{ number_format($ds['ds']->sales,2) }}
@@ -141,7 +141,7 @@
             </td>
             <td class="text-right" data-sort="{{ $ds['ds']->totdeliver>0?number_format($ds['ds']->totdeliver,0):'' }}">
               @if(number_format($ds['ds']->totdeliver,2)=='0.00')
-                {{ number_format($ds['ds']->totdeliver,2) }}
+                -
               @else
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @endif
@@ -149,6 +149,8 @@
             <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}">
               @if($ds['ds']->sales>0)
                 <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
+              @else 
+                -
               @endif
             </td>
             <td class="text-right" data-sort="{{ $ds['ds']->grab>0?number_format($ds['ds']->grab,0):'' }}">{{ number_format($ds['ds']->grab, 2) }}</td>

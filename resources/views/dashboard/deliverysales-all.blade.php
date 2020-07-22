@@ -148,7 +148,7 @@
             </td>
             <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}">
               @if($ds['ds']->sales>0 && $ds['ds']->totdeliver>0)
-                <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small> - {{ $ds['ds']->sales }} - {{ $ds['ds']->totdeliver }}
+                <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
               @else 
                 -
               @endif

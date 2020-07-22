@@ -81,7 +81,7 @@
   </nav>
 
   <div class="table-responsive">
-    <table class="table table-hover table-striped table-sort-all">
+    <table class="table table-hover table-striped table-sort-data">
       <thead>
         <tr>
           <th>Branch</th>
@@ -104,7 +104,7 @@
         @foreach($dailysales as $key => $ds) 
         
         <tr>
-          <td>
+          <td data-sort="{{ $ds['br']->code }}">
             <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
             <span data-toggle="tooltip" title="{{ $ds['br']->descriptor }}" class="help">
             {{ $key }} 
@@ -116,12 +116,12 @@
             @endif
           </td>
           @if(is_null($ds['ds']))
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
           @else
             <?php 
               $tot_sales  += $ds['ds']->sales;
@@ -130,7 +130,7 @@
               $tot_grabc  += $ds['ds']->grabc;
               $tot_panda  += $ds['ds']->panda;
             ?>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if(number_format($ds['ds']->sales,2)=='0.00')
               {{ number_format($ds['ds']->sales,2)  }}
             @else
@@ -139,21 +139,21 @@
               </a>
             @endif
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{  }}">
               @if(number_format($ds['ds']->totdeliver,2)=='0.00')
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @else
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @endif
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):0) }}">
               @if($ds['ds']->sales>0)
                 <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
               @endif
             </td>
-            <td class="text-right">{{ number_format($ds['ds']->grab, 2) }}</td>
-            <td class="text-right">{{ number_format($ds['ds']->grabc,2) }}</td>
-            <td class="text-right">{{ number_format($ds['ds']->panda,2) }}</td>
+            <td class="text-right" data-sort="{{ number_format($ds['ds']->grab,0) }}">{{ number_format($ds['ds']->grab, 2) }}</td>
+            <td class="text-right" data-sort="{{ number_format($ds['ds']->grabc,0) }}">{{ number_format($ds['ds']->grabc,2) }}</td>
+            <td class="text-right" data-sort="{{ number_format($ds['ds']->panda,0) }}">{{ number_format($ds['ds']->panda,2) }}</td>
           @endif
           
         </tr>

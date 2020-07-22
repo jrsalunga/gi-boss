@@ -153,9 +153,27 @@
                 -
               @endif
             </td>
-            <td class="text-right" data-sort="{{ $ds['ds']->grab>0?number_format($ds['ds']->grab,0):'' }}">{{ number_format($ds['ds']->grab, 2) }}</td>
-            <td class="text-right" data-sort="{{ $ds['ds']->grabc>0?number_format($ds['ds']->grabc,0):'' }}">{{ number_format($ds['ds']->grabc,2) }}</td>
-            <td class="text-right" data-sort="{{ $ds['ds']->panda>0?number_format($ds['ds']->panda,0):'' }}">{{ number_format($ds['ds']->panda,2) }}</td>
+            <td class="text-right" data-sort="{{ $ds['ds']->grab>0?number_format($ds['ds']->grab,0):'' }}">
+              @if($ds['ds']->grab>0)
+                {{ number_format($ds['ds']->grab, 2) }}
+              @else 
+                -
+              @endif
+            </td>
+            <td class="text-right" data-sort="{{ $ds['ds']->grabc>0?number_format($ds['ds']->grabc,0):'' }}">
+              @if($ds['ds']->grabc>0)
+                {{ number_format($ds['ds']->grabc,2) }}
+              @else 
+                -
+              @endif
+            </td>
+            <td class="text-right" data-sort="{{ $ds['ds']->panda>0?number_format($ds['ds']->panda,0):'' }}">
+              @if($ds['ds']->panda>0)
+                {{ number_format($ds['ds']->panda,2) }}
+              @else 
+                -
+              @endif
+            </td>
           @endif
           
         </tr>

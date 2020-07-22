@@ -139,7 +139,7 @@
               </a>
             @endif
             </td>
-            <td class="text-right" data-sort="{{  }}">
+            <td class="text-right" data-sort="{{ number_format($ds['ds']->totdeliver,0) }}">
               @if(number_format($ds['ds']->totdeliver,2)=='0.00')
                 {{ number_format($ds['ds']->totdeliver,2) }}
               @else

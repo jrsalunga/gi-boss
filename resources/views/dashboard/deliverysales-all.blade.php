@@ -131,19 +131,19 @@
               $tot_panda  += $ds['ds']->panda;
             ?>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
-            @if(number_format($ds['ds']->sales,2)=='0.00')
-              -
-            @else
+            @if($ds['ds']->sales>0)
               <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
               {{ number_format($ds['ds']->sales,2) }}
               </a>
+            @else
+              -
             @endif
             </td>
             <td class="text-right" data-sort="{{ $ds['ds']->totdeliver>0?number_format($ds['ds']->totdeliver,0):'' }}">
-              @if(number_format($ds['ds']->totdeliver,2)=='0.00')
-                -
-              @else
+              @if($ds['ds']->totdeliver>0)
                 {{ number_format($ds['ds']->totdeliver,2) }}
+              @else
+                -
               @endif
             </td>
             <td class="text-right" data-sort="{{ ($ds['ds']->sales>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}">

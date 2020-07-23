@@ -57,14 +57,11 @@ class ReportsController extends Controller
     $month_cashaudit = NULL;
     $setslps = NULL;
     $depslps = NULL;
+    $branch = null;
+    $datas = [];
 
     if ($request->has('branchid') && is_uuid($request->input('branchid')))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
-    else
-      $branch = null;
-
-     $datas = [];
-
 
     if (!is_null($branch)) {
 

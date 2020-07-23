@@ -127,7 +127,7 @@
             </span>
             </a>
             @if(!is_null($ds['ds']) && ($ds['ds']->slsmtd_totgrs+0)!=0 && $ds['ds']->sales > $ds['ds']->slsmtd_totgrs)
-              <span class="pull-right glyphicon glyphicon-exclamation-sign text-warning" title="Warning: " data-toggle="tooltip"></span>
+              <span class="pull-right glyphicon glyphicon-exclamation-sign text-warning" title="Warning: incomplete backup." data-toggle="tooltip"></span>
             @endif
           </td>
           @if(is_null($ds['ds']))

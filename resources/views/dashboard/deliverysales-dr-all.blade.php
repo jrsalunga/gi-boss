@@ -121,7 +121,7 @@
         
         <tr>
           <td data-sort="{{ $ds['br']->code }}">
-            <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
+            <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank">
             <span data-toggle="tooltip" title="{{ $ds['br']->descriptor }}" class="help">
             {{ $key }} 
             </span>
@@ -147,7 +147,7 @@
             ?>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if($ds['ds']->sales>0)
-              <a href="/product/sales?branchid={{ $ds['br']->lid() }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}" target="_blank">
+              <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
               {{ number_format($ds['ds']->sales,2) }}
               </a>
             @else

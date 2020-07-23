@@ -97,7 +97,7 @@
   </nav>
 
   <div class="table-responsive">
-    <table class="table table-hover table-striped table-sort-all">
+    <table class="table table-hover table-striped table-sort-data">
       <thead>
         <tr>
           <th>Branch</th>

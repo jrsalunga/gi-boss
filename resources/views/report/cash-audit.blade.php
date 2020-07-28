@@ -295,9 +295,9 @@
                     <td class="text-right">{{ nf($cash_audit->col_dink, 2, true) }}</td>
                   </tr>
                   <tr>
-                    <td>{{ $cash_audit->cas }}</td>
-                    <td class="text-right">{{ nf($cash_audit->ca, 2, true) }}</td>
-                    <td class="text-right">{{ nf($cash_audit->cak, 2, true) }}</td>
+                    <td>{{ $cash_audit->col_cas }}</td>
+                    <td class="text-right">{{ nf($cash_audit->col_ca, 2, true) }}</td>
+                    <td class="text-right">{{ nf($cash_audit->col_cak, 2, true) }}</td>
                   </tr>
                   <tr>
                     <td>{{ $cash_audit->col_oths }}</td>

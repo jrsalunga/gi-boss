@@ -83,8 +83,6 @@ class ReportsController extends Controller
                 ->with('branch', $branch));
   }
 
-11E8A4F31C1B0D85A7E0B72EBD84AEB5
-
 
 
 

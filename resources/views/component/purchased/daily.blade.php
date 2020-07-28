@@ -253,18 +253,18 @@
                     <th></th>
                     <th>Supp Ref #</th>
                     <th>Supplier</th>
-                    <th>Component Category</th>
-                    <th>Expense</th>
+                    <th>Comp. Cat. Code</th>
+                    <th>Expense Code</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($purchases as $purchase)
                   <tr data-componentid="{{ $purchase->componentid }}" >
-                    <td data-sort="{{ $purchase->date->format('Y-m-d') }}" style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}">
-                      {{ $purchase->date->format('Y-m-d') }}
+                    <td data-sort="{{ $purchase->date->format('Y-m-d') }}"><span style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}" data-toggle="tooltip">
+                      {{ $purchase->date->format('Y-m-d') }}</span>
                     </td>
-                    <td data-sort="{{ strtolower($purchase->component) }}">{{ $purchase->component }}</td>
+                    <td data-sort="{{ strtolower($purchase->component) }}"><span data-toggle="tooltip" title="{{ $purchase->componentcode }} - {{ $purchase->component }}">{{ $purchase->component }}</span></td>
                     <td data-sort="{{ number_format($purchase->qty, 2,'.','') }}">{{ number_format($purchase->qty, 2,'.','')+0 }} 
                       <small class="text-muted">
                         {{ strtolower($purchase->uom)}}@if($purchase->qty>1 && substr(strtolower($purchase->uom), -1)!='s')s
@@ -283,12 +283,12 @@
                         class="label label-default" title=""
                       @endif
                       
-                      style="cursor: help;"><small>{{ $purchase->terms }}</small></span>
+                      style="cursor: help;"  data-toggle="tooltip"><small>{{ $purchase->terms }}</small></span>
                     </td>
                     <td class="text-muted" data-sort="{{ $purchase->supprefno }}"><small>{{ $purchase->supprefno }}</small></td>
-                    <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small>{{ $purchase->supplier }}</small></td>
-                    <td class="text-muted" data-sort="{{ strtolower($purchase->compcatcode) }}"><small>{{ $purchase->compcatcode }}</small></td>
-                    <td class="text-muted" data-sort="{{ strtolower($purchase->expensecode) }}"><small>{{ $purchase->expensecode }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small data-toggle="tooltip" title="{{ $purchase->suppliercode }} - {{ $purchase->supplier }}" style="cursor:help;">{{ $purchase->supplier }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->compcatcode) }}"><smalll data-toggle="tooltip" title="{{ $purchase->compcatcode }} - {{ $purchase->compcat }}" style="cursor:help;">{{ $purchase->compcatcode }}</small></td>
+                    <td class="text-muted" data-sort="{{ strtolower($purchase->expensecode) }}"><smalll data-toggle="tooltip" title="{{ $purchase->expensecode }} - {{ $purchase->expense }}" style="cursor:help;">{{ $purchase->expensecode }}</small></td>
                     <td data-sort="{{ $purchase->expscatcode+0 }}">
                       <span class="label 
                     @if($purchase->expscatcode=='05')
@@ -298,7 +298,7 @@
                     @else
                       label-default
                     @endif
-                     pull-right" title="{{ $purchase->expscat }}" style="cursor: help;">{{ $purchase->expscatcode }}</span>
+                     pull-right" title="{{ $purchase->expscatcode }} - {{ $purchase->expscat }}" style="cursor: help;" data-toggle="tooltip" >{{ $purchase->expscatcode }}</span>
                     </td>
                   </tr>
                   <?php

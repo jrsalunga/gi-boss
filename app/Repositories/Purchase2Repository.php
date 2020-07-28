@@ -39,7 +39,7 @@ class Purchase2Repository extends BaseRepository
                     ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
                     ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
                     ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
-                    ->select('purchase.*', 'component.descriptor as component', 'component.uom as uom',
+                    ->select('purchase.*', 'component.code as componentcode', 'component.descriptor as component', 'component.uom as uom',
                         'supplier.code as suppliercode', 'supplier.descriptor as supplier',
                         'compcat.code as compcatcode', 'compcat.descriptor as compcat', 
                         'expense.code as expensecode', 'expense.descriptor as expense',

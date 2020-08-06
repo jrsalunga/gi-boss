@@ -2,11 +2,11 @@
 /node_modules
 Homestead.yaml
 Homestead.json
-/config/database.php
+/config
 .env
 /logs
 /database/migrations
 /public/downloads
 /public/BATCH_BACKUP
 /storage
-/config/session.php
+/config

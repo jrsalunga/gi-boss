@@ -89,7 +89,7 @@ Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlist
 
 Route::get('/images/apu/{id}', ['uses'=>'ApuController@getImage']);
 
-Route::get('invoice', ['uses'=>'InvoiceController@getInvoice']);
+Route::get('/invoice', ['uses'=>'InvoiceController@getInvoice']);
 
 
 

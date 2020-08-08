@@ -27,6 +27,8 @@ class InvoiceController extends Controller
 
   public function getInvoice(Request $request) {
 
+    return 'test';
+
     $invoice = [];
     $purchases = $this->purchase->with(['component.compcat.expense', 'branch', 'supplier'])->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')]);
 

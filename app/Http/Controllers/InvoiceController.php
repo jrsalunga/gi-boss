@@ -35,6 +35,7 @@ class InvoiceController extends Controller
       'date'=>$request->input('date')
     ];
 
+    return $purchases;
 
     if (count($purchases)>0) {
       $invoice['date'] = c($request->date);

@@ -11,7 +11,7 @@ class Doctype extends BaseModel {
 	// protected $casts = [
  //    'minute' => 'float',
  //    'iscombo' => 'boolean',
-  ];
+  // ];
 
 
 }

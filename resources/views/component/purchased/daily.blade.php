@@ -285,7 +285,13 @@
                       
                       style="cursor: help;"  data-toggle="tooltip"><small>{{ $purchase->terms }}</small></span>
                     </td>
-                    <td class="text-muted" data-sort="{{ $purchase->supprefno }}"><small>{{ $purchase->supprefno }}</small></td>
+                    <td class="text-muted" data-sort="{{ $purchase->supprefno }}">
+                      <small>
+                        <a href="/invoice?supprefno={{ $purchase->supprefno }}&amp;date={{ $purchase->date->format('Y-m-d') }}&amp;branchid={{strtolower($branch->id)}}" target="_blank">
+                          {{ $purchase->supprefno }}
+                        </a>
+                      </small>
+                    </td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->supplier) }}"><small data-toggle="tooltip" title="{{ $purchase->suppliercode }} - {{ $purchase->supplier }}" style="cursor:help;">{{ $purchase->supplier }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->compcatcode) }}"><smalll data-toggle="tooltip" title="{{ $purchase->compcatcode }} - {{ $purchase->compcat }}" style="cursor:help;">{{ $purchase->compcatcode }}</small></td>
                     <td class="text-muted" data-sort="{{ strtolower($purchase->expensecode) }}"><smalll data-toggle="tooltip" title="{{ $purchase->expensecode }} - {{ $purchase->expense }}" style="cursor:help;">{{ $purchase->expensecode }}</small></td>

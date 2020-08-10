@@ -43,12 +43,8 @@
       </div>
     </nav> -->
 
-    @include('_partials.alerts')
 
-
-    @if(is_null($invoice))
-
-    @else
+    @if(count($invoice)>0)
     <div class="row">
       <div class="col-md-6">
         <div class="panel panel-success">
@@ -58,6 +54,23 @@
             </h3>
           </div>
           <div class="panel-body">
+
+          <div>
+            <div class="dropdown pull-right">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li>
+                  <a href="#" data-toggle="modal" data-target=".mdl-update-posting"><i class="gly gly-history"></i> Change Posting Date</a>
+                </li>
+                <li>
+                  <a href="#;" data-toggle="modal" data-target=".mdl-payment-status"><span class="peso">₱</span> Change Payment Status</a>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <h4><span class="gly gly-shop"></span> 
             @if(!empty($invoice['branch']->code))
@@ -72,8 +85,11 @@
             @endif
             <small>{{ $invoice['supplier']->descriptor }}</small>
           </h4>
-          <h5><span class="gly gly-history"></span> {{ $invoice['date']->format(' m/d/Y - D') }}</h5>
-          <h4><span class="peso">₱</span> <small>{{ $invoice['total_amount'] }}</small></h4>
+          <h5><span class="glyphicon glyphicon-calendar"></span> {{ $invoice['date']->format(' m/d/Y - D') }}</h5>
+          @if (!is_null($invoice['posted_at']))
+          <h5><span class="gly gly-history"></span> <span data-toggle="tooltip" title="Original Posting Date" class="help">{{ $invoice['posted_at']->format(' m/d/Y - D') }}</span></h5>
+          @endif
+          <h4><span class="peso">₱</span> <small>{{ $invoice['total_amount'] }} ( {{ $invoice['terms'] }} - {{ Config::get('giligans.paytype.'.$invoice['paytype']) }} )</small></h4>
           
           <p></p>
 
@@ -176,6 +192,97 @@
 </div><!-- end container-fluid -->
  
 
+@if(count($invoice)>0)
+<div class="modal fade mdl-update-posting" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      {!! Form::open(['url' => '/invoice', 'method' => 'put', 'id'=>'filter-form']) !!}
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Change Posting Date</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fr">{{ $invoice['save']==1?'Current':'Original' }} Posting Date</label>
+          <div>
+            {{ $invoice['date']->format('Y-m-d') }}
+          </div>
+        </div>
+        <div class="form-group">
+          @if($invoice['save']==1)
+          <label for="to">Original Posting Date To</label>
+          <div>
+            {{ $invoice['posted_at']->format('Y-m-d') }}
+          </div>
+          <input type="hidden" name="to" value="{{ $invoice['posted_at']->format('Y-m-d') }}">
+          @else
+          <label for="to">Change Posting Date To</label>
+          <div class="input-group">
+            <input type="text" class="form-control datepicker" value="{{ $invoice['date']->format('Y-m-d') }}" id="to" name="to" required="" placeholder="YYYY-MM-DD" maxlength="8">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+          </div>
+          @endif
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" name="branchid" value="{{ $invoice['branch']->id }}">
+        <input type="hidden" name="fr" value="{{ $invoice['date']->format('Y-m-d') }}">
+        <input type="hidden" name="supprefno" value="{{ $invoice['no'] }}">
+        <input type="hidden" name="save" value="{{ $invoice['save'] }}">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary pull-right" style="margin-right: 10px;">Save Changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endif
+
+
+@if(count($invoice)>0)
+<div class="modal fade mdl-payment-status" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      {!! Form::open(['url' => '/invoice-payment', 'method' => 'put', 'id'=>'payment-status']) !!}
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Change Payment</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fr">Terms / Status</label>
+          <div>
+            {{ $invoice['terms'] }} - {{ Config::get('giligans.paytype.'.$invoice['paytype']) }}
+            
+          </div>
+        </div>
+        <div class="form-group">
+          
+          <label for="to">Change Payment Status To</label>
+            <select class="form-control" id="paytype" name="paytype" required="" style="width: 50%;">
+            @foreach(Config::get('giligans.paytype') as $k => $p)
+              @if($invoice['paytype']==$k)
+                <option value="{{ $k }}" selected="">{{ $p }}</option>
+              @else
+                <option value="{{ $k }}" >{{ $p }}</option>
+              @endif
+            @endforeach
+            </select>
+         
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" name="branchid" value="{{ $invoice['branch']->id }}">
+        <input type="hidden" name="date" value="{{ $invoice['date']->format('Y-m-d') }}">
+        <input type="hidden" name="supprefno" value="{{ $invoice['no'] }}">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary pull-right" style="margin-right: 10px;">Save Changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endif
 
 @endsection
 
@@ -188,10 +295,29 @@
   @parent
 
 <script src="/js/vendors-common.min.js"></script>
- <script type="text/javascript">
-   $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+<script src="/js/hc-all.js"> </script>
+<script src="/js/dr-picker.js"> </script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+  moment.locale('en', { week : {
+    dow : 1 // Monday is the first day of the week.
+  }});
+
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $('.datepicker').datetimepicker({
+    format: 'YYYY-MM-DD',
+    ignoreReadonly: true,
+    showTodayButton: true,
+  }).on("dp.show", function (e) {
+    console.log(e);
+    $(this).data("DateTimePicker").maxDate(e.date);
   });
- </script>
+});
+</script>
 
 @endsection

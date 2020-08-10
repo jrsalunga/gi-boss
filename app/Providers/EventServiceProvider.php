@@ -38,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [
         DepslpEventListener::class,
         \App\Listeners\EmploymentActivityEventListener::class,
+        \App\Listeners\ProcessesEventListener::class,
     ];
 
     /**

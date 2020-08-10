@@ -140,5 +140,14 @@ return [
 		'6EA0DF78A18141DBA0E3BED84907F33A' => ['ordinal' => 68, 'code' => 'DJ',  'postion' => 'DJ'],
 		'E16F473C86A94EF09C658286BEDEF89A' => ['ordinal' => 70, 'code' => 'TRA', 'postion' => 'Trainee'],
 	],
+
+  'paytype' => [
+    '0' => 'Unpaid',
+    '1' => 'Paid: Cash',
+    '2' => 'Paid: Cheque',
+    '3' => 'Paid: GCash\PayMaya',
+    '4' => 'Paid: Online',
+    '5' => 'Paid: Others',
+  ],
 	
 ];

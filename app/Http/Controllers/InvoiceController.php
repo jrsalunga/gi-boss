@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,7 +28,20 @@ class InvoiceController extends Controller
 
   public function getInvoice(Request $request) {
 
+    $rules = [
+      'date'      => 'required|date',
+      'supprefno' => 'required',
+      'branchid'  => 'required',
+    ];
+
+    $validator = app('validator')->make($request->all(), $rules);
+
+    if ($validator->fails()) 
+      return abort(404);
+      // return view('invoice.view', compact('invoice', 'apus'))->withErrors($validator);
+
     $invoice = [];
+    $apus = [];
     $purchases = $this->purchase->with(['component.compcat.expense', 'branch', 'supplier'])->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')]);
 
     $where = [
@@ -44,6 +58,8 @@ class InvoiceController extends Controller
 
       $invoice['save'] = $purchases[0]->save;
       $invoice['posted_at'] = is_iso_date($purchases[0]->posted_at) ? c($purchases[0]->posted_at) : NULL;
+      $invoice['paytype'] = $purchases[0]->paytype;
+      $invoice['terms'] = $purchases[0]->terms;
 
       $invoice['supplier'] = NULL;
       if(isset($purchases[0]->supplier)) {
@@ -69,6 +85,12 @@ class InvoiceController extends Controller
       $where['amount'] = str_replace(',', '', $invoice['total_amount']);
       $apus = $this->apUpload->skipCache()->with(['doctype', 'supplier'])->findWhere($where);
     }
+
+    if (count($apus)<=0) {
+      $where['amount'] = str_replace(',', '', $invoice['total_amount']);
+      unset($where['date']);
+      $apus = $this->apUpload->skipCache()->with(['doctype', 'supplier'])->findWhere($where);
+    }
     
     // return $apus;
     // return $invoice;
@@ -76,7 +98,110 @@ class InvoiceController extends Controller
     return view('invoice.view', compact('invoice', 'apus'));
 
   }
+
+
+  public function updateInvoice(Request $request) {
+
+    $rules = [
+      'to'        => 'required|date',
+      'fr'        => 'required|date',
+      'supprefno' => 'required',
+      'branchid'  => 'required',
+      'save'      => 'required',
+    ];
+
+    $validator = app('validator')->make($request->all(), $rules);
+
+    if ($validator->fails()) 
+      return redirect()->back()->withErrors($validator);
+
+
+    $purchases = $this->purchase->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('fr'), 'branchid'=>$request->input('branchid')]);
+    if (count($purchases)<=0)
+      return redirect()->back()->with('alert-error', 'No records found!')->with('alert-important', '');
+
+
+
+    if ($request->input('save')==1) {
+      $save = ['save'=>0, 'date'=>$request->input('to'), 'posted_at'=>NULL];
+    } else {
+      $save = ['save'=>1, 'date'=>$request->input('to'), 'posted_at'=>$request->input('fr')];
+    }
+
+    $updated_purchases = DB::table('purchase')
+                          ->where(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('fr'), 'branchid'=>$request->input('branchid')])
+                          ->update($save);
+
+
+    if ($updated_purchases>0) {
+
+      event(new \App\Events\Process\AggregateComponentDaily(c($request->input('fr')), $request->input('branchid'))); // recompute Daily Component
+      event(new \App\Events\Process\AggregateDailyExpense(c($request->input('fr')), $request->input('branchid'))); // recompute Daily Expense
+
+      event(new \App\Events\Process\AggregateComponentMonthly(c($request->input('fr')), $request->input('branchid'))); // recompute Monthly Component
+      event(new \App\Events\Process\AggregateMonthlyExpense(c($request->input('fr')), $request->input('branchid'))); // recompute Monthly Expense
+
+
+      event(new \App\Events\Process\AggregateComponentDaily(c($request->input('to')), $request->input('branchid'))); // recompute Daily Component
+      event(new \App\Events\Process\AggregateDailyExpense(c($request->input('to')), $request->input('branchid'))); // recompute Daily Expense
+
+      event(new \App\Events\Process\AggregateComponentMonthly(c($request->input('to')), $request->input('branchid'))); // recompute Monthly Component
+      event(new \App\Events\Process\AggregateMonthlyExpense(c($request->input('to')), $request->input('branchid'))); // recompute Monthly Expense
+
+
+      
+
+      return redirect('/invoice?branchid='.strtolower($request->input('branchid')).'&date='.$save['date'].'&supprefno='.$request->input('supprefno'))->with('alert-success', $updated_purchases.' records has been updated.');
+      return $updated_purchases;
+    } else
+      return redirect()->back()->with('alert-error', 'No records found to update.')->with('alert-important', '');
+  }
+
+
+  public function updateInvoicePayment(Request $request) {
+
+    $rules = [
+      'date'      => 'required|date',
+      'supprefno' => 'required',
+      'branchid'  => 'required',
+      'paytype'   => 'required',
+    ];
+
+    $validator = app('validator')->make($request->all(), $rules);
+
+    if ($validator->fails()) 
+      return redirect()->back()->withErrors($validator);
+
+    $purchases = $this->purchase->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')]);
+    if (count($purchases)<=0)
+      return redirect()->back()->with('alert-error', 'No records found!')->with('alert-important', '');
+
+    $updated_purchases = DB::table('purchase')
+                          ->where(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')])
+                          ->update(['paytype'=>$request->input('paytype')]);
+
+
+    if ($updated_purchases>0) {
+
+      // event(new \App\Events\Process\AggregateComponentDaily(c($request->input('fr')), $request->input('branchid'))); // recompute Daily Component
+      // event(new \App\Events\Process\AggregateDailyExpense(c($request->input('fr')), $request->input('branchid'))); // recompute Daily Expense
+
+      // event(new \App\Events\Process\AggregateComponentMonthly(c($request->input('fr')), $request->input('branchid'))); // recompute Monthly Component
+      // event(new \App\Events\Process\AggregateMonthlyExpense(c($request->input('fr')), $request->input('branchid'))); // recompute Monthly Expense
+
+
+      // event(new \App\Events\Process\AggregateComponentDaily(c($request->input('to')), $request->input('branchid'))); // recompute Daily Component
+      // event(new \App\Events\Process\AggregateDailyExpense(c($request->input('to')), $request->input('branchid'))); // recompute Daily Expense
+
+      // event(new \App\Events\Process\AggregateComponentMonthly(c($request->input('to')), $request->input('branchid'))); // recompute Monthly Component
+      // event(new \App\Events\Process\AggregateMonthlyExpense(c($request->input('to')), $request->input('branchid'))); // recompute Monthly Expense
+
+      return redirect('/invoice?branchid='.strtolower($request->input('branchid')).'&date='.$request->input('date').'&supprefno='.$request->input('supprefno'))->with('alert-success', 'Payment status has been updated.');
+    } else
+      return redirect()->back()->with('alert-error', 'No records found to update.')->with('alert-important', '');
+
+
   
 
-
+  }
 }

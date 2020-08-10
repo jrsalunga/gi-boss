@@ -287,7 +287,7 @@
                     </td>
                     <td class="text-muted" data-sort="{{ $purchase->supprefno }}">
                       <small>
-                        <a href="/invoice?supprefno={{ $purchase->supprefno }}&amp;date={{ $purchase->date->format('Y-m-d') }}&amp;branchid={{strtolower($branch->id)}}" target="_blank">
+                        <a href="/invoice?supprefno={{ $purchase->supprefno }}&amp;date={{ $purchase->date->format('Y-m-d') }}&amp;branchid={{strtolower($branch->id)}}" target="_blank" {{ $purchase->save>0?'class=text-danger':'' }}>
                           {{ $purchase->supprefno }}
                         </a>
                       </small>
@@ -700,6 +700,7 @@
                               <tr>
                                 <th>Code</th>
                                 <th>Supplier</th>
+                                <th></th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
@@ -709,6 +710,7 @@
                                 <tr>
                                   <td>{{ $supplier->code }}</td>
                                   <td>{{ $supplier->descriptor }}</td>
+                                  <td>{{ $supplier->terms }}</td>
                                   <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
                                 </tr>
                                 <?php $totsup+=$supplier->tcost; ?>

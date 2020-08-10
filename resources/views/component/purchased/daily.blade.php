@@ -707,10 +707,19 @@
                             <tbody>
                               <?php $totsup=0; ?>
                               @foreach($suppliers as $supplier)
-                                <tr>
+                                <tr data-supplierid="{{ $supplier->id }}">
                                   <td>{{ $supplier->code }}</td>
                                   <td>{{ $supplier->descriptor }}</td>
-                                  <td>{{ $supplier->terms }}</td>
+                                  <td>
+                                     <span 
+                                    @if(strtolower($supplier->terms)=='k')
+                                      class="label label-info" title="Check"
+                                    @else(strtolower($supplier->terms)=='c')
+                                      class="label label-success" title="Cash"
+                                    @endif
+                                    
+                                    style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small></span>
+                                  </td>
                                   <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
                                 </tr>
                                 <?php $totsup+=$supplier->tcost; ?>

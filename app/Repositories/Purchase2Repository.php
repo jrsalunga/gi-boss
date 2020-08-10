@@ -131,7 +131,7 @@ class Purchase2Repository extends BaseRepository
                     ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
                     ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
                     ->leftJoin('expscat', 'expscat.id', '=', 'expense.expscatid')
-                    ->select(DB::raw('supplier.code as code, supplier.descriptor, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost'))
+                    ->select(DB::raw('supplier.code as code, supplier.descriptor, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, supplier.terms as terms, supplier.id as id'))
                     ->groupBy('supplier.id')
                     ->orderBy(DB::raw('sum(purchase.tcost)'), 'desc');
     });

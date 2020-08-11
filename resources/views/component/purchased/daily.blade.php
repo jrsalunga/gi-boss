@@ -378,7 +378,7 @@
                                   <td>{{ $supplier->code }}</td>
                                   <td>{{ $supplier->descriptor }}</td>
                                   <td>
-                                    <!-- <span 
+                                    <span 
                                       @if(strtolower($supplier->terms)=='k')
                                         class="label label-info" title="Check"
                                       @else(strtolower($supplier->terms)=='c')
@@ -386,7 +386,7 @@
                                       @endif
                                       
                                       style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small>
-                                    </span> -->
+                                    </span>
                                   </td>
                                   <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
                                 </tr>

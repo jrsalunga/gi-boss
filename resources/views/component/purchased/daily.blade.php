@@ -348,183 +348,69 @@
             </div> <!-- end: .table-responsive -->
           </div>
           <div role="tabpanel" class="tab-pane" id="stats">
-            <!-- Component Panel -->
+            <!-- Supplier Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Components</div>
+              <div class="panel-heading">Supplier</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
-                      <div id="graph-pie-component" data-table="#component-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
-                  <div class="col-xs-12 col-md-7 col-md-pull-5">
-                    <div class="row">
-                      <div class="table-responsive">
-                        <span class="label label-info show toggle">show more</span>
-                        <div class="show less">
-                          <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
-                            <thead>
-                              <tr>
-                                <th>Component</th>
-                                <th class="text-right">Tran. Count</th>
-                                <th class="text-right">Total Cost</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <?php $totcomp = 0; ?>
-                              @foreach($components as $component)
-                                <tr>
-                                  <td>{{ $component->component }}</td>
-                                  <td class="text-right">{{ $component->tran_cnt }}</td>
-                                  <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
-                                </tr>
-                                <?php $totcomp+=$component->tcost; ?>
-                              @endforeach
-                            </tbody>
-                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcomp,2)}}</b></td></tr></tfoot>
-                          </table>
-                        </div>
-                        <table id="component-data" style="display:none;">
-                            <thead>
-                              <tr>
-                                <th>Component</th>
-                                <th>Total Cost</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              @foreach($components as $component)
-                                <tr>
-                                  <td>{{ $component->component }}</td>
-                                  <td>{{ $component->tcost }}</td>
-                                </tr>
-                              @endforeach
-                            </tbody>
-                          </table>
-                      </div><!-- end: .table-responsive -->
-                    </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                </div><!-- end: .row -->
-              </div>
-            </div><!-- end: .panel.panel-default -->
-            <!-- Component Category Panel -->
-            <div class="panel panel-default">
-              <div class="panel-heading">Component Category</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-xs-12 col-md-5 col-md-push-7">
-                    <div class="graph-container pull-right">
-                    <div id="graph-pie-compcat" data-table="#compcat-data"></div>
+                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
                   <div class="col-xs-12 col-md-7 col-md-pull-5">
                     <div class="row">
                       <div class="table-responsive">
                         <div class="show less">
-                          <table class="tb-compcat-data table table-condensed table-hover table-striped table-sort">
-                            <thead>
-                              <tr>
-                                <th>Category</th>
-                                <th>Expense Code</th>
-                                <th class="text-right">Total Cost</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <?php $totcat = 0; ?>
-                              @foreach($compcats as $compcat)
-                                <tr>
-                                  <td>{{ $compcat->compcat }}</td>
-                                  <td>{{ $compcat->expensecode }}</td>
-                                  <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
-                                </tr>
-                                <?php $totcat+=$compcat->tcost; ?>
-                              @endforeach
-                            </tbody>
-                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcat,2)}}</b></td></tr></tfoot>
-                          </table>
-                        </div>
-                        <span class="label label-info show toggle">show more</span>
-                        <table id="compcat-data" style="display: none;">
-                            <thead>
-                              <tr>
-                                <th>Category</th>
-                                <th>Total Cost</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              @foreach($compcats as $compcat)
-                                <tr>
-                                  <td>{{ $compcat->compcat }}</td>
-                                  <td>{{ $compcat->tcost }}</td>
-                                </tr>
-                              @endforeach
-                            </tbody>
-                          </table>
-                      </div><!-- end: .table-responsive -->
-                    </div><!-- end: .row -->
-                  </div><!-- end: .col-md-7 -->
-                </div><!-- end: .row -->
-              </div>
-            </div><!-- end: .panel.panel-default -->
-            <!-- Expenses Panel -->
-            <div class="panel panel-default">
-              <div class="panel-heading">Expense</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-xs-12 col-md-5 col-md-push-7">
-                    <div class="graph-container pull-right">
-                      <div id="graph-pie-expense" data-table="#expense-data"></div>
-                    </div>
-                  </div><!-- end: .col-md-5 -->
-                  <div class="col-xs-12 col-md-7 col-md-pull-5">
-                    <div class="row">
-                      <div class="table-responsive">
-                        <div class="show less">
-                          <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
+                          <table class="tb-supplier-data table table-condensed table-hover table-striped table-sort">
                             <thead>
                               <tr>
                                 <th>Code</th>
-                                <th>Expense</th>
+                                <th>Supplier</th>
                                 <th></th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <?php $totexp=0; ?>
-                              @foreach($expenses as $expense)
-                                <tr>
-                                  <td>{{ $expense->expensecode }}</td>
-                                  <td>{{ $expense->expense }}</td>
+                              <?php $totsup=0; ?>
+                              @foreach($suppliers as $supplier)
+                                <tr data-supplierid="{{ $supplier->id }}">
+                                  <td>{{ $supplier->code }}</td>
+                                  <td>{{ $supplier->descriptor }}</td>
                                   <td>
-                                    @if($expense->expscatcode=='05')
-                                      <span class="label label-warning">{{ $expense->expscatcode }}</span>
-                                    @elseif($expense->expscatcode=='08')
-                                      <span class="label label-primary">{{ $expense->expscatcode }}</span>
-                                    @else
-                                      {{ $expense->expscatcode }}
-                                    @endif
+                                    <!-- <span 
+                                      @if(strtolower($supplier->terms)=='k')
+                                        class="label label-info" title="Check"
+                                      @else(strtolower($supplier->terms)=='c')
+                                        class="label label-success" title="Cash"
+                                      @endif
+                                      
+                                      style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small>
+                                    </span> -->
                                   </td>
-                                  <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
+                                  <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
                                 </tr>
-                                <?php $totexp+=$expense->tcost; ?>
+                                <?php $totsup+=$supplier->tcost; ?>
                               @endforeach
                             </tbody>
-                            <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totexp,2)}}</b></td></tr></tfoot>
+                            <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
+                        @if(count($suppliers)>6)
                         <span class="label label-info show toggle">show more</span>
-                        <table id="expense-data" style="display:none;">
+                        @endif
+                        <table id="supplier-data" style="display:none;">
                             <thead>
                               <tr>
-                                <th>Expense</th>
+                                <th>Supplier</th>
                                 <th>Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              @foreach($expenses as $expense)
+                              @foreach($suppliers as $supplier)
                                 <tr>
-                                  <td>{{ $expense->expense }}</td>
-                                  <td>{{ $expense->tcost }}</td>
+                                  <td>{{ $supplier->descriptor }}</td>
+                                  <td>{{ $supplier->tcost }}</td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -535,65 +421,80 @@
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
-            <!-- Expenses Category Panel -->
+            <!-- Invoices Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Expense Category</div>
+              <div class="panel-heading">Invoices</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
-                      <div id="graph-pie-expscat" data-table="#expscat-data"></div>
+                      <div id="graph-pie-invoice" data-table="#invoice-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
                   <div class="col-xs-12 col-md-7 col-md-pull-5">
                     <div class="row">
                       <div class="table-responsive">
                         <div class="show less">
-                          <table class="tb-expscat-data table table-condensed table-hover table-striped table-sort">
+                          <table class="tb-invoice-data table table-condensed table-hover table-striped table-sort">
                             <thead>
                               <tr>
                                 <th>Code</th>
-                                <th>Category</th>
+                                <th>Supplier</th>
+                                <th>Date</th>
+                                <th class="text-right">Supp. Ref. #</th>
+                                <th></th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <?php $totexpc=0; ?>
-                              @foreach($expscats as $expscat)
-                                <tr>
-                                  <td>
-                                    @if($expscat->expscatcode=='05')
-                                      <span class="label label-warning">{{ $expscat->expscatcode }}</span>
-                                    @elseif($expscat->expscatcode=='08')
-                                      <span class="label label-primary">{{ $expscat->expscatcode }}</span>
-                                    @else
-                                      {{ $expscat->expscatcode }}
-                                    @endif
+                              <?php $totsup=0; ?>
+                              @foreach($invoices as $invoice)
+                                <tr data-supplierid="{{ $supplier->id }}">
+                                  <td>{{ $invoice->code }}</td>
+                                  <td>{{ $invoice->descriptor }}</td>
+                                  <td>{{ $invoice->date->format('Y-m-d') }}</td>
+                                  <td class="text-right">
+                                    <a href="/invoice?supprefno={{ $invoice->supprefno }}&amp;date={{ $invoice->date->format('Y-m-d') }}&amp;branchid={{strtolower($invoice->branchid)}}" target="_blank" {{ $invoice->save>0?'class=text-danger':'' }}>
+                                      {{ $invoice->supprefno }}
+                                    </a>
                                   </td>
-                                  <td>{{ $expscat->expscat }}</td>
-                                  <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
+                                  <td>
+                                     <span 
+                                    @if(strtolower($invoice->terms)=='k')
+                                      class="label label-info" title="Check"
+                                    @else(strtolower($invoice->terms)=='c')
+                                      class="label label-success" title="Cash"
+                                    @endif
+                                    
+                                    style="cursor: help;"  data-toggle="tooltip"><small>{{ $invoice->terms }}</small></span>
+                                    -
+                                    <small class="text-muted">
+                                      {{ Config::get('giligans.paytype.'.$invoice->paytype) }} 
+                                    </small>
+                                  </td>
+                                  <td class="text-right">{{ number_format($invoice->tcost, 2) }}</td>
                                 </tr>
-                                <?php $totexpc+=$expscat->tcost; ?>
+                                <?php $totsup+=$invoice->tcost; ?>
                               @endforeach
                             </tbody>
-                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totexpc,2)}}</b></td></tr></tfoot>
+                            <tfoot><tr><td></td><td></td><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
-                        <!--
+                        @if(count($invoices)>6)
                         <span class="label label-info show toggle">show more</span>
-                        -->
-                        <table id="expscat-data" style="display:none;">
+                        @endif
+                        <table id="invoice-data" style="display:none;">
                             <thead>
                               <tr>
-                                <th>Category</th>
+                                <th>Invoice</th>
                                 <th>Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              @foreach($expscats as $expscat)
+                              @foreach($invoices as $invoice)
                                 <tr>
-                                  <td>{{ $expscat->expscat }}</td>
-                                  <td>{{ $expscat->tcost}}</td>
+                                  <td>{{ $invoice->code }} - {{ $invoice->supprefno }}</td>
+                                  <td>{{ $invoice->tcost }}</td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -604,7 +505,7 @@
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
-            <!-- Expenses Category Panel -->
+             <!-- Expenses Payment/Terms -->
             <div class="panel panel-default">
               <div class="panel-heading">Payment/Terms</div>
               <div class="panel-body">
@@ -681,66 +582,65 @@
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
-            <!-- Supplier Panel -->
+             <!-- Expenses Category Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Supplier</div>
+              <div class="panel-heading">Expense Category</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
                     <div class="graph-container pull-right">
-                      <div id="graph-pie-supplier" data-table="#supplier-data"></div>
+                      <div id="graph-pie-expscat" data-table="#expscat-data"></div>
                     </div>
                   </div><!-- end: .col-md-5 -->
                   <div class="col-xs-12 col-md-7 col-md-pull-5">
                     <div class="row">
                       <div class="table-responsive">
                         <div class="show less">
-                          <table class="tb-supplier-data table table-condensed table-hover table-striped table-sort">
+                          <table class="tb-expscat-data table table-condensed table-hover table-striped table-sort">
                             <thead>
                               <tr>
                                 <th>Code</th>
-                                <th>Supplier</th>
-                                <th></th>
+                                <th>Category</th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <?php $totsup=0; ?>
-                              @foreach($suppliers as $supplier)
-                                <tr data-supplierid="{{ $supplier->id }}">
-                                  <td>{{ $supplier->code }}</td>
-                                  <td>{{ $supplier->descriptor }}</td>
+                              <?php $totexpc=0; ?>
+                              @foreach($expscats as $expscat)
+                                <tr>
                                   <td>
-                                     <span 
-                                    @if(strtolower($supplier->terms)=='k')
-                                      class="label label-info" title="Check"
-                                    @else(strtolower($supplier->terms)=='c')
-                                      class="label label-success" title="Cash"
+                                    @if($expscat->expscatcode=='05')
+                                      <span class="label label-warning">{{ $expscat->expscatcode }}</span>
+                                    @elseif($expscat->expscatcode=='08')
+                                      <span class="label label-primary">{{ $expscat->expscatcode }}</span>
+                                    @else
+                                      {{ $expscat->expscatcode }}
                                     @endif
-                                    
-                                    style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small></span>
                                   </td>
-                                  <td class="text-right">{{ number_format($supplier->tcost, 2) }}</td>
+                                  <td>{{ $expscat->expscat }}</td>
+                                  <td class="text-right">{{ number_format($expscat->tcost, 2) }}</td>
                                 </tr>
-                                <?php $totsup+=$supplier->tcost; ?>
+                                <?php $totexpc+=$expscat->tcost; ?>
                               @endforeach
                             </tbody>
-                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totexpc,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
+                        <!--
                         <span class="label label-info show toggle">show more</span>
-                        <table id="supplier-data" style="display:none;">
+                        -->
+                        <table id="expscat-data" style="display:none;">
                             <thead>
                               <tr>
-                                <th>Supplier</th>
+                                <th>Category</th>
                                 <th>Total Cost</th>
                               </tr>
                             </thead>
                             <tbody>
-                              @foreach($suppliers as $supplier)
+                              @foreach($expscats as $expscat)
                                 <tr>
-                                  <td>{{ $supplier->descriptor }}</td>
-                                  <td>{{ $supplier->tcost }}</td>
+                                  <td>{{ $expscat->expscat }}</td>
+                                  <td>{{ $expscat->tcost}}</td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -751,6 +651,200 @@
                 </div><!-- end: .row -->
               </div>
             </div><!-- end: .panel.panel-default -->
+            <!-- Expenses Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Expense</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-expense" data-table="#expense-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Code</th>
+                                <th>Expense</th>
+                                <th></th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php $totexp=0; ?>
+                              @foreach($expenses as $expense)
+                                <tr>
+                                  <td>{{ $expense->expensecode }}</td>
+                                  <td>{{ $expense->expense }}</td>
+                                  <td>
+                                    @if($expense->expscatcode=='05')
+                                      <span class="label label-warning">{{ $expense->expscatcode }}</span>
+                                    @elseif($expense->expscatcode=='08')
+                                      <span class="label label-primary">{{ $expense->expscatcode }}</span>
+                                    @else
+                                      {{ $expense->expscatcode }}
+                                    @endif
+                                  </td>
+                                  <td class="text-right">{{ number_format($expense->tcost, 2) }}</td>
+                                </tr>
+                                <?php $totexp+=$expense->tcost; ?>
+                              @endforeach
+                            </tbody>
+                            <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totexp,2)}}</b></td></tr></tfoot>
+                          </table>
+                        </div>
+                        @if(count($expenses)>6)
+                        <span class="label label-info show toggle">show more</span>
+                        @endif
+                        <table id="expense-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Expense</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($expenses as $expense)
+                                <tr>
+                                  <td>{{ $expense->expense }}</td>
+                                  <td>{{ $expense->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            <!-- Component Category Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Component Category</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
+                    <div class="graph-container pull-right">
+                    <div id="graph-pie-compcat" data-table="#compcat-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <div class="show less">
+                          <table class="tb-compcat-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Expense Code</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php $totcat = 0; ?>
+                              @foreach($compcats as $compcat)
+                                <tr>
+                                  <td>{{ $compcat->compcat }}</td>
+                                  <td>{{ $compcat->expensecode }}</td>
+                                  <td class="text-right">{{ number_format($compcat->tcost, 2) }}</td>
+                                </tr>
+                                <?php $totcat+=$compcat->tcost; ?>
+                              @endforeach
+                            </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcat,2)}}</b></td></tr></tfoot>
+                          </table>
+                        </div>
+                        <span class="label label-info show toggle">show more</span>
+                        <table id="compcat-data" style="display: none;">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($compcats as $compcat)
+                                <tr>
+                                  <td>{{ $compcat->compcat }}</td>
+                                  <td>{{ $compcat->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+             <!-- Component Panel -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Components</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 col-md-5 col-md-push-7">
+                    <div class="graph-container pull-right">
+                      <div id="graph-pie-component" data-table="#component-data"></div>
+                    </div>
+                  </div><!-- end: .col-md-5 -->
+                  <div class="col-xs-12 col-md-7 col-md-pull-5">
+                    <div class="row">
+                      <div class="table-responsive">
+                        <span class="label label-info show toggle">show more</span>
+                        <div class="show less">
+                          <table class="tb-component-data table table-condensed table-hover table-striped table-sort">
+                            <thead>
+                              <tr>
+                                <th>Component</th>
+                                <th class="text-right">Tran. Count</th>
+                                <th class="text-right">Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php $totcomp = 0; ?>
+                              @foreach($components as $component)
+                                <tr>
+                                  <td>{{ $component->component }}</td>
+                                  <td class="text-right">{{ $component->tran_cnt }}</td>
+                                  <td class="text-right">{{ number_format($component->tcost, 2) }}</td>
+                                </tr>
+                                <?php $totcomp+=$component->tcost; ?>
+                              @endforeach
+                            </tbody>
+                            <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($totcomp,2)}}</b></td></tr></tfoot>
+                          </table>
+                        </div>
+                        <table id="component-data" style="display:none;">
+                            <thead>
+                              <tr>
+                                <th>Component</th>
+                                <th>Total Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($components as $component)
+                                <tr>
+                                  <td>{{ $component->component }}</td>
+                                  <td>{{ $component->tcost }}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
+                      </div><!-- end: .table-responsive -->
+                    </div><!-- end: .row -->
+                  </div><!-- end: .col-md-7 -->
+                </div><!-- end: .row -->
+              </div>
+            </div><!-- end: .panel.panel-default -->
+            
+           
+           
+            
+            
           </div>
           <div role="tabpanel" class="tab-pane" id="download">Download</div>
         </div>
@@ -863,6 +957,7 @@
   var expscatChart = new Highcharts.Chart(getOptions('graph-pie-expscat', 'expscat-data'));
   var supplierChart = new Highcharts.Chart(getOptions('graph-pie-supplier', 'supplier-data'));
   var paymentChart = new Highcharts.Chart(getOptions('graph-pie-payment', 'payment-data'));
+  var invoiceChart = new Highcharts.Chart(getOptions('graph-pie-invoice', 'invoice-data'));
   @endif
 
   /*

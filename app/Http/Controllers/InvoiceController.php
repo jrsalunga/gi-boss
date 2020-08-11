@@ -120,12 +120,16 @@ class InvoiceController extends Controller
     if (count($purchases)<=0)
       return redirect()->back()->with('alert-error', 'No records found!')->with('alert-important', '');
 
+    
+    if (is_null($purchases[0]->posted_at)) { // change to new posting date    
 
+      if ($request->input('save')==1) 
+        $save = ['date'=>$request->input('to'), 'posted_at'=>$request->input('fr')];
+      else
+        $save = ['save'=>1, 'date'=>$request->input('to'), 'posted_at'=>$request->input('fr')];
 
-    if ($request->input('save')==1) {
-      $save = ['save'=>0, 'date'=>$request->input('to'), 'posted_at'=>NULL];
-    } else {
-      $save = ['save'=>1, 'date'=>$request->input('to'), 'posted_at'=>$request->input('fr')];
+    } else { // back to original posting date
+      $save = ['date'=>$request->input('to'), 'posted_at'=>NULL];
     }
 
     $updated_purchases = DB::table('purchase')
@@ -151,7 +155,7 @@ class InvoiceController extends Controller
 
       
 
-      return redirect('/invoice?branchid='.strtolower($request->input('branchid')).'&date='.$save['date'].'&supprefno='.$request->input('supprefno'))->with('alert-success', $updated_purchases.' records has been updated.');
+      return redirect('/invoice?branchid='.strtolower($request->input('branchid')).'&date='.$save['date'].'&supprefno='.$request->input('supprefno'))->with('alert-success', 'Invoice ('.$request->input('supprefno').') date has been updated.');
       return $updated_purchases;
     } else
       return redirect()->back()->with('alert-error', 'No records found to update.')->with('alert-important', '');
@@ -159,12 +163,13 @@ class InvoiceController extends Controller
 
 
   public function updateInvoicePayment(Request $request) {
-
+    // return $request->all();
     $rules = [
       'date'      => 'required|date',
       'supprefno' => 'required',
       'branchid'  => 'required',
       'paytype'   => 'required',
+      'save'      => 'required',
     ];
 
     $validator = app('validator')->make($request->all(), $rules);
@@ -176,9 +181,20 @@ class InvoiceController extends Controller
     if (count($purchases)<=0)
       return redirect()->back()->with('alert-error', 'No records found!')->with('alert-important', '');
 
+    $arr_terms = $purchases->pluck('terms')->toArray();
+
+    $idx = array_search('K', $arr_terms);
+    if ($idx !== false) {
+      if ($request->input('paytype')>0)
+        $update = ['paytype'=>$request->input('paytype'), 'save'=>1];
+      else
+        $update = ['paytype'=>$request->input('paytype'), 'save'=>0];
+    }
+
+
     $updated_purchases = DB::table('purchase')
                           ->where(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')])
-                          ->update(['paytype'=>$request->input('paytype')]);
+                          ->update($update);
 
 
     if ($updated_purchases>0) {

@@ -65,9 +65,11 @@
                 <li>
                   <a href="#" data-toggle="modal" data-target=".mdl-update-posting"><i class="gly gly-history"></i> Change Posting Date</a>
                 </li>
+                @if($invoice['terms']=='K')
                 <li>
                   <a href="#;" data-toggle="modal" data-target=".mdl-payment-status"><span class="peso">₱</span> Change Payment Status</a>
                 </li>
+                @endif
               </ul>
             </div>
           </div>
@@ -209,7 +211,7 @@
           </div>
         </div>
         <div class="form-group">
-          @if($invoice['save']==1)
+          @if($invoice['save']==1 && !is_null($invoice['posted_at']))
           <label for="to">Original Posting Date To</label>
           <div>
             {{ $invoice['posted_at']->format('Y-m-d') }}
@@ -275,6 +277,7 @@
         <input type="hidden" name="branchid" value="{{ $invoice['branch']->id }}">
         <input type="hidden" name="date" value="{{ $invoice['date']->format('Y-m-d') }}">
         <input type="hidden" name="supprefno" value="{{ $invoice['no'] }}">
+        <input type="hidden" name="save" value="{{ $invoice['save'] }}">
         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary pull-right" style="margin-right: 10px;">Save Changes</button>
       </div>

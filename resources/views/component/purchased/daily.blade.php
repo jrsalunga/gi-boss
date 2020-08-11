@@ -396,7 +396,7 @@
                             <tfoot><tr><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
-                        @if(count($suppliers)>6)
+                        @if(count($suppliers)>7)
                         <span class="label label-info show toggle">show more</span>
                         @endif
                         <table id="supplier-data" style="display:none;">
@@ -480,7 +480,7 @@
                             <tfoot><tr><td></td><td></td><td></td><td></td><td></td><td class="text-right"><b>{{number_format($totsup,2)}}</b></td></tr></tfoot>
                           </table>
                         </div>
-                        @if(count($invoices)>6)
+                        @if(count($invoices)>7)
                         <span class="label label-info show toggle">show more</span>
                         @endif
                         <table id="invoice-data" style="display:none;">

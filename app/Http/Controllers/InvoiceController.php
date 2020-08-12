@@ -100,7 +100,7 @@ class InvoiceController extends Controller
   }
 
 
-  public function updateInvoice(Request $request) {
+  public function updateInvoiceDate(Request $request) {
 
     $rules = [
       'to'        => 'required|date',
@@ -120,7 +120,8 @@ class InvoiceController extends Controller
     if (count($purchases)<=0)
       return redirect()->back()->with('alert-error', 'No records found!')->with('alert-important', '');
 
-    
+    // return $request->all();
+
     if (is_null($purchases[0]->posted_at)) { // change to new posting date    
 
       if ($request->input('save')==1) 
@@ -129,7 +130,10 @@ class InvoiceController extends Controller
         $save = ['save'=>1, 'date'=>$request->input('to'), 'posted_at'=>$request->input('fr')];
 
     } else { // back to original posting date
-      $save = ['date'=>$request->input('to'), 'posted_at'=>NULL];
+
+      $save = ['save'=>0,'date'=>$request->input('to'), 'posted_at'=>NULL];
+      if ($purchases[0]->terms=='K' && $purchases[0]->paytype>0)
+        $save = ['save'=>1,'date'=>$request->input('to'), 'posted_at'=>NULL];
     }
 
     $updated_purchases = DB::table('purchase')

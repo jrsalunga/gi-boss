@@ -90,7 +90,7 @@ Route::get('employee/tracker/summary', ['uses'=>'EmployeeController@getWatchlist
 Route::get('/images/apu/{id}', ['uses'=>'ApuController@getImage']);
 
 Route::get('/invoice', ['uses'=>'InvoiceController@getInvoice']);
-Route::put('/invoice', ['uses'=>'InvoiceController@updateInvoice']);
+Route::put('/invoice', ['uses'=>'InvoiceController@updateInvoiceDate']);
 Route::put('/invoice-payment', ['uses'=>'InvoiceController@updateInvoicePayment']);
 
 

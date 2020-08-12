@@ -20,6 +20,8 @@
 @endsection
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 
   <ol class="breadcrumb">
@@ -232,7 +234,7 @@
         <input type="hidden" name="supprefno" value="{{ $invoice['no'] }}">
         <input type="hidden" name="save" value="{{ $invoice['save'] }}">
         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary pull-right" style="margin-right: 10px;">Save Changes</button>
+        <button type="submit" class="btn btn-primary pull-right" data-toggle="loader" style="margin-right: 10px;">Save Changes</button>
       </div>
       </form>
     </div>
@@ -279,7 +281,7 @@
         <input type="hidden" name="supprefno" value="{{ $invoice['no'] }}">
         <input type="hidden" name="save" value="{{ $invoice['save'] }}">
         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary pull-right" style="margin-right: 10px;">Save Changes</button>
+        <button type="submit" class="btn btn-primary pull-right" data-toggle="loader" style="margin-right: 10px;">Save Changes</button>
       </div>
       </form>
     </div>

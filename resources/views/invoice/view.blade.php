@@ -20,8 +20,8 @@
 @endsection
 
 @section('container-body')
-<div class="backdrop"></div>
-<div class="loader"><img src="/images/spinner_google.gif"></div>
+<div class="backdrop" style="z-index:1070;"></div>
+<div class="loader"  style="z-index:1071;"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 
   <ol class="breadcrumb">

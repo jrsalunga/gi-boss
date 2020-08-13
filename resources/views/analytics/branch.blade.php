@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch">Branch Analytics</a></li>
+    <li><a href="/status/branch">Daily Branch Sales</a></li>
     <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
   </ol>
 

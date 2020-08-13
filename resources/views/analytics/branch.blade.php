@@ -181,7 +181,7 @@
         <h3 id="h-tot-purch" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Sales per Employee</p>
+        <p style="margin-bottom:0">Sales less Purchased</p>
         <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
 
@@ -435,7 +435,7 @@
                 </div>
               </td>
                <td class="text-right">
-                <strong>{{ number_format($tot_diff, 2) }}</strong>
+                <strong id="f-tot-diff">{{ number_format($tot_diff, 2) }}</strong>
                 <div>
                 </small></em>
                 </div>
@@ -1671,7 +1671,7 @@
       $('#h-tot-totdeliver-pct').text($('#f-tot-totdeliver-pct').text());
       $('#h-tot-purch').text($('#f-tot-purch').text());
       $('#h-tot-mancost').text($('#f-tot-mancost').text());
-      $('#h-tot-tips').text($('#f-tot-tips').text());
+      $('#h-tot-tips').text($('#f-tot-diff').text());
 
 
       $('.date-type-selector .dropdown-menu li a').on('click', function(e){

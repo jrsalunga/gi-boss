@@ -1631,9 +1631,11 @@
           }, {
             type: 'line',
             yAxis: 0,
+            visible: false
           }, {
             type: 'line',
             yAxis: 0,
+            visible: false
           }, {
             type: 'line',
              dashStyle: 'shortdot',

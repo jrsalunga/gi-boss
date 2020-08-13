@@ -203,6 +203,7 @@
                   <!-- <th class="text-right">Food Cost</th> -->
                   <th class="text-right">Delivery Sales</th>
                   <th class="text-right">Purchased</th>
+                  <th class="text-right">(Sales-Purch)</th>
                   <th class="text-right">Customers</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Trans</th>
@@ -217,9 +218,9 @@
                     Man Cost
                   </th>
                   <th class="text-right">Tips</th>
+                  <th class="text-right">Tips %</th>
                   -->
                   <th class="text-right">Mancost %</th>
-                  <th class="text-right">Tips %</th>
               </tr>
             </thead>
             <tbody>
@@ -227,6 +228,7 @@
                 $tot_sales = 0;
                 $tot_totdeliver = 0;
                 $tot_purchcost = 0;
+                $tot_diff = 0;
                 $tot_custcount = 0;
                 $tot_headspend = 0;
                 $tot_empcount = 0;
@@ -242,6 +244,7 @@
                 $div_sales = 0;
                 $div_totdeliver = 0;
                 $div_purchcost = 0;
+                $div_diff = 0;
                 $div_custcount = 0;
                 $div_headspend = 0;
                 $div_empcount = 0;
@@ -256,6 +259,7 @@
                 $div_sales+=($d->dailysale['sales']!=0)?1:0; 
                 $div_totdeliver+=($d->dailysale['totdeliver']!=0)?1:0; 
                 $div_purchcost+=($d->dailysale['purchcost']!=0)?1:0; 
+                $div_diff+=($d->dailysale['sales']!=0)?1:0; 
                 $div_custcount+=($d->dailysale['custcount']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0; 
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
@@ -302,6 +306,9 @@
                   </a>
                 @endif
               </td>
+              <td class="text-right">
+                {{ number_format($d->dailysale['sales']-$d->dailysale['purchcost'], 2) }}
+              </td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['trans_cnt'], 0,'.','') }}">{{ number_format($d->dailysale['trans_cnt'], 0) }}</td>
@@ -332,16 +339,17 @@
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tips'],2,'.','') }}">
                 {{ number_format($d->dailysale['tips'],2) }}
               </td>
-              -->
               <td class="text-right" data-sort="{{ number_format($d->dailysale['tipspct'],2,'.','') }}">
                 <span data-toggle="tooltip" title="{{ number_format($d->dailysale['tips'],2) }}" class="help">
                   {{ number_format($d->dailysale['tipspct'], 2) }}
                 </span>
               </td>
+              -->
               <?php
                 $tot_sales      += $d->dailysale['sales'];
                 $tot_totdeliver += $d->dailysale['totdeliver'];
                 $tot_purchcost  += $d->dailysale['purchcost'];
+                $tot_diff       += ($d->dailysale['sales']-$d->dailysale['purchcost']);
                 $tot_custcount  += $d->dailysale['custcount'];
                 $tot_headspend  += $d->dailysale['headspend'];
                 $tot_empcount   += $d->dailysale['empcount'];
@@ -423,6 +431,12 @@
                 <div>
                 <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
                   {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
+                </small></em>
+                </div>
+              </td>
+               <td class="text-right">
+                <strong>{{ number_format($tot_diff, 2) }}</strong>
+                <div>
                 </small></em>
                 </div>
               </td>
@@ -515,7 +529,6 @@
                   {{ $div_tips!=0?number_format($tot_tips/$div_tips,2):0 }}</small></em>
                 </div>
               </td>
-              -->
               <td class="text-right">
                 <strong data-toggle="tooltip" title="Total Tips" class="help">{{ number_format($tot_tips,2) }}</strong>
                 <div>
@@ -528,6 +541,7 @@
                 </small></em>
                 </div>
               </td>
+              -->
             </tr>
           </tfoot>
         </table>
@@ -1612,7 +1626,8 @@
             yAxis: 0
           }, {
             type: 'line',
-            yAxis: 0
+            yAxis: 0,
+            visible: false
           }, {
             type: 'line',
             yAxis: 0,
@@ -1622,7 +1637,8 @@
           }, {
             type: 'line',
              dashStyle: 'shortdot',
-            yAxis: 1
+            yAxis: 1,
+            visible: false
           }, {
             type: 'line',
             yAxis: 0,

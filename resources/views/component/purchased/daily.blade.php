@@ -253,8 +253,8 @@
                     <th></th>
                     <th>Supp Ref #</th>
                     <th>Supplier</th>
-                    <th>Comp. Cat. Code</th>
-                    <th>Expense Code</th>
+                    <th>Category</th>
+                    <th>Chart of Account</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -584,7 +584,7 @@
             </div><!-- end: .panel.panel-default -->
              <!-- Expenses Category Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Expense Category</div>
+              <div class="panel-heading">Category</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -653,7 +653,7 @@
             </div><!-- end: .panel.panel-default -->
             <!-- Expenses Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Expense</div>
+              <div class="panel-heading">Chart of Accounts</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -668,8 +668,8 @@
                           <table class="tb-expense-data table table-condensed table-hover table-striped table-sort">
                             <thead>
                               <tr>
-                                <th>Code</th>
-                                <th>Expense</th>
+                                <th>CoA Code</th>
+                                <th>Chart of Accounts</th>
                                 <th></th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
@@ -724,7 +724,7 @@
             </div><!-- end: .panel.panel-default -->
             <!-- Component Category Panel -->
             <div class="panel panel-default">
-              <div class="panel-heading">Component Category</div>
+              <div class="panel-heading">Category</div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -740,7 +740,7 @@
                             <thead>
                               <tr>
                                 <th>Category</th>
-                                <th>Expense Code</th>
+                                <th>CoA Code</th>
                                 <th class="text-right">Total Cost</th>
                               </tr>
                             </thead>

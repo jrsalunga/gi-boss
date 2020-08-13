@@ -24,7 +24,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch">Daily Branch Sales</a></li>
+    <li><a href="/status/branch">Branch Daily Sales</a></li>
     <li class="active">{{ $dr->fr->format('M j, Y') }} - {{ $dr->to->format('M j, Y') }}</li>
   </ol>
 
@@ -32,12 +32,12 @@
     <nav id="nav-action" class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-form">
-          <div class="btn-group" role="group">
+          <!-- <div class="btn-group" role="group">
             <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
               <span class="gly gly-unshare"></span>
               <span class="hidden-xs hidden-sm">Back</span>
             </a> 
-          </div> <!-- end btn-grp -->
+          </div> --> <!-- end btn-grp -->
           <!--
           <div class="btn-group" role="group">
             <a href="/dashboard" class="btn btn-default" title="Back to Main Menu">
@@ -668,7 +668,7 @@
                     <th class="text-right">Total Cost</th>
                     <th class="text-right">Supplier</th>
                     <th class="text-right">Terms</th>
-                    <th class="text-right">VAT</th>
+                    <!-- <th class="text-right">VAT</th> -->
                   </tr>
                 </thead>
                 <tbody class="tb-data">

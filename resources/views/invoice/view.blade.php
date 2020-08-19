@@ -143,6 +143,7 @@
                   <th class="text-right">Supp Ref No</th>
                   <th class="text-right">Date</th>
                   <th class="text-right">Amount</th>
+                  <th class="text-right">Uploaded</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,7 +152,7 @@
                 <td>{{ $apu->supplier->descriptor }}</td>
                 <td class="text-right">
                   @if($apu->file_exists())
-                  <small title="View Document: uploaded {{ $apu->created_at->format('m/d/Y') }}" data-toggle="tooltip">
+                  <small title="View Document" data-toggle="tooltip">
                     <strong>
                     <a href="javascript:void(0)" target="popup" onclick='window.open("/images/apu/{{ $apu->lid() }}.jpg", "_blank", "width=auto,height=auto"); return false'>
                     view doc
@@ -163,6 +164,7 @@
                 <td class="text-right">{{ $apu->refno }}</td>
                 <td class="text-right">{{ $apu->date->format('m/d/Y') }}</td>
                 <td class="text-right">{{ $apu->amount }}</td>
+                <td class="text-right">{{ $apu->created_at->format('m/d/Y') }}</td>
               </tr>
               @endforeach      
               </tbody>

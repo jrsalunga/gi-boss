@@ -151,7 +151,7 @@
                 <td>{{ $apu->supplier->descriptor }}</td>
                 <td class="text-right">
                   @if($apu->file_exists())
-                  <small title="View Document">
+                  <small title="View Document: uploaded {{ $apu->created_at->format('m/d/Y') }}" data-toggle="tooltip">
                     <strong>
                     <a href="javascript:void(0)" target="popup" onclick='window.open("/images/apu/{{ $apu->lid() }}.jpg", "_blank", "width=auto,height=auto"); return false'>
                     view doc

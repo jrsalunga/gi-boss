@@ -264,7 +264,7 @@
                     <td data-sort="{{ $purchase->date->format('Y-m-d') }}"><span style="cursor: help;" title="{{ $purchase->date->format('D M j, Y') }}" data-toggle="tooltip">
                       {{ $purchase->date->format('Y-m-d') }}</span>
                     </td>
-                    <td data-sort="{{ strtolower($purchase->component) }}"><span data-toggle="tooltip" title="{{ $purchase->componentcode }} - {{ $purchase->component }}">{{ $purchase->component }}</span></td>
+                    <td data-sort="{{ strtolower($purchase->component) }}">{{ $purchase->component }}</td>
                     <td data-sort="{{ number_format($purchase->qty, 2,'.','') }}">{{ number_format($purchase->qty, 2,'.','')+0 }} 
                       <small class="text-muted">
                         {{ strtolower($purchase->uom)}}@if($purchase->qty>1 && substr(strtolower($purchase->uom), -1)!='s')s

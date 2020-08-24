@@ -66,6 +66,7 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
 
     return $mss = $this->scopeQuery(function($query) use ($dr, $sql) {
       return $query->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                  ->where('branch_id', $branch->id)
                   ->select(DB::raw($sql));
     })->first();
   }
@@ -76,35 +77,7 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
 
 
 
-  public function aggExpByDr(Carbon $fr, Carbon $to, $branchid) {
-    return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
-      return $query
-                ->select(DB::raw('compcat.expenseid as expense_id, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, count(purchase.id) as trans, expense.ordinal as ordinal'))
-                ->leftJoin('component', 'component.id', '=', 'purchase.componentid')
-                ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
-                ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
-                ->whereBetween('purchase.date', 
-                  [$fr->format('Y-m-d'), $to->format('Y-m-d')]
-                  )
-                ->where('purchase.branchid', $branchid)
-                ->groupBy('compcat.expenseid');
-    })->all();
-  }
-
-  public function findInvoicesWhere(array $where) {
-    return $this->scopeQuery(function($query)  {
-      return $query
-                ->select(DB::raw('purchase.date, purchase.terms, purchase.supprefno, purchase.supplierid, purchase.branchid, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, supplier.descriptor as supplier, supplier.code as suppliercode, branch.code as branchcode, branch.descriptor as branch, count(purchase.id) as count'))
-                ->leftJoin('supplier', 'supplier.id', '=', 'purchase.supplierid')
-                ->leftJoin('branch', 'branch.id', '=', 'purchase.branchid')
-                ->groupBy('branchid')
-                ->groupBy('supplierid')
-                ->groupBy('supprefno')
-                ->orderBy('branch.code')
-                ->orderBy('supplier.descriptor')
-                ->orderBy('purchase.date');
-    })->findWhere($where);
-  }
+  
 
   
   

@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '-  Month Range Direct P&L Summary')
+@section('title', '-  Month Direct P&L Summary')
 
-@section('body-class', 'month-range-pnl-summary')
+@section('body-class', 'month-pnl-summary')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -28,7 +28,7 @@
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
     <li><a href="/report/pnl/month-range">Direct P&amp;L Summary</a></li>
-    <li class="active">Month Range @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
+    <li class="active">Month @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
   </ol>
 
   <div>
@@ -104,7 +104,21 @@
             </a>
             @endif
           </div>
-
+          
+          <div class="btn-group pull-right clearfix" role="group">
+            <div class="btn-group date-type-selector" style="margin-left: 5px;">
+              <div class="dropdown">
+                <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                  <span id="date-type-name">Month</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="date-type">
+                  <li><a href="#" data-date-type="month">Month</a></li>
+                  <li><a href="/report/pnl/month-range" data-date-type="month-range">Month Range</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
          
           
         </div>

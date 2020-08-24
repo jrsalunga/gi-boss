@@ -28,7 +28,7 @@
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
     <li><a href="/report/pnl-summary">Direct P&amp;L Summary</a></li>
-    <li class="active">Month Range @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
+    <li class="active">Month Range @if(!is_null($branch))<small>({{ $dr->fr->format('F') }} - {{ $dr->to->format('F') }})</small>@endif</li>   
   </ol>
 
   <div>
@@ -87,16 +87,20 @@
             </div> <!-- .dropdown -->
           </div>
       
-          <div class="btn-group pull-right clearfix dp-container" role="group">
+          <div class="btn-group pull-right clearfix dp-container hidden-xs hidden-sm" role="group" >
             <label class="btn btn-default" for="dp-m-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 80px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">
+            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 80px;">
             <label class="btn btn-default" for="dp-m-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>\
+              <span class="glyphicon glyphicon-calendar"></span>
             </label>
+          </div>
+
+          <div class="btn-group pull-right clearfix hidden-md hidden-lg" role="group" style="margin-right: 5px;">
+            <div class="btn btn-default" style="pointer-events: none;">{{ $dr->fr->format('m/Y') }} - {{ $dr->to->format('m/Y') }}</div>
           </div>
 
 
@@ -501,16 +505,20 @@
           </div>
           
           <div class="form-group">
-            <label>Month:</label>
+            <label>Month Range:</label>
             <div>
-            <div class="btn-group" role="group">
-            <label class="btn btn-default" for="mdl-dp-date-fr">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date" value="{{ $dr->date->format('m/Y') }}" style="max-width: 110px;">
-            
-            
-            </div>
+              <div class="btn-group" role="group">
+                <label class="btn btn-default" for="mdl-dp-m-date-fr">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </label>
+                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+                
+                <div class="btn btn-default" style="pointer-events: none;">-</div>
+                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-m-date-to" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+                <label class="btn btn-default" for="mdl-dp-m-date-to">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </label>
+              </div>
             </div>
           </div>
 

@@ -27,7 +27,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
-    <li><a href="/report/pnl/month-range">Direct P&amp;L Summary</a></li>
+    <li><a href="/report/pnl-summary">Direct P&amp;L Summary</a></li>
     <li class="active">Month @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
   </ol>
 

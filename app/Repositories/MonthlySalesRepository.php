@@ -64,7 +64,7 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
     $sql = 'sum(sales) as sales, sum(sale_csh) as sale_csh, sum(sale_chg) as sale_chg, sum(sale_sig) as sale_sig, ';
     $sql .= 'sum(cos) as cos, sum(food_sales) as food_sales, sum(tips) as tips, sum(custcount) as custcount';
 
-    return $mss = $this->scopeQuery(function($query) use ($dr, $sql) {
+    return $mss = $this->scopeQuery(function($query) use ($branch, $dr, $sql) {
       return $query->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
                   ->where('branch_id', $branch->id)
                   ->select(DB::raw($sql));

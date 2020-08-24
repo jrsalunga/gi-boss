@@ -218,7 +218,20 @@ class Purchase2Repository extends BaseRepository
     })->all();
   }
 
-
+  public function findInvoicesWhere(array $where) {
+    return $this->scopeQuery(function($query)  {
+      return $query
+                ->select(DB::raw('purchase.date, purchase.terms, purchase.supprefno, purchase.supplierid, purchase.branchid, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, supplier.descriptor as supplier, supplier.code as suppliercode, branch.code as branchcode, branch.descriptor as branch, count(purchase.id) as count'))
+                ->leftJoin('supplier', 'supplier.id', '=', 'purchase.supplierid')
+                ->leftJoin('branch', 'branch.id', '=', 'purchase.branchid')
+                ->groupBy('branchid')
+                ->groupBy('supplierid')
+                ->groupBy('supprefno')
+                ->orderBy('branch.code')
+                ->orderBy('supplier.descriptor')
+                ->orderBy('purchase.date');
+    })->findWhere($where);
+  }
 
 
 

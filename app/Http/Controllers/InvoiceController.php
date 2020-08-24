@@ -26,12 +26,42 @@ class InvoiceController extends Controller
 	}
 
 
+  public function getInvoices(Request $request) {
+
+    $rules = [
+      // 'date'      => 'required|date',
+      'supprefno' => 'required',
+      // 'branchid'  => 'required',
+    ];
+
+    $validator = app('validator')->make($request->all(), $rules);
+
+    if ($validator->fails()) 
+      return abort(404);
+
+    $where = [
+      ['supprefno', 'like', '%'.$request->input('supprefno')]
+    ];
+
+    if (!is_null($request->input('date')))
+      $where['date'] = $request->input('date');
+
+    if (!is_null($request->input('branchid')))
+      $where['branchid'] = $request->input('branchid');
+
+    $invoices = $this->purchase->findInvoicesWhere($where);
+
+    return view('invoice.list', compact('invoices'));
+
+  }
+
+
   public function getInvoice(Request $request) {
 
     $rules = [
-      'date'      => 'required|date',
+      // 'date'      => 'required|date',
       'supprefno' => 'required',
-      'branchid'  => 'required',
+      // 'branchid'  => 'required',
     ];
 
     $validator = app('validator')->make($request->all(), $rules);
@@ -39,6 +69,9 @@ class InvoiceController extends Controller
     if ($validator->fails()) 
       return abort(404);
       // return view('invoice.view', compact('invoice', 'apus'))->withErrors($validator);
+
+    if (!is_null($request->input('supprefno')) && is_null($request->input('date')) && is_null($request->input('branchid')))
+      return $this->getInvoices($request);
 
     $invoice = [];
     $apus = [];

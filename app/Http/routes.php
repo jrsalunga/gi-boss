@@ -49,6 +49,7 @@ Route::get('report/cash-audit', ['uses'=>'ReportsController@getCashAudit']);
 Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
 Route::get('report/pnl-summary', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
 Route::get('report/pnl/daily', ['uses'=>'ExpenseController@getPnlDaily']);
+Route::get('report/pnl/month-range', ['uses'=>'ExpenseController@getMonthRangePnl']);
 //Route::get('report/expense-breakdown', ['uses'=>'ExpenseController@getMonthExpenseBreakdown']);
 
 

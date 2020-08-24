@@ -2,7 +2,7 @@
 
 @section('title', '-  Month Range Direct P&L Summary')
 
-@section('body-class', 'month-range-pnl-summary')
+@section('body-class', 'month-range-pnl')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -27,7 +27,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
-    <li><a href="/report/pnl/month-range">Direct P&amp;L Summary</a></li>
+    <li><a href="/report/pnl-summary">Direct P&amp;L Summary</a></li>
     <li class="active">Month Range @if(!is_null($branch))<small>({{ $dr->fr->format('F') }})</small>@endif</li>   
   </ol>
 
@@ -53,13 +53,14 @@
             </button>
           </div>
           <div class="btn-group btn-group pull-right clearfix hidden-xs" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/report/pnl-summary', 'method' => 'get', 'id'=>'filter-form']) !!}
+            {!! Form::open(['url' => '/report/pnl/month-range', 'method' => 'get', 'id'=>'filter-form']) !!}
             <button type="submit" data-toggle="loader" class="btn btn-success btn-go" title="Go"  {{ is_null($branch) ? '':'data-branchid="'. $branch->id  }}">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
             <input type="hidden" name="branchid" id="branchid" value="{{ is_null($branch) ? '':$branch->lid() }}">
-            <input type="hidden" name="date" id="date" value="{{ $dr->date->format('Y-m-d') }}">
+            <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}">
+            <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}">
             {!! Form::close() !!}
           </div> <!-- end btn-grp -->
 
@@ -86,23 +87,32 @@
             </div> <!-- .dropdown -->
           </div>
       
-          <div class="btn-group pull-right clearfix" role="group" style="margin-right: 5px;">
-            @if(is_null(($branch)))
+          <div class="btn-group pull-right clearfix dp-container" role="group">
+            <label class="btn btn-default" for="dp-m-date-fr">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </label>
+            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+            <div class="btn btn-default" style="pointer-events: none;">-</div>
+            <input readonly="" type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">
+            <label class="btn btn-default" for="dp-m-date-to">
+              <span class="glyphicon glyphicon-calendar"></span>\
+            </label>
+          </div>
 
-            @else
-            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" data-toggle="loader">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            @endif
-            <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/Y') }}" style="max-width: 90px;" readonly>
-            <label class="btn btn-default hidden-xs" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
-            @if(is_null(($branch)))
 
-            @else
-            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" data-toggle="loader">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-            @endif
+          <div class="btn-group pull-right clearfix" role="group">
+            <div class="btn-group date-type-selector" style="margin-left: 5px;">
+              <div class="dropdown">
+                <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                  <span id="date-type-name">Month Range</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="date-type">
+                  <li><a href="/report/pnl-summary" data-date-type="month">Month</a></li>
+                  <li><a href="#" data-date-type="month-range">Month Range</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
 
          
@@ -145,7 +155,7 @@
     
     <div class="row">
       <div class="col-md-12">
-        <div id="container" style="overflow: hidden;"></div>
+        <div id="container-ssss" style="overflow: hidden;"></div>
       </div>
   
       <?php $ttpurch = $tttrans = 0 ?>
@@ -543,32 +553,6 @@
 
   $('[data-toggle="tooltip"]').tooltip();
 
-  $('#dp-date').datetimepicker({
-    //defaultDate: "2016-06-01",
-    format: 'MM/YYYY',
-    showTodayButton: true,
-    ignoreReadonly: true,
-    viewMode: 'months'
-  }).on('dp.change', function(e){
-    var date = e.date.format('YYYY-MM-DD');
-    $('#date').val(date);
-    @if(!is_null(($branch)))
-    loader();
-
-    document.location.href = '/report/pnl-summary?branchid='+$('#branchid').val()+'&date='+e.date.format('YYYY-MM-DD');
-    @endif
-  });
-
-  $('#mdl-dp-date').datetimepicker({
-    //defaultDate: "2016-06-01",
-    format: 'MM/YYYY',
-    showTodayButton: true,
-    ignoreReadonly: true,
-    viewMode: 'months'
-  }).on('dp.change', function(e){
-    var date = e.date.format('YYYY-MM-DD');
-    $('#date').val(date);
-  });
 
   initDatePicker();
   branchSelector();

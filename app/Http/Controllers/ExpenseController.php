@@ -376,6 +376,52 @@ class ExpenseController extends Controller
     return $datas;
   }
 
+
+  public function getMonthRangePnl(Request $request) {
+    
+    $fr = carbonCheckorNow($request->input('fr'));
+    $to = carbonCheckorNow($request->input('to'));
+    $this->dr->fr = $fr->startOfMonth();
+    $this->dr->to = $to->endOfMonth();
+
+    $ms = null;
+
+    if ($request->has('branchid') && is_uuid($request->input('branchid')))
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    else
+      $branch = null;
+
+    $datas = [];
+    $fc_hist = [];
+    $prodcats = [];
+    $expense_data = [];
+    $noncos_data = [];
+    if (!is_null($branch)) {
+
+      $exps = $this->expense->getCos();
+
+      $ms = $this->ms->skipCache()->aggBranchByDR($branch, $this->dr);
+
+      $datas = $this->FCBreakdownData($branch, $exps);
+      $noncos_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getNonCos());
+      $expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
+      $fc_hist = $this->getFCHist($branch, $exps);
+      $prodcats = $this->sales_cat($branch);
+                               
+
+    //return $fc_hist;
+    }
+    return $this->setViewWithDR(view('report.pnl-month-range')
+                ->with('branches', $this->bb)
+                ->with('hist', $fc_hist)
+                ->with('datas', $datas)
+                ->with('noncos_data', $noncos_data)
+                ->with('expense_data', $expense_data)
+                ->with('prodcats', $prodcats)
+                ->with('ms', $ms)
+                ->with('branch', $branch));
+  }
+
   
 
 

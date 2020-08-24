@@ -6,6 +6,7 @@ use Prettus\Repository\Contracts\CacheableInterface;
 use App\Repositories\ProductRepository;
 use App\Traits\Repository as RepoTrait;
 use Carbon\Carbon;
+use App\Models\Branch;
 use DB;
 
 class MonthlySalesRepository extends BaseRepository implements CacheableInterface
@@ -53,6 +54,56 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
     }
     return true;
     
+  }
+
+
+
+
+  public function aggBranchByDR(Branch $branch, DateRange $dr) {
+
+    $sql = 'sum(sales) as sales, sum(sale_csh) as sale_csh, sum(sale_chg) as sale_chg, sum(sale_sig) as sale_sig, ';
+    $sql .= 'sum(cos) as cos, sum(food_sales) as food_sales, sum(tips) as tips, sum(custcount) as custcount';
+
+    return $mss = $this->scopeQuery(function($query) use ($dr, $sql) {
+      return $query->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                  ->select(DB::raw($sql));
+    })->first();
+  }
+
+
+
+
+
+
+
+  public function aggExpByDr(Carbon $fr, Carbon $to, $branchid) {
+    return $this->scopeQuery(function($query) use ($fr, $to, $branchid) {
+      return $query
+                ->select(DB::raw('compcat.expenseid as expense_id, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, count(purchase.id) as trans, expense.ordinal as ordinal'))
+                ->leftJoin('component', 'component.id', '=', 'purchase.componentid')
+                ->leftJoin('compcat', 'compcat.id', '=', 'component.compcatid')
+                ->leftJoin('expense', 'expense.id', '=', 'compcat.expenseid')
+                ->whereBetween('purchase.date', 
+                  [$fr->format('Y-m-d'), $to->format('Y-m-d')]
+                  )
+                ->where('purchase.branchid', $branchid)
+                ->groupBy('compcat.expenseid');
+    })->all();
+  }
+
+  public function findInvoicesWhere(array $where) {
+    return $this->scopeQuery(function($query)  {
+      return $query
+                ->select(DB::raw('purchase.date, purchase.terms, purchase.supprefno, purchase.supplierid, purchase.branchid, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, supplier.descriptor as supplier, supplier.code as suppliercode, branch.code as branchcode, branch.descriptor as branch, count(purchase.id) as count'))
+                ->leftJoin('supplier', 'supplier.id', '=', 'purchase.supplierid')
+                ->leftJoin('branch', 'branch.id', '=', 'purchase.branchid')
+                ->groupBy('branchid')
+                ->groupBy('supplierid')
+                ->groupBy('supprefno')
+                ->orderBy('branch.code')
+                ->orderBy('supplier.descriptor')
+                ->orderBy('purchase.date');
+    })->findWhere($where);
   }
 
   

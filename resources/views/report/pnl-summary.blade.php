@@ -134,7 +134,7 @@
    
     @if(!is_null($ms))
     <div class="row">
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+      <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Sales</p>
         <h3 style="margin:0">{{ nf($ms->sales) }}</h3>
         <?php
@@ -145,9 +145,13 @@
         <p style="margin-bottom:0">Cost of Goods</p>
         <h3 style="margin:0" id="view-directcost"></h3>
       </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Operational Expense</p>
+      <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
+        <p style="margin-bottom:0">OpEx</p>
         <h3 style="margin:0" id="view-totexpense"></h3>
+      </div>
+      <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
+        <p style="margin-bottom:0">Total Expense</p>
+        <h3 style="margin:0" id="view-total-expense"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Direct Profit</p>
@@ -159,14 +163,14 @@
     
     <div class="row">
       <div class="col-md-12">
-        <div id="container" style="overflow: hidden;"></div>
+        <div id="container-sss" style="overflow: hidden;"></div>
       </div>
   
       <?php $ttpurch = $tttrans = 0 ?>
 
       <div class="col-md-12"style="margin-top: 30px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Cost of Goods Purchases Summary</div>
+          <div class="panel-heading">Cost of Goods Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
@@ -176,7 +180,7 @@
               <th>Category</th>
               <th class="text-right" style="width:17%;">Purchased</th>
               <th class="text-right" style="width:17%;">Transfered</th>
-              <th class="text-right" style="width:17%;" title="Purchased - Transfered = Net Purchased">Purchases less Transfers</th>
+              <th class="text-right" style="width:17%;"><span title="Purchased - Transfered = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
               <th class="text-right" style="width:17%;">% on Food Sales</th>
             </tr>
           </thead>
@@ -794,12 +798,14 @@
   $('#trs').text('{{ nf($tnet) }}');
 
   <?php  
-    $direct_profit = $dailysales - ($direct_cost + $xtnet);
+    $total_expense = $direct_cost + $xtnet;
+    $direct_profit = $dailysales - $total_expense;
   ?>
     
   $('#view-directcost').text('{{ nf($direct_cost) }}');
   $('#view-totexpense').text('{{ nf($xtnet) }}');
   $('#view-directprofit').text('{{ nf($direct_profit) }}');
+  $('#view-total-expense').text('{{ nf($total_expense) }}');
     
 
     $('.show.toggle').on('click', function(){

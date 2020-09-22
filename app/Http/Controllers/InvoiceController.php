@@ -62,6 +62,7 @@ class InvoiceController extends Controller
       // 'date'      => 'required|date',
       'supprefno' => 'required',
       // 'branchid'  => 'required',
+      'supplierid'  => 'required',
     ];
 
     $validator = app('validator')->make($request->all(), $rules);
@@ -75,7 +76,7 @@ class InvoiceController extends Controller
 
     $invoice = [];
     $apus = [];
-    $purchases = $this->purchase->with(['component.compcat.expense', 'branch', 'supplier'])->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid')]);
+    $purchases = $this->purchase->with(['component.compcat.expense', 'branch', 'supplier'])->findWhere(['supprefno'=>$request->input('supprefno'), 'date'=>$request->input('date'), 'branchid'=>$request->input('branchid'), 'supplierid'=>$request->input('supplierid')]);
 
     $where = [
       'branch_id'=>$request->input('branchid'),

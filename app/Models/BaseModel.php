@@ -78,6 +78,8 @@ abstract class BaseModel extends Model {
 		//return str_replace("-", "", $uid);
 		
 		/* for ramsey/uuid */
+    return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 0, 8).SUBSTR($uid, 19, 4).SUBSTR($uid, 24)); // 3 - 2 - 1 - 4 - 5 (percona)
+    return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 24).SUBSTR($uid, 19, 4).SUBSTR($uid, 0, 8)); // 3 - 2 - 5 - 4 - 1 (this is the true sequential)
     return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 24).SUBSTR($uid, 0, 8).SUBSTR($uid, 19, 4)); // 3 - 2 - 5 - 1 - 4 (sequential)
     return strtoupper(SUBSTR($uid, 14, 4).SUBSTR($uid, 24).SUBSTR($uid, 19, 4).SUBSTR($uid, 9, 4).SUBSTR($uid, 0, 8)); // 3 - 5 - 4 - 2 - 1
 	}
@@ -110,12 +112,12 @@ abstract class BaseModel extends Model {
 		 
 		 	 // 3 - 5 - 4 - 2 - 1 (Correct Format)
       // select CONCAT(
-      // UPPER(substr(UUID(),15,4)),   /* 3 */
-      // UPPER(substr(UUID(),10,4)),   /* 2 */
-      // UPPER(substr(UUID(),25,12)),  /* 5 */
-      // UPPER(substr(UUID(),1,8))     /* 1 */
-      // UPPER(substr(UUID(),20,4)),   /* 4 */
-      // ) AS UID, UUID(),
+      // UPPER(substr(UUID(),15,4)),
+      // UPPER(substr(UUID(),25,12)),
+      // UPPER(substr(UUID(),20,4)),
+      // UPPER(substr(UUID(),10,4)),
+      // UPPER(substr(UUID(),1,8))) as UUID, 
+      // UUID(),
       // UPPER(substr(UUID(),15,4)) as t3,
       // UPPER(substr(UUID(),10,4)) as t2,
       // UPPER(substr(UUID(),25,12)) as t5,

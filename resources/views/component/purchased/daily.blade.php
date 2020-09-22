@@ -287,7 +287,7 @@
                     </td>
                     <td class="text-muted" data-sort="{{ $purchase->supprefno }}">
                       <small>
-                        <a href="/invoice?supprefno={{ $purchase->supprefno }}&amp;date={{ $purchase->date->format('Y-m-d') }}&amp;branchid={{strtolower($branch->id)}}" target="_blank" {{ $purchase->save>0?'class=text-danger':'' }}>
+                        <a href="/invoice?supprefno={{ $purchase->supprefno }}&amp;date={{ $purchase->date->format('Y-m-d') }}&amp;branchid={{strtolower($branch->id)}}&amp;supplierid={{strtolower($purchase->supplierid)}}" target="_blank" {{ $purchase->save>0?'class=text-danger':'' }}>
                           {{ $purchase->supprefno }}
                         </a>
                       </small>
@@ -454,7 +454,7 @@
                                   <td>{{ $invoice->descriptor }}</td>
                                   <td>{{ $invoice->date->format('Y-m-d') }}</td>
                                   <td class="text-right">
-                                    <a href="/invoice?supprefno={{ $invoice->supprefno }}&amp;date={{ $invoice->date->format('Y-m-d') }}&amp;branchid={{strtolower($invoice->branchid)}}" target="_blank" {{ $invoice->save>0?'class=text-danger':'' }}>
+                                    <a href="/invoice?supprefno={{ $invoice->supprefno }}&amp;date={{ $invoice->date->format('Y-m-d') }}&amp;branchid={{strtolower($invoice->branchid)}}&amp;supplierid={{strtolower($purchase->supplierid)}}" target="_blank" {{ $invoice->save>0?'class=text-danger':'' }}>
                                       {{ $invoice->supprefno }}
                                     </a>
                                   </td>

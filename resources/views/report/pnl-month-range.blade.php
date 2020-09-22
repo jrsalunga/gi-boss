@@ -191,7 +191,7 @@
                 <td>{{ $data['expensecode'] }}</td>
                 <td>{{ $data['expense'] }}</td>
                 <td class="text-right">
-                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="Link to Purchases Report">
+                  <a href="/component/purchases?table=expense&item={{urlencode($data['expense'])}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="Link to Purchases Report">
                   {{ nf($data['purch']) }}
                   </a>
 
@@ -248,7 +248,7 @@
                 <td style="width:5%;">{{ $data['expensecode'] }}</td>
                 <td>{{ $data['expense'] }}</td>
                 <td class="text-right" class="text-right" style="width:17%;">
-                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  <a href="/component/purchases?table=expense&item={{urlencode($data['expense']}}&itemid={{$data['expenseid'])}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
                   {{ nf($data['purch']) }}
                   </a>
 

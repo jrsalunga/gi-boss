@@ -454,8 +454,8 @@
                                   <td>{{ $invoice->descriptor }}</td>
                                   <td>{{ $invoice->date->format('Y-m-d') }}</td>
                                   <td class="text-right">
-                                    <a href="/invoice?supprefno={{ $invoice->supprefno }}&amp;date={{ $invoice->date->format('Y-m-d') }}&amp;branchid={{strtolower($invoice->branchid)}}&amp;supplierid={{strtolower($purchase->supplierid)}}" target="_blank" {{ $invoice->save>0?'class=text-danger':'' }}>
-                                      {{ $invoice->supprefno }}
+                                    <a href="/invoice?supprefno={{ $invoice->supprefno }}&amp;date={{ $invoice->date->format('Y-m-d') }}&amp;branchid={{strtolower($invoice->branchid)}}&amp;supplierid={{strtolower($invoice->supplierid)}}" target="_blank" {{ $invoice->save>0?'class=text-danger':'' }}>
+                                      {{ $invoice->supprefno }} 
                                     </a>
                                   </td>
                                   <td>

@@ -127,7 +127,8 @@ class InvoiceController extends Controller
     }
 
     if (count($apus)<=0) {
-      return dd($where);
+      // return dd($where);
+      unset($where['amount']);
       $apus = $this->apUpload->skipCache()->with(['doctype', 'supplier'])->findWhere($where);
     }
     

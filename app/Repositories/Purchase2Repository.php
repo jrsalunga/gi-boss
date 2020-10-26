@@ -148,6 +148,7 @@ class Purchase2Repository extends BaseRepository
                     ->select(DB::raw('supplier.code as code, supplier.descriptor, sum(purchase.qty) as qty, sum(purchase.tcost) as tcost, purchase.terms as terms, supplier.id as id, purchase.paytype as paytype, purchase.supprefno as supprefno, purchase.date as date, purchase.save as save, purchase.branchid as branchid, purchase.supplierid as supplierid'))
                     ->groupBy('purchase.supplierid')
                     ->groupBy('purchase.supprefno')
+                    ->groupBy('purchase.date')
                     //->groupBy('supplier.id')
                     ->orderBy('supplier.descriptor')
                     ->orderBy('supplier.code')

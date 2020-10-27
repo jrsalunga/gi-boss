@@ -134,8 +134,9 @@ class InvoiceController extends Controller
 
 
     if (count($apus)<=0) {
+      $where['amount'] = str_replace(',', '', $invoice['total_amount']);
       return dd($where);
-      unset($where['amount']);
+      unset($where['supplierid']);
       $apus = $this->apUpload->skipCache()->with(['doctype', 'supplier'])->findWhere($where);
     }
     

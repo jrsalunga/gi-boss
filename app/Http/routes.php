@@ -94,6 +94,7 @@ Route::get('/invoice', ['uses'=>'InvoiceController@getInvoice']);
 Route::put('/invoice', ['uses'=>'InvoiceController@updateInvoiceDate']);
 Route::put('/invoice-payment', ['uses'=>'InvoiceController@updateInvoicePayment']);
 
+Route::get('saletype/branch', ['uses'=>'ChargesController@getSaletype']);
 
 
 Route::get('branch', ['uses'=>'BranchController@getList']);

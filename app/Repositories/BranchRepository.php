@@ -65,8 +65,8 @@ class BranchRepository extends BaseRepository implements CacheableInterface
 
 
 
-  public function active(){
-    return $this->getByCriteria(new ActiveBranch);
+  public function active($fields = ['*']){
+    return $this->getByCriteria(new ActiveBranch($fields));
     return $this;
   }
 

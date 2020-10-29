@@ -158,7 +158,12 @@
         <tfoot style="color: #95A5A6;">
           <tr>
             <th style="font-weight: normal; color: #000;">{{ $tot_valid }}/{{ ($dr->diffInDays()+1) }}</th>
-            <th class="text-right" style="font-weight: normal; color: #000;"><strong>{{ nf($tot_sales) }}</strong></th>
+            <th class="text-right" style="font-weight: normal; color: #000;">
+              <strong>{{ nf($tot_sales) }}</strong>
+              <div>
+                  <small><em>{{ nf($tot_sales/$tot_valid) }}</em></small>
+                </div>
+            </th>
             @foreach($stats as $header => $stat)
               <th class="text-right" style="font-weight: normal; color: #000;">
                 <strong>{{ nf($stat['sales']) }}</strong>
@@ -166,7 +171,12 @@
                   <small><em>{{ nf($stat['ave_sales']) }}</em></small>
                 </div>
               </th>
-              <th class="text-right" style="font-weight: normal; color: #000;"></th>
+              <th class="text-right" style="font-weight: normal; color: #000;">
+                <strong>{{ nf(($stat['sales']/$tot_sales)*100) }}%</strong>
+                <div>
+                  <small><em></em></small>
+                </div>
+              </th>
               <th class="text-right" style="font-weight: normal; color: #000;">
                 <strong>{{ $stat['customer'] }}</strong>
                 <div>

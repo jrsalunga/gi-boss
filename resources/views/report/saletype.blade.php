@@ -27,8 +27,8 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
     <!--<li><a href="/report">Report</a></li>-->
-    <li><a href="/saletype/branch">Direct P&amp;L Summary</a></li>
-    <li class="active">Month Range @if(!is_null($branch))<small>({{ $dr->fr->format('F') }} - {{ $dr->to->format('F') }})</small>@endif</li>   
+    <li><a href="/saletype/branch">Sale Type</a></li>
+    <li class="active">Date Range @if(!is_null($branch))<small>({{ $dr->fr->format('M j') }} - {{ $dr->to->format('M j') }})</small>@endif</li>   
   </ol>
 
   <div>
@@ -100,7 +100,7 @@
           </div>
 
           <div class="btn-group pull-right clearfix hidden-md hidden-lg" role="group" style="margin-right: 5px;">
-            <div class="btn btn-default" style="pointer-events: none;">{{ $dr->fr->format('m/Y') }} - {{ $dr->to->format('m/Y') }}</div>
+            <div class="btn btn-default" style="pointer-events: none;">{{ $dr->fr->format('m/d/Y') }} - {{ $dr->to->format('m/d/Y') }}</div>
           </div>
 
 
@@ -114,6 +114,14 @@
 
     @include('_partials.alerts')
 
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="container" style="overflow: hidden;"></div>
+    </div>
+      
+
+    <div class="col-md-12">
     @if(count($datas)>0)
     <div class="table-responsive">
       <table class="table table-bordered table-hover table-striped">
@@ -138,7 +146,11 @@
           <?php $tot_sales = $tot_valid = 0 ?>
           @foreach($datas as $key => $data)
           <tr>
-          <td>{{ $data['date']->format('M j, D') }}</td>
+          <td>
+            <a href="/product/sales?table=&item=&itemid=&branchid={{$branch->lid()}}&fr={{$data['date']->format('Y-m-d')}}&to={{$data['date']->format('Y-m-d')}}">
+            {{ $data['date']->format('M j, D') }}
+            </a>
+          </td>
           <td class="text-right">{{ $data['tot_sales']>0?nf($data['tot_sales']):'' }}</td>
           <?php 
 
@@ -210,14 +222,34 @@
           @endif
         </tfoot>
       </table>
+      <table id="datatable" class="tb-data table"  style="display:none;">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Sales</th>
+              @foreach($stats as $header => $stat)
+                <th>{{ $header }}</th>
+              @endforeach
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($datas as $key => $data)
+            <tr>
+              <td>{{ $data['date']->format('Y-m-d') }}</td>
+              <td>{{ number_format($data['tot_sales'],2,'.','') }}</td>
+              @foreach($data['data'] as $key => $val)
+                <td>{{ number_format($val['total'],2,'.','') }}</td>
+              @endforeach
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
     </div>
     @else
-
       No Record
     @endif
-
-
-
+    </div>
+  </div>
 </div><!-- end: .container-fluid  -->
       
 <div class="modal fade" id="mdl-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -260,11 +292,11 @@
                 <label class="btn btn-default" for="mdl-dp-m-date-fr">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </label>
-                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
                 
                 <div class="btn btn-default" style="pointer-events: none;">-</div>
-                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
-                <label class="btn btn-default" for="mdl-dp-m-date-to">
+                <input readonly="" type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
+                <label class="btn btn-default" for="mdl-dp-date-to">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </label>
               </div>
@@ -471,39 +503,15 @@
         {
           type: 'line',
           yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0,
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
+        }
+
+        @foreach($stats as $header => $stat)
+        , {
           type: 'line',
           dashStyle: 'shortdot',
           yAxis: 1,
-          dataLabels: {
-            enabled: true,
-            crop: false,
-            format: '{y}%',
-            verticalAlign: "bottom",
-            align: "center"
-          }
         }
+        @endforeach
       ]
     });
 

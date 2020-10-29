@@ -140,7 +140,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin: 20px 0;">
       <div id="container" style="overflow: hidden;"></div>
     </div>
       

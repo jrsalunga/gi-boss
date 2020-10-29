@@ -26,7 +26,6 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <!--<li><a href="/report">Report</a></li>-->
     <li><a href="/saletype/branch">Sale Type</a></li>
     <li class="active">Date Range @if(!is_null($branch))<small>({{ $dr->fr->format('M j') }} - {{ $dr->to->format('M j') }})</small>@endif</li>   
   </ol>
@@ -43,8 +42,6 @@
               @else
                 <span>{{ $branch->code }}</span>
               @endif
-
-              
             </div>
           </div>
           <div class="btn-group visible-xs-inline-block pull-right" role="group">
@@ -135,8 +132,11 @@
       </h3>
     </div>
     <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-      <p style="margin-bottom:0">Ave DINEIN Customer</p>
-      <h3 id="h-ave-dinein-cust" style="margin:0">0</h3>
+      <p style="margin-bottom:0">Ave DINEIN Sales/Customer</p>
+      <h3 style="margin:0">
+        <small id="h-ave-dinein" title="Average Dine-In Sales" data-toggle="tooltip" class="help"></small>
+        <span id="h-ave-dinein-cust" title="Average Dine-In Customer" data-toggle="tooltip" class="help">0</span>
+      </h3>
     </div>
   </div>
   <div class="row">
@@ -211,7 +211,7 @@
               <th class="text-right" style="font-weight: normal; color: #000;">
                 <strong id="{{ in_array($header, ['DINEIN','ONLRID'])?'f-tot-'.strtolower($header):'' }}">{{ nf($stat['sales']) }}</strong>
                 <div>
-                  <small><em>{{ nf($stat['ave_sales']) }}</em></small>
+                  <small><em id="{{ in_array($header, ['DINEIN'])?'f-ave-'.strtolower($header):'' }}">{{ nf($stat['ave_sales']) }}</em></small>
                 </div>
               </th>
               <th class="text-right" style="font-weight: normal; color: #000;">
@@ -420,10 +420,7 @@
             x: 3,
             y: 15,
             formatter: function () {
-              //var date = new Date(this.value);
-              //console.log(date.getDay());
-              //console.log(date);
-              return Highcharts.dateFormat('%b %Y',  this.value-86400000);
+              return Highcharts.dateFormat('%b %e', this.value);
             }
           },
           plotLines: arr
@@ -436,15 +433,12 @@
           tickWidth: 0,
           labels: {
             formatter: function () {
-              /*
               arr.push({ // mark the weekend
                 color: "#CCCCCC",
                 width: 1,
                 value: this.value-86400000,
                 zIndex: 3
               });
-                */
-              //return Highcharts.dateFormat('%a', (this.value-86400000));
             }
           }
         }
@@ -551,6 +545,7 @@
   $('#h-tot-onlrid').text($('#f-tot-onlrid').text());
   $('#h-tot-onlrid-pct').text($('#f-tot-onlrid-pct').text());
   $('#h-ave-dinein-cust').text($('#f-ave-dinein-cust').text());
+  $('#h-ave-dinein').text($('#f-ave-dinein').text());
 
   
   

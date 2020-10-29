@@ -112,9 +112,33 @@
       </div>
     </nav>
 
-    @include('_partials.alerts')
+  @include('_partials.alerts')
 
-
+  @if(count($datas)>0)
+  <div class="row">
+    <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+      <p style="margin-bottom:0">Total Sales</p>
+      <h3 id="h-tot-sales" style="margin:0">0</h3>
+    </div>
+    <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+      <p style="margin-bottom:0">DINEIN Sales</p>
+        <h3 style="margin:0">
+        <small id="h-tot-dinein-pct"></small>
+        <span id="h-tot-dinein">0</span>
+      </h3>
+    </div>
+    <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+      <p style="margin-bottom:0">ONLRID Sales</p>
+      <h3 style="margin:0">
+        <small id="h-tot-onlrid-pct"></small>
+        <span id="h-tot-onlrid">0</span>
+      </h3>
+    </div>
+    <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
+      <p style="margin-bottom:0">Ave DINEIN Customer</p>
+      <h3 id="h-ave-dinein-cust" style="margin:0">0</h3>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <div id="container" style="overflow: hidden;"></div>
@@ -122,9 +146,8 @@
       
 
     <div class="col-md-12">
-    @if(count($datas)>0)
     <div class="table-responsive">
-      <table class="table table-bordered table-hover table-striped">
+      <table class="table table-bordered table-hover">
         <thead>
           <tr>
             <th rowspan="2">Day</th>
@@ -145,7 +168,15 @@
         <tbody>
           <?php $tot_sales = $tot_valid = 0 ?>
           @foreach($datas as $key => $data)
-          <tr>
+          <tr
+            @if($data['date']->isToday())
+              class="bg-success"
+            @elseif($data['date']->dayOfWeek==0)
+              class="bg-warning"
+            @else
+
+            @endif
+          >
           <td>
             <a href="/product/sales?table=&item=&itemid=&branchid={{$branch->lid()}}&fr={{$data['date']->format('Y-m-d')}}&to={{$data['date']->format('Y-m-d')}}">
             {{ $data['date']->format('M j, D') }}
@@ -171,20 +202,20 @@
           <tr>
             <th style="font-weight: normal; color: #000;">{{ $tot_valid }}/{{ ($dr->diffInDays()+1) }}</th>
             <th class="text-right" style="font-weight: normal; color: #000;">
-              <strong>{{ nf($tot_sales) }}</strong>
+              <strong id="f-tot-sales">{{ nf($tot_sales) }}</strong>
               <div>
                   <small><em>{{ nf($tot_sales/$tot_valid) }}</em></small>
                 </div>
             </th>
             @foreach($stats as $header => $stat)
               <th class="text-right" style="font-weight: normal; color: #000;">
-                <strong>{{ nf($stat['sales']) }}</strong>
+                <strong id="{{ in_array($header, ['DINEIN','ONLRID'])?'f-tot-'.strtolower($header):'' }}">{{ nf($stat['sales']) }}</strong>
                 <div>
                   <small><em>{{ nf($stat['ave_sales']) }}</em></small>
                 </div>
               </th>
               <th class="text-right" style="font-weight: normal; color: #000;">
-                <strong>{{ nf(($stat['sales']/$tot_sales)*100) }}%</strong>
+                <strong id="{{ in_array($header, ['DINEIN','ONLRID'])?'f-tot-'.strtolower($header).'-pct':'' }}">{{ nf(($stat['sales']/$tot_sales)*100) }}%</strong>
                 <div>
                   <small><em></em></small>
                 </div>
@@ -192,7 +223,7 @@
               <th class="text-right" style="font-weight: normal; color: #000;">
                 <strong>{{ $stat['customer'] }}</strong>
                 <div>
-                  <small><em>{{ nf($stat['ave_customer'])+0 }}</em></small>
+                  <small><em id="{{ in_array($header, ['DINEIN'])?'f-ave-'.strtolower($header).'-cust':'' }}">{{ nf($stat['ave_customer'])+0 }}</em></small>
                 </div>
               </th>
               <th class="text-right" style="font-weight: normal; color: #000;">
@@ -245,11 +276,11 @@
           </tbody>
         </table>
     </div>
-    @else
-      No Record
-    @endif
     </div>
   </div>
+  @else
+    No Record
+  @endif
 </div><!-- end: .container-fluid  -->
       
 <div class="modal fade" id="mdl-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -504,7 +535,6 @@
           type: 'line',
           yAxis: 0
         }
-
         @foreach($stats as $header => $stat)
         , {
           type: 'line',
@@ -515,6 +545,12 @@
       ]
     });
 
+  $('#h-tot-sales').text($('#f-tot-sales').text());
+  $('#h-tot-dinein').text($('#f-tot-dinein').text());
+  $('#h-tot-dinein-pct').text($('#f-tot-dinein-pct').text());
+  $('#h-tot-onlrid').text($('#f-tot-onlrid').text());
+  $('#h-tot-onlrid-pct').text($('#f-tot-onlrid-pct').text());
+  $('#h-ave-dinein-cust').text($('#f-ave-dinein-cust').text());
 
   
   

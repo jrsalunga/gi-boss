@@ -91,9 +91,7 @@ class ChargesController extends Controller
               }
             }
           }
-
         }
-
 
         foreach ($keys as $k => $val) {
            $filtered = $charges->filter(function ($item) use ($date, $val) {
@@ -114,7 +112,7 @@ class ChargesController extends Controller
       }
     }
 
-    // return $stat;
+    // return $data;
 
     return $this->setViewWithDR(view('report.saletype')
                 ->with('datas', $data)

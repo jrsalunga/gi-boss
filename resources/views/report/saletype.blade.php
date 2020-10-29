@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', '-  Sale Type Summary')
+@section('title', '-  Sales Type Summary')
 
 @section('body-class', 'saletype')
 
@@ -26,7 +26,7 @@
 
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/saletype/branch">Sale Type</a></li>
+    <li><a href="/saletype/branch">Sales Type</a></li>
     <li class="active">Date Range @if(!is_null($branch))<small>({{ $dr->fr->format('M j') }} - {{ $dr->to->format('M j') }})</small>@endif</li>   
   </ol>
 
@@ -111,7 +111,7 @@
 
   @include('_partials.alerts')
 
-  @if(count($datas)>0)
+  @if(count($datas)>0 && count($stats)>0)
   <div class="row">
     <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
       <p style="margin-bottom:0">Total Sales</p>
@@ -189,12 +189,14 @@
             if ($data['tot_valid']>0)
               $tot_valid = $data['tot_valid'];
           ?>
+          @if(!is_null($data['data']))
             @foreach($data['data'] as $key => $val)
               <td class="text-right">{{ nf($val['total']) }}</td>
               <td class="text-right"><small><em>{{ $val['ave_sales']>0?$val['ave_sales'].'%':'' }}</em></small></td>
               <td class="text-right"><small>{{ $val['customer'] }}</small></td>
               <td class="text-right"><small>{{ $val['txn'] }}</small></td>
             @endforeach
+          @endif
           </tr>
           @endforeach
         </tbody>
@@ -279,7 +281,11 @@
     </div>
   </div>
   @else
-    No Record
+    @if(is_null($branch))
+    
+    @else
+      No Record
+    @endif
   @endif
 </div><!-- end: .container-fluid  -->
       

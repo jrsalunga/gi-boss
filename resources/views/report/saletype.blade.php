@@ -509,7 +509,7 @@
         , {
           type: 'line',
           dashStyle: 'shortdot',
-          yAxis: 1,
+          yAxis: 0,
         }
         @endforeach
       ]

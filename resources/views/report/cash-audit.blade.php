@@ -152,7 +152,11 @@
                     <tr><td>Total Collection</td><td class="text-right">{{ nf( $total_col, 2, true) }}</td></tr>
                     <tr><td>Overall Total</td><td class="text-right"><b>{{ nf($change_fund+$sales_total+$total_col, 2, true) }}</b></td></tr>
                     <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-                    <tr><td>Cash Disbursement</td><td class="text-right">{{ nf($cash_audit->csh_disb, 2, true) }}</td></tr>
+                    <tr><td>Cash Disbursement</td><td class="text-right">
+                      <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ $b->lid() }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank">
+                      {{ nf($cash_audit->csh_disb, 2, true) }}
+                      </a>
+                    </td></tr>
                     <tr><td>Sales Card</td><td class="text-right">{{ nf($cash_audit->chg_sale+$cash_audit->col_foodc, 2, true) }}</td></tr>
                     <tr><td>CashOut/Refund</td><td class="text-right">{{ nf($cash_audit->csh_out+$cash_audit->csh_outk, 2, true) }}</td></tr>
                     <tr><td>Total Disbursement</td><td class="text-right"><b>{{ nf($cash_audit->tot_disb, 2, true) }}</b></td></tr>

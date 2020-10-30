@@ -153,7 +153,7 @@
                     <tr><td>Overall Total</td><td class="text-right"><b>{{ nf($change_fund+$sales_total+$total_col, 2, true) }}</b></td></tr>
                     <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                     <tr><td>Cash Disbursement</td><td class="text-right">
-                      <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ $b->lid() }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank">
+                      <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ $branch->lid() }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank">
                       {{ nf($cash_audit->csh_disb, 2, true) }}
                       </a>
                     </td></tr>

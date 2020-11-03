@@ -236,10 +236,12 @@
               <span class="hidden-xs hidden-sm">Timesheet <small><span class="label label-success">new</span></small></span>
             </a> 
             -->
+            @if(in_array(session('user.id'), ['41F0FB56DFA811E69815D19988DDBE1E']))
             <a href="/employee/tracker" class="btn btn-default btn-sm">
               <span class="fa fa-street-view"></span> 
               <span class="hidden-xs hidden-sm">Tracker <small></small></span>
             </a> 
+            @endif
             
           </div>
 

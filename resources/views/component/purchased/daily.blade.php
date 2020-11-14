@@ -183,6 +183,7 @@
         $totpurchcost = 0;
         $totqty = 0;
         $totemp=0;
+        $totdf=0;
         $totpospurch=0;
       ?>
     	@if(is_null($purchases))
@@ -227,6 +228,12 @@
             <div>
             Emp Meal: 
             <h3 id="tot-emp" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
+            </div>
+          </li>
+          <li role="presentation" style="float: right;">
+            <div>
+            Delivery Fee: 
+            <h3 id="tot-df" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
             </div>
           </li>
           <li role="presentation" style="float: right;">
@@ -313,6 +320,9 @@
 
                     if ($purchase->componentid=='11E8BB3635ABF63DAEF21C1B0D85A7E0')
                       $totemp += $purchase->tcost;
+                    
+                    if ($purchase->componentid=='11EB228238760B969E0C14DDA9E4EAAF')
+                      $totdf += $purchase->tcost;
                   ?>
                   @endforeach
                 </tbody>
@@ -974,7 +984,8 @@
 
   $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
   $('#tot-emp').text('{{ number_format($totemp, 2) }}');
-  $('#tot-pos-purch').text('{{ number_format($totpurchcost-$totemp, 2) }}');
+  $('#tot-df').text('{{ number_format($totdf, 2) }}');
+  $('#tot-pos-purch').text('{{ number_format($totpurchcost-$totemp-$totdf, 2) }}');
     
 
     $('.show.toggle').on('click', function(){

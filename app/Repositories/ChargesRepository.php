@@ -82,7 +82,7 @@ class ChargesRepository extends BaseRepository implements CacheableInterface
     return $this->scopeQuery(function($query) use ($branchid, $dr) {
       return $query->whereBetween('orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
                   ->where('branch_id', $branchid)
-                  ->select(DB::raw('orddate, saletype, sum(chrg_grs) as total, sum(custcount) as customer, sum(sr_body) as senior, count(id) as txn'))
+                  ->select(DB::raw('orddate, saletype, sum(tot_chrg) as total, sum(custcount) as customer, sum(sr_body) as senior, count(id) as txn'))
                   ->groupBy('orddate')
                   ->groupBy('saletype')
                   ->orderBy('orddate')

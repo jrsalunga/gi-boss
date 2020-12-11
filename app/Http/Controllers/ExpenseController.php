@@ -256,9 +256,13 @@ class ExpenseController extends Controller
   private function sales_cat_dr($branch) {
 
     $datas = [];
+    // $prodcats = $this->mProdcat->skipCache()->scopeQuery(function($query) use ($branch){
+    //     return $query->where('branch_id', $branch->id);
+    // })->fin
     $prodcats = $this->mProdcat->skipCache()->scopeQuery(function($query) use ($branch){
-        return $query->where('branch_id', $branch->id);
-    })->findWhereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+        return $query->where('branch_id', $branch->id)
+                    ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    })->all();
     
     $total = 0;
     foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {

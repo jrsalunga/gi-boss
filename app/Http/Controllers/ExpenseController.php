@@ -253,6 +253,51 @@ class ExpenseController extends Controller
 		return $datas;
 	}
 
+  private function sales_cat_dr($branch) {
+
+    $datas = [];
+    $prodcats = $this->mProdcat->skipCache()->scopeQuery(function($query) use ($branch){
+        return $query->where('branch_id', $branch->id);
+    })->findWhereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    
+    $total = 0;
+    foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
+
+      
+      $datas[$key]['prodcatcode'] = $prodcat->code;
+      $datas[$key]['prodcat'] = $prodcat->descriptor;
+      $datas[$key]['prodcatid'] = $prodcat->id;
+      
+      
+
+      $f = $prodcats->filter(function ($item) use ($prodcat){
+        return $item->prodcat_id == $prodcat->id
+          ? $item : null;
+      });
+
+      $datas[$key]['sales'] = 0;
+      $datas[$key]['pct'] = 0;
+      if (count($f)>0) {
+
+        foreach ($f as $v) {
+          $datas[$key]['sales'] += $v->sales;
+        }
+      }
+      
+      $total += $datas[$key]['sales'];
+    }
+
+
+    foreach ($datas as $k => $p) {
+      if($p['sales']>0) {
+        $datas[$k]['pct'] = ($p['sales']/$total)*100;
+      }
+    }
+    
+    
+    return $datas;
+  }
+
 	private function setViewWithDR($view){
     $response = new Response($view->with('dr', $this->dr));
     $response->withCookie(cookie('to', $this->dr->to->format('Y-m-d'), 45000));
@@ -406,7 +451,7 @@ class ExpenseController extends Controller
       $noncos_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getNonCos());
       $expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
       $fc_hist = $this->getFCHist($branch, $exps);
-      $prodcats = $this->sales_cat($branch);
+      $prodcats = $this->sales_cat_dr($branch);
                                
 
     //return $fc_hist;

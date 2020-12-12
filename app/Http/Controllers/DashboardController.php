@@ -146,7 +146,8 @@ class DashboardController extends Controller
 
 	public function getDailyRangeSalesAll(Request $request) {
 		$dailysales = $this->repo->skipCache()->allBranchByDateRange($this->dr->fr, $this->dr->to);
-		return $this->setViewWithDR(view('dashboard.dailysales-dr-all')->with('dailysales', $dailysales));
+		return $this->setViewWithDR(view('dashboard.dailysales-dr-all-deliverpct')->with('dailysales', $dailysales));
+    return $this->setViewWithDR(view('dashboard.dailysales-dr-all')->with('dailysales', $dailysales));
 		//return view('dashboard.dailysales')->with('dr', $this->dr)->with('dailysales', $dailysales);
 	}
 

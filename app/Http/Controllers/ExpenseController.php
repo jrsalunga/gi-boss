@@ -502,7 +502,8 @@ class ExpenseController extends Controller
     $datas = [];
     $saletypes = $this->mSaleType->skipCache()->scopeQuery(function($query) use ($branch){
       return $query->where('branch_id', $branch->id)
-                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
+                   ->orderBy('ordinal');
     })->all();
 
     foreach ($saletypes as $key => $s) {
@@ -528,7 +529,8 @@ class ExpenseController extends Controller
     $datas = [];
     $chargetypes = $this->mChargeType->skipCache()->scopeQuery(function($query) use ($branch){
       return $query->where('branch_id', $branch->id)
-                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
+                   ->orderBy('ordinal');
     })->all();
 
     foreach ($chargetypes as $key => $s) {
@@ -555,7 +557,8 @@ class ExpenseController extends Controller
     $datas = [];
     $cardtypes = $this->mCardType->skipCache()->scopeQuery(function($query) use ($branch){
       return $query->where('branch_id', $branch->id)
-                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')])
+                   ->orderBy('ordinal');
     })->all();
 
     foreach ($cardtypes as $key => $s) {

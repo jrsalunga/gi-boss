@@ -1,6 +1,12 @@
 @extends('master')
 
-@section('title', '-  Month Range Direct P&L Summary')
+<?php
+  $code = (is_null($branch)) ? '':' ('.$branch->code.')';
+  $title = '- Month Range Direct P&L Summary'.$code;
+
+?>
+
+@section('title', $title)
 
 @section('body-class', 'month-range-pnl')
 

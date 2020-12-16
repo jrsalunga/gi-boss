@@ -320,6 +320,71 @@
 
 
       </div><!-- end: .panel-body  -->
+      </div><!-- end: .panel-body  -->
+      </div><!-- end: .panel.panel-default  -->
+      </div><!-- end: .col-md-12  -->
+
+      <div class="col-md-12 hidden-lg hidden-md" style="margin-top: 30px;">
+        <div class="panel panel-default">
+          <div class="panel-heading">Operational Expense Summary</div>
+          <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Expense</th>
+              <th class="text-right">Cost</th>
+              <th class="text-right">Transfered</th>
+              <th class="text-right" title="Cost - Transfered = Net Cost">Cost less Transfers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $xtpurch = $xttrans = $xtnet = 0; ?>
+            @foreach($expense_data as $data)
+              <tr data-expenseid="{{ $data['expenseid'] }}">
+                <td>{{ $data['expensecode'] }}</td>
+                <td>{{ $data['expense'] }}</td>
+                <td class="text-right">
+                  <a href="/component/purchases?table=expense&item={{urlencode($data['expense'])}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  {{ nf($data['purch']) }}
+                  </a>
+
+                </td>
+                <td class="text-right">
+                  <a href="/component/transfer?table=expense&item={{urlencode($data['expense'])}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                    {{ nf($data['trans']) }}
+                  </a>
+                </td>
+                <td class="text-right">{{ nf($data['net']) }}</td>
+              </tr>
+              <?php
+                $xtpurch += $data['purch'];
+                $xttrans += $data['trans'];
+                $xtnet += $data['net'];
+              ?>
+            @endforeach
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="text-right"><b>Total:</b></td>
+              <td class="text-right">
+                <b class="text-muted">
+                    {{ nf($xtpurch) }}
+                </b>
+              </td>
+              <td class="text-right"><b class="text-muted">
+                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                {{ nf($xttrans) }}
+                </a>
+              </b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
+            </tr>
+          </tfoot>
+        </table>
+        </div><!-- table-responsive  -->
+      </div><!-- end: .panel-body  -->
       </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-12  -->
 
@@ -372,6 +437,139 @@
         </div><!-- table-responsive  -->
         </div><!-- end: .panel-body  -->
         </div><!-- end: .panel.panel-default  -->
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Transaction Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Transaction Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($saletypes as $key => $saletype)
+                    <tr>
+                      <td>{{ $key }}</td>
+                      <td class="text-right">{{ nf($saletype['total']) }}</td>
+                      <td class="text-right">{{ nf($saletype['pct']) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $saletype['total'];
+                      $tot_pct += $saletype['pct'];
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
+
+          <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Charge Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Charge Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($chargetypes as $key => $data)
+                    <tr>
+                      <td>{{ $key }}</td>
+                      <td class="text-right">{{ nf($data['total']) }}</td>
+                      <td class="text-right">{{ nf($data['pct']) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $data['total'];
+                      $tot_pct += $data['pct'];
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
+          <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Card Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Card Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($cardtypes as $key => $data)
+                    <tr>
+                      <td>{{ $key }}</td>
+                      <td class="text-right">{{ nf($data['total']) }}</td>
+                      <td class="text-right">{{ nf($data['pct']) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $data['total'];
+                      $tot_pct += $data['pct'];
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
+
       </div><!-- end: .col-md-5  -->
 
 

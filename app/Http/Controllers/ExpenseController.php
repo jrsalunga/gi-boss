@@ -129,6 +129,9 @@ class ExpenseController extends Controller
     $prodcats = [];
     $expense_data = [];
     $noncos_data = [];
+    $saletypes = [];
+    $chargetypes = [];
+    $cardtypes = [];
     if (!is_null($branch)) {
 
     	$exps = $this->expense->getCos();
@@ -459,6 +462,9 @@ class ExpenseController extends Controller
     $prodcats = [];
     $expense_data = [];
     $noncos_data = [];
+    $saletypes = [];
+    $chargetypes = [];
+    $cardtypes = [];
     if (!is_null($branch)) {
 
       $exps = $this->expense->getCos();
@@ -470,8 +476,10 @@ class ExpenseController extends Controller
       $expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
       $fc_hist = $this->getFCHist($branch, $exps);
       $prodcats = $this->sales_cat_dr($branch);
+      $saletypes = $this->getSaleTypeDR($branch);
+      $chargetypes =  $this->getChargeTypeDR($branch);
+      $cardtypes =  $this->getCardTypeDR($branch);
                                
-
     //return $fc_hist;
     }
     return $this->setViewWithDR(view('report.pnl-month-range')
@@ -482,7 +490,89 @@ class ExpenseController extends Controller
                 ->with('expense_data', $expense_data)
                 ->with('prodcats', $prodcats)
                 ->with('ms', $ms)
+                ->with('saletypes', $saletypes)
+                ->with('chargetypes', $chargetypes)
+                ->with('cardtypes', $cardtypes)
                 ->with('branch', $branch));
+  }
+
+  private function getSaleTypeDR($branch) {
+
+    $total = 0;
+    $datas = [];
+    $saletypes = $this->mSaleType->skipCache()->scopeQuery(function($query) use ($branch){
+      return $query->where('branch_id', $branch->id)
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    })->all();
+
+    foreach ($saletypes as $key => $s) {
+      if (array_key_exists($s->saletype, $datas))
+        $datas[$s->saletype]['total'] += $s->total;
+      else
+        $datas[$s->saletype]['total'] = $s->total;
+      $total += $s->total;
+    }
+
+     foreach ($datas as $k => $p) {
+      if($p['total']>0) {
+        $datas[$k]['pct'] = ($p['total']/$total)*100;
+      }
+    }
+
+    return $datas;
+  }
+
+  private function getChargeTypeDR($branch) {
+
+    $total = 0;
+    $datas = [];
+    $chargetypes = $this->mChargeType->skipCache()->scopeQuery(function($query) use ($branch){
+      return $query->where('branch_id', $branch->id)
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    })->all();
+
+    foreach ($chargetypes as $key => $s) {
+      if (array_key_exists($s->chrg_type, $datas))
+        $datas[$s->chrg_type]['total'] += $s->total;
+      else
+        $datas[$s->chrg_type]['total'] = $s->total;
+      $total += $s->total;
+    }
+
+    foreach ($datas as $k => $p) {
+      if($p['total']>0) {
+        $datas[$k]['pct'] = ($p['total']/$total)*100;
+      }
+    }
+
+    return $datas;
+  }
+
+
+  private function getCardTypeDR($branch) {
+
+    $total = 0;
+    $datas = [];
+    $cardtypes = $this->mCardType->skipCache()->scopeQuery(function($query) use ($branch){
+      return $query->where('branch_id', $branch->id)
+                   ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    })->all();
+
+    foreach ($cardtypes as $key => $s) {
+      if (array_key_exists($s->cardtype, $datas))
+        $datas[$s->cardtype]['total'] += $s->total;
+      else
+        $datas[$s->cardtype]['total'] = $s->total;
+      $total += $s->total;
+    }
+
+    foreach ($datas as $k => $p) {
+      if($p['total']>0) {
+        $datas[$k]['pct'] = ($p['total']/$total)*100;
+      }
+    }
+
+    return $datas;
   }
 
   

@@ -172,210 +172,405 @@
         <div class="panel panel-default">
           <div class="panel-heading">Cost of Goods Summary</div>
           <div class="panel-body">
-        <div class="table-responsive">
-        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
-          <thead>
-            <tr>
-              <th style="width:5%;">Code</th>
-              <th>Category</th>
-              <th class="text-right" style="width:17%;">Purchased</th>
-              <th class="text-right" style="width:17%;">Transfered</th>
-              <th class="text-right" style="width:17%;"><span title="Purchased - Transfered = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
-              <th class="text-right" style="width:17%;">% on Food Sales</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            @foreach($datas as $data)
-              <tr data-expenseid="{{ $data['expenseid'] }}">
-                <td>{{ $data['expensecode'] }}</td>
-                <td>{{ $data['expense'] }}</td>
-                <td class="text-right">
-                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="Link to Purchases Report">
-                  {{ nf($data['purch']) }}
-                  </a>
-
-                </td>
-                <td class="text-right">
-                  <a href="/component/transfer?table=expense&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}&skipname=true" target="_blank" title="Link to Stock Transfer Raw Log Report">
-                  {{ nf($data['trans']) }}
-                  </a>
-                </td>
-                <td class="text-right">{{ nf($data['net']) }}</td>
-                <td class="text-right" title="({{ $data['net'] }}/{{ $data['food_sales'] }} )*100={{$data['pct']}}" data-toogle="tooltip">{{ nf($data['pct']) }}</td>
-              </tr>
-              <?php
-                $tpurch += $data['purch'];
-                $ttrans += $data['trans'];
-                $tnet += $data['net'];
-                $tpct += $data['pct'];
-                $fs = $data['food_sales'];
-
+            <div class="table-responsive">
+            <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+              <thead>
+                <tr>
+                  <th style="width:5%;">Code</th>
+                  <th>Category</th>
+                  <th class="text-right" style="width:17%;">Purchased</th>
+                  <th class="text-right" style="width:17%;">Transfered</th>
+                  <th class="text-right" style="width:17%;"><span title="Purchased - Transfered = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
+                  <th class="text-right" style="width:17%;">% on Food Sales</th>
+                </tr>
+              </thead>
+              <tbody>
                 
-                $ttpurch += $data['purch'];
-                $tttrans += $data['trans'];
-              ?>
-            @endforeach
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td class="text-right">Total:</td>
-              <td class="text-right">
-                <b class="text-muted">
-                    {{ nf($tpurch) }}
-                </b>
-              </td>
-              <td class="text-right"><b class="text-muted">
-                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Stock Transfer Summary">
-                {{ nf($ttrans) }}
-                </a>
-              </b></td>
-              <td class="text-right"><b class="text-muted">{{ nf($tnet) }}</b></td>
-              <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td>
-            </tr>
-          </tfoot>
-        </table>
-        </div><!-- table-responsive  -->
+                @foreach($datas as $data)
+                  <tr data-expenseid="{{ $data['expenseid'] }}">
+                    <td>{{ $data['expensecode'] }}</td>
+                    <td>{{ $data['expense'] }}</td>
+                    <td class="text-right">
+                      <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="Link to Purchases Report">
+                      {{ nf($data['purch']) }}
+                      </a>
+
+                    </td>
+                    <td class="text-right">
+                      <a href="/component/transfer?table=expense&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}&skipname=true" target="_blank" title="Link to Stock Transfer Raw Log Report">
+                      {{ nf($data['trans']) }}
+                      </a>
+                    </td>
+                    <td class="text-right">{{ nf($data['net']) }}</td>
+                    <td class="text-right" title="({{ $data['net'] }}/{{ $data['food_sales'] }} )*100={{$data['pct']}}" data-toogle="tooltip">{{ nf($data['pct']) }}</td>
+                  </tr>
+                  <?php
+                    $tpurch += $data['purch'];
+                    $ttrans += $data['trans'];
+                    $tnet += $data['net'];
+                    $tpct += $data['pct'];
+                    $fs = $data['food_sales'];
+
+                    
+                    $ttpurch += $data['purch'];
+                    $tttrans += $data['trans'];
+                  ?>
+                @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td class="text-right">Total:</td>
+                  <td class="text-right">
+                    <b class="text-muted">
+                        {{ nf($tpurch) }}
+                    </b>
+                  </td>
+                  <td class="text-right"><b class="text-muted">
+                    <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Stock Transfer Summary">
+                    {{ nf($ttrans) }}
+                    </a>
+                  </b></td>
+                  <td class="text-right"><b class="text-muted">{{ nf($tnet) }}</b></td>
+                  <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td>
+                </tr>
+              </tfoot>
+            </table>
+            </div><!-- table-responsive  -->
         
-        <div class="table-responsive" style="margin-top: 10px;">
-        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
-          <tbody>
-            <?php $ntpurch = $nttrans = $ntnet = $ntpct = 0; ?>
-            @foreach($noncos_data as $data)
-              @if($data['purch']>0)
-              <tr data-expenseid="{{ $data['expenseid'] }}">
-                <td style="width:5%;">{{ $data['expensecode'] }}</td>
-                <td>{{ $data['expense'] }}</td>
-                <td class="text-right" class="text-right" style="width:17%;">
-                  <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
-                  {{ nf($data['purch']) }}
-                  </a>
+            <div class="table-responsive" style="margin-top: 10px;">
+            <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+              <tbody>
+                <?php $ntpurch = $nttrans = $ntnet = $ntpct = 0; ?>
+                @foreach($noncos_data as $data)
+                  @if($data['purch']>0)
+                  <tr data-expenseid="{{ $data['expenseid'] }}">
+                    <td style="width:5%;">{{ $data['expensecode'] }}</td>
+                    <td>{{ $data['expense'] }}</td>
+                    <td class="text-right" class="text-right" style="width:17%;">
+                      <a href="/component/purchases?table=expense&item={{$data['expense']}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                      {{ nf($data['purch']) }}
+                      </a>
 
-                </td>
-                <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['trans']) }}</td>
-                <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['net']) }}</td>
-                <td class="text-right" class="text-right" style="width:17%;"></td>
-                
-              </td>
-              </tr>
-              <?php
-                $ntpurch += $data['purch'];
-                $nttrans += $data['trans'];
-                $ntnet += $data['net'];
-                
-                $ttpurch += $data['purch'];
-                $tttrans += $data['trans'];
-                
-                $fs = $data['food_sales'];
-              ?>
-              @endif
-            @endforeach
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td class="text-right">Total:</td>
-              <td class="text-right">
-                <b class="text-muted">
-                    {{ nf($ntpurch) }}
-                </b>
-              </td>
-              <td class="text-right"><b class="text-muted">
-                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
-                {{ nf($nttrans) }}
-                </a>
-              </b></td>
-              <td class="text-right"><b class="text-muted">{{ nf($ntnet) }}</b></td>
-              <td class="text-right"></td>
-            </tr>
-          </tfoot>
-        </table>
+                    </td>
+                    <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['trans']) }}</td>
+                    <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['net']) }}</td>
+                    <td class="text-right" class="text-right" style="width:17%;"></td>
+                    
+                  </td>
+                  </tr>
+                  <?php
+                    $ntpurch += $data['purch'];
+                    $nttrans += $data['trans'];
+                    $ntnet += $data['net'];
+                    
+                    $ttpurch += $data['purch'];
+                    $tttrans += $data['trans'];
+                    
+                    $fs = $data['food_sales'];
+                  ?>
+                  @endif
+                @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td class="text-right">Total:</td>
+                  <td class="text-right">
+                    <b class="text-muted">
+                        {{ nf($ntpurch) }}
+                    </b>
+                  </td>
+                  <td class="text-right"><b class="text-muted">
+                    <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                    {{ nf($nttrans) }}
+                    </a>
+                  </b></td>
+                  <td class="text-right"><b class="text-muted">{{ nf($ntnet) }}</b></td>
+                  <td class="text-right"></td>
+                </tr>
+              </tfoot>
+            </table>
+            </div><!-- table-responsivee  -->
 
-        <div class="table-responsive" style="margin-top: 10px;">
-        <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
-          <tfoot>
-            <tr>
-              <td style="width:5%;"></td>
-              <td class="text-right"><b>Total:</b></td>
-              <td class="text-right" style="width:17%;">
-                <b class="text-muted">
-                    {{ nf($ttpurch) }}
-                </b>
-              </td>
-              <td class="text-right" style="width:17%;"><b class="text-muted">
-                {{ nf($tttrans) }}
-              </b></td>
-              <?php
-                $direct_cost = $ttpurch-$tttrans;
-              ?>
-              <td class="text-right" style="width:17%;"><b class="text-muted">{{ nf($direct_cost) }}</b></td>
-              <td class="text-right" style="width:17%;"></td>
-            </tr>
-          </tfoot>
-        </table>
-        </div><!-- table-responsivee  -->
-
-
-
-
-      </div><!-- end: .panel-body  -->
-      </div><!-- end: .panel.panel-default  -->
+            <div class="table-responsive" style="margin-top: 10px;">
+            <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+              <tfoot>
+                <tr>
+                  <td style="width:5%;"></td>
+                  <td class="text-right"><b>Total:</b></td>
+                  <td class="text-right" style="width:17%;">
+                    <b class="text-muted">
+                        {{ nf($ttpurch) }}
+                    </b>
+                  </td>
+                  <td class="text-right" style="width:17%;"><b class="text-muted">
+                    {{ nf($tttrans) }}
+                  </b></td>
+                  <?php
+                    $direct_cost = $ttpurch-$tttrans;
+                  ?>
+                  <td class="text-right" style="width:17%;"><b class="text-muted">{{ nf($direct_cost) }}</b></td>
+                  <td class="text-right" style="width:17%;"></td>
+                </tr>
+              </tfoot>
+            </table>
+            </div><!-- table-responsivee  -->
+        </div><!-- end: .panel-body  -->
+        </div><!-- end: .panel.panel-default  -->
       </div><!-- end: .col-md-12  -->
 
-      <div class="col-md-5 " style="margin: 30px 0;">
+
+      <div class="col-md-12 hidden-md hidden-lg" style="margin-top: 30px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Sales Summary by Category</div>
+          <div class="panel-heading">Operational Expense Summary</div>
           <div class="panel-body">
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
             <tr>
               <th>Code</th>
-              <th>Product Category</th>
-              <th class="text-right">Gross Sales</th>
-              <th class="text-right">%</th>
+              <th>Expense</th>
+              <th class="text-right">Cost</th>
+              <th class="text-right">Transfered</th>
+              <th class="text-right" title="Cost - Transfered = Net Cost">Cost less Transfers</th>
             </tr>
           </thead>
           <tbody>
-            <?php
-              $tot_sales = $tot_pct = 0;
-            ?>
-            @foreach($prodcats as $data)
-              @if(!empty($data['prodcat']))
-              <tr data-prodcatid="{{ $data['prodcatid'] }}">
-                <td>{{ $data['prodcatcode'] }}</td>
-                <td>{{ $data['prodcat'] }}</td>
-                <td class="text-right">{{ nf($data['sales']) }}</td>
-                <td class="text-right">{{ nf($data['pct']) }}</td>
+            <?php $xtpurch = $xttrans = $xtnet = 0; ?>
+            @foreach($expense_data as $data)
+              <tr data-expenseid="{{ $data['expenseid'] }}">
+                <td>{{ $data['expensecode'] }}</td>
+                <td>{{ $data['expense'] }}</td>
+                <td class="text-right">
+                  <a href="/component/purchases?table=expense&item={{urlencode($data['expense'])}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                  {{ nf($data['purch']) }}
+                  </a>
+
+                </td>
+                <td class="text-right">
+                  <a href="/component/transfer?table=expense&item={{urlencode($data['expense'])}}&itemid={{$data['expenseid']}}&branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                    {{ nf($data['trans']) }}
+                  </a>
+                </td>
+                <td class="text-right">{{ nf($data['net']) }}</td>
               </tr>
               <?php
-                $tot_sales += $data['sales'];
-                $tot_pct += $data['pct'];
+                $xtpurch += $data['purch'];
+                $xttrans += $data['trans'];
+                $xtnet += $data['net'];
               ?>
-              @endif
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <td></td>
               <td class="text-right"><b>Total:</b></td>
+              <td class="text-right">
+                <b class="text-muted">
+                    {{ nf($xtpurch) }}
+                </b>
+              </td>
               <td class="text-right"><b class="text-muted">
-                <a href="/product/sales?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Daily Sales Summary">
-                {{ nf($tot_sales) }}
+                <a href="/component/transfer/daily?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
+                {{ nf($xttrans) }}
                 </a>
               </b></td>
-              <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
             </tr>
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
-        </div><!-- end: .panel-body  -->
-        </div><!-- end: .panel.panel-default  -->
+      </div><!-- end: .panel-body  -->
+      </div><!-- end: .panel.panel-default  -->
+      </div><!-- end: .col-md-12  -->
+
+
+      <div class="col-md-5 " style="margin: 30px 0;">
+        <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Category</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Product Category</th>
+                    <th class="text-right">Gross Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($prodcats as $data)
+                    @if(!empty($data['prodcat']))
+                    <tr data-prodcatid="{{ $data['prodcatid'] }}">
+                      <td>{{ $data['prodcatcode'] }}</td>
+                      <td>{{ $data['prodcat'] }}</td>
+                      <td class="text-right">{{ nf($data['sales']) }}</td>
+                      <td class="text-right">{{ nf($data['pct']) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $data['sales'];
+                      $tot_pct += $data['pct'];
+                    ?>
+                    @endif
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      <a href="/product/sales?branchid={{$branch->lid()}}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}" target="_blank" title="link to Daily Sales Summary">
+                      {{ nf($tot_sales) }}
+                      </a>
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
+          <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Transaction Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Transaction Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($saletypes as $saletype)
+                    <tr>
+                      <td>{{ $saletype->saletype }}</td>
+                      <td class="text-right">{{ nf($saletype->total) }}</td>
+                      <td class="text-right">{{ nf($saletype->pct) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $saletype->total;
+                      $tot_pct += $saletype->pct;
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
+          <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Charge Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Charge Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($chargetypes as $chrg)
+                    <tr>
+                      <td>{{ $chrg->chrg_type }}</td>
+                      <td class="text-right">{{ nf($chrg->total) }}</td>
+                      <td class="text-right">{{ nf($chrg->pct) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $chrg->total;
+                      $tot_pct += $chrg->pct;
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+      
+
+
+          <div class="panel panel-default">
+          <div class="panel-heading">Sales Summary by Card Type</div>
+            <div class="panel-body">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>Card Type</th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $tot_sales = $tot_pct = 0;
+                  ?>
+                  @foreach($cardtypes as $card)
+                    <tr>
+                      <td>{{ $card->cardtype }}</td>
+                      <td class="text-right">{{ nf($card->total) }}</td>
+                      <td class="text-right">{{ nf($card->pct) }}</td>
+                    </tr>
+                    <?php
+                      $tot_sales += $card->total;
+                      $tot_pct += $card->pct;
+                    ?>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="text-right"><b>Total:</b></td>
+                    <td class="text-right"><b class="text-muted">
+                      {{ nf($tot_sales) }}
+                    </b></td>
+                    <td class="text-right"><b class="text-muted">{{ $tot_pct>0?nf($tot_pct)+0:nf($tot_pct) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div><!-- table-responsive  -->
+            </div><!-- end: .panel-body  -->
+          </div><!-- end: .panel.panel-default  -->
+
+
       </div><!-- end: .col-md-5  -->
 
 
-      <div class="col-md-6 col-md-offset-1" style="margin-top: 30px; margin-bottom: 50px;">
+      <div class="col-md-6 col-md-offset-1 hidden-xs hidden-sm" style="margin-top: 30px; margin-bottom: 50px;">
         <div class="panel panel-default">
           <div class="panel-heading">Operational Expense Summary</div>
           <div class="panel-body">

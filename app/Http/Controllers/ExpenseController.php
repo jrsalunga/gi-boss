@@ -15,6 +15,9 @@ use App\Repositories\DailySalesRepository as DS;
 use App\Repositories\DayExpenseRepository as dExpense;
 use App\Repositories\DayProdcatRepository as dProdcat;
 use App\Repositories\CashAuditRepository as CashAudit;
+use App\Repositories\MonthChargeTypeRepository as MChargeType;
+use App\Repositories\MonthCardTypeRepository as MCardType;
+use App\Repositories\MonthSaleTypeRepository as MSaleType;
 
 class ExpenseController extends Controller
 {
@@ -29,8 +32,11 @@ class ExpenseController extends Controller
 	protected $bb;
 	protected $ms;
   protected $cashAudit;
+  private $mChargeType;
+  private $mCardType;
+  private $mSaleType;
 
-	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms, DS $ds, dExpense $dExpense, dProdcat $dProdcat, CashAudit $cashAudit) {
+	public function __construct(DateRange $dr, Expense $expense, mExpense $mExpense, Transfer $transfer, mProdcat $mProdcat, BranchRepo $branch, MS $ms, DS $ds, dExpense $dExpense, dProdcat $dProdcat, CashAudit $cashAudit,  MChargeType $mChargeType, MCardType $mCardType, MSaleType $mSaleType) {
 		$this->dr = $dr;
 		$this->ms = $ms;
     $this->ds = $ds;
@@ -42,6 +48,9 @@ class ExpenseController extends Controller
     $this->dProdcat = $dProdcat;
 		$this->branch = $branch;
     $this->cashAudit = $cashAudit;
+    $this->mChargeType = $mChargeType;
+    $this->mCardType = $mCardType;
+    $this->mSaleType = $mSaleType;
 		$this->bb = $this->getBranches();
 	}
 
@@ -131,6 +140,9 @@ class ExpenseController extends Controller
 			$expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
     	$fc_hist = $this->getFCHist($branch, $exps);
 			$prodcats = $this->sales_cat($branch);
+      $saletypes = $this->mSaleType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
+      $chargetypes = $this->mChargeType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
+      $cardtypes = $this->mCardType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
 							                 
 
 		//return $fc_hist;
@@ -143,6 +155,9 @@ class ExpenseController extends Controller
                 ->with('expense_data', $expense_data)
                 ->with('prodcats', $prodcats)
                 ->with('ms', $ms)
+                ->with('saletypes', $saletypes)
+                ->with('chargetypes', $chargetypes)
+                ->with('cardtypes', $cardtypes)
                 ->with('branch', $branch));
 	}
 
@@ -253,52 +268,8 @@ class ExpenseController extends Controller
 		return $datas;
 	}
 
-  private function sales_cat_dr($branch) {
-
-    $datas = [];
-    
-    $prodcats = $this->mProdcat->skipCache()->scopeQuery(function($query) use ($branch){
-      return $query->where('branch_id', $branch->id)
-                  ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
-    })->all();
-    
-    $total = 0;
-    foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
-
-      
-      $datas[$key]['prodcatcode'] = $prodcat->code;
-      $datas[$key]['prodcat'] = $prodcat->descriptor;
-      $datas[$key]['prodcatid'] = $prodcat->id;
-      
-      
-
-      $f = $prodcats->filter(function ($item) use ($prodcat){
-        return $item->prodcat_id == $prodcat->id
-          ? $item : null;
-      });
-
-      $datas[$key]['sales'] = 0;
-      $datas[$key]['pct'] = 0;
-      if (count($f)>0) {
-
-        foreach ($f as $v) {
-          $datas[$key]['sales'] += $v->sales;
-        }
-      }
-      
-      $total += $datas[$key]['sales'];
-    }
-
-
-    foreach ($datas as $k => $p) {
-      if($p['sales']>0) {
-        $datas[$k]['pct'] = ($p['sales']/$total)*100;
-      }
-    }
-    
-    
-    return $datas;
-  }
+ 
+  
 
 	private function setViewWithDR($view){
     $response = new Response($view->with('dr', $this->dr));
@@ -423,6 +394,51 @@ class ExpenseController extends Controller
     return $datas;
   }
 
+
+
+
+
+
+
+  private function sales_cat_dr($branch) {
+
+    $datas = [];
+    
+    $prodcats = $this->mProdcat->skipCache()->scopeQuery(function($query) use ($branch){
+      return $query->where('branch_id', $branch->id)
+                  ->whereBetween('date', [$this->dr->fr->format('Y-m-d'), $this->dr->to->format('Y-m-d')]);
+    })->all();
+    
+    $total = 0;
+    foreach (\App\Models\Prodcat::orderBy('ordinal')->get() as $key => $prodcat) {
+      
+      $datas[$key]['prodcatcode'] = $prodcat->code;
+      $datas[$key]['prodcat'] = $prodcat->descriptor;
+      $datas[$key]['prodcatid'] = $prodcat->id;
+
+      $f = $prodcats->filter(function ($item) use ($prodcat){
+        return $item->prodcat_id == $prodcat->id
+          ? $item : null;
+      });
+
+      $datas[$key]['sales'] = 0;
+      $datas[$key]['pct'] = 0;
+      if (count($f)>0) {
+        foreach ($f as $v) {
+          $datas[$key]['sales'] += $v->sales;
+        }
+      }      
+      $total += $datas[$key]['sales'];
+    }
+
+    foreach ($datas as $k => $p) {
+      if($p['sales']>0) {
+        $datas[$k]['pct'] = ($p['sales']/$total)*100;
+      }
+    }
+
+    return $datas;
+  }
 
   public function getMonthRangePnl(Request $request) {
     

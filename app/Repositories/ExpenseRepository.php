@@ -12,11 +12,6 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
 {
   use CacheableRepository, RepoTrait;
 
-  public $expense_array = ["CK","FS","FV","GR","MP","RC","SS"]; // no "DN","DB","DA","CG","IC"
-  public $non_cos_array = ["DB","DA","DN","CG","IC"];
-
-
-
 
 	public function model() {
     return 'App\Models\Expense';
@@ -25,7 +20,7 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
 
   public function getCos() {
     return $this->scopeQuery(function($query) {
-      return $query->whereIn('code', $this->expense_array)
+      return $query->whereIn('code', config('giligans.expensecode.cos'))
                     ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
                     ->orderBy('ordinal');
     })->all();
@@ -43,7 +38,7 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
 
   public function getNonCos() {
     return $this->scopeQuery(function($query) {
-      return $query->whereIn('code', $this->non_cos_array)
+      return $query->whereIn('code', config('giligans.expensecode.ncos'))
                     ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
                     ->orderBy('ordinal');
     })->all();

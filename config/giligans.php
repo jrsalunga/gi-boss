@@ -149,5 +149,11 @@ return [
     '4' => 'Paid: Online',
     '5' => 'Paid: Others',
   ],
+
+  'expensecode' => [
+    'cos'  => ["GR","MP","FS","FV","RC","CK","SS","FC"],
+    'ncos' => ["DN","DB","DA","CG","IC"],
+    'opex' => ["SE","CA","ST","13","SI","AB","OS","RS","DF","RM","SL","AM","PC","LP","TL","SR","PL","PB","PR","KL","LS","TP","EB","WB","TC","EM","SY","RF","MS","TS"],
+  ],
 	
 ];

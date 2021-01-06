@@ -692,18 +692,16 @@
             </tfoot>  
           </table>
 
-        <table id="datatable" class="tb-data" style="display:none;">
+        <table id="datatable" class="tb-data" style="display:block;">
           <thead>
             <tr>
                 <th>Date</th>
                 <th>Sales</th>
+                <th>Total Expense</th>
                 <th>Food Cost</th>
-                <th>OpEx</th>
                 <th>Purchased</th>
-                <th>Emp Count</th>
-                <th>Man Cost</th>
-                <th>Tips</th>
-                <th>Sales per Emp</th>
+                <th>Cost of Goods</th>
+                <th>Direct Profit</th>
             </tr>
           </thead>
           <tbody>
@@ -712,16 +710,12 @@
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
+              <td>{{ $d->dailysale->totalExpense() }}</td>
               <td>{{ $d->dailysale['cos'] }}</td>
               <td>{{ $d->opex }}</td>
-              <td>{{ $d->dailysale['purchcost'] }}</td>
-              <td>{{ $d->dailysale['empcount'] }}</td>
-              <td>{{ $d->dailysale['mancost'] }}</td>
-              <td>{{ $d->dailysale['tips'] }}</td>
-              <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
+              <td>{{ $d->dailysale->costOfGoods() }}</td>
+              <td>{{ $d->dailysale->directProfit() }}</td>
               @else 
-              <td>0</td>
-              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -1136,14 +1130,8 @@
           yAxis: 0
         }, {
           type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          dashStyle: 'shortdot',
-          yAxis: 1
+          yAxis: 0,
+          visible: false
         }, {
           type: 'line',
           yAxis: 0,

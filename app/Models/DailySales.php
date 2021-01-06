@@ -103,7 +103,7 @@ class DailySales extends BaseModel {
       if ($format)
         return number_format(($this->mancost/$this->sales)*100, 2);
       else
-        return ($this>-mancost/$this->sales)*100;
+        return ($this->mancost/$this->sales)*100;
     }
     return 0;
   }
@@ -160,11 +160,47 @@ class DailySales extends BaseModel {
   }
 
   public function netOpex() {
-    return $this->grossOpex()-$this->transOpex();
+    return $this->grossOpex()+$this->totdeliver_fee+$this->emp_meal-$this->transOpex();
   }
 
   public function netCos() {
     return $this->cos-$this->transcos;
+  }
+
+  public function nCos() {
+    return $this->purchcost-($this->cos+$this->opex);
+  }
+
+  public function costOfGoods() {
+    return ($this->cos-$this->transcos)+($this->nCos()-$this->transncos);
+  }
+
+  public function totalExpense() {
+    return $this->costOfGoods()+$this->netOpex();
+  }
+
+  public function directProfit() {
+    return $this->sales-$this->totalExpense();
+  }
+
+  public function get_cogpct($format=true) {
+    if ($this->sales>0){
+      if ($format)
+        return number_format(($this->costOfGoods()/$this->sales)*100, 2);
+      else
+        return ($this->costOfGoods()/$this->sales)*100;
+    }
+    return 0;
+  }
+
+  public function get_dprofitpct($format=true) {
+    if ($this->sales>0){
+      if ($format)
+        return number_format(($this->directProfit()/$this->sales)*100, 2);
+      else
+        return ($this->directProfit()/$this->sales)*100;
+    }
+    return 0;
   }
 
 	

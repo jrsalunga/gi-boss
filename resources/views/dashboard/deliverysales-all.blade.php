@@ -210,12 +210,12 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_grabc,0) }}
+              {{ number_format($tot_grabc,2) }}
             </strong>
           </td>
            <td class="text-right">
             <strong>
-              {{ number_format($tot_panda,0) }}
+              {{ number_format($tot_panda,2) }}
             </strong>
           </td>
         </tr>

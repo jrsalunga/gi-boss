@@ -161,6 +161,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $ds = DailySales::where('date', $date->format('Y-m-d'))
                 ->where('sales', '>', 0)
+                ->where('branchid', '<>', 'ALL')
                 ->orderBy('sales', 'DESC')
                 ->take($limit)
                 ->get();
@@ -168,12 +169,12 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     
 
     if(count($ds)=='0') {
-      $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
+      $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->where('branchid', '<>', 'ALL')->orderBy('sales', 'DESC')->take($limit)->get();
       $ds_null = true;
     } else {
       foreach ($ds as $d) {
         if($d->sales == '0.00'){
-          $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->orderBy('sales', 'DESC')->take($limit)->get();
+          $ds = DailySales::where('date', $date->copy()->subDay()->format('Y-m-d'))->where('branchid', '<>', 'ALL')->orderBy('sales', 'DESC')->take($limit)->get();
           $ds_null = true;
           continue;
         }

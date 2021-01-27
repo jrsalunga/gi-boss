@@ -105,20 +105,21 @@
       </thead>
       <tbody>
         <?php
-          $tot_sales = 0;
-          $tot_deliver = 0;
-          $tot_gross = 0;
-          $tot_purchcost = 0;
-          $tot_custcount = 0;
-          $tot_headspend = 0;
-          $tot_empcount = 0;
-          $tot_sales_emp = 0;
-          $tot_mancost = 0;
-          $tot_mancostpct = 0;
-          $tot_tips = 0;
-          $tot_tipspct = 0;
-          $tot_cos = 0;
-          $tot_trans = 0;
+          $tot_csh_fwdd = 0;
+          $tot_deposit = 0;
+          $tot_change_fund = 0;
+          $tot_csh_sale = 0;
+          $tot_cash_total = 0;
+          $tot_csh_disb = 0;
+          $tot_csh_bal = 0;
+          $tot_csh_cnt = 0;
+          $tot_shrt_ovr = 0;
+          $tot_shrt_cumm = 0;
+          $tot_chg_sale = 0;
+          $tot_pos_sales = 0;
+          $ctr = 0;
+
+          // ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm']
         ?>
         @foreach($datas as $key => $data) 
         
@@ -164,6 +165,23 @@
               // $tot_cos        += $data['ds']->cos;
               // $tot_trans      += $data['ds']->trans_cnt;
             // ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm']
+
+
+              $tot_csh_fwdd     += $data['cash_audit']['csh_fwdd'];
+              $tot_deposit      += $data['cash_audit']['deposit'];
+              $tot_change_fund  += $data['cash_audit']['change_fund'];
+              $tot_csh_sale     += $data['cash_audit']['csh_sale'];
+              $tot_cash_total   += $data['cash_audit']['cash_total'];
+              $tot_csh_disb     += $data['cash_audit']['csh_disb'];
+              $tot_csh_bal      += $data['cash_audit']['csh_bal'];
+              $tot_csh_cnt      += $data['cash_audit']['csh_cnt'];
+              $tot_shrt_ovr     += $data['cash_audit']['shrt_ovr'];
+              $tot_shrt_cumm    += $data['cash_audit']['shrt_cumm'];
+              $tot_chg_sale     += $data['cash_audit']['chg_sale'];
+              $tot_pos_sales    += $data['cash_audit']['pos_sales'];
+
+              $ctr++;
+
             ?>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_fwdd']) }}
@@ -226,59 +244,76 @@
         <tr>
           <td>
             <strong>
-              {{ count($datas) }}
+              {{ $ctr }}/{{ count($datas) }}
               {{ count($datas) > 1 ? 'branches':'branch' }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_sales,2) }}
+              {{ number_format($tot_csh_fwdd,2) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              <!-- {{ number_format($tot_cos,2) }} -->
-              @if($tot_sales>0)
-                <small><em class="text-muted">({{ number_format(($tot_deliver/$tot_sales)*100,2) }}%)</em></small>
-              @endif
-              {{ number_format($tot_deliver,2) }}
+              {{ number_format($tot_deposit,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_change_fund,0) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_csh_sale,0) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_purchcost,2) }}
+              {{ number_format($tot_cash_total,0) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_custcount,0) }}
+              {{ number_format($tot_csh_disb,0) }}
             </strong>
           </td>
-          <td class="text-right"></td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_trans,0) }}
+              {{ number_format($tot_csh_bal,2) }}
             </strong>
           </td>
-          <td class="text-right"></td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_empcount,0) }}
+              {{ number_format($tot_csh_cnt,2) }}
             </strong>
           </td>
-          <td class="text-right"></td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_mancost,2) }}
+              {{ number_format($tot_shrt_ovr,2) }}
             </strong>
           </td>
-          <td class="text-right"></td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_tips,2) }}
+              {{ number_format($tot_shrt_cumm,2) }}
             </strong>
           </td>
-          <td class="text-right"></td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_chg_sale,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_pos_sales,2) }}
+            </strong>
+          </td>
 
         </tr>
       </tfoot>

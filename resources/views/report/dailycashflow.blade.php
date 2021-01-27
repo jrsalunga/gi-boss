@@ -124,7 +124,7 @@
         
         <tr>
           <td>
-            <a target="_blank" href="/status/branch?branchid={{ stl($data['branch_id']) }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
+            <a target="_blank" href="/report/cash-audit?branchid={{ stl($data['branch_id']) }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
             <span data-toggle="tooltip" title="{{ $data['branch'] }}" class="help">
             {{ $key }} 
             </span>
@@ -187,7 +187,9 @@
               {{ nf($data['cash_audit']['cash_total']) }}
             </td>
             <td class="text-right">
-              {{ nf($data['cash_audit']['csh_disb']) }}
+              <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank">
+                {{ nf($data['cash_audit']['csh_disb']) }}
+              </a>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_bal']) }}

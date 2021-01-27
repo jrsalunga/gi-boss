@@ -126,11 +126,18 @@ class ReportsController extends Controller
     ];
 
 
-    // \Mail::send('emails.notifier', $email, function ($m) {
-    //       $m->from('giligans.app@gmail.com', 'GI App - Boss');
+    // try {
 
-    //       $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-    //   });
+    \Mail::queue('emails.notifier', $email, function ($m) {
+          $m->from('giligans.app@gmail.com', 'GI App - Boss');
+
+          $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
+      });
+    // } catch (\Exception $e) {
+    //   throw new $e;
+    // }
+
+
 
     return $this->setViewWithDR(view('report.dailycashflow')
                 ->with('datas', $datas)

@@ -45,6 +45,7 @@ Route::get('pnl/branch/month', ['uses'=>'PnlController@getMonth']);
 Route::get('report/comp-purch', ['uses'=>'AnalyticsController@getCompPurch']);
 Route::get('report/compcat-purchase', ['uses'=>'ReportsController@getCompcatPurchase']);
 Route::get('report/cash-audit', ['uses'=>'ReportsController@getCashAudit']);
+Route::get('report/daily-cash-flow', ['uses'=>'ReportsController@getDailyCashFlow']);
 
 Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
 Route::get('report/pnl-summary', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
@@ -146,6 +147,12 @@ Route::get('kitlog/month', ['uses'=>'KitlogController@getMonth']);
 Route::get('kitlog/logs', ['uses'=>'KitlogController@getLogs']);
 Route::get('kitlog/checklist', ['uses'=>'KitlogController@getChecklist']);
 
+
+
+
+
+
+
 /************ manual special reports ****************/
 Route::get('sample-report/meat', ['uses'=>'SampleReportController@getMeat']);
 Route::get('sample-report/prodcat', ['uses'=>'SampleReportController@getProdcat']);
@@ -161,6 +168,20 @@ Route::get('t/purchase', ['uses'=>'PurchaseController@apiGetPurchase']);
 
 
 });/******* end prefix:api ********/
+
+
+
+
+
+
+
+Route::group(['prefix'=>'ap'], function(){
+
+Route::get('/expense', ['uses'=>'Ap\ApController@getIndex']);
+Route::get('/expense/{table?}', ['uses'=>'Ap\ApController@getIndex']);
+
+
+});
 
 
 
@@ -196,6 +217,9 @@ Route::get('masterfiles/employee/branch/{branchid?}', 'Hr\BranchController@branc
 Route::resource('masterfiles/position', 'Hr\PositionController');
 
 });
+
+
+
 
 
 get('mixmatch', function () {

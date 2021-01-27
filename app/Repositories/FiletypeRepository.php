@@ -13,13 +13,6 @@ class FiletypeRepository extends BaseRepository implements CacheableInterface
   protected $order = ['code', 'descriptor'];
   
   public function model() {
-    return 'App\\Models\\FileType';
+    return 'App\\Models\\Filetype';
   }
-
-  
-
-
-  
-	
-
 }

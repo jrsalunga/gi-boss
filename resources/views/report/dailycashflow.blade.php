@@ -125,7 +125,7 @@
         
         <tr>
           <td>
-            <a target="_blank" href="/report/cash-audit?branchid={{ stl($data['branch_id']) }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
+            <a target="_blank" href="/report/cash-audit?branchid={{ stl($data['branch_id']) }}&date={{$dr->date->format('Y-m-d')}}">
             <span data-toggle="tooltip" title="{{ $data['branch'] }}">
             {{ $key }} 
             </span>

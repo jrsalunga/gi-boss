@@ -172,13 +172,13 @@
               {{ nf($data['cash_audit']['deposit']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ nf($data['cash_audit']['csh_fwdd_pct']+1) }} %</em></small>
+              <small class="text-muted"><em>{{ nf($data['cash_audit']['csh_fwdd_pct'])+0 }} %</em></small>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['change_fund']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ nf($data['cash_audit']['change_fund_pct']+1) }} %</em></small>
+              <small class="text-muted"><em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }} %</em></small>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_sale']) }}

@@ -221,7 +221,9 @@
               {{ nf($data['cash_audit']['csh_bal']) }}
             </td>
             <td class="text-right">
+              <strong>
               {{ nf($data['cash_audit']['csh_cnt']) }}
+              </strong>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['shrt_ovr']) }}

@@ -263,7 +263,7 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_change_fund,0) }}
+              {{ number_format($tot_change_fund,2) }}
             </strong>
           </td>
           <td class="text-right">
@@ -271,17 +271,17 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_csh_sale,0) }}
+              {{ number_format($tot_csh_sale,2) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_cash_total,0) }}
+              {{ number_format($tot_cash_total,2) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_csh_disb,0) }}
+              {{ number_format($tot_csh_disb,2) }}
             </strong>
           </td>
           <td class="text-right">

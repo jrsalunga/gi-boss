@@ -178,7 +178,7 @@
               {{ nf($data['cash_audit']['change_fund']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ $data['cash_audit']['change_fund_pct']>0 ? (nf($data['cash_audit']['change_fund_pct'])+0).' %':'' }} %</em></small>
+              <small class="text-muted"><em>{{ $data['cash_audit']['change_fund_pct']>0 ? (nf($data['cash_audit']['change_fund_pct'])+0).' %':'' }}</em></small>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_sale']) }}

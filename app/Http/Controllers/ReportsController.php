@@ -121,16 +121,16 @@ class ReportsController extends Controller
       return $datas;
 
 
-    // $email = [
-    //   'body' => $request->user()->name. .$date->format('Y-m-d')
-    // ];
+    $email = [
+      'body' => $request->user()->name.' '.$date->format('Y-m-d')
+    ];
 
 
-    // \Mail::send('emails.notifier', $email, function ($m) {
-    //       $m->from('giligans.app@gmail.com', 'GI App - Boss');
+    \Mail::send('emails.notifier', $email, function ($m) {
+          $m->from('giligans.app@gmail.com', 'GI App - Boss');
 
-    //       $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-    //   });
+          $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
+      });
 
     return $this->setViewWithDR(view('report.dailycashflow')
                 ->with('datas', $datas)

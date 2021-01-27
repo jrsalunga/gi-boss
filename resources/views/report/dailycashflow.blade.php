@@ -23,6 +23,8 @@
 
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
   
   <ol class="breadcrumb">

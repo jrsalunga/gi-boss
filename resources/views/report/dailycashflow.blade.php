@@ -29,7 +29,7 @@
   
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li>All Branches Sales</li>
+    <li>All Branches Cash Flow</li>
     <li class="active">{{ $dr->date->format('D, M j, Y') }}</li>
   </ol>
 
@@ -87,7 +87,7 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-right">Beg Cash</th>
+          <th class="text-right">Beg. Cash</th>
           <th class="text-right">Cash Deposit</th>
           <th class="text-right">Cash Deposit %</th>
           <th class="text-right">Change Fund</th>
@@ -172,13 +172,13 @@
               {{ nf($data['cash_audit']['deposit']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ nf($data['cash_audit']['csh_fwdd_pct'])+0 }} %</em></small>
+              <small class="text-muted"><em>{{ $data['cash_audit']['csh_fwdd_pct']>0 ? (nf($data['cash_audit']['csh_fwdd_pct'])+0).' %':'' }}</em></small>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['change_fund']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }} %</em></small>
+              <small class="text-muted"><em>{{ $data['cash_audit']['change_fund_pct']>0 ? (nf($data['cash_audit']['change_fund_pct'])+0).' %':'' }} %</em></small>
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_sale']) }}

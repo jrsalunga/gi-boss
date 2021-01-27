@@ -87,20 +87,20 @@
       <thead>
         <tr>
           <th>Branch</th>
-          <th class="text-right">Beg. Cash</th>
+          <th class="text-right">Beginning Cash</th>
           <th class="text-right">Cash Deposit</th>
-          <th class="text-right">Cash Deposit %</th>
+          <th class="text-right"><span data-toggle="tooltip" title="percentage of cash deposit from beginning cash">%</span></th>
           <th class="text-right">Change Fund</th>
-          <th class="text-right">Change Fund %</th>
+          <th class="text-right"><span data-toggle="tooltip" title="percentage of change fund  from beginning cash">%</span></th>
           <th class="text-right">Cash Sale</th>
-          <th class="text-right">Cash Total</th>
+          <th class="text-right"><span data-toggle="tooltip" title="Change Fund + Cash Sale">Cash Total</span></th>
           <th class="text-right">Cash Disbursement</th>
           <th class="text-right">Ending Balance</th>
           <th class="text-right">Actual Cash</th>
           <th class="text-right">(Short)/Over</th>
           <th class="text-right">Cummulative (-/+)</th>
           <th class="text-right">Charge Sale</th>
-          <th class="text-right">POS Sales</th>
+          <th class="text-right help"><span data-toggle="tooltip" title="Cash Sale + Charge Sale">POS Sales</span></th>
         </tr>
       </thead>
       <tbody>
@@ -125,7 +125,7 @@
         <tr>
           <td>
             <a target="_blank" href="/report/cash-audit?branchid={{ stl($data['branch_id']) }}&fr={{$dr->date->format('Y-m-d')}}&to={{$dr->date->format('Y-m-d')}}">
-            <span data-toggle="tooltip" title="{{ $data['branch'] }}" class="help">
+            <span data-toggle="tooltip" title="{{ $data['branch'] }}">
             {{ $key }} 
             </span>
             </a>
@@ -172,13 +172,21 @@
               {{ nf($data['cash_audit']['deposit']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ $data['cash_audit']['csh_fwdd_pct']>0 ? (nf($data['cash_audit']['csh_fwdd_pct'])+0).' %':'' }}</em></small>
+              @if($data['cash_audit']['csh_fwdd_pct']>0)
+              <small class="text-muted help" data-toggle="tooltip" title="percentage of cash deposit from beginning cash">
+                <em>{{  nf($data['cash_audit']['csh_fwdd_pct'])+0 }} %</em>
+              </small>
+              @endif
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['change_fund']) }}
             </td>
             <td class="text-right">
-              <small class="text-muted"><em>{{ $data['cash_audit']['change_fund_pct']>0 ? (nf($data['cash_audit']['change_fund_pct'])+0).' %':'' }}</em></small>
+              @if($data['cash_audit']['change_fund_pct']>0)
+              <small class="text-muted help" data-toggle="tooltip" title="percentage of change fund  from beginning cash">
+                <em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }} %</em>
+              </small>
+              @endif
             </td>
             <td class="text-right">
               {{ nf($data['cash_audit']['csh_sale']) }}

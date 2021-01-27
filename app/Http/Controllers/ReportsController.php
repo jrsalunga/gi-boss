@@ -130,7 +130,7 @@ class ReportsController extends Controller
     //       $m->from('giligans.app@gmail.com', 'GI App - Boss');
 
     //       $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-      });
+      // });
 
     return $this->setViewWithDR(view('report.dailycashflow')
                 ->with('datas', $datas)

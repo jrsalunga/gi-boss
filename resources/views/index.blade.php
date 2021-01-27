@@ -80,7 +80,8 @@
                 <li><a href="/kitlog/month">Kitchen Log Month Summary </a></li>
                 <li><a href="/report/cash-audit">Daily Cash Audit </a></li>
                 <li><a href="/delivery/all">All Branches Delivery Sales </a></li>
-                <li><a href="/saletype/branch">Sales Type (By Branch) <small><span class="label label-success">new</span></small></a></li>
+                <li><a href="/saletype/branch">Sales Type (By Branch) </a></li>
+                <li><a href="/report/daily-cash-flow">All Branches Cash Flow <small><span class="label label-success">new</span></small></a></li>
               </ul>
             </div>
           </div> 

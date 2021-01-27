@@ -35,8 +35,8 @@ class ReportsController extends Controller
     $this->branch = $branch;
     $this->setslp = $setslp;
     $this->depslip = $depslip;
-    $this->bb = $this->getBranches();
     $this->branch->pushCriteria(new ActiveBranch);
+    $this->bb = $this->getBranches();
 	}
 
   private function getBranches() {

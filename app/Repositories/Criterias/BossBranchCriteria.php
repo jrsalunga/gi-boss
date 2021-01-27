@@ -8,7 +8,8 @@ class BossBranchCriteria implements CriteriaInterface {
 
   public function apply($model, RepositoryInterface $repository)
   {
-      $model = $model->where('bossid','=', Auth::user()->id );
+      if (Auth::check())
+        $model = $model->where('bossid','=', Auth::user()->id );
       return $model;
   }
 }

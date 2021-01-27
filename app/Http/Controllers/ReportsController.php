@@ -117,7 +117,8 @@ class ReportsController extends Controller
       
     };
 
-    // return $datas;
+    if ($request->has('raw'))
+      return $datas;
 
     return $this->setViewWithDR(view('report.dailycashflow')
                 ->with('datas', $datas)

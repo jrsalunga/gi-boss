@@ -130,8 +130,6 @@
             {{ $key }} 
             </span>
             </a>
-
-           
           </td>
           @if(is_null($data['cash_audit']))
             <td class="text-right">-</td>
@@ -183,62 +181,62 @@
               $ctr++;
 
             ?>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_fwdd']>0?nf($data['cash_audit']['csh_fwdd'],0):'' }}">
               {{ nf($data['cash_audit']['csh_fwdd']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['deposit']>0?nf($data['cash_audit']['deposit'],0):'' }}">
               @if($data['cash_audit']['deposit']>0)
               <a target="_blank" href="/depslp/log?search=branch.code:{{$key}};date:{{$dr->date->format('Y-m-d')}}&searchJoin=and" data-toggle="tooltip" title="view deposit slip upload log page">
                 {{ nf($data['cash_audit']['deposit']) }}
               </a>
               @endif
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_fwdd_pct']>0?nf($data['cash_audit']['csh_fwdd_pct'],0):'' }}">
               @if($data['cash_audit']['csh_fwdd_pct']>0)
               <small class="text-muted help" data-toggle="tooltip" title="percentage of cash deposit from beginning cash">
                 <em>{{  nf($data['cash_audit']['csh_fwdd_pct'])+0 }} %</em>
               </small>
               @endif
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['change_fund']>0?nf($data['cash_audit']['change_fund'],0):'' }}">
               {{ nf($data['cash_audit']['change_fund']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['change_fund_pct']>0?nf($data['cash_audit']['change_fund_pct'],0):'' }}">
               @if($data['cash_audit']['change_fund_pct']>0)
               <small class="text-muted help" data-toggle="tooltip" title="percentage of change fund  from beginning cash">
                 <em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }} %</em>
               </small>
               @endif
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_sale']>0?nf($data['cash_audit']['csh_sale'],0):'' }}">
               {{ nf($data['cash_audit']['csh_sale']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['cash_total']>0?nf($data['cash_audit']['cash_total'],0):'' }}">
               {{ nf($data['cash_audit']['cash_total']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_disb']>0?nf($data['cash_audit']['csh_disb'],0):'' }}">
               <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank"  data-toggle="tooltip" title="view purchase log page">
                 {{ nf($data['cash_audit']['csh_disb']) }}
               </a>
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_bal']>0?nf($data['cash_audit']['csh_bal'],0):'' }}">
               {{ nf($data['cash_audit']['csh_bal']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_cnt']>0?nf($data['cash_audit']['csh_cnt'],0):'' }}">
               <strong>
               {{ nf($data['cash_audit']['csh_cnt']) }}
               </strong>
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['shrt_ovr']>0?nf($data['cash_audit']['shrt_ovr'],0):'' }}">
               {{ nf($data['cash_audit']['shrt_ovr']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['shrt_cumm']>0?nf($data['cash_audit']['shrt_cumm'],0):'' }}">
               {{ nf($data['cash_audit']['shrt_cumm']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['chg_sale']>0?nf($data['cash_audit']['chg_sale'],0):'' }}">
               {{ nf($data['cash_audit']['chg_sale']) }}
             </td>
-            <td class="text-right">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['pos_sales']>0?nf($data['cash_audit']['pos_sales'],0):'' }}">
               {{ nf($data['cash_audit']['pos_sales']) }}
             </td>
           @endif

@@ -122,8 +122,9 @@ class ReportsController extends Controller
         $datas[$branch->code]['depslps'] = $depslps;
         $datas[$branch->code]['depo_total'] = $depslps->sum('amount');
 
-        if ($datas[$branch->code]['depo_total']!=$cash_audit->deposit)
-          $datas[$branch->code]['depo_error'] = true;
+        if (!is_null($cash_audit))
+          if ($datas[$branch->code]['depo_total']!=$cash_audit->deposit)
+            $datas[$branch->code]['depo_error'] = true;
       } else
         $datas[$branch->code]['depslps'] = NULL;
       

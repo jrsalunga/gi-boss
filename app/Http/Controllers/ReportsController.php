@@ -114,19 +114,19 @@ class ReportsController extends Controller
       }
 
 
-      $depslps = $this->depslip->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
-      $datas[$branch->code]['depo_error'] = false;
-      $datas[$branch->code]['depo_total'] = 0;
-      if (count($depslps)>0) {
+      // $depslps = $this->depslip->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
+      // $datas[$branch->code]['depo_error'] = false;
+      // $datas[$branch->code]['depo_total'] = 0;
+      // if (count($depslps)>0) {
 
-        $datas[$branch->code]['depslps'] = $depslps;
-        $datas[$branch->code]['depo_total'] = $depslps->sum('amount');
+      //   $datas[$branch->code]['depslps'] = $depslps;
+      //   $datas[$branch->code]['depo_total'] = $depslps->sum('amount');
 
-        if (!is_null($cash_audit))
-          if ($datas[$branch->code]['depo_total']!=$cash_audit->deposit)
-            $datas[$branch->code]['depo_error'] = true;
-      } else
-        $datas[$branch->code]['depslps'] = NULL;
+      //   if (!is_null($cash_audit))
+      //     if ($datas[$branch->code]['depo_total']!=$cash_audit->deposit)
+      //       $datas[$branch->code]['depo_error'] = true;
+      // } else
+      //   $datas[$branch->code]['depslps'] = NULL;
       
     };
 

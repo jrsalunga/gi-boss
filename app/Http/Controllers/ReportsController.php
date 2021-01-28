@@ -101,7 +101,7 @@ class ReportsController extends Controller
                         ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm'])
                         ->first();
 
-      if(is_null($cash_audit))
+      if (is_null($cash_audit))
         $datas[$branch->code]['cash_audit'] = NULL;
       else {
         $cash_audit->csh_fwdd_pct = ($cash_audit->deposit/$cash_audit->csh_fwdd)*100;
@@ -114,22 +114,35 @@ class ReportsController extends Controller
       }
 
 
+      $depslps = $this->depslip->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
+      $datas[$branch->code]['depo_error'] = false;
+      $datas[$branch->code]['depo_total'] = 0;
+      if (count($depslps)>0) {
+
+        $datas[$branch->code]['depslps'] = $depslps;
+        $datas[$branch->code]['depo_total'] = $depslps->sum('amount');
+
+        if ($datas[$branch->code]['depo_total']!=$cash_audit->deposit)
+          $datas[$branch->code]['depo_error'] = true;
+      } else
+        $datas[$branch->code]['depslps'] = NULL;
       
     };
+
 
     if ($request->has('raw'))
       return $datas;
 
 
-    $email = [
-      'body' => $request->user()->name.' '.$date->format('Y-m-d')
-    ];
+    // $email = [
+    //   'body' => $request->user()->name.' '.$date->format('Y-m-d')
+    // ];
 
-    \Mail::queue('emails.notifier', $email, function ($m) {
-          $m->from('giligans.app@gmail.com', 'GI App - Boss');
+    // \Mail::queue('emails.notifier', $email, function ($m) {
+    //       $m->from('giligans.app@gmail.com', 'GI App - Boss');
 
-          $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-      });
+    //       $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
+    //   });
 
 
     return $this->setViewWithDR(view('report.dailycashflow')

@@ -187,7 +187,11 @@
               {{ nf($data['cash_audit']['csh_fwdd']) }}
             </td>
             <td class="text-right">
-              {{ nf($data['cash_audit']['deposit']) }}
+              @if($data['cash_audit']['deposit']>0)
+              <a target="_blank" href="/depslp/log?search=branch.code:{{$key}};date:{{$dr->date->format('Y-m-d')}}&searchJoin=and" data-toggle="tooltip" title="view deposit slip upload log page">
+                {{ nf($data['cash_audit']['deposit']) }}
+              </a>
+              @endif
             </td>
             <td class="text-right">
               @if($data['cash_audit']['csh_fwdd_pct']>0)
@@ -213,7 +217,7 @@
               {{ nf($data['cash_audit']['cash_total']) }}
             </td>
             <td class="text-right">
-              <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank">
+              <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank"  data-toggle="tooltip" title="view purchase log page">
                 {{ nf($data['cash_audit']['csh_disb']) }}
               </a>
             </td>

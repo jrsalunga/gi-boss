@@ -38,7 +38,7 @@ class Depslip extends BaseModel {
   }
 
 	public function branch() {
-    return $this->belongsTo('App\Models\Branch');
+    return $this->belongsTo('App\Models\Boss\Branch');
   }
 
   public function fileUpload() {

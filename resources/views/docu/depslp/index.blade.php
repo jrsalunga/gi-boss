@@ -39,6 +39,7 @@
 
     @include('_partials.alerts')
 
+    @if(count($depslips)>0)
     <div class="table-responsive">
     <table class="table table-striped table-hover" style="margin-top: 0;">
       <thead>
@@ -57,6 +58,7 @@
         </tr>
       </thead>
       <tbody>
+        
         @foreach($depslips as $depslip)
         <tr>
           <td title="{{ $depslip->branch->descriptor }}">
@@ -144,7 +146,6 @@
             {{ $depslip->fileUpload->terminal }}
             </a>
           </td>
-          
         </tr>
         @endforeach
       </tbody>
@@ -152,6 +153,10 @@
     </div>
     
     {!! $depslips->render() !!}
+
+    @else
+      No Upload Record Found.
+    @endif
      
   </div>
 </div><!-- end container-fluid -->

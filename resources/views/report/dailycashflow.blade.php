@@ -54,12 +54,12 @@
           </button>
         </div> -->
         <div class="btn-group pull-right clearfix" role="group">
-          <a href="/report/daily-cash-flow?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}">
+          <a href="/report/daily-cash-flow?date={{ $dr->date->copy()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subDay()->format('Y-m-d') }}" data-toggle="loader">
             <span class="glyphicon glyphicon-chevron-left"></span>
           </a>
           <input type="text" class="btn btn-default" id="dp-date" value="{{ $dr->date->format('m/d/Y') }}" style="max-width: 110px;" readonly>
           <label class="btn btn-default" for="dp-date"><span class="glyphicon glyphicon-calendar"></span></label>
-          <a href="/report/daily-cash-flow?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}">
+          <a href="/report/daily-cash-flow?date={{ $dr->date->copy()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addDay()->format('Y-m-d') }}" data-toggle="loader">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
         </div>

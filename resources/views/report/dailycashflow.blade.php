@@ -194,7 +194,7 @@
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_fwdd_pct']>0?nf($data['cash_audit']['csh_fwdd_pct'],0):'' }}">
               @if($data['cash_audit']['csh_fwdd_pct']>0)
               <small class="text-muted help" data-toggle="tooltip" title="percentage of cash deposit from beginning cash">
-                <em>{{  nf($data['cash_audit']['csh_fwdd_pct'])+0 }} %</em>
+                <em>{{  nf($data['cash_audit']['csh_fwdd_pct'])+0 }}%</em>
               </small>
               @endif
             </td>
@@ -204,7 +204,7 @@
             <td class="text-right" data-sort="{{ $data['cash_audit']['change_fund_pct']>0?nf($data['cash_audit']['change_fund_pct'],0):'' }}">
               @if($data['cash_audit']['change_fund_pct']>0)
               <small class="text-muted help" data-toggle="tooltip" title="percentage of change fund  from beginning cash">
-                <em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }} %</em>
+                <em>{{ nf($data['cash_audit']['change_fund_pct'])+0 }}%</em>
               </small>
               @endif
             </td>
@@ -265,7 +265,7 @@
           <td class="text-right">
             <strong>
               <small>
-                {{ nf(($tot_deposit/$tot_csh_fwdd)*100) }} %
+                {{ nf(($tot_deposit/$tot_csh_fwdd)*100) }}%
               </small>
             </strong>
           </td>
@@ -277,7 +277,7 @@
           <td class="text-right">
             <strong>
               <small>
-                {{ nf(($tot_change_fund/$tot_csh_fwdd)*100) }} %
+                {{ nf(($tot_change_fund/$tot_csh_fwdd)*100) }}%
               </small>
             </strong>
           </td>

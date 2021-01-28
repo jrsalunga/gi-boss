@@ -367,6 +367,7 @@
       showTodayButton: true,
       ignoreReadonly: true
     }).on('dp.change', function(e){
+      loader();
       document.location.href = '/report/daily-cash-flow?date='+e.date.year()+'-'+e.date.format("MM")+'-'+e.date.format('DD');
     });
 

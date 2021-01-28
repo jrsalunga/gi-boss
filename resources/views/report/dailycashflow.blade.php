@@ -265,7 +265,11 @@
             </strong>
           </td>
           <td class="text-right">
-            {{ nf(($tot_deposit/$tot_csh_fwdd)*100) }}
+            <strong>
+              <small>
+                {{ nf(($tot_deposit/$tot_csh_fwdd)*100) }} %
+              </small>
+            </strong>
           </td>
           <td class="text-right">
             <strong>
@@ -273,7 +277,11 @@
             </strong>
           </td>
           <td class="text-right">
-            {{ nf(($tot_change_fund/$tot_csh_fwdd)*100) }}
+            <strong>
+              <small>
+                {{ nf(($tot_change_fund/$tot_csh_fwdd)*100) }} %
+              </small>
+            </strong>
           </td>
           </td>
           <td class="text-right">

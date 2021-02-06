@@ -265,7 +265,9 @@
           <td class="text-right">
             <strong>
               <small>
+                @if(tot_csh_fwdd>0)
                 {{ nf(($tot_deposit/$tot_csh_fwdd)*100) }}%
+                @endif
               </small>
             </strong>
           </td>
@@ -277,7 +279,9 @@
           <td class="text-right">
             <strong>
               <small>
+                @if(tot_csh_fwdd>0)
                 {{ nf(($tot_change_fund/$tot_csh_fwdd)*100) }}%
+                @endif
               </small>
             </strong>
           </td>

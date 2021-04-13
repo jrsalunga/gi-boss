@@ -183,8 +183,8 @@
                   <th style="width:5%;">Code</th>
                   <th>Category</th>
                   <th class="text-right" style="width:17%;">Purchased</th>
-                  <th class="text-right" style="width:17%;">Transfered</th>
-                  <th class="text-right" style="width:17%;"><span title="Purchased - Transfered = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
+                  <th class="text-right" style="width:17%;">Transferred</th>
+                  <th class="text-right" style="width:17%;"><span title="Purchased - Transferred = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
                   <th class="text-right" style="width:17%;">% on Food Sales</th>
                 </tr>
               </thead>
@@ -336,8 +336,8 @@
               <th>Code</th>
               <th>Expense</th>
               <th class="text-right">Cost</th>
-              <th class="text-right">Transfered</th>
-              <th class="text-right" title="Cost - Transfered = Net Cost">Cost less Transfers</th>
+              <th class="text-right">Transferred</th>
+              <th class="text-right" title="Cost - Transferred = Net Cost">Cost less Transfers</th>
             </tr>
           </thead>
           <tbody>
@@ -585,8 +585,8 @@
               <th>Code</th>
               <th>Expense</th>
               <th class="text-right">Cost</th>
-              <th class="text-right">Transfered</th>
-              <th class="text-right" title="Cost - Transfered = Net Cost">Cost less Transfers</th>
+              <th class="text-right">Transferred</th>
+              <th class="text-right" title="Cost - Transferred = Net Cost">Cost less Transfers</th>
             </tr>
           </thead>
           <tbody>

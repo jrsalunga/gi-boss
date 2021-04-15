@@ -495,7 +495,7 @@
                                     style="cursor: help;"  data-toggle="tooltip"><small>{{ $invoice->terms }}</small></span>
                                     -
                                     <small class="text-muted" title="{{ $invoice->paytype }}">
-                                      {{ $invoice->paytype - Config::get('giligans.paytype.'.$invoice->paytype) }} 
+                                      {{ Config::get('giligans.paytype.'.$invoice->paytype) }} 
                                     </small>
                                   </td>
                                   <td class="text-right">{{ number_format($invoice->tcost, 2) }}</td>

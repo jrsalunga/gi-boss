@@ -395,12 +395,14 @@
                                     <span 
                                       @if(strtolower($supplier->terms)=='k')
                                         class="label label-info" title="Check"
-                                      @else(strtolower($supplier->terms)=='c')
+                                      @elseif(strtolower($supplier->terms)=='c')
                                         class="label label-success" title="Cash"
                                       @elseif(strtolower($purchase->terms)=='u')
                                         class="label label-danger" title="Utang"
                                       @elseif(strtolower($purchase->terms)=='h')
                                         class="label label-warning" title="Head Office"
+                                      @else
+                                        class="label label-default" title=""
                                       @endif
                                       
                                       style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small>
@@ -480,12 +482,14 @@
                                      <span 
                                     @if(strtolower($invoice->terms)=='k')
                                       class="label label-info" title="Check"
-                                    @else(strtolower($invoice->terms)=='c')
+                                    @elseif(strtolower($invoice->terms)=='c')
                                       class="label label-success" title="Cash"
                                     @elseif(strtolower($purchase->terms)=='u')
                                       class="label label-danger" title="Utang"
                                     @elseif(strtolower($purchase->terms)=='h')
                                       class="label label-warning" title="Head Office"
+                                    @else
+                                      class="label label-default" title=""
                                     @endif
                                     
                                     style="cursor: help;"  data-toggle="tooltip"><small>{{ $invoice->terms }}</small></span>

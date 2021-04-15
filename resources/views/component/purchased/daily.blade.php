@@ -397,9 +397,9 @@
                                         class="label label-info" title="Check"
                                       @elseif(strtolower($supplier->terms)=='c')
                                         class="label label-success" title="Cash"
-                                      @elseif(strtolower($purchase->terms)=='u')
+                                      @elseif(strtolower($supplier->terms)=='u')
                                         class="label label-danger" title="Utang"
-                                      @elseif(strtolower($purchase->terms)=='h')
+                                      @elseif(strtolower($supplier->terms)=='h')
                                         class="label label-warning" title="Head Office"
                                       @else
                                         class="label label-default" title=""
@@ -484,9 +484,9 @@
                                       class="label label-info" title="Check"
                                     @elseif(strtolower($invoice->terms)=='c')
                                       class="label label-success" title="Cash"
-                                    @elseif(strtolower($purchase->terms)=='u')
+                                    @elseif(strtolower($invoice->terms)=='u')
                                       class="label label-danger" title="Utang"
-                                    @elseif(strtolower($purchase->terms)=='h')
+                                    @elseif(strtolower($invoice->terms)=='h')
                                       class="label label-warning" title="Head Office"
                                     @else
                                       class="label label-default" title=""

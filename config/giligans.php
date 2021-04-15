@@ -142,10 +142,10 @@ return [
 	],
 
   'paytype' => [
-    '0' => 'Paid: Cheque',
+    '3' => 'Unpaid',
     '1' => 'Paid: Cash',
     '2' => 'Unpaid: Utang',
-    '3' => 'Unpaid',
+    '0' => 'Paid: Cheque',
     '4' => 'Paid: Head Office',
     '5' => 'Paid: GCash\PayMaya',
     '6' => 'Paid: Online',

@@ -145,9 +145,11 @@ return [
     '0' => 'Unpaid',
     '1' => 'Paid: Cash',
     '2' => 'Paid: Cheque',
-    '3' => 'Paid: GCash\PayMaya',
-    '4' => 'Paid: Online',
-    '5' => 'Paid: Others',
+    '3' => 'Unpaid: Utang',
+    '4' => 'Paid: Head Office',
+    '5' => 'Paid: GCash\PayMaya',
+    '6' => 'Paid: Online',
+    '7' => 'Paid: Others',
   ],
 
   'expensecode' => [

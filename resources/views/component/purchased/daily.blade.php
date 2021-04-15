@@ -286,6 +286,10 @@
                         class="label label-success" title="Cash"
                       @elseif(strtolower($purchase->terms)=='k')
                         class="label label-info" title="Check"
+                      @elseif(strtolower($purchase->terms)=='u')
+                        class="label label-danger" title="Utang"
+                      @elseif(strtolower($purchase->terms)=='h')
+                        class="label label-warning" title="Head Office"
                       @else
                         class="label label-default" title=""
                       @endif
@@ -393,6 +397,10 @@
                                         class="label label-info" title="Check"
                                       @else(strtolower($supplier->terms)=='c')
                                         class="label label-success" title="Cash"
+                                      @elseif(strtolower($purchase->terms)=='u')
+                                        class="label label-danger" title="Utang"
+                                      @elseif(strtolower($purchase->terms)=='h')
+                                        class="label label-warning" title="Head Office"
                                       @endif
                                       
                                       style="cursor: help;"  data-toggle="tooltip"><small>{{ $supplier->terms }}</small>
@@ -474,6 +482,10 @@
                                       class="label label-info" title="Check"
                                     @else(strtolower($invoice->terms)=='c')
                                       class="label label-success" title="Cash"
+                                    @elseif(strtolower($purchase->terms)=='u')
+                                      class="label label-danger" title="Utang"
+                                    @elseif(strtolower($purchase->terms)=='h')
+                                      class="label label-warning" title="Head Office"
                                     @endif
                                     
                                     style="cursor: help;"  data-toggle="tooltip"><small>{{ $invoice->terms }}</small></span>
@@ -547,6 +559,10 @@
                                     Cash
                                   @elseif($payment->terms=="K")
                                     Check
+                                  @elseif($payment->terms=="U")
+                                    Utang
+                                  @elseif($payment->terms=="H")
+                                    Head Office
                                   @else
                                     -
                                   @endif
@@ -577,6 +593,10 @@
                                     Cash
                                   @elseif($payment->terms=="K")
                                     Check
+                                  @elseif($payment->terms=="U")
+                                    Utang
+                                  @elseif($payment->terms=="H")
+                                    Head Office
                                   @else
                                     -
                                   @endif

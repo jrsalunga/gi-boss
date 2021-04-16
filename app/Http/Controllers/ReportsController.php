@@ -98,12 +98,13 @@ class ReportsController extends Controller
       $datas[$branch->code]['branch_id'] = $branch->id;
 
       $cash_audit = $this->cashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')], 
-                        ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm'])
+                        ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm', 'tot_out'])
                         ->first();
 
       if (is_null($cash_audit))
         $datas[$branch->code]['cash_audit'] = NULL;
       else {
+        
         if($cash_audit->csh_fwdd>0) {
           $cash_audit->csh_fwdd_pct = ($cash_audit->deposit/$cash_audit->csh_fwdd)*100;
           $cash_audit->change_fund_pct = ($cash_audit->change_fund/$cash_audit->csh_fwdd)*100;
@@ -111,6 +112,7 @@ class ReportsController extends Controller
           $cash_audit->csh_fwdd_pct = 0;
           $cash_audit->change_fund_pct = 0;
         }
+        
         $cash_audit->change_fund = $cash_audit->csh_fwdd-$cash_audit->deposit;
         $cash_audit->cash_total = $cash_audit->change_fund + $cash_audit->csh_sale;
         $cash_audit->pos_sales = $cash_audit->csh_sale + $cash_audit->chg_sale;
@@ -149,6 +151,9 @@ class ReportsController extends Controller
 
           $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
       });
+
+    if($request->has('raw'))
+      return $datas;
 
 
     return $this->setViewWithDR(view('report.dailycashflow')

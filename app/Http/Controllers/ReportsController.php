@@ -97,8 +97,8 @@ class ReportsController extends Controller
       $datas[$branch->code]['branch'] = $branch->descriptor;
       $datas[$branch->code]['branch_id'] = $branch->id;
 
-      $cash_audit = $this->cashAudit->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')], 
-                        ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm', 'tot_out'])
+      $cash_audit = $this->cashAudit->skipCache->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')], 
+                        ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm', 'csh_out'])
                         ->first();
 
       if (is_null($cash_audit))

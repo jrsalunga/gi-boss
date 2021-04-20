@@ -118,7 +118,7 @@
           $tot_shrt_cumm = 0;
           $tot_chg_sale = 0;
           $tot_pos_sales = 0;
-          $tot_tot_out = 0;
+          $tot_csh_out = 0;
           $ctr = 0;
 
           // ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm']
@@ -180,7 +180,7 @@
               $tot_shrt_cumm    += $data['cash_audit']['shrt_cumm'];
               $tot_chg_sale     += $data['cash_audit']['chg_sale'];
               $tot_pos_sales    += $data['cash_audit']['pos_sales'];
-              $tot_tot_out      += $data['cash_audit']['tot_out'];
+              $tot_csh_out      += $data['cash_audit']['csh_out'];
 
               $ctr++;
 
@@ -223,8 +223,8 @@
                 {{ nf($data['cash_audit']['csh_disb']) }}
               </a>
             </td>
-            <td class="text-right" data-sort="{{ $data['cash_audit']['tot_out']>0?nf($data['cash_audit']['tot_out'],0):'' }}">
-              {{ nf($data['cash_audit']['tot_out']) }}
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_out']>0?nf($data['cash_audit']['csh_out'],0):'' }}">
+              {{ nf($data['cash_audit']['csh_out']) }}
             </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_bal']>0?nf($data['cash_audit']['csh_bal'],0):'' }}">
               {{ nf($data['cash_audit']['csh_bal']) }}
@@ -310,7 +310,7 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_tot_out,2) }}
+              {{ number_format($tot_csh_out,2) }}
             </strong>
           </td>
           <td class="text-right">

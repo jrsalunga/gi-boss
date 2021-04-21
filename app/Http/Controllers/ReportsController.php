@@ -85,7 +85,7 @@ class ReportsController extends Controller
 
   public function getDailyCashFlow(Request $request) {
 
-    if ($input->has('date'))
+    if ($request->has('date'))
       $date = carbonCheckorNow($request->input('date'));
     else 
       $date = c()->format('H')>20 ? c() : c()->subDay();

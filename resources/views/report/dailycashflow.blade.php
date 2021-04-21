@@ -219,7 +219,7 @@
               {{ nf($data['cash_audit']['cash_total']) }}
             </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_disb']>0?nf($data['cash_audit']['csh_disb'],0):'' }}">
-              <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank"  data-toggle="tooltip" title="view purchase log page">
+              <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank"  data-toggle="tooltip" title="view purchase log page"> 
                 {{ nf($data['cash_audit']['csh_disb']) }}
               </a>
             </td>

@@ -85,7 +85,11 @@ class ReportsController extends Controller
 
   public function getDailyCashFlow(Request $request) {
 
-    $date = carbonCheckorNow($request->input('date'));
+    if ($input->has('date'))
+      $date = carbonCheckorNow($request->input('date'));
+    else 
+      $date = c()->format('H')>20 ? c() : c()->subDay();
+
     $this->dr->date = $date;
     $this->dr->fr = $date;
     $this->dr->to = $date;
@@ -146,11 +150,11 @@ class ReportsController extends Controller
       'body' => $request->user()->name.' '.$date->format('Y-m-d')
     ];
 
-    // \Mail::queue('emails.notifier', $email, function ($m) {
-    //       $m->from('giligans.app@gmail.com', 'GI App - Boss');
+    \Mail::queue('emails.notifier', $email, function ($m) {
+          $m->from('giligans.app@gmail.com', 'GI App - Boss');
 
-    //       $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-    //   });
+          $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
+      });
 
     if($request->has('raw'))
       return $datas;

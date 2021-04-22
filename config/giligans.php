@@ -150,7 +150,7 @@ return [
     '5' => 'Paid: GCash\PayMaya',
     '6' => 'Paid: Online',
     '7' => 'Paid: Others',
-    '8' => 'Paid: Cash:Branch',
+    '8' => 'Paid: Utang w/ Cash',
   ],
 
   'expensecode' => [

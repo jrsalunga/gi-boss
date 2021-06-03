@@ -177,7 +177,7 @@
                 -
               @endif
             </td>
-             <td class="text-right" data-sort="{{ $ds['ds']->panda>0?number_format($ds['ds']->zap,0):'' }}">
+             <td class="text-right" data-sort="{{ $ds['ds']->zap>0?number_format($ds['ds']->zap,0):'' }}">
               @if($ds['ds']->zap>0)
                 {{ number_format($ds['ds']->zap,2) }}
               @else 

@@ -149,9 +149,9 @@
                 -
               @endif
             </td>
-            <td class="text-right" data-sort="{{ ($ds['ds']->sales>0&&$ds['ds']->totdeliver>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}">
+            <td class="text-right" data-sort="{{ ($ds['ds']->sales>0&&$ds['ds']->totdeliver>0?number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2):'') }}" style="width: 5%;">
               @if($ds['ds']->sales>0 && $ds['ds']->totdeliver>0)
-                <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }} %</em></small>
+                <small><em class="text-muted">{{ number_format(($ds['ds']->totdeliver/$ds['ds']->sales)*100,2) }}%</em></small>
               @else 
                 -
               @endif

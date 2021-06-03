@@ -1,6 +1,10 @@
 @extends('master')
 
-@section('title', '- Branch Status (Daily)')
+<?php
+  $code = (is_null($branch)) ? '':' ('.$branch->code.')';
+  $title = '- Daily Branch Status '.$code;
+?>
+@section('title', $title)
 
 @section('body-class', 'branch-status')
 
@@ -364,7 +368,7 @@
                 $tot_tipspct    += $d->dailysale['tipspct'];
                 $tot_cos        += $d->dailysale['cos'];
                 $tot_trans      += $d->dailysale['trans_cnt'];
-                $tot_receipt    += $d->dailysale->get_receipt_ave();
+                $tot_receipt    += $d->dailysale->get_receipt_ave(false);
               ?>
               @else 
               <td class="text-right" data-sort="-">-</td>

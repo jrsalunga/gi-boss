@@ -109,7 +109,7 @@ class ReportsController extends Controller
         $datas[$branch->code]['cash_audit'] = NULL;
       else {
         
-        if($cash_audit->csh_fwdd>0) {
+        if ($cash_audit->csh_fwdd>0) {
           $cash_audit->csh_fwdd_pct = ($cash_audit->deposit/$cash_audit->csh_fwdd)*100;
           $cash_audit->change_fund_pct = ($cash_audit->change_fund/$cash_audit->csh_fwdd)*100;
         } else {

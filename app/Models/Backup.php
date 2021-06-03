@@ -48,7 +48,9 @@ class Backup extends BaseModel {
 			return null;
   }
  
-
+  public function isLocked() {
+    return $this->processed >= 10 ? true : false;
+  }
  
 	
   

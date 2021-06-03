@@ -184,6 +184,7 @@
         $totqty = 0;
         $totemp=0;
         $totdf=0;
+        $totutang=0;
         $totpospurch=0;
       ?>
     	@if(is_null($purchases))
@@ -220,26 +221,38 @@
         -->
           <li role="presentation" style="float: right;">
             <div>
+            Actual Expense: 
+            <h4 id="tot-actual" class="text-right" style="margin:0 0 10px 0;">0.00</h4>
+            </div>
+          </li>
+          <li role="presentation" style="float: right;">
+            <div>
+            Utang: 
+            <h4 id="tot-utang" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            </div>
+          </li>
+          <li role="presentation" style="float: right;">
+            <div>
             Total : 
-            <h3 id="tot-purch-cost" class="text-right" style="margin:0 0 10px 0;">0.00</h3>
+            <h4 id="tot-purch-cost" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             Emp Meal: 
-            <h3 id="tot-emp" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
+            <h4 id="tot-emp" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             Delivery Fee: 
-            <h3 id="tot-df" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
+            <h4 id="tot-df" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
           <li role="presentation" style="float: right;">
             <div>
             Purchased Cost: 
-            <h3 id="tot-pos-purch" class="text-right" style="margin:0 100px 10px 0;">0.00</h3>
+            <h4 id="tot-pos-purch" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
         </ul>
@@ -321,6 +334,7 @@
                   <?php
                     $totpurchcost += $purchase->tcost;
                     $totqty += $purchase->qty;
+                    $totutang += $purchase->utang;
 
                     if ($purchase->componentid=='11E8BB3635ABF63DAEF21C1B0D85A7E0')
                       $totemp += $purchase->tcost;
@@ -348,8 +362,17 @@
                         <strong>{{ number_format($totpurchcost/$totqty, 2) }}</strong>
                       @endif
                     </td>
-                    <td class="text-right" title="Total Purchased Cost">
+                    <td class="text-right">
+                      <div title="Total Purchased Cost">
                       <strong>{{ number_format($totpurchcost, 2) }}</strong>
+                      </div>
+                      <div title="Total Utang">
+                      <strong style="color: red;">({{ number_format($totutang, 2) }})</strong>
+                      </div>
+                      <div style="border-top: 1px black solid;">
+                        <strong>{{ number_format($totpurchcost-$totutang, 2) }}</strong>
+                      </div>
+
                     </td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -361,6 +384,7 @@
               </table>
             </div> <!-- end: .table-responsive -->
           </div>
+          <!-------------------------------------- start: STAT ----------------------------->
           <div role="tabpanel" class="tab-pane" id="stats">
             <!-- Supplier Panel -->
             <div class="panel panel-default">
@@ -1009,7 +1033,9 @@
   $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
   $('#tot-emp').text('{{ number_format($totemp, 2) }}');
   $('#tot-df').text('{{ number_format($totdf, 2) }}');
+  $('#tot-utang').text('({{ number_format($totutang, 2) }})');
   $('#tot-pos-purch').text('{{ number_format($totpurchcost-$totemp-$totdf, 2) }}');
+  $('#tot-actual').text('{{ number_format($totpurchcost-$totutang, 2) }}');
     
 
     $('.show.toggle').on('click', function(){

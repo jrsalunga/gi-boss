@@ -87,10 +87,11 @@
           <th>Branch</th>
           <th class="text-right">Sales</th>
           <th class="text-right">Delivery Sales</th>
-          <th class="text-right">Delivery Sales Percentage</th>
+          <th class="text-right">%</th>
           <th class="text-right">Grab Food</th>
           <th class="text-right">Grab Conceirge</th>
           <th class="text-right">Food Panda</th>
+          <th class="text-right">Zap</th>
         </tr>
       </thead>
       <tbody>
@@ -100,6 +101,7 @@
           $tot_grab = 0;
           $tot_grabc = 0;
           $tot_panda = 0;
+          $tot_zap = 0;
         ?>
         @foreach($dailysales as $key => $ds) 
         
@@ -121,6 +123,7 @@
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
           @else
             <?php 
               $tot_sales  += $ds['ds']->sales;
@@ -128,6 +131,7 @@
               $tot_grab   += $ds['ds']->grab;
               $tot_grabc  += $ds['ds']->grabc;
               $tot_panda  += $ds['ds']->panda;
+              $tot_zap    += $ds['ds']->zap;
             ?>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if($ds['ds']->sales>0)
@@ -173,6 +177,13 @@
                 -
               @endif
             </td>
+             <td class="text-right" data-sort="{{ $ds['ds']->panda>0?number_format($ds['ds']->zap,0):'' }}">
+              @if($ds['ds']->zap>0)
+                {{ number_format($ds['ds']->zap,2) }}
+              @else 
+                -
+              @endif
+            </td>
           @endif
           
         </tr>
@@ -213,9 +224,14 @@
               {{ number_format($tot_grabc,2) }}
             </strong>
           </td>
-           <td class="text-right">
+          <td class="text-right">
             <strong>
               {{ number_format($tot_panda,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_zap,2) }}
             </strong>
           </td>
         </tr>

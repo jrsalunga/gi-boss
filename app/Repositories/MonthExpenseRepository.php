@@ -21,7 +21,7 @@ class MonthExpenseRepository extends BaseRepository implements CacheableInterfac
   	return $this->skipCache()->scopeQuery(function($query) use ($ids, $fr, $to) {
 					      return $query->whereIn('expense_id', $ids)
 					      						->whereBetween('date', [$fr->format('Y-m-d'), $to->format('Y-m-d')])
-  													->select(DB::raw('sum(tcost) as tcost, expense_id'))
+  													->select(DB::raw('sum(tcost) as tcost, sum(sales_pct) as sales_pct, expense_id'))
   													->groupBy('expense_id');
 					    })
 							->findWhere(['branch_id'=>$branchid]);

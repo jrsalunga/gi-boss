@@ -209,7 +209,9 @@ class ExpenseController extends Controller
 		
 		$ids = $exps->pluck('id')->toArray();
 
-		$mexps = $this->mExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
+		$mss = $this->ms->skipCache()->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->copy()->endOfMonth()->format('Y-m-d')], ['sales']);
+    $ms = $mss->first();
+    $mexps = $this->mExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
 		$prodcatid = app()->environment()=='local' ? 'E838DA36BC3711E6856EC3CDBB4216A7':'E838DA36BC3711E6856EC3CDBB4216A7';
 		$fsales = $this->mProdcat->skipCache()->sumSalesByProdcatDr($branch->id, $this->dr->fr, $this->dr->to, $prodcatid);
 	  $fs = $fsales->first();
@@ -242,7 +244,10 @@ class ExpenseController extends Controller
 	  	$sales = is_null($fs->sales) ? 0 : $fs->sales;
 	  	$datas[$x]['food_sales'] = $sales;
 	  	$datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];			
-	  	$datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;			
+	  	$datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;	
+      $datas[$x]['sales_pct'] = !is_null($ms) && $ms->sales > 0 ? ($datas[$x]['net'] / $ms->sales) * 100 : 0;  
+      // $datas[$x]['sales_pct'] = 0;  
+
 		}
 		return $datas;
 	}

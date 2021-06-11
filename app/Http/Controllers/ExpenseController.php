@@ -147,19 +147,9 @@ class ExpenseController extends Controller
       $chargetypes = $this->mChargeType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
       $cardtypes = $this->mCardType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
 							                 
-//0064 0011 3133
+
 		//return $fc_hist;
     }
-
-    // $email = [
-    //   'body' => $request->user()->name.' '.$date->format('Y-m-d')
-    // ];
-
-    // \Mail::send('emails.notifier', $email, function ($m) {
-    //   $m->from('giligans.app@gmail.com', 'GI App - Boss');
-    //   $m->to('freakyash_02@yahoo.com')->subject('PNL '.$branch->code.' '.$this->dr->to->format('Y-m-d'));
-    // });
-
     return $this->setViewWithDR(view('report.pnl-summary')
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)

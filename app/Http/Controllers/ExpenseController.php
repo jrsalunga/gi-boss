@@ -155,7 +155,7 @@ class ExpenseController extends Controller
       'body' => $request->user()->name.' '.$date->format('Y-m-d')
     ];
 
-    \Mail::mail('emails.notifier', $email, function ($m) {
+    \Mail::send('emails.notifier', $email, function ($m) {
       $m->from('giligans.app@gmail.com', 'GI App - Boss');
       $m->to('freakyash_02@yahoo.com')->subject('PNL '.$branch->code.' '.$this->dr->to->format('Y-m-d'));
     });

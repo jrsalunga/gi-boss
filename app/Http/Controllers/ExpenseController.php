@@ -150,6 +150,12 @@ class ExpenseController extends Controller
 
 		//return $fc_hist;
     }
+
+    \Mail::queue('emails.notifier', $email, function ($m) {
+      $m->from('giligans.app@gmail.com', 'GI App - Boss');
+      $m->to('freakyash_02@yahoo.com')->subject('PNL '.$branch->code.' '.$this->dr->to->format('Y-m-d'));
+    });
+
     return $this->setViewWithDR(view('report.pnl-summary')
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)

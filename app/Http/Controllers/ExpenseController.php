@@ -158,7 +158,7 @@ class ExpenseController extends Controller
 
     \Mail::queue('emails.notifier', $email, function ($m) {
       $m->from('giligans.app@gmail.com', 'GI App - Boss');
-      $m->to('freakyash_02@yahoo.com')->subject('PNL');
+      $m->to('freakyash_02@yahoo.com')->subject('PNL '.$branch->code.' '.$date->endOfMonth()->format('Y-m-d'));
     });
 
 

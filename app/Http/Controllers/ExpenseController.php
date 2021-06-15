@@ -152,12 +152,12 @@ class ExpenseController extends Controller
 
 
       $email = [
-        'body' => $request->user()->name.' '.$date->format('Y-m-d')
+        'body' => $request->user()->name.' '.$branch->code.' '.$date->endOfMonth()->format('Y-m-d')
       ];
 
-      \Mail::send('emails.notifier', $email, function ($m) {
+      \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('freakyash_02@yahoo.com')->subject('PNL '.$branch->code.' '.$date->endOfMonth()->format('Y-m-d'));
+        $m->to('freakyash_02@yahoo.com')->subject('PNL');
       });
 
     }

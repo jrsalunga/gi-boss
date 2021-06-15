@@ -140,7 +140,7 @@
     <div class="row">
       <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Sales</p>
-        <h3 style="margin:0">{{ nf($ms->sales) }}</h3>
+        <h3 style="margin:0" title="Rank {{ $ms->rank }} on Sales">{{ nf($ms->sales) }}</h3>
         <?php
           $dailysales = $ms->sales;
         ?>

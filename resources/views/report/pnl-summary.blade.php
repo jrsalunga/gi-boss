@@ -144,6 +144,7 @@
         <?php
           $dailysales = $ms->sales;
         ?>
+        <small id="view-ave-sales" title="Average Daily Sales" data-toggle="tooltip" class="help"><em>{{ nf($ms->ave_sales) }}</em></small>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Cost of Goods</p>

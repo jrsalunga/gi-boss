@@ -136,7 +136,7 @@ class ExpenseController extends Controller
 
     	$exps = $this->expense->getCos();
 
-    	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'fc', 'transcos', 'cos'])->first();
+    	$ms = $this->ms->skipCache()->findWhere(['date'=>$this->dr->to->format('Y-m-d'), 'branch_id'=>$branch->id], ['date', 'slsmtd_totgrs', 'sales', 'food_sales', 'fc', 'transcos', 'cos', 'ave_sales'])->first();
 
 			$datas = $this->FCBreakdownData($branch, $exps);
 			$noncos_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getNonCos());

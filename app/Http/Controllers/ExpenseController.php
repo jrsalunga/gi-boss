@@ -147,21 +147,21 @@ class ExpenseController extends Controller
       $chargetypes = $this->mChargeType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
       $cardtypes = $this->mCardType->skipCache()->scopeQuery(function($query){ return $query->orderBy('ordinal'); })->findWhere(['branch_id'=>$branch->id, 'date'=>$this->dr->to->format('Y-m-d')]);
 							                 
+		  //return $fc_hist;
 
-		//return $fc_hist;
+      if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
+        $email = [
+          'body' => $request->user()->name.' '.$branch->code.' '.$date->endOfMonth()->format('Y-m-d')
+        ];
 
-      $email = [
-        'body' => $request->user()->name.' '.$branch->code.' '.$date->endOfMonth()->format('Y-m-d')
-      ];
-
-      \Mail::queue('emails.notifier', $email, function ($m) {
-        $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('freakyash_02@yahoo.com')->subject('PNL');
-      });
+        \Mail::queue('emails.notifier', $email, function ($m) {
+          $m->from('giligans.app@gmail.com', 'GI App - Boss');
+          $m->to('freakyash_02@yahoo.com')->subject('PNL');
+        });
+      }
 
     }
-
 
     return $this->setViewWithDR(view('report.pnl-summary')
                 ->with('branches', $this->bb)

@@ -780,14 +780,14 @@
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
                   <div class="graph-container pull-right">
-                    <div id="graph-pie-setmealad" data-table="#setmealad-data"></div>
+                    <div id="graph-pie-setadmeal" data-table="#setadmeal-data"></div>
                   </div>
                 </div><!-- end: .col-md-5 -->
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
                   <div class="row">
                     <div class="table-responsive">
                       <div>
-                      <table id="setmealad-data" style="display:none;">
+                      <table id="setadmeal-data" style="display:none;">
                           <thead>
                             <tr>
                               <th>Set Meals Add-ons</th>
@@ -810,7 +810,7 @@
                           </tbody>
                         </table>
                       
-                        <table class="tb-setmealad-data table table-condensed table-hover table-striped">
+                        <table class="tb-setadmeal-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
                               <th>Code</th>
@@ -1333,8 +1333,8 @@
       var mpChart = new Highcharts.Chart(getOptions('graph-pie-mp', 'mp-data'));
       var kareChart = new Highcharts.Chart(getOptions('graph-pie-kare', 'kare-data'));
       var comboChart = new Highcharts.Chart(getOptions('graph-pie-combo', 'combo-data'));
-      var setChart = new Highcharts.Chart(getOptions('graph-pie-setmeal', 'setmeal-data-data'));
-      var setadChart = new Highcharts.Chart(getOptions('graph-pie-setadmeal', 'setadmeal-data-data'));
+      var setChart = new Highcharts.Chart(getOptions('graph-pie-setmeal', 'setmeal-data'));
+      var setadChart = new Highcharts.Chart(getOptions('graph-pie-setadmeal', 'setadmeal-data'));
 
       var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
     @endif

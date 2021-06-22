@@ -132,7 +132,7 @@
         <h3 style="margin:0" id="view-directcost"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Operational Expense</p>
+        <p style="margin-bottom:0">Operating Expense</p>
         <h3 style="margin:0" id="view-totexpense"></h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
@@ -469,7 +469,7 @@
 
       <div class="col-md-6 col-md-offset-1" style="margin-top: 30px;">
         <div class="panel panel-default">
-          <div class="panel-heading">Operational Expense Summary</div>
+          <div class="panel-heading">Operating Expense Summary</div>
           <div class="panel-body">
             <div class="table-responsive">
             <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">

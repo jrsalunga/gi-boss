@@ -948,6 +948,95 @@
             </div>
           </div><!-- end: .panel.panel-default -->
 
+
+          <!-- Super Abot Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Super Abot Kaya Meals Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-abot" data-table="#abot-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                      <table id="abot-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Super Abot Kaya Meals</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tm=0; ?>
+                            @foreach($abots['ordered'] as $item)
+                              <tr>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ $item['grsamt'] }}</td>
+                              </tr>
+                            <?php $tm+=$item['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of rest</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                        <table class="tb-abot-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Super Abot Kaya Meals</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                              <th class="text-right">Super Abot's Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($abots['ordered'] as $key => $item)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ number_format($item['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
+                              </tr>
+                            <?php $t+=$item['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
+                              <td class="text-right">
+                              @if($ds->slsmtd_totgrs>0)
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
+                              </td>
+                          </tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+
           <!-- Groupies Panel -->
           <div class="panel panel-default">
             <div class="panel-heading">Groupies Summary</div>
@@ -1322,6 +1411,7 @@
     $('.tb-combo-data').tablesorter({sortList: [[2,1]]});
     $('.tb-setmeal-data').tablesorter({sortList: [[2,1]]});
     $('.tb-setadmeal-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-abot-data').tablesorter({sortList: [[2,1]]});
    
     $('.tb-groupies-data').tablesorter({sortList: [[1,1]]});
 
@@ -1335,6 +1425,7 @@
       var comboChart = new Highcharts.Chart(getOptions('graph-pie-combo', 'combo-data'));
       var setChart = new Highcharts.Chart(getOptions('graph-pie-setmeal', 'setmeal-data'));
       var setadChart = new Highcharts.Chart(getOptions('graph-pie-setadmeal', 'setadmeal-data'));
+      var abotChart = new Highcharts.Chart(getOptions('graph-pie-abot', 'abot-data'));
 
       var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
     @endif

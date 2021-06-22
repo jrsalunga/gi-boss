@@ -167,6 +167,11 @@ class SaleController extends Controller {
       : '11EB774B5EF0AB009F4D00155DCB6D06';
     $setadmeals = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $setadmnuid)->findWhere($where));
 
+    $abotmnuid = (app()->environment()==='production') 
+      ? '11E9A84B14DDA9E4EAAF5CBDAA5C9C25'
+      : '11E9A84B14DDA9E4EAAF5CBDAA5C9C25';
+    $abots = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $abotmnuid)->findWhere($where));
+
     
     $products = $this->sale
           ->skipCache()
@@ -183,7 +188,7 @@ class SaleController extends Controller {
           ->brMenucatByDR($this->dr)
           ->findWhere($where);
 
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps, $backups, $customers, $kares, $combos, $setmeals, $setadmeals);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps, $backups, $customers, $kares, $combos, $setmeals, $setadmeals, $abots);
   }
 
 
@@ -287,7 +292,7 @@ class SaleController extends Controller {
 
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null, $backups=null, $customers=null, $kares=null, $combos=null, $setmeals=null, $setadmeals=null) {
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null, $backups=null, $customers=null, $kares=null, $combos=null, $setmeals=null, $setadmeals=null, $abots=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
@@ -305,6 +310,7 @@ class SaleController extends Controller {
                 ->with('combos', $combos)
                 ->with('setmeals', $setmeals)
                 ->with('setadmeals', $setadmeals)
+                ->with('abots', $abots)
                 ->with('menucats', $menucats));
   }
 

@@ -1,6 +1,10 @@
 @extends('master')
 
-@section('title', '- Daily Sales')
+<?php
+  $code = (is_null($branch)) ? '':' ('.$branch->code.')';
+  $title = '- Product Sales'.$code;
+?>
+@section('title', $title)
 
 @section('body-class', 'daily-sales')
 
@@ -504,81 +508,83 @@
             </div>
           </div><!-- end: .panel.panel-default -->
 
-          <!-- Groupies Panel -->
+
+          <!-- Kare Rice Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Groupies Summary</div>
+            <div class="panel-heading">Kare Rice Meals Summary</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
                   <div class="graph-container pull-right">
-                    <div id="graph-pie-groupies" data-table="#groupies-data"></div>
+                    <div id="graph-pie-kare" data-table="#kare-data"></div>
                   </div>
                 </div><!-- end: .col-md-5 -->
                 <div class="col-xs-12 col-md-7 col-md-pull-5">
                   <div class="row">
                     <div class="table-responsive">
                       <div>
-                        <table id="groupies-data" style="display:none;">
+                      <table id="kare-data" style="display:none;">
                           <thead>
                             <tr>
-                              <th>Group</th>
+                              <th>Kare Rice Meals</th>
                               <th>Total Cost</th>
                             </tr>
                           </thead>
                           <tbody>
-                          <?php $tg=0; ?>
-                            @foreach($groupies as $groupie)
+                          <?php $tm=0; ?>
+                            @foreach($kares['ordered'] as $item)
                               <tr>
-                                <td>{{ $groupie['group'] }}</td>
-                                <td>{{ $groupie['grsamt'] }}</td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ $item['grsamt'] }}</td>
                               </tr>
-                            <?php $tg+=$groupie['grsamt']; ?>
+                            <?php $tm+=$item['grsamt']; ?>
                             @endforeach
                               <tr>
-                                <td>Sales of not Groupies</td>
-                                <td>{{ $ds->slsmtd_totgrs-$tg }}</td>
+                                <td>Sales of not Kare Rice Meal</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
                               </tr>
                           </tbody>
                         </table>
                       
-                        <table class="tb-groupies-data table table-condensed table-hover table-striped">
+                        <table class="tb-kare-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Groupies</th>
+                              <th>Code</th>
+                              <th>Kare Rice Meal</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
-                              <th class="text-right">Groupies Total Sales %</th>
+                              <th class="text-right">Kare's Total Sales %</th>
                               <th class="text-right">Gross Sales %</th>
                             </tr>
                           </thead>
                           <tbody>
                             <?php $t=0; ?>
-                            @foreach($groupies as $key => $groupie)
+                            @foreach($kares['ordered'] as $key => $item)
                               <tr>
                                 <td>{{ $key }}</td>
-                                <td>{{ number_format($groupie['qty'], 0) }}</td>
-                                <td class="text-right">{{ number_format($groupie['grsamt'], 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$tg)*100,2)}}%</small></td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ number_format($item['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
                                 <td class="text-right">
-                                  @if($ds->slsmtd_totgrs>0)
-                                  <small class="text-muted">{{ number_format(($groupie['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
-                                  @endif
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
                                 </td>
                               </tr>
-                            <?php $t+=$groupie['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                              <td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
-                              <td></td>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
-                                <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
                               @endif
                               </td>
-                            </tr>
-                          </tfoot>
+                          </tr></tfoot>
                         </table>
                       </div>
                       
@@ -589,6 +595,271 @@
               </div><!-- end: .row -->
             </div>
           </div><!-- end: .panel.panel-default -->
+
+          
+          <!-- Combo Meals Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Combo Meals Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-combo" data-table="#combo-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                      <table id="combo-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Combo Meals</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tm=0; ?>
+                            @foreach($combos['ordered'] as $item)
+                              <tr>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ $item['grsamt'] }}</td>
+                              </tr>
+                            <?php $tm+=$item['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of not Kare Rice Meal</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                        <table class="tb-combo-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Combo Meals</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                              <th class="text-right">Combo's Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($combos['ordered'] as $key => $item)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ number_format($item['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
+                              </tr>
+                            <?php $t+=$item['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
+                              <td class="text-right">
+                              @if($ds->slsmtd_totgrs>0)
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
+                              </td>
+                          </tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+
+          <!-- Set Meals Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Set Meals Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-setmeal" data-table="#setmeal-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                      <table id="setmeal-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Set Meals</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tm=0; ?>
+                            @foreach($setmeals['ordered'] as $item)
+                              <tr>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ $item['grsamt'] }}</td>
+                              </tr>
+                            <?php $tm+=$item['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of the rest</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                        <table class="tb-setmeal-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Set Meals</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                              <th class="text-right">Set's Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($setmeals['ordered'] as $key => $item)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ number_format($item['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
+                              </tr>
+                            <?php $t+=$item['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
+                              <td class="text-right">
+                              @if($ds->slsmtd_totgrs>0)
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
+                              </td>
+                          </tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+          
+          <!-- Set Meals Add Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Set Meals Add-ons Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-setmealad" data-table="#setmealad-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                      <table id="setmealad-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Set Meals Add-ons</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tm=0; ?>
+                            @foreach($setadmeals['ordered'] as $item)
+                              <tr>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ $item['grsamt'] }}</td>
+                              </tr>
+                            <?php $tm+=$item['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of rest</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                        <table class="tb-setmealad-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Set Meals</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                              <th class="text-right">Set Add's Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($setadmeals['ordered'] as $key => $item)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $item['product'] }}</td>
+                                <td>{{ number_format($item['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
+                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                @endif
+                                </td>
+                              </tr>
+                            <?php $t+=$item['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <td></td>
+                              <td class="text-right">
+                              @if($ds->slsmtd_totgrs>0)
+                               <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
+                              </td>
+                          </tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->          
+
 
           <!-- Meal Promo Panel -->
           <div class="panel panel-default">
@@ -666,6 +937,92 @@
                               @endif
                               </td>
                           </tr></tfoot>
+                        </table>
+                      </div>
+                      
+                      
+                    </div><!-- end: .table-responsive -->
+                  </div><!-- end: .row -->
+                </div><!-- end: .col-md-7 -->
+              </div><!-- end: .row -->
+            </div>
+          </div><!-- end: .panel.panel-default -->
+
+          <!-- Groupies Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Groupies Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-5 col-md-push-7">
+                  <div class="graph-container pull-right">
+                    <div id="graph-pie-groupies" data-table="#groupies-data"></div>
+                  </div>
+                </div><!-- end: .col-md-5 -->
+                <div class="col-xs-12 col-md-7 col-md-pull-5">
+                  <div class="row">
+                    <div class="table-responsive">
+                      <div>
+                        <table id="groupies-data" style="display:none;">
+                          <thead>
+                            <tr>
+                              <th>Group</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php $tg=0; ?>
+                            @foreach($groupies as $groupie)
+                              <tr>
+                                <td>{{ $groupie['group'] }}</td>
+                                <td>{{ $groupie['grsamt'] }}</td>
+                              </tr>
+                            <?php $tg+=$groupie['grsamt']; ?>
+                            @endforeach
+                              <tr>
+                                <td>Sales of not Groupies</td>
+                                <td>{{ $ds->slsmtd_totgrs-$tg }}</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      
+                        <table class="tb-groupies-data table table-condensed table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Groupies</th>
+                              <th>Qty</th>
+                              <th class="text-right">Amount</th>
+                              <th class="text-right">Groupies Total Sales %</th>
+                              <th class="text-right">Gross Sales %</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php $t=0; ?>
+                            @foreach($groupies as $key => $groupie)
+                              <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ number_format($groupie['qty'], 0) }}</td>
+                                <td class="text-right">{{ number_format($groupie['grsamt'], 2) }}</td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($groupie['grsamt']/$tg)*100,2)}}%</small></td>
+                                <td class="text-right">
+                                  @if($ds->slsmtd_totgrs>0)
+                                  <small class="text-muted">{{ number_format(($groupie['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                  @endif
+                                </td>
+                              </tr>
+                            <?php $t+=$groupie['grsamt']; ?>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                              <td></td>
+                              <td class="text-right">
+                              @if($ds->slsmtd_totgrs>0)
+                                <b>{{ number_format(($t/$ds->slsmtd_totgrs)*100,2)}}%</b>
+                              @endif
+                              </td>
+                            </tr>
+                          </tfoot>
                         </table>
                       </div>
                       
@@ -960,17 +1317,26 @@
     $('.tb-product-data').tablesorter({sortList: [[2,1]]});
     $('.tb-prodcat-data').tablesorter({sortList: [[1,1]]});
     $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
-    $('.tb-groupies-data').tablesorter({sortList: [[1,1]]});
     $('.tb-mp-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-kare-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-combo-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-setmeal-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-setadmeal-data').tablesorter({sortList: [[2,1]]});
    
+    $('.tb-groupies-data').tablesorter({sortList: [[1,1]]});
 
 
     @if(!is_null($products))
       var productChart = new Highcharts.Chart(getOptions('graph-pie-product', 'product-data'));
       var prodcatChart = new Highcharts.Chart(getOptions('graph-pie-prodcat', 'prodcat-data'));
       var menucatChart = new Highcharts.Chart(getOptions('graph-pie-menucat', 'menucat-data'));
-      var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
       var mpChart = new Highcharts.Chart(getOptions('graph-pie-mp', 'mp-data'));
+      var kareChart = new Highcharts.Chart(getOptions('graph-pie-kare', 'kare-data'));
+      var comboChart = new Highcharts.Chart(getOptions('graph-pie-combo', 'combo-data'));
+      var setChart = new Highcharts.Chart(getOptions('graph-pie-setmeal', 'setmeal-data-data'));
+      var setadChart = new Highcharts.Chart(getOptions('graph-pie-setadmeal', 'setadmeal-data-data'));
+
+      var groupiesChart = new Highcharts.Chart(getOptions('graph-pie-groupies', 'groupies-data'));
     @endif
 
     @if(!is_null($customers))

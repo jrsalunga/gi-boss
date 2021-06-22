@@ -146,6 +146,27 @@ class SaleController extends Controller {
       ? 'E83A9DAEBC3711E6856EC3CDBB4216A7'
       : 'E83A9DAEBC3711E6856EC3CDBB4216A7'; // 614D4411BDF211E6978200FF18C615EC
     $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, $menucatid)->findWhere($where));
+
+    $karemnuid = (app()->environment()==='production') 
+      ? '11EB6A0451A448B6A7FC14DDA9E4EAAF'
+      : '11EB7BCD4CB1DB5E80BE00155DCB6D06';
+    $kares = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $karemnuid)->findWhere($where));
+
+    $cmbmnuid = (app()->environment()==='production') 
+      ? '11EB6A0361E87202B99214DDA9E4EAAF'
+      : '11EB774B5B9E3774BCFD00155DCB6D06';
+    $combos = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $cmbmnuid)->findWhere($where));
+
+    $setmnuid = (app()->environment()==='production') 
+      ? '11EB6A05B4DAB0408ECA14DDA9E4EAAF'
+      : '11EB774B5ED0D49C973D00155DCB6D06';
+    $setmeals = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $setmnuid)->findWhere($where));
+
+    $setadmnuid = (app()->environment()==='production') 
+      ? '11EB6A07C3002B58801014DDA9E4EAAF'
+      : '11EB774B5EF0AB009F4D00155DCB6D06';
+    $setadmeals = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $setadmnuid)->findWhere($where));
+
     
     $products = $this->sale
           ->skipCache()
@@ -162,7 +183,7 @@ class SaleController extends Controller {
           ->brMenucatByDR($this->dr)
           ->findWhere($where);
 
-  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps, $backups, $customers);
+  	return $this->setDailyViewVars('product.sales.daily', $branch, $bb, $filter, $sales, $ds[0], $products, $prodcats, $menucats, $groupies, $mps, $backups, $customers, $kares, $combos, $setmeals, $setadmeals);
   }
 
 
@@ -266,7 +287,7 @@ class SaleController extends Controller {
 
 
 
-  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null, $backups=null, $customers=null) {
+  private function setDailyViewVars($view, $branch=null, $branches=null, $filter=null, $sales=null, $ds=null, $products=null, $prodcats=null, $menucats=null, $groupies=null, $mps=null, $backups=null, $customers=null, $kares=null, $combos=null, $setmeals=null, $setadmeals=null) {
 
     return $this->setViewWithDR(view($view)
                 ->with('branch', $branch)
@@ -280,6 +301,10 @@ class SaleController extends Controller {
                 ->with('mps', $mps)
                 ->with('backups', $backups)
                 ->with('customers', $customers)
+                ->with('kares', $kares)
+                ->with('combos', $combos)
+                ->with('setmeals', $setmeals)
+                ->with('setadmeals', $setadmeals)
                 ->with('menucats', $menucats));
   }
 

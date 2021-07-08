@@ -53,7 +53,7 @@ class InvoiceController extends Controller
 
     $suid = '';
     if (count($invoices)>0)
-      $suid = $invoices[0]->supplierid
+      $suid = $invoices[0]->supplierid;
 
     $url = 'http://boss.giligansrestaurant.com/invoice?supprefno='.$request->input('supprefno').'&date='.$request->input('date').'&branchid='.$request->input('branchid').'&supplierid='.$suid;
 

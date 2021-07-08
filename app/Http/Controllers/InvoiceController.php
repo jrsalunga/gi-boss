@@ -159,7 +159,6 @@ class InvoiceController extends Controller
     //}
 
     return view('invoice.view', compact('invoice', 'apus'));
-
   }
 
 

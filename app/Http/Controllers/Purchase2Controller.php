@@ -206,7 +206,21 @@ class Purchase2Controller extends Controller {
                   ->findWhere($where); 
     $invoices = $this->purchased
                   ->brSupplierinvoiceByDR($this->dr)
-                  ->findWhere($where);             
+                  ->findWhere($where);  
+
+    if (!is_null($branch) {
+     // if (!is_null($branch) && !in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' - '.$this->dr->to->format('Y-m-d')
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('Branch Purchases');
+      });
+    }
+
 
     return $this->setDailyViewVars('component.purchased.daily', $purchases, $bb, $branch, $filter, $components, $compcats, $expenses, $expscats, $suppliers, $payments, $invoices);
 	

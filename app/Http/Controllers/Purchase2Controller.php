@@ -208,8 +208,7 @@ class Purchase2Controller extends Controller {
                   ->brSupplierinvoiceByDR($this->dr)
                   ->findWhere($where);  
 
-    if (!is_null($branch)) {
-     // if (!is_null($branch) && !in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    if (!is_null($branch) && !in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
       $email = [
         'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' - '.$this->dr->to->format('Y-m-d')

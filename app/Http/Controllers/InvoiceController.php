@@ -51,8 +51,28 @@ class InvoiceController extends Controller
 
     $invoices = $this->purchase->findInvoicesWhere($where);
 
-    return view('invoice.list', compact('invoices'));
+    $suid = '';
+    if (count($invoices)>0)
+      $suid = $invoices[0]->supplierid
 
+    $url = 'http://boss.giligansrestaurant.com/invoice?supprefno='.$request->input('supprefno').'&date='.$request->input('date').'&branchid='.$request->input('branchid').'&supplierid='.$suid;
+
+
+
+     // if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name.' '.$branch->code.' '.$url
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('Purchase Invoice');
+      });
+    //}
+
+
+    return view('invoice.list', compact('invoices'));
   }
 
 

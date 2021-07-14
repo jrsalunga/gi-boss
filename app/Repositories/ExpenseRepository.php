@@ -22,7 +22,7 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
     return $this->scopeQuery(function($query) {
       return $query->whereIn('code', config('giligans.expensecode.cos'))
                     ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
-                    ->orderBy('ordinal');
+                    ->orderBy('seqno');
     })->all();
 
   }
@@ -31,7 +31,7 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
     return $this->scopeQuery(function($query) {
       return $query->where('ordinal', 'like', '8%')
                     ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
-                    ->orderBy('ordinal');
+                    ->orderBy('seqno');
     })->all();
 
   }
@@ -40,7 +40,7 @@ class ExpenseRepository extends BaseRepository implements CacheableInterface
     return $this->scopeQuery(function($query) {
       return $query->whereIn('code', config('giligans.expensecode.ncos'))
                     ->select(DB::raw('code, descriptor, ordinal, expscatid, id'))
-                    ->orderBy('ordinal');
+                    ->orderBy('seqno');
     })->all();
 
   }

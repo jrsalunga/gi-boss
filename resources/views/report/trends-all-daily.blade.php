@@ -127,9 +127,9 @@
                 <div>
                   <small class="text-muted">
                     <em title="{{ nf($ds['diff']) }}" data-toggle="tooltip" class="help">
-                      @if($ds['diff']>0)<span class="glyphicon glyphicon-arrow-up text-success" style="font-size: smaller;"></span>
+                    {{ nf($ds['pct']) }}% @if($ds['diff']>0)<span class="glyphicon glyphicon-arrow-up text-success" style="font-size: smaller;"></span>
                     @elseif($ds['diff']<0)<span class="glyphicon glyphicon-arrow-down text-danger" style="font-size: smaller;"></span>
-                    @else @endif{{ nf($ds['pct']) }}%
+                    @else @endif
                     </em>
                   </small> 
                 </div>

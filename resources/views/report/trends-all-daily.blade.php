@@ -144,7 +144,7 @@
       
     </table>
 
-    <div style="padding-bottom: 30px;"></div>
+    <div style="padding-bottom: 50px;"></div>
   </div>
   @endif
     

@@ -159,6 +159,8 @@
             </tbody>
           </table>
 
+          &nbsp;&nbsp;<a href="/report/trends/daily"><small>View All</small></a>
+
           
         </div>
       </div>

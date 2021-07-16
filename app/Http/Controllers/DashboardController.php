@@ -339,7 +339,7 @@ class DashboardController extends Controller
 
     // return $datas;
 
-    // if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
       $email = [
         'body' => $request->user()->name.' '.$this->dr->fr->format('Y-m-d').' '.$this->dr->to->format('Y-m-d')
@@ -349,7 +349,7 @@ class DashboardController extends Controller
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
         $m->to('freakyash_02@yahoo.com')->subject('Sales Trend');
       });
-    // }
+    }
 
 
     $view = view('report.trends-all-daily')

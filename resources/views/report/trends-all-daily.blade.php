@@ -56,7 +56,7 @@
 
         <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
             {!! Form::open(['url' => '/report/trends/daily', 'method' => 'get', 'id'=>'dp-form']) !!}
-            <button type="submit" class="btn btn-success btn-go" title="Go">
+            <button type="submit" class="btn btn-success btn-go" title="Go" data-toggle="loader">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
@@ -101,7 +101,7 @@
 
   @if(count($datas)>0)
   <div class="table-responsive">
-    <table class="table table-hover table-striped table-sort-data">
+    <table class="table table-striped table-sort-data">
       <thead>
         <tr>
           <th>Branch</th>
@@ -117,7 +117,9 @@
           <td data-sort="{{$data['code']}}">{{ $data['code']  }}</td>
           <?php $tot = 0; ?>
           @foreach($data['dss'] as $ds)
-            <td class="text-right" data-sort="{{nf($ds['sales'],2)}}">
+            <td class="text-right {{ $ds['date']->dayOfWeek==0?'bg-warning':'' }}" data-sort="{{nf($ds['sales'],2)}}">
+
+
               @if(is_null($ds['sales']))
 
               @else

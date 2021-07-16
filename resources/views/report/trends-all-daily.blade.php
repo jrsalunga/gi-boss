@@ -143,6 +143,8 @@
       </tbody>
       
     </table>
+
+    <div style="padding-bottom: 30px;"></div>
   </div>
   @endif
     

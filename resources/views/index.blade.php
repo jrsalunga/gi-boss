@@ -159,7 +159,7 @@
             </tbody>
           </table>
 
-          &nbsp;&nbsp;<a href="/report/trends/daily"><small>View All</small></a>
+          &nbsp;&nbsp;<a href="/report/trends/daily"><small>view all</small></a>
 
           
         </div>

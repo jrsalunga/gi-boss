@@ -114,20 +114,28 @@
       <tbody>
         @foreach($datas as $key => $data) 
         <tr>
-          <td>{{ $data['code']  }}</td>
+          <td data-sort="{{$data['code']}}">{{ $data['code']  }}</td>
           <?php $tot = 0; ?>
           @foreach($data['dss'] as $ds)
-            <td class="text-right">
+            <td class="text-right" data-sort="{{nf($ds['sales'],2)}}">
               @if(is_null($ds['sales']))
 
               @else
-                <small><em>({{ nf($ds['pct']) }})</em></small> 
                 {{ nf($ds['sales']) }}
+                <div>
+                  <small class="text-muted">
+                    <em title="{{ nf($ds['diff']) }}" data-toggle="tooltip" class="help">
+                      (@if($ds['diff']>0)<span class="glyphicon glyphicon-arrow-up text-success" style="font-size: smaller;"></span>
+                    @elseif($ds['diff']<0)<span class="glyphicon glyphicon-arrow-down text-danger" style="font-size: smaller;"></span>
+                    @else @endif{{ nf($ds['pct']) }}%)
+                    </em>
+                  </small> 
+                </div>
               @endif
             </td>
             <?php $tot += $ds['sales']; ?>
           @endforeach
-          <td class="text-right"><strong>{{ nf($tot) }}</strong></td>
+          <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
         </tr>
         @endforeach
       </tbody>

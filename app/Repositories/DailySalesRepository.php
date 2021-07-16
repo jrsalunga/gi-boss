@@ -286,7 +286,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
   }
 
-  private function getAggregateBranchByDateRange($fr, $to) {
+  public function getAggregateBranchByDateRange($fr, $to) {
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, ';
@@ -479,6 +479,17 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       return $query->select(DB::raw($sql))
         ->whereBetween('date', [$fr, $to]);
     });
+
+  }
+
+
+  public function getAllByDr(Carbon $fr, Carbon $to, array $select=['*']) {
+
+    return $this->scopeQuery(function($query) use ($fr, $to, $select) {
+      return $query->select($select)
+        ->where('branchid', '<>', 'ALL')
+        ->whereBetween('date', [$fr->format('Y-m-d'), $to->format('Y-m-d')]);
+    })->all();
 
   }
 }

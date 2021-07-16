@@ -54,6 +54,7 @@ Route::get('report/pnl-summary', ['uses'=>'ExpenseController@getMonthFoodCostBre
 Route::get('report/pnl/daily', ['uses'=>'ExpenseController@getPnlDaily']);
 Route::get('report/pnl/month-range', ['uses'=>'ExpenseController@getMonthRangePnl']);
 //Route::get('report/expense-breakdown', ['uses'=>'ExpenseController@getMonthExpenseBreakdown']);
+Route::get('report/trends/daily', ['uses'=>'DashboardController@getThrendsDaily']);
 
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);

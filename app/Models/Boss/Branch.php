@@ -77,6 +77,11 @@ class Branch extends BaseModel {
   }
 
 
+  public function scopeActive($query) {
+    return $query->where('status', 2);
+  }
+
+
   
   
 

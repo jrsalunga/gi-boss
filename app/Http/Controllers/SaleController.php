@@ -144,7 +144,7 @@ class SaleController extends Controller {
 
     $menucatid = (app()->environment()==='production') 
       ? 'E83A9DAEBC3711E6856EC3CDBB4216A7'
-      : 'E83A9DAEBC3711E6856EC3CDBB4216A7'; // 614D4411BDF211E6978200FF18C615EC
+      : 'E83A9DAEBC3711E6856EC3CDBB4216A7'; 
     $mps = $this->aggregateMPs($this->sale->skipCache()->menucatByDR($this->dr, $menucatid)->findWhere($where));
 
     $karemnuid = (app()->environment()==='production') 

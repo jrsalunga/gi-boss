@@ -163,7 +163,6 @@ class DashboardController extends Controller
     return $this->setViewWithDR(view('dashboard.deliverysales-all')->with('dailysales', $dailysales));
   }
 
-
   public function getDeliveryRangeSalesAll(Request $request) {
     $dailysales = $this->repo->skipCache()->allBranchByDateRange($this->dr->fr, $this->dr->to);
     return $this->setViewWithDR(view('dashboard.deliverysales-dr-all')->with('dailysales', $dailysales));
@@ -253,5 +252,97 @@ class DashboardController extends Controller
 
   public function getSalesAll(Request $request) {
     return $request;
+  }
+
+  public function getThrendsDaily(Request $request) {
+
+    // return dd((($request->has('fr') && $request->has('to')) && (is_iso_date($request->input('fr')) && is_iso_date($request->input('to')))));
+
+
+    if (($request->has('fr') && $request->has('to')) && (is_iso_date($request->input('fr')) && is_iso_date($request->input('to')))) {
+
+      $this->dr->fr = carbonCheckorNow($request->input('fr'));
+      $this->dr->to = carbonCheckorNow($request->input('to'));
+
+      if ($this->dr->fr->gt($this->dr->to))
+        return 'fr is gt to';
+
+      $len = $this->dr->to->diffInDays($this->dr->fr);
+    } else {
+
+      $date = carbonCheckorNow($request->input('date'));
+      $len = 6;
+      if ($request->has('len') && $request->input('len')>0 && $request->input('len')<90)
+        $len = $request->input('len');
+
+      $this->dr->to = $date;
+      $this->dr->fr = $date->copy()->subDays($len);
+    } 
+
+    $datas = [];
+
+
+    // return $this->dr->to->diffInDays($this->dr->fr);
+
+    // return $this->dr->fr;
+    // return $this->dr->fr->copy()->subDay();
+
+    $dailysales = $this->repo->skipCache()->getAllByDr($this->dr->fr->copy()->subDay(), $this->dr->to, ['*']);
+
+    // $branchs =  \App\Models\Boss\Branch::select(['code', 'descriptor', 'id'])->active()->orderBy('code')->get();
+    $branchs =  \App\Models\Branch::select(['code', 'descriptor', 'id'])->whereIn('id', collect($dailysales->pluck('branchid'))->unique()->toArray())->orderBy('code')->get();
+
+    foreach($branchs as $key => $branch) {
+      $datas[$key]['code'] = $branch->code;
+      $datas[$key]['descriptor'] = $branch->descriptor;
+
+      $to_date = $this->dr->to->copy();
+      for ($i=0; $i<=$len+1; $i++) {
+        $to = $to_date->copy()->subDay($i);
+        
+        $datas[$key]['dss'][$i]['date'] = $to;
+
+        $filtered = $dailysales->filter(function ($item) use ($to, $branch) {
+          return ($item->branchid == $branch->id) && ($item->date->format('Y-m-d') == $to->format('Y-m-d'))
+          ? $item : null;
+        });
+
+        $f = $filtered->first();
+
+        $datas[$key]['dss'][$i]['sales'] = is_null($f) ? NULL : $f->sales;
+      }
+    }
+
+
+      // return $datas;
+
+
+    foreach($datas as $j => $data) {
+      foreach($data['dss'] as $k => $ds) {
+        if ($k==0 && is_null($datas[$j]['dss'][$k]['sales'])) {
+          $prev_sales = NULL;
+        } else {
+          if (($k)<=$len)
+            $prev_sales = is_null($datas[$j]['dss'][($k+1)]['sales']) ? 0 : $datas[$j]['dss'][($k+1)]['sales'];
+          else
+            $prev_sales = 0;
+        }
+        $datas[$j]['dss'][$k]['prev_sales'] = $prev_sales;
+        $datas[$j]['dss'][$k]['diff'] = $datas[$j]['dss'][$k]['sales'] - $prev_sales;
+        $datas[$j]['dss'][$k]['pct'] = $prev_sales>0 ? ($datas[$j]['dss'][$k]['diff']/$prev_sales)*100 : 0;
+      }
+    }
+
+    foreach($datas as $l => $data) {
+      unset($datas[$l]['dss'][$len+1]);
+    }
+
+    // return $datas;
+
+    $view = view('report.trends-all-daily')
+            ->with('datas', $datas);
+    return $this->setViewWithDR($view);
+
+    return $datas[0]['dss'];
   }
 }

@@ -640,7 +640,7 @@
                         <table class="tb-combo-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Combo Meals</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -649,10 +649,10 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($combos['ordered'] as $key => $item)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
@@ -663,12 +663,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$item['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; $q+=$item['qty']; ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
@@ -728,7 +731,7 @@
                         <table class="tb-setmeal-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Set Meals</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -737,10 +740,10 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($setmeals['ordered'] as $key => $item)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
@@ -751,12 +754,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$item['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; $q+=$item['qty'] ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
@@ -816,7 +822,7 @@
                         <table class="tb-setadmeal-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Set Meals</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -828,7 +834,7 @@
                             <?php $t=0; ?>
                             @foreach($setadmeals['ordered'] as $key => $item)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
@@ -839,12 +845,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$item['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; $q+=$item['qty'] ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
@@ -904,7 +913,7 @@
                         <table class="tb-mp-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Meal Promo</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -916,7 +925,7 @@
                             <?php $t=0; ?>
                             @foreach($mps['ordered'] as $key => $mp)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $mp['product'] }}</td>
                                 <td>{{ number_format($mp['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($mp['grsamt'], 2) }}</td>
@@ -927,12 +936,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$mp['grsamt']; ?>
+                            <?php $t+=$mp['grsamt']; $q+=$item['qty']; ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
@@ -992,7 +1004,7 @@
                         <table class="tb-abot-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Super Abot Kaya Meals</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -1004,7 +1016,7 @@
                             <?php $t=0; ?>
                             @foreach($abots['ordered'] as $key => $item)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
@@ -1015,12 +1027,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$item['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; $q+=$item['qty'] ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)

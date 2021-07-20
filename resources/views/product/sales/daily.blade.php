@@ -309,7 +309,7 @@
           
           <!-- Product Panel -->
           <div class="panel panel-default">
-            <div class="panel-heading">Product Sales Summary</div>
+            <div class="panel-heading">Product Sales Tabulation</div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-xs-12 col-md-5 col-md-push-7">
@@ -326,10 +326,10 @@
                             <tr>
                               <th>Product</th>
                               <th class="text-right">Quantity</th>
-                              <th class="text-right">Amount</th>
+                              <th class="text-right">Sales Amount</th>
                               <th class="text-right">Gross Sales %</th>
-                              <th>Category</th>
                               <th>Menu Category</th>
+                              <th>Category</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -344,13 +344,13 @@
                                   <small class="text-muted">{{ number_format(($product->grsamt/$ds->slsmtd_totgrs)*100,2)}}%</small>
                                 @endif
                                 </td>
-                                <td><small class="text-muted">{{ $product->prodcat }}</small></td>
                                 <td><small class="text-muted">{{ $product->menucat }}</small></td>
+                                <td><small class="text-muted">{{ $product->prodcat }}</small></td>
                               </tr>
                             <?php $prodtot+=$product->grsamt; ?> 
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($prodtot,2)}}</b></td><td></td><td></td></tr></tfoot>
+                          <tfoot><tr><td></td><td></td><td class="text-right"><b>{{number_format($prodtot,2)}}</b></td><td></td><td></td><td></td></tr></tfoot>
                         </table>
                       </div>
                       <span class="label label-info show toggle" style="margin-left:3px;">show more</span>
@@ -532,24 +532,24 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($kares['ordered'] as $item)
+                            @foreach($kares['menu'] as $item)
                               <tr>
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ $item['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$item['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of not Kare Rice Meal</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
                         <table class="tb-kare-data table table-condensed table-hover table-striped">
                           <thead>
                             <tr>
-                              <th>Code</th>
+                              <!-- <th>Code</th> -->
                               <th>Kare Rice Meal</th>
                               <th>Qty</th>
                               <th class="text-right">Amount</th>
@@ -558,10 +558,10 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($kares['ordered'] as $key => $item)
                               <tr>
-                                <td>{{ $key }}</td>
+                                <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
@@ -572,12 +572,15 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$item['grsamt']; ?>
+                            <?php $t+=$item['grsamt']; $q+=$item['qty']; ?>
                             @endforeach
                           </tbody>
                           <tfoot>
                             <tr>
-                            <td></td><td></td><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td>
+                            <!-- <td></td> -->
+                            <td></td>
+                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
                               @if($ds->slsmtd_totgrs>0)
@@ -620,17 +623,17 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($combos['ordered'] as $item)
+                            @foreach($combos['menu'] as $item)
                               <tr>
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ $item['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$item['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of not Kare Rice Meal</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
@@ -708,17 +711,17 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($setmeals['ordered'] as $item)
+                            @foreach($setmeals['menu'] as $item)
                               <tr>
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ $item['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$item['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of the rest</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
@@ -796,17 +799,17 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($setadmeals['ordered'] as $item)
+                            @foreach($setadmeals['menu'] as $item)
                               <tr>
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ $item['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$item['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of rest</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
@@ -884,17 +887,17 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($mps['ordered'] as $mp)
+                            @foreach($mps['menu'] as $mp)
                               <tr>
                                 <td>{{ $mp['product'] }}</td>
                                 <td>{{ $mp['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$mp['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of not Meal Promo</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
@@ -972,17 +975,17 @@
                           </thead>
                           <tbody>
                           <?php $tm=0; ?>
-                            @foreach($abots['ordered'] as $item)
+                            @foreach($abots['menu'] as $item)
                               <tr>
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ $item['grsamt'] }}</td>
                               </tr>
                             <?php $tm+=$item['grsamt']; ?>
                             @endforeach
-                              <tr>
+                              <!-- <tr>
                                 <td>Sales of rest</td>
                                 <td>{{ $ds->slsmtd_totgrs-$tm }}</td>
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       
@@ -1403,7 +1406,7 @@
     });
 
 
-    $('.tb-product-data').tablesorter({sortList: [[2,1]]});
+    $('.tb-product-data').tablesorter({sortList: [[4,0]]});
     $('.tb-prodcat-data').tablesorter({sortList: [[1,1]]});
     $('.tb-menucat-data').tablesorter({sortList: [[2,1]]});
     $('.tb-mp-data').tablesorter({sortList: [[2,1]]});

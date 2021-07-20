@@ -279,24 +279,71 @@ class SaleController extends Controller {
   private function aggregateMPs($mps) {
     $arr['ordered'] = [];
     $arr['cancelled'] = [];
+    $arr['menu'] = [
+      'R' => [
+        'product' => 'Reg Menu',
+        'qty' => 0,
+        'grsamt' => 0,
+      ],
+      'Z' => [
+        'product' => 'Zap',
+        'qty' => 0,
+        'grsamt' => 0,
+      ],
+      'Y' => [
+        'product' => 'Food Panda',
+        'qty' => 0,
+        'grsamt' => 0,
+      ],
+      'X' => [
+        'product' => 'Grab Food',
+        'qty' => 0,
+        'grsamt' => 0,
+      ],
+    ];
 
     foreach ($mps as $key => $value) {
         
-      if(array_key_exists($value['productcode'],  $arr['ordered'])) {
-        $arr['ordered'][$value['productcode']]['qty']     += $value['qty'];
-        $arr['ordered'][$value['productcode']]['grsamt']  += $value['grsamt'];
+      // if(array_key_exists($value['productcode'],  $arr['ordered'])) {
+      if (array_key_exists($value['product'],  $arr['ordered'])) {
+        $arr['ordered'][$value['product']]['qty']     += $value['qty'];
+        $arr['ordered'][$value['product']]['grsamt']  += $value['grsamt'];
       } else {
-        $arr['ordered'][$value['productcode']]['productcode'] = $value['productcode'];
-        $arr['ordered'][$value['productcode']]['product']     = $value['product'];
-        $arr['ordered'][$value['productcode']]['qty']         = $value['qty'];
-        $arr['ordered'][$value['productcode']]['grsamt']      = $value['grsamt'];
+        $arr['ordered'][$value['product']]['productcode'] = $value['productcode'];
+        $arr['ordered'][$value['product']]['product']     = $value['product'];
+        $arr['ordered'][$value['product']]['qty']         = $value['qty'];
+        $arr['ordered'][$value['product']]['grsamt']      = $value['grsamt'];
       }
       
+
+      $c = substr($value['productcode'], 0, 1);
+      switch (strtoupper($c)) {
+        case 'X':
+          $arr['menu']['X']['qty'] += $value['qty'];
+          $arr['menu']['X']['grsamt'] += $value['grsamt'];
+          break;
+        case 'Y':
+          $arr['menu']['Y']['qty'] += $value['qty'];
+          $arr['menu']['Y']['grsamt'] += $value['grsamt'];
+          break;
+        case 'Z':
+          $arr['menu']['Z']['qty'] += $value['qty'];
+          $arr['menu']['Z']['grsamt'] += $value['grsamt'];
+          break;
+        default:
+          $arr['menu']['R']['qty'] += $value['qty'];
+          $arr['menu']['R']['grsamt'] += $value['grsamt'];
+          break;
+      }
+
+
+
       if ($value['grsamt'] > 0 && $value['qty'] > 0) {
         continue;
       } else {
         array_push($arr['cancelled'], $value);
       }
+
     }
 
     return $arr;

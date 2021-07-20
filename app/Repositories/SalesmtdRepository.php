@@ -42,7 +42,8 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
                     ->leftJoin('menucat', 'menucat.id', '=', 'product.menucat_id')
                     ->select(DB::raw('product.descriptor as product, sum(salesmtd.qty) as txn, sum(salesmtd.qty) as qty, sum(salesmtd.grsamt) as grsamt,
                         sum(salesmtd.netamt) as netamt, prodcat.descriptor as prodcat, menucat.descriptor as menucat'))
-                    ->groupBy('salesmtd.product_id')
+                    //->groupBy('salesmtd.product_id')
+                    ->groupBy('product.descriptor')
                     //->orderBy(DB::raw('sum(salesmtd.netamt)'), 'desc');
                     ->orderBy(DB::raw('ordtime'), 'asc');
     })->skipOrder();

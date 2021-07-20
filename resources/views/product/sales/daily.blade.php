@@ -831,7 +831,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($setadmeals['ordered'] as $key => $item)
                               <tr>
                                 <!-- <td>{{ $key }}</td> -->
@@ -922,7 +922,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($mps['ordered'] as $key => $mp)
                               <tr>
                                 <!-- <td>{{ $key }}</td> -->
@@ -1013,7 +1013,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <?php $t=0; ?>
+                            <?php $t=$q=0; ?>
                             @foreach($abots['ordered'] as $key => $item)
                               <tr>
                                 <!-- <td>{{ $key }}</td> -->

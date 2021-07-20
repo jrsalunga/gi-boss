@@ -936,7 +936,7 @@
                                 @endif
                                 </td>
                               </tr>
-                            <?php $t+=$mp['grsamt']; $q+=$item['qty']; ?>
+                            <?php $t+=$mp['grsamt']; $q+=$mp['qty']; ?>
                             @endforeach
                           </tbody>
                           <tfoot>

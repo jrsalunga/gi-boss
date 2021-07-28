@@ -148,18 +148,24 @@
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Cost of Goods</p>
         <h3 style="margin:0" id="view-directcost"></h3>
+        <small><small id="view-pct-exp-cog" title="Percentage on Total Expense" data-toggle="tooltip" class="help"></small></small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <em><small id="view-pct-total-cog" title="Percentage on Total Sales" data-toggle="tooltip" class="help text-muted"></small></em>
       </div>
       <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">OpEx</p>
         <h3 style="margin:0" id="view-totexpense"></h3>
+        <small><small id="view-pct-exp-opex" title="Percentage on Total Expense" data-toggle="tooltip" class="help"></small></small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <em><small id="view-pct-total-opex" title="Percentage on Total Sales" data-toggle="tooltip" class="help"></small></em>
       </div>
        <div class="col-xs-6 col-md-2 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Total Expense</p>
         <h3 style="margin:0" id="view-total-expense"></h3>
+        <em><small id="view-pct-total-expense" title="Percentage on Total Sales" data-toggle="tooltip" class="help"></small></em>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
         <p style="margin-bottom:0">Direct Profit</p>
         <h3 style="margin:0" id="view-directprofit"></h3>
+        <em><small id="view-pct-directprofit" title="Percentage on Total Sales" data-toggle="tooltip" class="help"></small></em>
       </div>
 
     </div>
@@ -170,7 +176,7 @@
         <div id="container-ssss" style="overflow: hidden;"></div>
       </div>
   
-      <?php $ttpurch = $tttrans = 0 ?>
+      <?php $ttpurch = $tttrans = $ttpct1 = 0 ?>
 
       <div class="col-md-12"style="margin-top: 30px;">
         <div class="panel panel-default">
@@ -186,6 +192,7 @@
               <th class="text-right" style="width:17%;">Transferred</th>
               <th class="text-right" style="width:17%;"><span title="Purchased - Transferred = Cost of Goods" data-toggle="tooltip" class="help">Cost of Goods</span></th>
               <th class="text-right" style="width:17%;">% on Food Sales</th>
+              <th class="text-right" style="width:5%;" title="Percentage on Total Sales" data-toggle="tooltip" class="help">%</th>
             </tr>
           </thead>
           <tbody>
@@ -207,6 +214,7 @@
                 </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
                 <td class="text-right" title="({{ $data['net'] }}/{{ $data['food_sales'] }} )*100={{$data['pct']}}" data-toogle="tooltip">{{ nf($data['pct']) }}</td>
+                <td class="text-right">{{ nf($data['sales_pct']) }}</td>
               </tr>
               <?php
                 $tpurch += $data['purch'];
@@ -218,13 +226,14 @@
                 
                 $ttpurch += $data['purch'];
                 $tttrans += $data['trans'];
+                $ttpct1 += $data['sales_pct'];
               ?>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right">Total:</td>
+              <td class="text-right"></td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($tpurch) }}
@@ -237,6 +246,7 @@
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($tnet) }}</b></td>
               <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($ttpct1) }}</b></td>
             </tr>
           </tfoot>
         </table>
@@ -245,7 +255,7 @@
         <div class="table-responsive" style="margin-top: 10px;">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <tbody>
-            <?php $ntpurch = $nttrans = $ntnet = $ntpct = 0; ?>
+            <?php $ntpurch = $nttrans = $ntnet = $ntpct = $ttpct2 = 0; ?>
             @foreach($noncos_data as $data)
               @if($data['purch']>0)
               <tr data-expenseid="{{ $data['expenseid'] }}">
@@ -260,7 +270,7 @@
                 <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['trans']) }}</td>
                 <td class="text-right" class="text-right" style="width:17%;">{{ nf($data['net']) }}</td>
                 <td class="text-right" class="text-right" style="width:17%;"></td>
-                
+                <td class="text-right" class="text-right" style="width:5%;">{{ nf($data['sales_pct']) }}</td>
               </td>
               </tr>
               <?php
@@ -270,6 +280,7 @@
                 
                 $ttpurch += $data['purch'];
                 $tttrans += $data['trans'];
+                $ttpct2 += $data['sales_pct'];
                 
                 $fs = $data['food_sales'];
               ?>
@@ -279,7 +290,7 @@
           <tfoot>
             <tr>
               <td></td>
-              <td class="text-right">Total:</td>
+              <td class="text-right"></td>
               <td class="text-right">
                 <b class="text-muted">
                     {{ nf($ntpurch) }}
@@ -292,6 +303,7 @@
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($ntnet) }}</b></td>
               <td class="text-right"></td>
+              <td class="text-right"><b class="text-muted">{{ nf($ttpct2) }}</b></td>
             </tr>
           </tfoot>
         </table>
@@ -315,6 +327,8 @@
               ?>
               <td class="text-right" style="width:17%;"><b class="text-muted">{{ nf($direct_cost) }}</b></td>
               <td class="text-right" style="width:17%;"></td>
+              <td class="text-right" style="width:5%;"><b class="text-muted">{{ nf($ttpct1+$ttpct2) }}</b></td>
+                </tr>
             </tr>
           </tfoot>
         </table>
@@ -341,10 +355,11 @@
               <th class="text-right">Cost</th>
               <th class="text-right">Transferred</th>
               <th class="text-right" title="Cost - Transferred = Net Cost">Cost less Transfers</th>
+              <th class="text-right" title="Percentage on Sales ">%</th>
             </tr>
           </thead>
           <tbody>
-            <?php $xtpurch = $xttrans = $xtnet = 0; ?>
+            <?php $xtpurch = $xttrans = $xtnet = $xtsales_pct = 0; ?>
             @foreach($expense_data as $data)
               <tr data-expenseid="{{ $data['expenseid'] }}">
                 <td>{{ $data['expensecode'] }}</td>
@@ -361,11 +376,13 @@
                   </a>
                 </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
+                <td class="text-right">{{ nf($data['sales_pct']) }}</td>
               </tr>
               <?php
                 $xtpurch += $data['purch'];
                 $xttrans += $data['trans'];
                 $xtnet += $data['net'];
+                $xtsales_pct += $data['sales_pct'];
               ?>
             @endforeach
           </tbody>
@@ -384,6 +401,7 @@
                 </a>
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtsales_pct) }}</b></td>
             </tr>
           </tfoot>
         </table>
@@ -590,10 +608,11 @@
               <th class="text-right">Cost</th>
               <th class="text-right">Transferred</th>
               <th class="text-right" title="Cost - Transferred = Net Cost">Cost less Transfers</th>
+              <th class="text-right" title="Percentage on Sales ">%</th>
             </tr>
           </thead>
           <tbody>
-            <?php $xtpurch = $xttrans = $xtnet = 0; ?>
+            <?php $xtpurch = $xttrans = $xtnet = $xtsales_pct = 0; ?>
             @foreach($expense_data as $data)
               <tr data-expenseid="{{ $data['expenseid'] }}">
                 <td>{{ $data['expensecode'] }}</td>
@@ -610,11 +629,13 @@
                   </a>
                 </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
+                <td class="text-right">{{ nf($data['sales_pct']) }}</td>
               </tr>
               <?php
                 $xtpurch += $data['purch'];
                 $xttrans += $data['trans'];
                 $xtnet += $data['net'];
+                $xtsales_pct += $data['sales_pct'];
               ?>
             @endforeach
           </tbody>
@@ -633,6 +654,8 @@
                 </a>
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtsales_pct) }}</b></td>
+            </tr>
             </tr>
           </tfoot>
         </table>
@@ -980,12 +1003,24 @@
   <?php 
     $total_expense = $direct_cost + $xtnet;
     $direct_profit = $dailysales - $total_expense;
+    $vpctcog = $dailysales > 0 && $direct_cost > 0 ? nf(($direct_cost/$dailysales)*100).'%':"";  
+    $vpctexpcog = $total_expense > 0 && $direct_cost > 0 ? nf(($direct_cost/$total_expense)*100).'%':"";  
+    $vpctopex = $dailysales > 0 && $xtnet > 0 ? nf(($xtnet/$dailysales)*100).'%':"";  
+    $vpctexpopex = $total_expense > 0 && $xtnet > 0 ? nf(($xtnet/$total_expense)*100).'%':"";  
+    $vpctdirectprofit = $dailysales > 0 && $direct_profit > 0 ? nf(($direct_profit/$dailysales)*100).'%':"";  
+    $vpcttotexp = $dailysales > 0 && $total_expense > 0 ? nf(($total_expense/$dailysales)*100).'%':"";  
   ?>
     
   $('#view-directcost').text('{{ nf($direct_cost) }}');
   $('#view-totexpense').text('{{ nf($xtnet) }}');
   $('#view-directprofit').text('{{ nf($direct_profit) }}');
   $('#view-total-expense').text('{{ nf($total_expense) }}');
+  $('#view-pct-total-cog').text('{{ $vpctcog }}');
+  $('#view-pct-exp-cog').text('{{ $vpctexpcog }}');
+  $('#view-pct-total-opex').text('{{ $vpctopex }}');
+  $('#view-pct-exp-opex').text('{{ $vpctexpopex }}');
+  $('#view-pct-total-expense').text('{{ $vpcttotexp }}');
+  $('#view-pct-directprofit').text('{{ $vpctdirectprofit }}');
     
 
     $('.show.toggle').on('click', function(){

@@ -461,6 +461,55 @@ class ExpenseController extends Controller
     return $datas;
   }
 
+  private function FCBreakdownDataMonthlyRange($branch, $exps) {
+
+    $datas = [];
+
+    
+    $ids = $exps->pluck('id')->toArray();
+
+    $ms = $this->ms->skipCache()->aggBranchByDR($branch, $this->dr);
+    $mexps = $this->mExpense->skipCache()->sumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $ids);
+    $prodcatid = app()->environment()=='local' ? 'E838DA36BC3711E6856EC3CDBB4216A7':'E838DA36BC3711E6856EC3CDBB4216A7';
+    $fsales = $this->mProdcat->skipCache()->sumSalesByProdcatDr($branch->id, $this->dr->fr, $this->dr->to, $prodcatid);
+    $fs = $fsales->first();
+
+    foreach ($exps as $x => $exp) {
+      $f = $mexps->filter(function ($item) use ($exp){
+        return $item->expense_id == $exp->id
+          ? $item : null;
+      });
+      $b = $f->first();
+
+      $datas[$x]['expensecode'] = $exp->code;
+      $datas[$x]['expense'] = $exp->descriptor;
+      $datas[$x]['expenseid'] = $exp->lid();
+      
+      if(is_null($b)) 
+        $datas[$x]['purch'] = 0;
+      else
+        $datas[$x]['purch'] = $b->tcost;
+
+      $trns = $this->transfer->skipCache()->getSumCosByDr($branch->id, $this->dr->fr, $this->dr->to, $exp->code);
+
+      $c = $trns->first();
+
+      if(is_null($c)) 
+        $datas[$x]['trans'] = 0;
+      else
+        $datas[$x]['trans'] = is_null($c->tcost) ? 0 : $c->tcost;     
+      
+      $sales = is_null($fs->sales) ? 0 : $fs->sales;
+      $datas[$x]['food_sales'] = $sales;
+      $datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];      
+      $datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;  
+      $datas[$x]['sales_pct'] = !is_null($ms) && $ms->sales > 0 ? ($datas[$x]['net'] / $ms->sales) * 100 : 0;  
+      // $datas[$x]['sales_pct'] = 0;  
+
+    }
+    return $datas;
+  }
+
   public function getMonthRangePnl(Request $request) {
     
     $fr = carbonCheckorNow($request->input('fr'));
@@ -489,9 +538,9 @@ class ExpenseController extends Controller
 
       $ms = $this->ms->skipCache()->aggBranchByDR($branch, $this->dr);
 
-      $datas = $this->FCBreakdownData($branch, $exps);
-      $noncos_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getNonCos());
-      $expense_data = $this->FCBreakdownData($branch, $this->expense->skipCache()->getExpense());
+      $datas = $this->FCBreakdownDataMonthlyRange($branch, $exps);
+      $noncos_data = $this->FCBreakdownDataMonthlyRange($branch, $this->expense->skipCache()->getNonCos());
+      $expense_data = $this->FCBreakdownDataMonthlyRange($branch, $this->expense->skipCache()->getExpense());
       $fc_hist = $this->getFCHist($branch, $exps);
       $prodcats = $this->sales_cat_dr($branch);
       $saletypes = $this->getSaleTypeDR($branch);
@@ -500,6 +549,21 @@ class ExpenseController extends Controller
                                
     //return $fc_hist;
     }
+
+
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' to '.$this->dr->fr->format('Y-m-d')
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('PNL Month Range');
+      });
+    }
+
+
     return $this->setViewWithDR(view('report.pnl-month-range')
                 ->with('branches', $this->bb)
                 ->with('hist', $fc_hist)

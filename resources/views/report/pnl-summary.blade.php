@@ -353,10 +353,11 @@
               <th class="text-right">Cost</th>
               <th class="text-right">Transferred</th>
               <th class="text-right" title="Cost - Transferred = Net Cost">Cost less Transfers</th>
+              <th class="text-right" title="Percentage on Sales ">%</th>
             </tr>
           </thead>
           <tbody>
-            <?php $xtpurch = $xttrans = $xtnet = 0; ?>
+            <?php $xtpurch = $xttrans = $xtnet = $xtsales_pct = 0; ?>
             @foreach($expense_data as $data)
               <tr data-expenseid="{{ $data['expenseid'] }}">
                 <td>{{ $data['expensecode'] }}</td>
@@ -373,11 +374,13 @@
                   </a>
                 </td>
                 <td class="text-right">{{ nf($data['net']) }}</td>
+                <td class="text-right">{{ nf($data['sales_pct']) }}</td>
               </tr>
               <?php
                 $xtpurch += $data['purch'];
                 $xttrans += $data['trans'];
                 $xtnet += $data['net'];
+                $xtsales_pct += $data['sales_pct'];
               ?>
             @endforeach
           </tbody>
@@ -396,6 +399,7 @@
                 </a>
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtsales_pct) }}</b></td>
             </tr>
           </tfoot>
         </table>
@@ -648,7 +652,7 @@
                 </a>
               </b></td>
               <td class="text-right"><b class="text-muted">{{ nf($xtnet) }}</b></td>
-              <td class="text-right"><b class="text-muted"></b>{{ nf($xtsales_pct) }}</td>
+              <td class="text-right"><b class="text-muted">{{ nf($xtsales_pct) }}</b></td>
             </tr>
           </tfoot>
         </table>

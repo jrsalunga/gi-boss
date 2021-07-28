@@ -551,17 +551,17 @@ class ExpenseController extends Controller
     }
 
 
-    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    // if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
-      $email = [
-        'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' to '.$this->dr->fr->format('Y-m-d')
-      ];
+    //   $email = [
+    //     'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' to '.$this->dr->to->format('Y-m-d')
+    //   ];
 
-      \Mail::queue('emails.notifier', $email, function ($m) {
-        $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('freakyash_02@yahoo.com')->subject('PNL Month Range');
-      });
-    }
+    //   \Mail::queue('emails.notifier', $email, function ($m) {
+    //     $m->from('giligans.app@gmail.com', 'GI App - Boss');
+    //     $m->to('freakyash_02@yahoo.com')->subject('PNL Month Range');
+    //   });
+    // }
 
 
     return $this->setViewWithDR(view('report.pnl-month-range')

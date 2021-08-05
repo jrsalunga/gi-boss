@@ -153,7 +153,7 @@ class ReportsController extends Controller
 
       \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('giligans.log@gmail.com')->subject('All Branch Cash Flow');
+        $m->to('giligans.log@gmail.com')->subject('All Branch Cash Flow - '.rand());
       });
     }
 

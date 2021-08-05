@@ -216,7 +216,7 @@ class Purchase2Controller extends Controller {
 
       \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('giligans.log@gmail.com')->subject('Branch Purchases');
+        $m->to('giligans.log@gmail.com')->subject('Branch Purchases - '.rand());
       });
     }
 

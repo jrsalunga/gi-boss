@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer(['menu.main', 'menu.sub', '_partials.pager'], 'App\Http\ViewComposers\MainMenuComposer');
         view()->composer(['menu.main-hr', 'menu.sub-hr', '_partials.hr-pager'], 'App\Http\ViewComposers\HrMainMenuComposer');
+        view()->composer(['menu.main-ap', 'menu.sub-ap', '_partials.hr-pager'], 'App\Http\ViewComposers\ApMainMenuComposer');
 
 
         Validator::extend('alpha_spaces', function ($attribute, $value) {

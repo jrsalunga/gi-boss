@@ -196,7 +196,7 @@ class SaleController extends Controller {
 
       \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('freakyash_02@yahoo.com')->subject('Product Sales');
+        $m->to('giligans.log@gmail.com')->subject('Product Sales');
       });
     }
 

@@ -146,14 +146,16 @@ class ReportsController extends Controller
       return $datas;
 
 
-    $email = [
-      'body' => $request->user()->name.' '.$date->format('Y-m-d')
-    ];
+    if (!is_null($branch) && !in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+      $email = [
+        'body' => $request->user()->name.' '.$date->format('Y-m-d')
+      ];
 
-    \Mail::queue('emails.notifier', $email, function ($m) {
-      $m->from('giligans.app@gmail.com', 'GI App - Boss');
-      $m->to('freakyash_02@yahoo.com')->subject('All Branch Cash Flow');
-    });
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('giligans.log@gmail.com')->subject('All Branch Cash Flow');
+      });
+    }
 
     if($request->has('raw'))
       return $datas;

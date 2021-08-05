@@ -246,7 +246,10 @@
                     </a>
                   </b></td>
                   <td class="text-right"><b class="text-muted">{{ nf($tnet) }}</b></td>
-                  <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td>
+                  <!-- <td class="text-right"><b class="text-muted" title="{{$tnet}}/{{$fs}}={{ $fs>0?($tnet/$fs)*100:0 }}">{{ nf($tpct) }}</b></td> -->
+                  <td class="text-right"><b class="text-{{ $ms->fc==nf($tpct)?'success':'muted' }}" title="{{$tnet}}/{{$fs}}= {{ $fs>0?nf(($tnet/$fs)*100):0 }} | {{$ms->fc}}">{{ nf($tpct) }}</b></td>
+
+
                   <td class="text-right"><b class="text-muted">{{ nf($ttpct1) }}</b></td>
                 </tr>
               </tfoot>

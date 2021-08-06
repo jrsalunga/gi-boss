@@ -157,7 +157,7 @@ class ExpenseController extends Controller
 
         \Mail::queue('emails.notifier', $email, function ($m) {
           $m->from('giligans.app@gmail.com', 'GI App - Boss');
-          $m->to('giligans.log@gmail.com')->subject('PNL');
+          $m->to('giligans.log@gmail.com')->subject('PNL - '.rand());
         });
       }
 
@@ -559,7 +559,7 @@ class ExpenseController extends Controller
 
       \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('giligans.log@gmail.com')->subject('PNL Month Range');
+        $m->to('giligans.log@gmail.com')->subject('PNL Month Range - '.rand());
       });
     }
 

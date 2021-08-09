@@ -94,7 +94,7 @@
             @if(is_null(($branch)))
 
             @else
-            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->subMonth()->format('Y-m-d') }}" data-toggle="loader">
+            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->startOfMonth()->subDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->startOfMonth()->subDay()->format('Y-m-d') }}" data-toggle="loader">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
             @endif
@@ -103,7 +103,7 @@
             @if(is_null(($branch)))
 
             @else
-            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->addMonth()->format('Y-m-d') }}" data-toggle="loader">
+            <a href="/report/pnl-summary?branchid={{$branch->lid()}}&amp;date={{ $dr->date->copy()->endOfMonth()->addDay()->format('Y-m-d') }}" class="btn btn-default" title="{{ $dr->date->copy()->endOfMonth()->addDay()->format('Y-m-d') }}" data-toggle="loader">
               <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
             @endif

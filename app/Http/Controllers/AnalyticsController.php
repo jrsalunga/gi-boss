@@ -231,7 +231,7 @@ class AnalyticsController extends Controller
 
       \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
-        $m->to('freakyash_02@gmail.com')->subject('Month Branch Analytics - '.rand());
+        $m->to('freakyash_02@yahoo.com')->subject('Month Branch Analytics - '.rand());
       });
     }
 

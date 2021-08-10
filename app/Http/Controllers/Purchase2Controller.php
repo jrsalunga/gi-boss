@@ -485,7 +485,7 @@ class Purchase2Controller extends Controller {
 	  		array_push($arr, ['table'=>'expscat', 'item'=>$expscat->descriptor, 'id'=>strtolower($expscat->id)]);
 	  	}
 
-	  	$suppliers = Supplier::where('descriptor', 'like', '%'.$q.'%')->where('branchid', $branchid)->orderBy('descriptor')->get(['descriptor', 'id']);
+	  	$suppliers = Supplier::where('descriptor', 'like', '%'.$q.'%')->where('branchid', $branchid)->where('status', 1)->orderBy('descriptor')->get(['descriptor', 'id']);
 	  	foreach ($suppliers as $supplier) {
 	  		array_push($arr, ['table'=>'supplier', 'item'=>$supplier->descriptor, 'id'=>strtolower($supplier->id)]);
 	  	}

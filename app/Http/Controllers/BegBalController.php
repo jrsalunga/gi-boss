@@ -5,49 +5,62 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\DateRange;
 use App\Http\Controllers\Controller;
-use App\Repositories\StockTransferRepository as TransferRepo;
+use App\Repositories\BegBalRepository as Begbal;
 use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\DailySalesRepository as DS;
 
-class TransferController extends Controller
+class BegBalController extends Controller
 {
 
-  protected $dr;
-  protected $transfer;
-  protected $branch;
+	protected $dr;
+	protected $begbal;
+	protected $branch;
   protected $bb;
-  protected $ds;
+	protected $ds;
 
-  public function __construct(DateRange $dr, TransferRepo $transfer, BranchRepo $branch, DS $ds) {
+	public function __construct(DateRange $dr, Begbal $begbal, BranchRepo $branch, DS $ds) {
     $this->dr = $dr;
-    $this->ds = $ds;
-    $this->transfer = $transfer;
-    $this->branch = $branch;
-    $this->bb = $this->getBranches();
-  }
+		$this->ds = $ds;
+		$this->begbal = $begbal;
+		$this->branch = $branch;
+		$this->bb = $this->getBranches();
+	}
 
-  private function getBranches() {
-    return $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
-  }
+	private function getBranches() {
+		return $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
+	}
 
 
-  public function getDaily(Request $request) {
+	public function getDaily(Request $request) {
 
-    $filter = $this->getFilter($request, ['component', 'expense']);
+		$filter = $this->getFilter($request, ['component', 'expense']);
     $components = null;
-    $transfers = [];
+    $begbals = [];
     $where = [];
 
-   // return dd($filter);
+
+    if ($request->has('date'))
+      $date = c($request->input('date'))->startOfMonth();
+    else
+      $date = c()->startOfMonth();
+
+
+    $this->dr->date = $date;
+    $this->dr->fr = $date;
+    $this->dr->to = $date;
+
 
     if ($filter->isset)
       $where[$filter->table.'.id'] = $filter->id;
-      //$where['stocktransfer.'.$filter->table.'id'] = $filter->id;
 
-    if ($request->has('branchid'))
+
+
+   	if ($request->has('branchid'))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
     else
       $branch = null;
+
+
 
     
     if (!is_null($branch)) {
@@ -55,31 +68,34 @@ class TransferController extends Controller
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
       } else {
 
-        $where['stocktransfer.branchid'] = $branch->id;
-        $transfers = $this->transfer
-                    //->skipCache()
+        // $where['begbal.branch_id'] = $branch->id;
+        $begbals = $this->begbal
+                    ->skipCache()
                     ->branchByDR($branch, $this->dr)
-                    ->withRelations()
+                    // ->withRelations()
                     ->findWhere($where);
 
       }
     }
 
-    return $this->setViewWithDR(view('component.transfer.daily')
+    // return $begbals;
+    // return view('welcome');
+
+    return $this->setViewWithDR(view('component.begbal.daily')
                 ->with('filter', $filter)
                 ->with('branches', $this->bb)
                 ->with('components', $components)
-                ->with('transfers', $transfers)
+                ->with('datas', $begbals)
                 ->with('branch', $branch));
 
 
-    return $this->bb;
-    return view('component.transfer.daily');
-    return $this->transfer
-                //->skipCache()
-                ->withRelations()
-                ->findWhere(['branchid'=> '0C17FE2D78A711E587FA00FF59FBB323', 'date'=>'2017-09-23']);
-  }
+		return $this->bb;
+		return view('component.transfer.daily');
+		return $this->transfer
+								//->skipCache()
+								->withRelations()
+								->findWhere(['branchid'=> '0C17FE2D78A711E587FA00FF59FBB323', 'date'=>'2017-09-23']);
+	}
 
 
   public function getDailySummary(Request $request) {
@@ -116,7 +132,7 @@ class TransferController extends Controller
 
 
 
-  private function getFilter(Request $request, $tables) {
+	private function getFilter(Request $request, $tables) {
     $filter = new StdClass;
     $table = strtolower($request->input('table'));
     // if($request->has('itemid') && $request->has('table') && $request->has('item') && in_array($table, $tables)) {
@@ -169,7 +185,7 @@ class TransferController extends Controller
   }
 
 
-  
+	
 
   
 

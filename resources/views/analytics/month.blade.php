@@ -330,22 +330,33 @@
                   @endif
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_cogpct() }}">
-                  <span data-toggle="tooltip" title="{{ nf($d->dailysale->costOfGoods(),2) }}">
-                  {{ $d->dailysale->get_cogpct() }}
+                  <span  class="hidden-md hidden-lg"  data-toggle="tooltip" title="{{ nf($d->dailysale->costOfGoods(),2) }}">
+                    {{ $d->dailysale->get_cogpct() }}
+                  </span>
+                  <span class="hidden-sx hidden-sm help" data-toggle="tooltip" title="{{ $d->dailysale->get_cogpct() }}%">
+                    {{ nf($d->dailysale->costOfGoods(),2) }}
                   </span>
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_opexpct() }}">
                   @if($d->dailysale->get_opexpct()=='0.00')
                       -
                   @else
-                    <a class="text-primary" data-toggle="tooltip" title="{{ number_format($d->dailysale->getOpex(),2) }}" href="/component/purchases?table=expscat&item=Operations+and+Administration&itemid=8a1c2ff95cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
-                      {{ $d->dailysale->get_opexpct() }}
+                    <a class="text-primary" href="/component/purchases?table=expscat&item=Operations+and+Administration&itemid=8a1c2ff95cf111e5adbc00ff59fbb323&branchid={{$branch->lid()}}&fr={{$fr->format('Y-m-d')}}&to={{$to->format('Y-m-d')}}" target="_blank">
+                      <span class="hidden-md hidden-lg" data-toggle="tooltip" title="{{ nf($d->dailysale->getOpex(),2) }}">
+                        {{ $d->dailysale->get_opexpct() }}
+                      </span>
+                       <span class="hidden-sx hidden-sm help" data-toggle="tooltip" title="{{ $d->dailysale->get_opexpct() }}%">
+                        {{ nf($d->dailysale->getOpex(),2) }}
+                      </span>
                     </a>
                   @endif
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_dprofitpct() }}">
-                  <span data-toggle="tooltip" title="{{ nf($d->dailysale->directProfit(),2) }}">
-                  {{ $d->dailysale->get_dprofitpct() }}
+                  <span class="hidden-md hidden-lg" data-toggle="tooltip" title="{{ nf($d->dailysale->directProfit(),2) }}">
+                  {{ $d->dailysale->get_dprofitpct() }}%
+                  </span>
+                  <span class="hidden-sx hidden-sm help" data-toggle="tooltip" title="{{ $d->dailysale->get_dprofitpct() }}%">
+                    {{ nf($d->dailysale->directProfit(),2) }}
                   </span>
                 </td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">
@@ -440,6 +451,7 @@
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>

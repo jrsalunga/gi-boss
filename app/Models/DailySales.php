@@ -161,6 +161,7 @@ class DailySales extends BaseModel {
 
   public function netOpex() {
     return $this->grossOpex()+$this->totdeliver_fee+$this->emp_meal-$this->transOpex();
+    return $this->grossOpex();
   }
 
   public function netCos() {

@@ -124,6 +124,18 @@ class KitlogController extends Controller {
 
   public function getMonth(Request $request) {
 
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('Month Kitlog - '.rand());
+      });
+    }
+
     $bb = $this->branch->active()->all(['code', 'descriptor', 'id']);
     $d = carbonCheckorNow($request->input('date'));
     $date = $d->copy()->endOfMonth();

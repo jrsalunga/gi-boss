@@ -27,8 +27,8 @@
   
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li>All Branches Delivery Sales</li>
-    <li class="active">{{ $dr->date->format('D, M j, Y') }}</li>
+    <li><a href="/delivery/all">Delivery Sales</a></li>
+    <li class="active">All Branches <small>({{ $dr->date->format('D, M j, Y') }})</small></li>
   </ol>
 
     
@@ -91,7 +91,8 @@
           <th class="text-right">Grab Food</th>
           <th class="text-right">Grab Conceirge</th>
           <th class="text-right">Food Panda</th>
-          <th class="text-right">Zap</th>
+          <th class="text-right">Zap Delivery</th>
+          <th class="text-right">Total Zap Sales</th>
         </tr>
       </thead>
       <tbody>
@@ -102,6 +103,7 @@
           $tot_grabc = 0;
           $tot_panda = 0;
           $tot_zap = 0;
+          $tot_zapsales = 0;
         ?>
         @foreach($dailysales as $key => $ds) 
         
@@ -124,6 +126,7 @@
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
           @else
             <?php 
               $tot_sales  += $ds['ds']->sales;
@@ -132,6 +135,7 @@
               $tot_grabc  += $ds['ds']->grabc;
               $tot_panda  += $ds['ds']->panda;
               $tot_zap    += $ds['ds']->zap;
+              $tot_zapsales+= $ds['ds']->zap_sales;
             ?>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if($ds['ds']->sales>0)
@@ -184,6 +188,13 @@
                 -
               @endif
             </td>
+            <td class="text-right" data-sort="{{ $ds['ds']->zap_sales>0?number_format($ds['ds']->zap_sales,0):'' }}">
+              @if($ds['ds']->zap_sales>0)
+                {{ number_format($ds['ds']->zap_sales,2) }}
+              @else 
+                -
+              @endif
+            </td>
           @endif
           
         </tr>
@@ -232,6 +243,11 @@
           <td class="text-right">
             <strong>
               {{ number_format($tot_zap,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_zapsales,2) }}
             </strong>
           </td>
         </tr>

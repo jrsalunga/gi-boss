@@ -78,10 +78,10 @@
                 <li><a href="/report/pnl/daily">Daily P&amp;L Summary (By Branch) </a></li>
                 <li><a href="/report/pnl-summary">Monthly P&amp;L Summary (By Branch) </a></li>
                 <li><a href="/kitlog/month">Kitchen Log Month Summary </a></li>
-                <li><a href="/report/cash-audit">Daily Cash Audit </a></li>
-                <li><a href="/delivery/all">All Branches Delivery Sales </a></li>
+                <li><a href="/delivery/all">Delivery Sales (All Branches)</a></li>
                 <li><a href="/saletype/branch">Sales Type (By Branch) </a></li>
-                <li><a href="/report/daily-cash-flow">All Branches Cash Flow <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="/report/daily-cash-flow">Cash Flow (All Branches) <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="/report/cash-audit">Daily Cash Audit (By Branch)</a></li>
               </ul>
             </div>
           </div> 

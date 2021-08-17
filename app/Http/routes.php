@@ -66,6 +66,9 @@ Route::get('api/search/component', ['uses'=>'Purchase2Controller@search']);
 Route::get('api/s/product/sales', ['uses'=>'SaleController@search']);
 Route::get('api/mdl/purchases/{id}', ['uses'=>'Purchase2Controller@ajaxPurchases']);
 
+Route::get('component/begbal', ['uses'=>'BegBalController@getDaily']);
+
+
 Route::get('product/sales', ['uses'=>'SaleController@getDaily']);
 Route::get('product/sales/comparative', ['uses'=>'SaleController@productComparative']);
 

@@ -68,7 +68,7 @@ class BegBalController extends Controller
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
       } else {
 
-        // $where['begbal.branch_id'] = $branch->id;
+        $where['begbal.branch_id'] = $branch->id;
         $begbals = $this->begbal
                     ->skipCache()
                     ->branchByDR($branch, $this->dr)

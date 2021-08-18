@@ -66,7 +66,7 @@ class BegBalController extends Controller
 
 
 
-    
+    $br = 'ALL';
     if (!is_null($branch)) {
       if (!$filter->isset && $this->dr->diffInDays()>100) {
         $request->session()->flash('alert-warning', 'Date range too large. 100 days limit.');
@@ -90,6 +90,20 @@ class BegBalController extends Controller
                   ]);
 
       }
+
+      $br = $branch->code;
+    }
+
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name.' '.$br.' '.$this->dr->date->format('Y-m-d')
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('Beginning Stock - '.rand());
+      });
     }
 
     // return $mes;
@@ -102,14 +116,6 @@ class BegBalController extends Controller
                 ->with('datas', $begbals)
                 ->with('mes', $mes)
                 ->with('branch', $branch));
-
-
-		return $this->bb;
-		return view('component.transfer.daily');
-		return $this->transfer
-								//->skipCache()
-								->withRelations()
-								->findWhere(['branchid'=> '0C17FE2D78A711E587FA00FF59FBB323', 'date'=>'2017-09-23']);
 	}
 
 

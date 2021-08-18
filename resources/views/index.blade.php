@@ -73,6 +73,7 @@
                 <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
                 <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
                 <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch)</a></li>
+                <li><a href="/component/begbal">Beginning Stock Summary (By Branch)  <small><span class="label label-danger">new</span></small></a></li>
                 <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
                 <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
                 <li><a href="/report/pnl/daily">Daily P&amp;L Summary (By Branch) </a></li>
@@ -80,7 +81,7 @@
                 <li><a href="/kitlog/month">Kitchen Log Month Summary </a></li>
                 <li><a href="/delivery/all">Delivery Sales (All Branches)</a></li>
                 <li><a href="/saletype/branch">Sales Type (By Branch) </a></li>
-                <li><a href="/report/daily-cash-flow">Cash Flow (All Branches) <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="/report/daily-cash-flow">Cash Flow (All Branches)</a></li>
                 <li><a href="/report/cash-audit">Daily Cash Audit (By Branch)</a></li>
               </ul>
             </div>

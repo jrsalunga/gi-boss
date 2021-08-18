@@ -363,7 +363,6 @@
     </div>
     @else
       <!-- no data  -->
-      No Records
     @endif
   </div>
 

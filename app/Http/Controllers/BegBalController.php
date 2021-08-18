@@ -42,29 +42,22 @@ class BegBalController extends Controller
     $mes = [];
     $where = [];
 
-
     if ($request->has('date'))
       $date = c($request->input('date'))->startOfMonth();
     else
       $date = c()->startOfMonth();
 
-
     $this->dr->date = $date;
     $this->dr->fr = $date;
     $this->dr->to = $date;
 
-
     if ($filter->isset)
       $where[$filter->table.'.id'] = $filter->id;
-
-
 
    	if ($request->has('branchid'))
       $branch = $this->branch->find(strtolower($request->input('branchid')));
     else
       $branch = null;
-
-
 
     $br = 'ALL';
     if (!is_null($branch)) {
@@ -88,10 +81,9 @@ class BegBalController extends Controller
                     'branch_id'=>$branch->id, 
                     'date'=>$this->dr->date->copy()->endOfMonth()->format('Y-m-d')
                   ]);
-
       }
 
-      $br = $branch->code;
+      $br = $branch->code.' '.$filter->item;
     }
 
     if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
@@ -107,7 +99,6 @@ class BegBalController extends Controller
     }
 
     // return $mes;
-    // return view('welcome');
 
     return $this->setViewWithDR(view('component.begbal.daily')
                 ->with('filter', $filter)

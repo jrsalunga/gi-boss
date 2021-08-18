@@ -223,7 +223,7 @@
               <th class="text-right">Unit Cost</th>
               <th class="text-right">Total Cost</th>
               <th class="hidden-xs hidden-sm hidden-md"></th>
-              <th>Expense</th>
+              <th>Code</th>
               <th class="hidden-xs hidden-sm hidden-md">Comp Category</th>
             </tr>
           </thead>
@@ -313,7 +313,7 @@
                     <thead>
                       <tr>
                         <th>Code</th>
-                        <th>Expense Category</th>
+                        <th>Category</th>
                         <th class="text-right">Total Cost</th>
                       </tr>
                     </thead>

@@ -88,8 +88,7 @@
             <input type="hidden" name="item" id="item" value="{{ $filter->item }}">
             <input type="hidden" name="itemid" id="itemid" value="{{ $filter->id }}">
             <input type="hidden" name="branchid" id="branchid" value="{{ is_null($branch) ? '':$branch->lid() }}">
-            <input type="hidden" name="fr" id="fr" value="{{ $dr->fr->format('Y-m-d') }}" data-fr="{{ $dr->fr->format('Y-m-d') }}">
-            <input type="hidden" name="to" id="to" value="{{ $dr->to->format('Y-m-d') }}" data-to="{{ $dr->to->format('Y-m-d') }}">
+            <input type="hidden" name="date" id="date" value="{{ $dr->date->format('Y-m-d') }}">
             {!! Form::close() !!}
           </div> <!-- end btn-grp -->
 
@@ -269,30 +268,10 @@
           <tfoot>
             <tr>
               <td class="hidden-xs">&nbsp;</td>
-              <td>&nbsp;</td>
-              <td class="text-right">
-                @if(isset($_GET['table']) && $_GET['table']==='component' && count($begbals)>0)
-                  <strong title="Total Quantity" data-toggle="tooltip">{{ number_format($tot_qty, 2,'.','')+0 }}</strong>
-                @endif
-              </td>
-              <td>
-                @if(isset($_GET['table']) && $_GET['table']==='component' && count($begbals)>0)
-                  <small class="text-muted">
-                  {{ strtolower($begbal->uom)}}@if($tot_qty>1 && substr(strtolower($begbal->uom), -1)!='s')s
-                  @endif
-                  </small>
-                @endif
-              </td>
-              <td class="text-right">
-                @if(isset($_GET['table']) && $_GET['table']==='component' && $tot_qty>0 && count($begbals)>0)
-                  <div>
-                    <strong title="Average Unit Cost" data-toggle="tooltip">{{ number_format($tot_transcost/$tot_qty, 2) }}</strong>
-                  </div>
-                  <div>
-                    
-                  </div>
-                @endif
-              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
               <td class="text-right">
                 <!-- <div>
                   {{ number_format($tot_transcost, 2) }}
@@ -426,19 +405,15 @@
           </div>
           
           <div class="form-group">
-            <label>Date Range:</label>
+            <label>Month:</label>
             <div>
             <div class="btn-group" role="group">
             <label class="btn btn-default" for="mdl-dp-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-fr" value="{{ $dr->fr->format('m/d/Y') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date" value="{{ $dr->date->format('m/Y') }}" style="max-width: 110px;">
             
-            <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="mdl-dp-date-to" value="{{ $dr->to->format('m/d/Y') }}" style="max-width: 110px;">
-            <label class="btn btn-default" for="mdl-dp-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
+            
             </div>
             </div>
           </div>

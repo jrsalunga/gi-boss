@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\BegBalRepository as Begbal;
 use App\Repositories\BranchRepository as BranchRepo;
 use App\Repositories\DailySalesRepository as DS;
+use App\Repositories\MonthExpenseRepository as ME;
 
 class BegBalController extends Controller
 {
@@ -17,10 +18,12 @@ class BegBalController extends Controller
 	protected $branch;
   protected $bb;
 	protected $ds;
+  protected $me;
 
-	public function __construct(DateRange $dr, Begbal $begbal, BranchRepo $branch, DS $ds) {
+	public function __construct(DateRange $dr, Begbal $begbal, BranchRepo $branch, DS $ds, ME $me) {
     $this->dr = $dr;
 		$this->ds = $ds;
+    $this->me = $me;
 		$this->begbal = $begbal;
 		$this->branch = $branch;
 		$this->bb = $this->getBranches();
@@ -36,6 +39,7 @@ class BegBalController extends Controller
 		$filter = $this->getFilter($request, ['component', 'expense']);
     $components = null;
     $begbals = [];
+    $mes = [];
     $where = [];
 
 
@@ -70,15 +74,25 @@ class BegBalController extends Controller
 
         $where['begbal.branch_id'] = $branch->id;
         $begbals = $this->begbal
-                    ->skipCache()
+                    // ->skipCache()
                     ->branchByDR($branch, $this->dr)
-                    // ->withRelations()
                     ->findWhere($where);
+
+        $mes = $this->me
+                  // ->skipCache()
+                  ->scopeQuery(function($query){
+                    return $query->orderBy('ordinal','asc');
+                  })
+                  ->with('expense')
+                  ->findWhere([
+                    'branch_id'=>$branch->id, 
+                    'date'=>$this->dr->date->copy()->endOfMonth()->format('Y-m-d')
+                  ]);
 
       }
     }
 
-    // return $begbals;
+    // return $mes;
     // return view('welcome');
 
     return $this->setViewWithDR(view('component.begbal.daily')
@@ -86,6 +100,7 @@ class BegBalController extends Controller
                 ->with('branches', $this->bb)
                 ->with('components', $components)
                 ->with('datas', $begbals)
+                ->with('mes', $mes)
                 ->with('branch', $branch));
 
 

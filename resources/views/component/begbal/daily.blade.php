@@ -203,21 +203,29 @@
       </div><!-- end: .col-md-12 -->
       
       
-      <div class="col-md-12">
+      <div class="col-md-8">
+
+        <div role="tabpanel" class="tab-pane" id="stats">
+          <!-- Supplier Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Components</div>
+            <div class="panel-body">
+              <div class="row">
+
+
         <div class="table-responsive">
         <table class="table table-condensed table-hover table-striped table-sort" style="margin-top: 0;">
           <thead>
             <tr>
-              <th>Date</th>
+              <th class="hidden-xs">Date</th>
               <th>Component</th>
               <th class="text-right">Qty</th>
               <th></th>
               <th class="text-right">Unit Cost</th>
               <th class="text-right">Total Cost</th>
-              
+              <th class="hidden-xs hidden-sm hidden-md"></th>
               <th>Expense</th>
-              <th>Comp Cat</th>
-              <th></th>
+              <th class="hidden-xs hidden-sm hidden-md">Comp Category</th>
             </tr>
           </thead>
           <tbody>
@@ -226,16 +234,14 @@
               $cancel = $begbal->tcost>0 ? false:'text-decoration: line-through;';
             ?>
               <tr class="{{ !$cancel?'':'text-muted' }}">
-                <td style="{{ $cancel }}">{{ $begbal->date->format('M j, D') }}</td>
+                <td class="hidden-xs" style="{{ $cancel }}">{{ $begbal->date->format('M j, D') }}</td>
                 <td style="{{ $cancel }}">{{ $begbal->component }}</td>
                 <td class="text-right text-muted">{{ number_format($begbal->qty,2) }}</td>
                 <td><small class="text-muted">{{ strtolower($begbal->uom) }}@if($begbal->qty>1 && substr(strtolower($begbal->uom), -1)!='s')s
                         @endif</small></td>
                 <td class="text-right text-muted">{{ number_format($begbal->ucost,2) }}</td>
                 <td class="text-right">{{ number_format($begbal->tcost,2) }}</td>
-                <td style="{{ $cancel }}"><small class="text-muted help" title="{{ $begbal->compcatcode }} - {{ $begbal->compcat }}" data-toggle="tooltip">{{ $begbal->compcat }}</small></td>
-                <td style="{{ $cancel }}"><small class="text-muted help" title="{{ $begbal->expensecode }} - {{ $begbal->expense }}" data-toggle="tooltip">{{ $begbal->expensecode }}</small></td>
-                <td>
+                <td class="hidden-xs hidden-sm hidden-md">
                   <span class="label 
                     @if($begbal->expscatcode=='05')
                       label-warning
@@ -246,6 +252,8 @@
                     @endif
                      pull-right" title="{{ $begbal->expscatcode }} - {{ $begbal->expscat }}" data-toggle="tooltip" style="cursor: help;">{{ $begbal->expscatcode }}</span>
                 </td>
+                <td style="{{ $cancel }}"><small class="text-muted help" title="{{ $begbal->expensecode }} - {{ $begbal->expense }}" data-toggle="tooltip">{{ $begbal->expensecode }}</small></td>
+                <td style="{{ $cancel }}"><small class="text-muted help hidden-xs hidden-sm hidden-md" title="{{ $begbal->compcatcode }} - {{ $begbal->compcat }}" data-toggle="tooltip">{{ $begbal->compcat }}</small></td>
               </tr>
             <?php
               if ($begbal->tcost>0) {
@@ -260,7 +268,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <td>&nbsp;</td>
+              <td class="hidden-xs">&nbsp;</td>
               <td>&nbsp;</td>
               <td class="text-right">
                 @if(isset($_GET['table']) && $_GET['table']==='component' && count($begbals)>0)
@@ -286,25 +294,93 @@
                 @endif
               </td>
               <td class="text-right">
-                <div>
+                <!-- <div>
                   {{ number_format($tot_transcost, 2) }}
                 </div>
                 <div>
                   <small>{{ number_format($tot_neg_transcost, 2) }}</small>
-                </div>
+                </div> -->
                 <div>
                   <strong title="Total Cost" data-toggle="tooltip">{{ number_format($tot_transcost+$tot_neg_transcost, 2) }}</strong>
                 </div>
               </td>
+              <td class="hidden-xs hidden-sm hidden-md">&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td class="hidden-xs hidden-sm hidden-md">&nbsp;</td>
             </tr>
           </tfoot>
         </table>
         </div><!-- table-responsive  -->
+
+
+              </div>
+            </div>
+          </div>
+        </div>
   
-      </div>
+      </div><!-- end:col-md-7  -->
+
+
+      <div class="col-md-4">
+
+        <div role="tabpanel" class="tab-pane" id="stats">
+          <!-- Supplier Panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Summary</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-condensed table-hover" style="margin-top: 0;">
+                    <thead>
+                      <tr>
+                        <th>Code</th>
+                        <th>Expense Category</th>
+                        <th class="text-right">Total Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        $ttcost = 0;
+                      ?>
+                      @foreach($mes as $me)
+                        @if($me->begbal!=0)
+                        <tr class="{{ $me->expense_id==strtoupper(request()->input('itemid'))?'bg-success':'' }}">
+                          <td>{{ $me->expense->code }}</td>
+                          <td>
+                            <a href="/component/begbal?branchid={{$branch->lid()}}&amp;table=expense&amp;item={{urlencode($me->expense->descriptor)}}&amp;itemid={{$me->expense->lid()}}&amp;date={{$dr->date->format('Y-m-d')}}" data-toggle="loader">
+                            {{ $me->expense->descriptor }}
+                            </a>
+                          </td>
+                          <td class="text-right">{{ nf($me->begbal) }}</td>
+                        </tr>
+                        <?php $ttcost += $me->begbal; ?>
+                        @endif
+                      @endforeach
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td>
+                          
+                        </td>
+                        <td></td>
+                        <td class="text-right"><strong>{{ nf($ttcost) }}</strong></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div> <!-- end:table-responsive --->
+                  @if(request()->has('item'))
+                  <small>
+                    &nbsp;&nbsp;
+                    <a href="/component/begbal?branchid={{$branch->lid()}}&amp;date={{$dr->date->format('Y-m-d')}}" data-toggle="loader">
+                      Clear Filter <em>({{request()->input('item') }})</em>
+                    </a>
+                  </small>
+                  @endif
+              </div>
+            </div>
+          </div>
+        </div>
+
     </div>
     @else
       <!-- no data  -->

@@ -24,10 +24,10 @@ class Contact extends BaseModel {
 
     switch ($this->type) {
     	case 1:
-    		return substr($s, -11, 4).' '.substr($s, -7, 7);
+    		return substr($s, -11, 4).' '.substr($s, -7, 3).' '.substr($s, -4, 4);
     		break;
     	case 2:
-    		return '('.substr($s, -9, 2).') '.substr($s, -7, 3).' '.substr($s, -4, 4);
+    		return '('.substr($s, -10, 2).') '.substr($s, -8, 3).' '.substr($s, -4, 4);
     		break;
     	default:
     		return $this->number;

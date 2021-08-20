@@ -317,7 +317,7 @@ if (!function_exists('jquery_mask')) {
     		if ($full)
     			return '<span class="gly gly-phone-alt"></span>';
     		else
-    			return 'data-mask="(00) 000 0000" maxlength="8"';
+    			return 'data-mask="(00) 0000 0000" maxlength="9"';
     	case '3':
     		if ($full)
     			return '<span class="gly gly-fax"></span>';
@@ -327,7 +327,7 @@ if (!function_exists('jquery_mask')) {
     		if ($full)
     			return '<span class="gly gly-iphone"></span>';
     		else
-        	return 'data-mask="0000 0000000" maxlength="12"';
+        	return 'data-mask="0000 000 0000" maxlength="13"';
         break;
     }
   }

@@ -93,8 +93,8 @@
           <th class="text-right">Change Fund</th>
           <th class="text-right"><span data-toggle="tooltip" title="percentage of change fund  from beginning cash">%</span></th>
           <th class="text-right">Cash Sale</th>
-          <th class="text-right">Cash In/Out/Ref</th>
-          <th class="text-right"><span data-toggle="tooltip" title="Change Fund + Cash Sale">Cash Total</span></th>
+          <th class="text-right"><span data-toggle="tooltip" title="Cash In/Out and Refund">Cash In/Out/Ref</span></th>
+          <th class="text-right">Cash Total</th>
           <th class="text-right">Cash Disbursement</th>
           <th class="text-right">Ending Balance</th>
           <th class="text-right">Actual Cash</th>
@@ -215,7 +215,7 @@
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_sale']>0?nf($data['cash_audit']['csh_sale'],0):'' }}">
               {{ nf($data['cash_audit']['csh_sale']) }}
             </td>
-            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_in_out']>0?nf($data['cash_audit']['csh_in_out'],0):'' }}">
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_in_out']>0?nf($data['cash_audit']['csh_in_out'],0):'' }}" title="In:{{$data['cash_audit']['col_cas']}}">
               {{ nf($data['cash_audit']['csh_in_out']) }}
             </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['cash_total']>0?nf($data['cash_audit']['cash_total'],0):'' }}">

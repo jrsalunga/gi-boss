@@ -11,7 +11,8 @@ use App\Http\Controllers\Reports\CompcatPurchase;
 use App\Repositories\CashAuditRepository as CashAudit;
 use App\Repositories\MonthCashAuditRepository as MonthCashAudit;
 use App\Repositories\Boss\BranchRepository as BranchRepo;
-use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
+// use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
+use App\Repositories\Criterias\OpenBossBranchCriteria as ActiveBranch;
 use App\Repositories\SetslpRepository as Setslp;
 use App\Repositories\DepslipRepository as Depslip;
 

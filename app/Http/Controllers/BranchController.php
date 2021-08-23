@@ -444,8 +444,9 @@ class BranchController extends Controller
 
 
 	private function unset_blank_form_rules(Request $request, array $rules, $id=true) {
+    $except = ['date_start', 'date_end'];
 		foreach ($rules as $key => $value) {
-			if (empty($request->{$key}))
+			if (empty($request->{$key}) && !in_array($key, $except))
 				unset($rules[$key]);
 		}
 
@@ -456,7 +457,7 @@ class BranchController extends Controller
 	}
 
 	private function process_full(Request $request) {
-		//return $request->all();
+		// return $request->all();
 		if (!is_uuid($request->input('id')))
 			return redirect('/masterfiles/branch')->withErrors('Something went wrong. Please try again');
 
@@ -577,7 +578,11 @@ class BranchController extends Controller
     $attr['sectorid'] = $request->input('sector_id');
     $attr['companyid'] = $request->input('company_id');
     $attr['opendate'] = $request->input('date_start');
-    $attr['closedate'] = $request->input('date_end');
+
+    if (!empty($request->input('date_end')) && $request->input('status')=='4') 
+      $attr['closedate'] = '';
+    else
+      $attr['closedate'] = $request->input('date_end');
     
 
     $this->repository->update($attr, $request->input('id'));

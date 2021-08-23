@@ -10,6 +10,7 @@ use Prettus\Repository\Traits\CacheableRepository;
 use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
+use App\Repositories\Criterias\OpenBossBranchCriteria as OpenBranch;
 use App\Traits\Repository as RepoTrait;
 
 
@@ -63,24 +64,11 @@ class BranchRepository extends BaseRepository implements CacheableInterface
     return 'App\\Models\\Boss\\Branch';
   }
 
-
-
   public function active($field=['*']){
-    return $this->getByCriteria(new ActiveBranch($field));
+    return $this->pushCriteria(new ActiveBranch($field));
   }
 
-  
- 
-
-
-
-
-  
-  
-
-    
-
-
-
-
+  public function open($field=['*']){
+    return $this->pushCriteria(new OpenBranch($field));
+  }
 }

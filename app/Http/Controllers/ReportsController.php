@@ -11,8 +11,8 @@ use App\Http\Controllers\Reports\CompcatPurchase;
 use App\Repositories\CashAuditRepository as CashAudit;
 use App\Repositories\MonthCashAuditRepository as MonthCashAudit;
 use App\Repositories\Boss\BranchRepository as BranchRepo;
-// use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
-use App\Repositories\Criterias\OpenBossBranchCriteria as ActiveBranch;
+use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
+use App\Repositories\Criterias\OpenBossBranchCriteria as OpenBranch;
 use App\Repositories\SetslpRepository as Setslp;
 use App\Repositories\DepslipRepository as Depslip;
 
@@ -36,12 +36,12 @@ class ReportsController extends Controller
     $this->branch = $branch;
     $this->setslp = $setslp;
     $this->depslip = $depslip;
-    $this->branch->pushCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
+    // $this->branch->pushCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
     $this->bb = $this->getBranches();
 	}
 
   private function getBranches() {
-    return $this->branch->all();
+    return $this->branch->active(['code', 'descriptor', 'id'])->all();
   }
 
 	public function getCompcatPurchase(Request $request) {
@@ -97,7 +97,7 @@ class ReportsController extends Controller
 
     $datas = [];
     
-    foreach($this->bb as $k => $branch) {
+    foreach($this->branch->open(['code', 'descriptor', 'id'])->all() as $k => $branch) {
       $datas[$branch->code]['code'] = $branch->code;
       $datas[$branch->code]['branch'] = $branch->descriptor;
       $datas[$branch->code]['branch_id'] = $branch->id;

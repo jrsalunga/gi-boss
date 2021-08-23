@@ -14,10 +14,11 @@ class ActiveBossBranchCriteria implements CriteriaInterface {
 
   public function apply($model, RepositoryInterface $repository)
   {
-      $model = $model->select($this->fields)
-      							->where('status', 2)
-      							->whereIn('type', [0,1,2,3])
-      							->orderBy('code');
+      $model = $model
+                ->select($this->fields)
+      					->whereIn('status', [2,4])
+      					->whereIn('type', [0,1,2,3])
+      					->orderBy('code');
       return $model;
   }
 }

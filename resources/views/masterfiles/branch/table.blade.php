@@ -47,6 +47,9 @@
 		@if($branch->status=='3')
 			<span class="label label-default pull-left" style="cursor: help">Closed</span>
 		@endif
+    @if($branch->status=='4')
+      <span class="label label-default pull-left" style="cursor: help">Temporary Closed</span>
+    @endif
 		@if($branch->type=='4')
 			<span class="label label-primary pull-left" style="margin-left: 3px;">Office</span>
 		@endif

@@ -299,7 +299,7 @@
 									@if($_status==0)
 										<option disabled selected>-- Select Status -- </option>
 									@endif
-									@foreach(['UNDER CONSTRUCTION', 'OPENED', 'CLOSED'] as $key => $pt)
+									@foreach(['UNDER CONSTRUCTION', 'OPENED', 'CLOSED', 'TEMPORARY CLOSED'] as $key => $pt)
 								  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_status)?'selected':'';?> data-tokens="{{ $pt }}">
 								  		{{ $pt }}
 								  	</option>

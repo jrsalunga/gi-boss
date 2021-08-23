@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Reports\CompcatPurchase;
 use App\Repositories\CashAuditRepository as CashAudit;
 use App\Repositories\MonthCashAuditRepository as MonthCashAudit;
-use App\Repositories\BranchRepository as BranchRepo;
-use App\Repositories\Criterias\ActiveBranchCriteria as ActiveBranch;
+use App\Repositories\Boss\BranchRepository as BranchRepo;
+use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
 use App\Repositories\SetslpRepository as Setslp;
 use App\Repositories\DepslipRepository as Depslip;
 
@@ -35,12 +35,12 @@ class ReportsController extends Controller
     $this->branch = $branch;
     $this->setslp = $setslp;
     $this->depslip = $depslip;
-    $this->branch->pushCriteria(new ActiveBranch);
+    $this->branch->pushCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
     $this->bb = $this->getBranches();
 	}
 
   private function getBranches() {
-    return $this->branch->orderBy('code')->all(['code', 'descriptor', 'id']);
+    return $this->branch->all();
   }
 
 	public function getCompcatPurchase(Request $request) {

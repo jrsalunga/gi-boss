@@ -93,9 +93,9 @@
           <th class="text-right">Change Fund</th>
           <th class="text-right"><span data-toggle="tooltip" title="percentage of change fund  from beginning cash">%</span></th>
           <th class="text-right">Cash Sale</th>
+          <th class="text-right">Cash In/Out/Ref</th>
           <th class="text-right"><span data-toggle="tooltip" title="Change Fund + Cash Sale">Cash Total</span></th>
           <th class="text-right">Cash Disbursement</th>
-          <th class="text-right">Cash Out/Refund</th>
           <th class="text-right">Ending Balance</th>
           <th class="text-right">Actual Cash</th>
           <th class="text-right">(Short)/Over</th>
@@ -118,7 +118,7 @@
           $tot_shrt_cumm = 0;
           $tot_chg_sale = 0;
           $tot_pos_sales = 0;
-          $tot_csh_out = 0;
+          $tot_csh_in_out = 0;
           $ctr = 0;
 
           // ['csh_fwdd', 'deposit', 'csh_sale', 'chg_sale', 'csh_disb', 'csh_bal', 'csh_cnt', 'shrt_ovr', 'shrt_cumm']
@@ -180,7 +180,7 @@
               $tot_shrt_cumm    += $data['cash_audit']['shrt_cumm'];
               $tot_chg_sale     += $data['cash_audit']['chg_sale'];
               $tot_pos_sales    += $data['cash_audit']['pos_sales'];
-              $tot_csh_out      += $data['cash_audit']['csh_out'];
+              $tot_csh_in_out   += $data['cash_audit']['csh_in_out'];
 
               $ctr++;
 
@@ -215,6 +215,9 @@
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_sale']>0?nf($data['cash_audit']['csh_sale'],0):'' }}">
               {{ nf($data['cash_audit']['csh_sale']) }}
             </td>
+            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_in_out']>0?nf($data['cash_audit']['csh_in_out'],0):'' }}">
+              {{ nf($data['cash_audit']['csh_in_out']) }}
+            </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['cash_total']>0?nf($data['cash_audit']['cash_total'],0):'' }}">
               {{ nf($data['cash_audit']['cash_total']) }}
             </td>
@@ -222,9 +225,6 @@
               <a href="/component/purchases?table=payment&item=Cash&itemid=c&branchid={{ stl($data['branch_id']) }}&fr={{ $dr->date->format('Y-m-d') }}&to={{ $dr->date->format('Y-m-d') }}" target="_blank"  data-toggle="tooltip" title="view purchase log page"> 
                 {{ nf($data['cash_audit']['csh_disb']) }}
               </a>
-            </td>
-            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_out']>0?nf($data['cash_audit']['csh_out'],0):'' }}">
-              {{ nf($data['cash_audit']['csh_out']) }}
             </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_bal']>0?nf($data['cash_audit']['csh_bal'],0):'' }}">
               {{ nf($data['cash_audit']['csh_bal']) }}
@@ -300,17 +300,17 @@
           </td>
           <td class="text-right">
             <strong>
+              {{ number_format($tot_csh_in_out,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
               {{ number_format($tot_cash_total,2) }}
             </strong>
           </td>
           <td class="text-right">
             <strong>
               {{ number_format($tot_csh_disb,2) }}
-            </strong>
-          </td>
-          <td class="text-right">
-            <strong>
-              {{ number_format($tot_csh_out,2) }}
             </strong>
           </td>
           <td class="text-right">

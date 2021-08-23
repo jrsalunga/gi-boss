@@ -110,6 +110,8 @@ class ReportsController extends Controller
         $datas[$branch->code]['cash_audit'] = NULL;
       else {
         
+        $cash_audit->change_fund = $cash_audit->csh_fwdd-$cash_audit->deposit;
+        
         if ($cash_audit->csh_fwdd>0) {
           $cash_audit->csh_fwdd_pct = ($cash_audit->deposit/$cash_audit->csh_fwdd)*100;
           $cash_audit->change_fund_pct = ($cash_audit->change_fund/$cash_audit->csh_fwdd)*100;
@@ -119,7 +121,6 @@ class ReportsController extends Controller
         }
         
         $cash_audit->csh_in_out = $cash_audit->col_ca - $cash_audit->csh_out;
-        $cash_audit->change_fund = $cash_audit->csh_fwdd-$cash_audit->deposit;
         $cash_audit->cash_total = $cash_audit->change_fund + $cash_audit->csh_sale + $cash_audit->csh_in_out;
         $cash_audit->pos_sales = $cash_audit->csh_sale + $cash_audit->chg_sale;
 

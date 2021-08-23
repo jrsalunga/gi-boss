@@ -215,7 +215,7 @@
             <td class="text-right" data-sort="{{ $data['cash_audit']['csh_sale']>0?nf($data['cash_audit']['csh_sale'],0):'' }}">
               {{ nf($data['cash_audit']['csh_sale']) }}
             </td>
-            <td class="text-right" data-sort="{{ $data['cash_audit']['csh_in_out']>0?nf($data['cash_audit']['csh_in_out'],0):'' }}" title="In:{{$data['cash_audit']['col_cas']}}">
+            <td class="text-right help" data-sort="{{ $data['cash_audit']['csh_in_out']>0?nf($data['cash_audit']['csh_in_out'],0):'' }}" title="IN:{{$data['cash_audit']['col_cas']}} OUT:{{nf($data['cash_audit']['csh_out'])}}" data-toggle="tooltip">
               {{ nf($data['cash_audit']['csh_in_out']) }}
             </td>
             <td class="text-right" data-sort="{{ $data['cash_audit']['cash_total']>0?nf($data['cash_audit']['cash_total'],0):'' }}">

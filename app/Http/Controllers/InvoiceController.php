@@ -143,9 +143,9 @@ class InvoiceController extends Controller
     // return $apus;
     // return $invoice;
 
-    // if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
-      $url = '<a href="http://boss.giligansrestaurant.com/invoice?supprefno='.$request->input('supprefno').'&date='.$request->input('date').'&branchid='.$request->input('branchid').'&supplierid='.$request->input('supplierid').'">http://boss.giligansrestaurant.com/invoice?supprefno='.$request->input('supprefno').'&date='.$request->input('date').'&branchid='.$request->input('branchid').'&supplierid='.$request->input('supplierid').'</a>';
+      $url = 'http://boss.giligansrestaurant.com/invoice?supprefno='.$request->input('supprefno').'&date='.$request->input('date').'&branchid='.$request->input('branchid').'&supplierid='.$request->input('supplierid');
 
 
       $email = [
@@ -156,7 +156,7 @@ class InvoiceController extends Controller
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
         $m->to('freakyash_02@yahoo.com')->subject('Purchase Invoice');
       });
-    // }
+    }
 
     return view('invoice.view', compact('invoice', 'apus'));
   }

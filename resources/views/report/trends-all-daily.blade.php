@@ -112,6 +112,9 @@
         </tr>
       </thead>
       <tbody>
+        <?php
+          $tfoot = [];
+        ?>
         @foreach($datas as $key => $data) 
         <tr>
           <td data-sort="{{$data['code']}}">{{ $data['code']  }}</td>
@@ -125,6 +128,7 @@
               @else
                 {{ nf($ds['sales']) }}
                 <div>
+                  @if($ds['pct']!=0)
                   <small class="text-muted">
                     <em title="{{ nf($ds['diff']) }}" data-toggle="tooltip" class="help">
                     {{ nf($ds['pct']) }}% @if($ds['diff']>0)<span class="glyphicon glyphicon-arrow-up text-success" style="font-size: smaller;"></span>
@@ -132,6 +136,7 @@
                     @else @endif
                     </em>
                   </small> 
+                  @endif
                 </div>
               @endif
             </td>
@@ -139,8 +144,25 @@
           @endforeach
           <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
         </tr>
+        <?php
+
+          if (array_key_exists($key, $tfoot))
+            $tfoot[$key] += $ds['sales']; 
+          else
+            $tfoot[$key] = $ds['sales']; 
+
+        ?>
         @endforeach
       </tbody>
+
+      <tfoot>
+        <tr>
+          <td></td>
+          @foreach($tfoot as $tf)
+            <td>{{ nf($tf) }}</td>
+          @endforeach
+        </tr>
+      </tfoot>
       
     </table>
 

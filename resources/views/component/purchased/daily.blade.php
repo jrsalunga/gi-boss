@@ -185,6 +185,7 @@
         $totemp=0;
         $totdf=0;
         $totutang=0;
+        $totqtyutang = 0;
         $totpospurch=0;
       ?>
     	@if(is_null($purchases))
@@ -341,6 +342,10 @@
                     
                     if ($purchase->componentid=='11EB228238760B969E0C14DDA9E4EAAF')
                       $totdf += $purchase->tcost;
+
+                    if ($purchase->terms=='U')
+                      $totqtyutang += $purchase->qty;
+
                   ?>
                   @endforeach
                 </tbody>
@@ -350,16 +355,24 @@
                     <td>&nbsp;</td>
                     <td title="Total Quantity">
                       @if(isset($_GET['table']) && $_GET['table']==='component' && count($purchases)>0)
-                        <strong>{{ number_format($totqty, 2,'.','')+0 }}</strong>
-                        <small class="text-muted">
-                        {{ strtolower($purchase->uom)}}@if($totqty>1 && substr(strtolower($purchase->uom), -1)!='s')s
-                        @endif
-                      </small>
+                        <div>
+                          <strong>{{ number_format($totqty, 2,'.','')+0 }}</strong>
+                          <small class="text-muted">
+                          {{ strtolower($purchase->uom)}}@if($totqty>1 && substr(strtolower($purchase->uom), -1)!='s')s
+                          @endif
+                          </small>
+                        </div>
+                        <div style="color: red;">
+                           <strong>({{ number_format($totqtyutang, 2) }}</strong> <small>{{ strtolower($purchase->uom) }}s</small>)
+                        </div>
+                        <div style="border-top: 1px black solid;">
+                          <strong>{{ number_format($totqty-$totqtyutang, 2)+0 }}</strong> <small class="text-muted">{{ strtolower($purchase->uom) }}s</small>
+                        </div>
                       @endif
                     </td>
                     <td class="text-right" title="Average Unit Cost">
                       @if(isset($_GET['table']) && $_GET['table']==='component' && $totqty>0 && count($purchases)>0)
-                        <strong>{{ number_format($totpurchcost/$totqty, 2) }}</strong>
+                        <strong>{{ number_format($totpurchcost/$totqty, 2)+0 }}</strong>
                       @endif
                     </td>
                     <td class="text-right">

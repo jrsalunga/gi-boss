@@ -568,7 +568,7 @@
                                 <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
                                 <td class="text-right">
                                 @if($ds->slsmtd_totgrs>0)
-                                <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
+                                <small class="text-muted">{{ number_format(($item['grsamt'])*100,2)}}% SSS {{ $ds->slsmtd_totgrs }}</small>
                                 @endif
                                 </td>
                               </tr>

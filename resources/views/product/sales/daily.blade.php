@@ -569,9 +569,9 @@
                                 <td class="text-right">
                                   <small class="text-muted">
                                 @if($tm>0)
-                                  {{ number_format($item['grsamt'],2)}}%
-                                @else
                                   {{ number_format(($item['grsamt']/$tm)*100,2)}}%
+                                @else
+                                  {{ number_format($item['grsamt'],2)}}%
                                 @endif
                                   </small>
                                 </td>

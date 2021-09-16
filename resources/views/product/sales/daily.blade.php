@@ -564,10 +564,19 @@
                                 <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
-                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }} dsfafsa</td>
+
                                 <td class="text-right">
-                                @if($ds->slsmtd_totgrs>0 && $item['grsamt']>0)
+                                  <small class="text-muted">
+                                @if($tm>0)
+                                  {{ number_format($item['grsamt'],2)}}%
+                                @else
+                                  {{ number_format(($item['grsamt']/$tm)*100,2)}}%
+                                @endif
+                                  </small>
+                                </td>
+                                <td class="text-right">
+                                @if($ds->slsmtd_totgrs>0)
                                 <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>
                                 @endif
                                 </td>

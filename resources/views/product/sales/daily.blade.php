@@ -565,7 +565,7 @@
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
                                 <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
-                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt']/$tm)*100,2)}}%</small></td>
+                                <td class="text-right"><small class="text-muted">{{ number_format(($item['grsamt'])*100,2)}}%</small></td>
                                 <td class="text-right">
                                 @if($ds->slsmtd_totgrs>0 && $item['grsamt']>0)
                                 <small class="text-muted">{{ number_format(($item['grsamt']/$ds->slsmtd_totgrs)*100,2)}}%</small>

@@ -94,7 +94,7 @@
           <th class="text-right">Grab Conceirge</th>
           <th class="text-right">Food Panda</th>
           <th class="text-right">Zap Delivery</th>
-          <th class="text-right">Total Zap Sales</th>
+          <th class="text-right">Zap Cash</th>
         </tr>
       </thead>
       <tbody>
@@ -108,6 +108,7 @@
           $tot_zapsales = 0;
           $tot_sale_csh = 0;
           $tot_sale_chg = 0;
+          $tot_zap_csh = 0;
         ?>
         @foreach($dailysales as $key => $ds) 
         
@@ -144,6 +145,10 @@
               $tot_zapsales+= $ds['ds']->zap_sales;
               $tot_sale_csh+= $ds['ds']->sale_csh;
               $tot_sale_chg+= $ds['ds']->sale_chg;
+
+              $zap_csh = $ds['ds']->zap_sales - $ds['ds']->zap;
+              $tot_zap_csh += $zap_csh;
+
             ?>
             <td class="text-right" data-sort="{{ $ds['ds']->sale_csh>0?number_format($ds['ds']->sale_csh,0):'' }}">
               @if($ds['ds']->sale_csh>0)
@@ -210,9 +215,16 @@
                 -
               @endif
             </td>
-            <td class="text-right" data-sort="{{ $ds['ds']->zap_sales>0?number_format($ds['ds']->zap_sales,0):'' }}">
+            <!-- <td class="text-right" data-sort="{{ $ds['ds']->zap_sales>0?number_format($ds['ds']->zap_sales,0):'' }}">
               @if($ds['ds']->zap_sales>0)
                 {{ number_format($ds['ds']->zap_sales,2) }}
+              @else 
+                -
+              @endif
+            </td> -->
+            <td class="text-right" data-sort="{{ $zap_csh>0?number_format($zap_csh,0):'' }}">
+              @if($zap_csh>0)
+                {{ number_format($zap_csh,2) }}
               @else 
                 -
               @endif
@@ -279,7 +291,7 @@
           </td>
           <td class="text-right">
             <strong>
-              {{ number_format($tot_zapsales,2) }}
+              {{ number_format($tot_zap_csh,2) }}
             </strong>
           </td>
         </tr>

@@ -234,7 +234,7 @@
                 -
               @endif
             </td>
-             <td class="text-right" data-sort="{{ $ccard>0?number_format($ccard,0):'' }}">
+            <td class="text-right" data-sort="{{ $ccard>0?number_format($ccard,0):'' }}">
               @if($ccard>0)
                 {{ number_format($ccard,2) }}
               @else 

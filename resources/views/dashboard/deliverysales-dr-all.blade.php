@@ -101,6 +101,8 @@
       <thead>
         <tr>
           <th>Branch</th>
+          <th class="text-right">Cash Sale</th>
+          <th class="text-right">Charge Sale</th>
           <th class="text-right">Sales</th>
           <th class="text-right">Delivery Sales</th>
           <th class="text-right">%</th>
@@ -120,6 +122,8 @@
           $tot_panda = 0;
           $tot_zap = 0;
           $tot_zapsales = 0;
+          $tot_sale_csh = 0;
+          $tot_sale_chg = 0;
         ?>
         @foreach($dailysales as $key => $ds) 
         
@@ -143,6 +147,8 @@
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
             <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
+            <td class="text-right" data-sort="">-</td>
           @else
             <?php 
               $tot_sales  += $ds['ds']->sales;
@@ -152,11 +158,27 @@
               $tot_panda  += $ds['ds']->panda;
               $tot_zap    += $ds['ds']->zap;
               $tot_zapsales+= $ds['ds']->zap_sales;
+              $tot_sale_csh+= $ds['ds']->sale_csh;
+              $tot_sale_chg+= $ds['ds']->sale_chg;
             ?>
+            <td class="text-right" data-sort="{{ $ds['ds']->sale_csh>0?number_format($ds['ds']->sale_csh,0):'' }}">
+              @if($ds['ds']->sale_csh>0)
+                {{ number_format($ds['ds']->sale_csh, 2) }}
+              @else 
+                -
+              @endif
+            </td>
+            <td class="text-right" data-sort="{{ $ds['ds']->sale_chg>0?number_format($ds['ds']->sale_chg,0):'' }}">
+              @if($ds['ds']->sale_chg>0)
+                {{ number_format($ds['ds']->sale_chg, 2) }}
+              @else 
+                -
+              @endif
+            </td>
             <td class="text-right" data-sort="{{ number_format($ds['ds']->sales,0) }}">
             @if($ds['ds']->sales>0)
               <a target="_blank" href="/status/branch?branchid={{ $ds['br']->lid() }}&fr={{$dr->fr->format('Y-m-d')}}&to={{$dr->to->format('Y-m-d')}}">
-              {{ number_format($ds['ds']->sales,2) }}
+             <strong>{{ number_format($ds['ds']->sales,2) }}</strong> 
               </a>
             @else
               -
@@ -222,6 +244,16 @@
             <strong>
               {{ count($dailysales) }}
               {{ count($dailysales) > 1 ? 'branches':'branch' }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_sale_csh,2) }}
+            </strong>
+          </td>
+          <td class="text-right">
+            <strong>
+              {{ number_format($tot_sale_chg,2) }}
             </strong>
           </td>
           <td class="text-right">

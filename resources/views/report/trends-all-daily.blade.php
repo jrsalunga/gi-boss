@@ -153,10 +153,10 @@
 
 
             ?>
-        <?php $gtotal += $tot ?>
           @endforeach
           <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
         </tr>
+        <?php $gtotal += $tot ?>
         @endforeach
       </tbody>
       <?php

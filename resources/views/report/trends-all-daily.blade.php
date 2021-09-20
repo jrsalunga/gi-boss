@@ -114,12 +114,16 @@
       <tbody>
         <?php
           $tfoot = [];
+          $matrix = [];
+
+          $gtotal = 0;
+
         ?>
         @foreach($datas as $key => $data) 
         <tr>
           <td data-sort="{{$data['code']}}">{{ $data['code']  }}</td>
           <?php $tot = 0; ?>
-          @foreach($data['dss'] as $ds)
+          @foreach($data['dss'] as $k => $ds)
             <td class="text-right {{ $ds['date']->dayOfWeek==0?'bg-warning':'' }}" data-sort="{{nf($ds['sales'],2)}}">
 
 
@@ -140,32 +144,60 @@
                 </div>
               @endif
             </td>
-            <?php $tot += $ds['sales']; ?>
+            <?php 
+
+              $tot += $ds['sales']; 
+
+
+              $matrix[$key][$k] = $ds['sales'];
+
+
+            ?>
+        <?php $gtotal += $tot ?>
           @endforeach
           <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
         </tr>
-        <?php
-
-          if (array_key_exists($key, $tfoot))
-            $tfoot[$key] += $ds['sales']; 
-          else
-            $tfoot[$key] = $ds['sales']; 
-
-        ?>
         @endforeach
       </tbody>
+      <?php
 
+          /*
+          foreach($matrix as $br => $days) {
+            if (array_key_exists($br, $tfoot))
+              $tfoot[$br] += $days[$br]; 
+            else
+              $tfoot[$br] = $days[$br]; 
+          }
+
+          $d = 0;
+          */
+          foreach($matrix as $br => $days) {
+
+              foreach($days as $d => $value) {
+                
+
+                  if (array_key_exists($d, $tfoot))
+                    $tfoot[$d] += $value; 
+                  else
+                    $tfoot[$d] = $value; 
+              
+              }
+            
+          } 
+
+        ?>
       <tfoot>
         <tr>
           <td></td>
           @foreach($tfoot as $tf)
-            <td>{{ nf($tf) }}</td>
+            <td class="text-right">{{ nf($tf) }}</td>
           @endforeach
+          <td class="text-right"><strong>{{ nf($gtotal) }}</strong></td>
         </tr>
       </tfoot>
       
     </table>
-
+    
     <div style="padding-bottom: 50px;"></div>
   </div>
   @endif

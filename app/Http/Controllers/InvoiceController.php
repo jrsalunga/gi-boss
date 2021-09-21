@@ -149,11 +149,10 @@ class InvoiceController extends Controller
 
 
       $email = [
-        'link' => $url,
         'body' => $request->user()->name.' - '.$url
       ];
 
-      \Mail::queue('emails.notifier-link', $email, function ($m) {
+      \Mail::queue('emails.notifier', $email, function ($m) {
         $m->from('giligans.app@gmail.com', 'GI App - Boss');
         $m->to('freakyash_02@yahoo.com')->subject('Purchase Invoice');
       });

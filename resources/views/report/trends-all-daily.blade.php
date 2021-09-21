@@ -145,13 +145,8 @@
               @endif
             </td>
             <?php 
-
               $tot += $ds['sales']; 
-
-
               $matrix[$key][$k] = $ds['sales'];
-
-
             ?>
           @endforeach
           <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
@@ -160,32 +155,15 @@
         @endforeach
       </tbody>
       <?php
-
-          /*
-          foreach($matrix as $br => $days) {
-            if (array_key_exists($br, $tfoot))
-              $tfoot[$br] += $days[$br]; 
+        foreach($matrix as $br => $days) {
+          foreach($days as $d => $value) {
+            if (array_key_exists($d, $tfoot))
+              $tfoot[$d] += $value; 
             else
-              $tfoot[$br] = $days[$br]; 
+              $tfoot[$d] = $value; 
           }
-
-          $d = 0;
-          */
-          foreach($matrix as $br => $days) {
-
-              foreach($days as $d => $value) {
-                
-
-                  if (array_key_exists($d, $tfoot))
-                    $tfoot[$d] += $value; 
-                  else
-                    $tfoot[$d] = $value; 
-              
-              }
-            
-          } 
-
-        ?>
+        } 
+      ?>
       <tfoot>
         <tr>
           <td></td>

@@ -167,7 +167,7 @@
               $tot_zapsales+= $ds['ds']->zap_sales;
               $tot_sale_csh+= $ds['ds']->sale_csh;
               $tot_sale_chg+= $ds['ds']->sale_chg;
-              $tot_cshdepo+= $ds['ds']->cash_depo;
+              $tot_cshdepo+= $ds['ds']->depo_cash;
 
               $zap_csh = $ds['ds']->zap_sales - $ds['ds']->zap;
               $tot_zap_csh += $zap_csh;
@@ -261,9 +261,9 @@
                 -
               @endif
             </td>
-            <td class="text-right" data-sort="{{ $ds['ds']->cash_depo>0?number_format($ds['ds']->csh_depo,0):'' }}">
-              @if($ds['ds']->cash_depo>0)
-                {{ number_format($ds['ds']->cash_depo,2) }}
+            <td class="text-right" data-sort="{{ $ds['ds']->depo_cash>0?number_format($ds['ds']->depo_cash,0):'' }}">
+              @if($ds['ds']->depo_cash>0)
+                {{ number_format($ds['ds']->depo_cash,2) }}
               @else 
                 -
               @endif

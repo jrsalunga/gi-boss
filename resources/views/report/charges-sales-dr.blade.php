@@ -87,44 +87,100 @@
   <div class="row">
     <div class="col-md-6">
       <div role="tabpanel" class="tab-pane" id="stats">
-          <!-- Copany Panel -->
-          <div class="panel panel-default">
-            <div class="panel-heading">Company</div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="table-responsive">
-                <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
-                  <thead>
+        <!-- Copany Panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading">Company</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
+                <thead>
+                  <tr>
+                    <td>Code</td>
+                    <td>Company</td>
+                    <td class="text-right">Charged Sales</td>
+                    <td class="text-right">Deducted Sales</td>
+                    <td class="text-right">Deduction</td>
+                    <td class="text-right">%</td>
+                  </tr>
+                  <tbody>
+                    @foreach($comps as $key => $comp)
                     <tr>
-                      <td>Code</td>
-                      <td>Company</td>
-                      <td class="text-right">Charged Sales</td>
-                      <td class="text-right">Deducted Sales</td>
-                      <td class="text-right">Deduction</td>
-                      <td class="text-right">%</td>
+                      <td>{{ $key }}</td>
+                      <td>{{ $comp['company'] }}</td>
+                      <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
+                      <td class="text-right">{{ nf($comp['sales_deduct']) }}</td>
+                      <td class="text-right">{{ nf($comp['sales_diff']) }}</td>
+                      <td class="text-right">{{ nf(($comp['sales_diff']/$comp['sales_actual'])*100) }}</td>
                     </tr>
-                    <tbody>
-                      @foreach($comps as $key => $comp)
-                      <tr>
-                        <td>{{ $key }}</td>
-                        <td>{{ $comp['company'] }}</td>
-                        <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
-                        <td class="text-right">{{ nf($comp['sales_deducted']) }}</td>
-                        <td class="text-right">{{ nf($comp['sales_actual']-$comp['sales_deducted']) }}</td>
-                        <td class="text-right">{{ nf((($comp['sales_actual']-$comp['sales_deducted'])/$comp['sales_actual'])*100) }}</td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </thead>
-                </table>
-                </div>
+                    @endforeach
+                  </tbody>
+                </thead>
+              </table>
               </div>
             </div>
           </div>
-      
+        </div>
+      </div>
     </div>
-    <div class="col-md-6">
-      
+    <div class="col-md-12">
+      <div role="tabpanel" class="tab-pane" id="stats">
+        <!-- Copany Panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading">Company</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="table-responsive">
+              <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
+                <thead>
+                  <tr>
+                    <td>Comp</td>
+                    <td>Branch</td>
+                    <td class="text-right">Sales</td>
+                    <td class="text-right">Grab</td>
+                    <td class="text-right">Grab D</td>
+                    <td class="text-right">Panda</td>
+                    <td class="text-right">Panda D</td>
+                    <td class="text-right">Zap</td>
+                    <td class="text-right">Zap D</td>
+                    <td class="text-right">Card</td>
+                    <td class="text-right">Card D</td>
+                    <td class="text-right">Tot Charged</td>
+                    <td class="text-right">Tot Deducted</td>
+                    <td class="text-right">Tot Deduction</td>
+                    <td class="text-right">%</td>
+                    <td class="text-right">Tot Cash Depo</td>
+                  </tr>
+                  <tbody>
+                    @foreach($datas as $key => $ds)
+                    <tr>
+                      <td>{{ $ds['companycode'] }}</td>
+                      <td>{{ $ds['branchcode'] }}</td>
+                      <td class="text-right">{{ nf($ds['sales']) }}</td>
+                      <td class="text-right">{{ nf($ds['grab']) }}</td>
+                      <td class="text-right">{{ nf($ds['grab_deduct']) }}</td>
+                      <td class="text-right">{{ nf($ds['panda']) }}</td>
+                      <td class="text-right">{{ nf($ds['panda_deduct']) }}</td>
+                      <td class="text-right">{{ nf($ds['zap']) }}</td>
+                      <td class="text-right">{{ nf($ds['zap_deduct']) }}</td>
+                      <td class="text-right">{{ nf($ds['ccard']) }}</td>
+                      <td class="text-right">{{ nf($ds['ccard_deduct']) }}</td>
+                      <td class="text-right"><b>{{ nf($ds['sales_actual']) }}</b></td>
+                      <td class="text-right"><b>{{ nf($ds['sales_deduct']) }}</b></td>
+                      <td class="text-right"><b>{{ nf($ds['sales_diff']) }}</b></td>
+                      <td class="text-right">{{ nf($ds['pct'])+0 }}</td>
+                      <td class="text-right">{{ nf($ds['depo_cash']) }}</td>
+                      
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </thead>
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
     

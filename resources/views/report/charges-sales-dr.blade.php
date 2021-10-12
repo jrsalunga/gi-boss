@@ -127,11 +127,11 @@
       <div role="tabpanel" class="tab-pane" id="stats">
         <!-- Copany Panel -->
         <div class="panel panel-default">
-          <div class="panel-heading">Company</div>
+          <div class="panel-heading">Branch</div>
           <div class="panel-body">
             <div class="row">
               <div class="table-responsive">
-              <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
+              <table class="table table-condensed table-hover table-striped tablesorter table-sort-branch" style="margin-top: 0;" role="grid"> 
                 <thead>
                   <tr>
                     <td>Comp</td>
@@ -215,6 +215,16 @@
     $('.table-sort-all').tablesorter({
       stringTo: 'min',
       sortList: [[1,1]],
+      headers: {
+        1: { sorter: "digit", string: "min" }, // non-numeric content is treated as a MAX value
+        //2: { sorter: "digit", empty : "top" }, // sort empty cells to the top
+        //3: { sorter: "digit", string: "min" }  // non-numeric content is treated as a MIN value
+      } 
+    });
+
+     $('.table-sort-branch').tablesorter({
+      stringTo: 'min',
+      sortList: [[0,0]],
       headers: {
         1: { sorter: "digit", string: "min" }, // non-numeric content is treated as a MAX value
         //2: { sorter: "digit", empty : "top" }, // sort empty cells to the top

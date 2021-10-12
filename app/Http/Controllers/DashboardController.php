@@ -399,7 +399,7 @@ class DashboardController extends Controller
       $datas[$k]['sales_actual'] = $a;
       $datas[$k]['sales_deduct'] = $b;
       $datas[$k]['sales_diff'] = $c;
-      $datas[$k]['pct'] = ($datas[$k]['sales_diff']/$datas[$k]['sales_actual'])*100;
+      $datas[$k]['pct'] = $datas[$k]['sales_actual']>0 ?($datas[$k]['sales_diff']/$datas[$k]['sales_actual'])*100 : 0;
     }
     asort($datas);
     

@@ -15,6 +15,7 @@ use App\Repositories\Criterias\ActiveBossBranchCriteria as ActiveBranch;
 use App\Repositories\Criterias\OpenBossBranchCriteria as OpenBranch;
 use App\Repositories\SetslpRepository as Setslp;
 use App\Repositories\DepslipRepository as Depslip;
+use App\Repositories\MonthlysalesRepository as MS;
 
 
 class ReportsController extends Controller
@@ -27,8 +28,9 @@ class ReportsController extends Controller
   protected $mCashAudit;
   protected $setslp;
   protected $depslip;
+  protected $ms;
 
-	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch, MonthCashAudit $mCashAudit, Setslp $setslp, Depslip $depslip) {
+	public function __construct(DateRange $dr, CompcatPurchase $ctrlCompcatPurchase, CashAudit $cashAudit, BranchRepo $branch, MonthCashAudit $mCashAudit, Setslp $setslp, Depslip $depslip, MS $ms) {
 		$this->ctrlCompcatPurchase = $ctrlCompcatPurchase;
     $this->dr = $dr;
     $this->cashAudit = $cashAudit;
@@ -36,6 +38,7 @@ class ReportsController extends Controller
     $this->branch = $branch;
     $this->setslp = $setslp;
     $this->depslip = $depslip;
+    $this->ms = $ms;
     // $this->branch->pushCriteria(new ActiveBranch(['code', 'descriptor', 'id']));
     $this->bb = $this->getBranches();
 	}
@@ -170,7 +173,15 @@ class ReportsController extends Controller
   }
 
 
+  public function getMonthlyCashFlow(Request $request) {
 
+    $datas = $this->ms->allBranchMonthlyCashFlow($request->input('date'));
+
+    return $this->setViewWithDR(view('report.cashflow-month')
+                ->with('datas', $datas));
+  }
+
+ 
 
 
 

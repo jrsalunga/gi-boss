@@ -36,7 +36,7 @@
       <div id="panel-top-sales" class="panel panel-success">
         <div class="panel-heading">
           <h3 class="panel-title"><span class="fa fa-line-chart"></span> 
-            <strong>Today's Top Branches</strong>
+            <strong>Today's Top Branch</strong>
           </h3>
         </div>
         <div class="panel-body">
@@ -47,7 +47,7 @@
             </a> 
             <a href="/dailysales/all?date={{$dr->now->format('Y-m-d')}}" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-list-alt"></span> 
-              <span class="hidden-xs">All Branches Sales</span>
+              <span class="hidden-xs">All Branch Sales</span>
             </a>
             <a href="/status/branch" class="btn btn-default btn-sm">
               <span class="gly gly-cardio"></span> 
@@ -70,19 +70,19 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="/product/sales">Sales Summary (By Branch)</a></li>
-                <li><a href="/component/purchases">Purchase Summary (By Branch)</a></li>
-                <li><a href="/component/transfer/daily">Stock Transfer Summary (By Branch)</a></li>
-                <li><a href="/component/begbal">Beginning Stock Summary (By Branch)  <small><span class="label label-danger">new</span></small></a></li>
-                <li><a href="/product/sales/comparative">Product Sales (All Branches)</a></li>
-                <li><a href="/component/price/comparative">Component Unit Cost (All Branches)</a></li>
-                <li><a href="/report/pnl/daily">Daily P&amp;L Summary (By Branch) </a></li>
-                <li><a href="/report/pnl-summary">Monthly P&amp;L Summary (By Branch) </a></li>
+                <li><a href="/product/sales">Sales Summary <small class="text-muted">(By Branch)</small></a></li>
+                <li><a href="/component/purchases">Purchase Summary <small class="text-muted">(By Branch)</small></a></li>
+                <li><a href="/component/transfer/daily">Stock Transfer Summary <small class="text-muted">(By Branch)</small></a></li>
+                <li><a href="/component/begbal">Beginning Stock Summary <small class="text-muted">(By Branch)</small>  <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="/product/sales/comparative">Product Sales <small class="text-muted">(All Branch)</small></a></li>
+                <li><a href="/component/price/comparative">Component Unit Cost <small class="text-muted">(All Branch)</small></a></li>
+                <li><a href="/report/pnl/daily">Daily P&amp;L Summary <small class="text-muted">(By Branch)</small></a></li>
+                <li><a href="/report/pnl-summary">Monthly P&amp;L Summary <small class="text-muted">(By Branch)</small></a></li>
                 <li><a href="/kitlog/month">Kitchen Log Month Summary </a></li>
-                <li><a href="/delivery/all">Delivery Sales (All Branches)</a></li>
-                <li><a href="/saletype/branch">Sales Type (By Branch) </a></li>
-                <li><a href="/report/daily-cash-flow">Cash Flow (All Branches)</a></li>
-                <li><a href="/report/cash-audit">Daily Cash Audit (By Branch)</a></li>
+                <li><a href="/delivery/all">Delivery Sales <small class="text-muted">(All Branch)</small></a></li>
+                <li><a href="/saletype/branch">Sales Type <small class="text-muted">(By Branch)</small></a></li>
+                <li><a href="/report/daily-cash-flow">Cash Flow <small class="text-muted">(All Branch)</small></a></li>
+                <li><a href="/report/cash-audit">Daily Cash Audit <small class="text-muted">(By Branch)</small></a></li>
               </ul>
             </div>
           </div> 
@@ -255,7 +255,7 @@
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <strong style="color: red;">Delinquent Branches</strong>
+                    <strong style="color: red;">Delinquent Branch</strong>
                   </a>
                   <span class="badge">{{ count($delinquents[2]) }}</span>
                 </h4>

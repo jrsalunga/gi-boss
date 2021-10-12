@@ -31,8 +31,12 @@ class Branch extends BaseModel {
     return $this->hasMany('App\Models\DailySales', 'branchid');
   }
 
-   public function company() {
+  public function company() {
     return $this->belongsTo('App\Models\Company', 'companyid');
+  }
+
+  public function company_min() {
+    return $this->belongsTo('App\Models\Company', 'companyid')->select(['code', 'descriptor', 'id']);
   }
 
 

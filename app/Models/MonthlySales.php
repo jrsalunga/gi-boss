@@ -57,6 +57,10 @@ class MonthlySales extends BaseModel {
     return $this->belongsTo('App\Models\Branch', 'branchid');
   }
 
+  public function branch_min() {
+    return $this->belongsTo('App\Models\Branch', 'branch_id')->select(['code', 'descriptor', 'id']);
+  }
+
   
 
   public function getBeerPurch() {

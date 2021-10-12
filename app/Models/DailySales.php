@@ -42,12 +42,29 @@ class DailySales extends BaseModel {
     'transcost' => 'float',
     'transcos' => 'float',
     'transncos' => 'float',
+    'grab' => 'float',
+    'grabc' => 'float',
+    'panda' => 'float',
+    'zap' => 'float',
+    'zap_sales' => 'float',
+    'grab_fee' => 'float',
+    'grabc_fee' => 'float',
+    'panda_fee' => 'float',
+    'zap_fee' => 'float',
+    'zap_delfee' => 'float',
+    'totdeliver' => 'float',
+    'totdeliver_fee' => 'float',
     'opex' => 'float',
+    'ccard' => 'float',
   ];
 
 
 	public function branch() {
     return $this->belongsTo('App\Models\Branch', 'branchid');
+  }
+
+  public function branch_min() {
+    return $this->belongsTo('App\Models\Branch', 'branchid')->select(['code', 'descriptor', 'id', 'companyid']);
   }
 
   public function getDateAttribute($value){

@@ -361,7 +361,76 @@ class DashboardController extends Controller
     return $datas[0]['dss'];
   }
 
-   public function getChargesSalesDR(Request $request) {
+  
+  public function getChargesSalesDR(Request $request) {
+    
+    $datas = [];
+    $comps = [];
+    $dss =  $this->repo->skipCache()->with('branch_min.company_min')->getAggregateBranchByDateRange($this->dr->fr, $this->dr->to)->all();
+
+    foreach($dss as $j => $ds) {
+
+      $k = $ds->branch_min->code;
+      
+      $datas[$k]['branchcode'] = $ds->branch_min->code; 
+      $datas[$k]['branch'] = $ds->branch_min->descriptor; 
+      $datas[$k]['branch_id'] = $ds->branch_min->id; 
+      $datas[$k]['companycode'] = $ds->branch_min->company_min->code;
+      $datas[$k]['company'] = $ds->branch_min->company_min->descriptor; 
+      $datas[$k]['company_id'] = $ds->branch_min->company_min->id; 
+      $datas[$k]['sales'] = $ds->sales;
+      $datas[$k]['depo_cash'] = $ds->depo_cash;
+      $datas[$k]['sale_csh'] = $ds->sale_csh;
+      $datas[$k]['sale_chg'] = $ds->sale_chg;
+      $datas[$k]['totdeliver'] = $ds->totdeliver;
+
+      $a = $b = $c = 0;
+      foreach (config('giligans.deliveryfee') as $del => $pct) {
+
+        $datas[$k][$del] = $ds->{$del}; 
+        $datas[$k][$del.'_deduct'] = $ds->{$del} - ($ds->{$del} * $pct); 
+        $datas[$k][$del.'_diff'] = $datas[$k][$del] - $datas[$k][$del.'_deduct']; 
+
+        $a += $datas[$k][$del];
+        $b += $datas[$k][$del.'_deduct'];
+        $c += $datas[$k][$del.'_diff'];
+      }
+
+      $datas[$k]['sales_actual'] = $a;
+      $datas[$k]['sales_deduct'] = $b;
+      $datas[$k]['sales_diff'] = $c;
+      $datas[$k]['pct'] = ($datas[$k]['sales_diff']/$datas[$k]['sales_actual'])*100;
+    }
+    asort($datas);
+    
+    // return $datas;
+
+    $parts = ['sales', 'depo_cash', 'sale_csh', 'sale_chg', 'grab', 'grab_deduct', 'grab_diff', 'grabc', 'grabc_deduct', 'grabc_diff', 'panda', 'panda_deduct', 'panda_diff', 'zap', 'zap_deduct', 'zap_diff', 'ccard', 'ccard_deduct', 'ccard_diff', 'sales_actual', 'sales_deduct', 'sales_diff'];
+
+    foreach($datas as $l => $dt) {
+      $comps[$dt['companycode']]['code'] = $dt['companycode'];
+      $comps[$dt['companycode']]['company'] = $dt['company'];
+      $comps[$dt['companycode']]['company_id'] = $dt['company_id'];
+
+      foreach ($parts as $p) {
+        if (array_key_exists($p, $comps[$dt['companycode']])) {
+          $comps[$dt['companycode']][$p] += $dt[$p];
+        } else {
+          $comps[$dt['companycode']][$p] = $dt[$p];
+        }
+      }
+    }
+    asort($comps);
+
+    // return $comps;
+
+    return $this->setViewWithDR(view('report.charges-sales-dr')->with('comps', $comps)->with('datas', $datas));
+  }
+
+
+
+
+  public function old_getChargesSalesDR(Request $request) {
     $comps = [];
 
     $dss =  $this->repo->skipCache()->with('branch_min.company_min')->getAggregateBranchByDateRange($this->dr->fr, $this->dr->to)->all();
@@ -451,7 +520,7 @@ class DashboardController extends Controller
     // return $comps;
 
 
-    return $this->setViewWithDR(view('report.charges-sales-dr')->with('comps', $comps));
+    return $this->setViewWithDR(view('report.charges-sales-dr')->with('comps', $comps)->with('dss', $dss));
 
 
   }

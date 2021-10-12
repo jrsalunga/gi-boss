@@ -85,7 +85,7 @@
 
   
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div role="tabpanel" class="tab-pane" id="stats">
           <!-- Copany Panel -->
           <div class="panel panel-default">
@@ -123,7 +123,7 @@
           </div>
       
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
       
     </div>
   </div>

@@ -293,11 +293,14 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
     $sql .= '((SUM(mancost)/SUM(sales))*100) as mancostpct, ((SUM(tips)/SUM(sales))*100) as tipspct, ';
     $sql .= 'SUM(totdeliver) AS totdeliver, SUM(grab) AS grab, SUM(grabc) AS grabc, SUM(panda) AS panda, SUM(zap) AS zap, SUM(zap_sales) as zap_sales, ';
-    $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, branchid';
+    $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, ';
+    $sql .= 'SUM(grab_fee) AS grab_fee, SUM(grabc) AS grabc_fee, SUM(panda_fee) AS panda_fee, SUM(zap_delfee) AS zap_delfee, SUM(zap_fee) AS zap_fee, SUM(totdeliver_fee) AS totdeliver_fee, (SUM(chrg_chrg) - SUM(totdeliver)) as ccard, ';
+    $sql .= 'branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
       return $query->select(DB::raw($sql))
         ->whereBetween('date', [$fr, $to])
+        ->where('branchid', '<>', 'ALL')
         ->groupBy(DB::raw('branchid'));
         //->groupBy(DB::raw('branchid, MONTH(date), YEAR (date)'))
         //->orderBy(DB::raw('YEAR (date), MONTH(date)'));

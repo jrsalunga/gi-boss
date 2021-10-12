@@ -158,5 +158,13 @@ return [
     'ncos' => ["DN","DB","DA","CG","IC"],
     'opex' => ["SE","CA","ST","13","SI","AB","OS","RS","DF","RM","SL","AM","PC","LP","TL","SR","PL","PB","PR","KL","LS","TP","EB","WB","TC","EM","SY","RF","MS","TS","CU"],
   ],
+
+  'deliveryfee' => [
+    'grab' => .10,
+    'grabc' => .10,
+    'panda' => .25,
+    'zap' => .05,
+    'ccard' => .03,
+  ]
 	
 ];

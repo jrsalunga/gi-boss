@@ -360,4 +360,101 @@ class DashboardController extends Controller
 
     return $datas[0]['dss'];
   }
+
+   public function getChargesSalesDR(Request $request) {
+    $comps = [];
+
+    $dss =  $this->repo->skipCache()->with('branch_min.company_min')->getAggregateBranchByDateRange($this->dr->fr, $this->dr->to)->all();
+
+    foreach($dss as $d => $ds) {
+
+      $ccode = $ds->branch_min->company_min->code;
+      $company = $ds->branch_min->company_min->descriptor;
+      
+      $parts = ['sales', 'depo_cash', 'sale_csh', 'sale_chg', 'grab', 'grabc', 'panda', 'zap', 'zap_sales', 'totdeliver', 'grab_fee', 'grabc_fee', 'panda_fee', 'zap_delfee', 'zap_fee', 'totdeliver_fee', 'sale_chg', 'chrg_chrg', 'ccard'];
+      
+      if (array_key_exists($ccode, $comps)) {
+          
+        array_push($comps[$ccode]['datas'], $ds);
+
+        foreach ($parts as $p)
+          $comps[$ccode][$p] =+ $ds->{$p};
+
+         foreach (config('giligans.deliveryfee') as $k => $df) {
+          if ($ds->{$k}>0)
+            $comps[$ccode][$k.'_temp'] = ($ds->{$k} - ($ds->{$k}*$df));
+          // else
+          //   $comps[$ccode][$k.'_temp'] += ($ds->{$k} - ($ds->{$k}*$df));
+
+          $comps[$ccode]['deducted'][$ds->branch_min->code][$k] = $comps[$ccode][$k.'_temp'];
+          $comps[$ccode]['actual'][$ds->branch_min->code][$k] = $ds->{$k};
+         }
+
+      } else {
+        
+        $comps[$ccode]['datas'] = [];
+          array_push($comps[$ccode]['datas'], $ds);
+        
+        foreach ($parts as $p)
+          $comps[$ccode][$p] = $ds->{$p};
+
+        $comps[$ccode]['deducted'] = [];
+        $comps[$ccode]['actual'] = [];
+        $comps[$ccode]['sales_deducted'] = 0;
+        foreach (config('giligans.deliveryfee') as $k => $df) {
+          if ($ds->{$k}>0)
+            $comps[$ccode][$k.'_temp'] = ($ds->{$k} - ($ds->{$k}*$df));
+          else
+            $comps[$ccode][$k.'_temp'] = 0;
+
+          $comps[$ccode]['deducted'][$ds->branch_min->code][$k] = $comps[$ccode][$k.'_temp'];
+          $comps[$ccode]['actual'][$ds->branch_min->code][$k] = $ds->{$k};
+        }
+        
+      }
+      $comps[$ccode]['company'] = $company;
+    }
+
+    
+    foreach ($comps as $x => $cmp) {
+
+      $comps[$x]['sales_deducted'] = 0;
+      $t = 0;
+      foreach ($cmp['deducted'] as $ac) {
+        foreach ($ac as $i => $a) {
+          if (array_key_exists($i.'_deducted', $comps[$x]))
+            $comps[$x][$i.'_deducted'] += $a;
+          else
+            $comps[$x][$i.'_deducted'] = $a;
+        $t += $a;
+        }
+      }
+      $comps[$x]['sales_deducted'] = $t;
+    }
+
+    foreach ($comps as $x => $cmp) {
+
+      $comps[$x]['sales_actual'] = 0;
+      $t = 0;
+      foreach ($cmp['actual'] as $ac) {
+        foreach ($ac as $i => $a) {
+          if (array_key_exists($i.'_actual', $comps[$x]))
+            $comps[$x][$i.'_actual'] += $a;
+          else
+            $comps[$x][$i.'_actual'] = $a;
+        $t += $a;
+        }
+      }
+      $comps[$x]['sales_actual'] = $t;
+    }
+
+    // return $comps;
+
+
+    return $this->setViewWithDR(view('report.charges-sales-dr')->with('comps', $comps));
+
+
+  }
+
+
 }

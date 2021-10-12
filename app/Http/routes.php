@@ -46,7 +46,7 @@ Route::get('report/comp-purch', ['uses'=>'AnalyticsController@getCompPurch']);
 Route::get('report/compcat-purchase', ['uses'=>'ReportsController@getCompcatPurchase']);
 Route::get('report/cash-audit', ['uses'=>'ReportsController@getCashAudit']);
 Route::get('report/daily-cash-flow', ['uses'=>'ReportsController@getDailyCashFlow']);
-Route::get('report/cashflow/summary', ['uses'=>'ReportsController@getCashflowSummary']);
+Route::get('report/cashflow/monthly', ['uses'=>'ReportsController@getMonthlyCashFlow']);
 
 
 Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
@@ -55,6 +55,7 @@ Route::get('report/pnl/daily', ['uses'=>'ExpenseController@getPnlDaily']);
 Route::get('report/pnl/month-range', ['uses'=>'ExpenseController@getMonthRangePnl']);
 //Route::get('report/expense-breakdown', ['uses'=>'ExpenseController@getMonthExpenseBreakdown']);
 Route::get('report/trends/daily', ['uses'=>'DashboardController@getThrendsDaily']);
+Route::get('report/sales/charges/dr-all', ['uses'=>'DashboardController@getChargesSalesDR']);
 
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);

@@ -98,13 +98,13 @@
               <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
                 <thead>
                   <tr>
-                    <td>Code</td>
-                    <td>Company</td>
-                    <td class="text-right">Charged Sales</td>
-                    <td class="text-right">Deducted Sales</td>
-                    <td class="text-right">Deduction</td>
-                    <td class="text-right">%</td>
-                    <td class="text-right">Cash Depo</td>
+                    <th>Code</td>
+                    <th>Company</td>
+                    <th class="text-right">Charged Sales</th>
+                    <th class="text-right">Deducted Sales</th>
+                    <th class="text-right">Deduction</th>
+                    <th class="text-right">%</th>
+                    <th class="text-right">Cash Depo</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@
                   <td class="text-right"><b>{{ nf($comp['sales_deduct']) }}</b></td>
                   <td class="text-right">{{ nf($comp['sales_diff']) }}</td>
                   <td class="text-right">{{ nf($pct) }}</td>
-                  <td class="text-right">{{ nf($comp['depo_cash']) }}</td>
+                  <td class="text-right text-success">{{ nf($comp['depo_cash']) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -167,46 +167,111 @@
               <table class="table table-condensed table-hover table-striped tablesorter table-sort-branch" style="margin-top: 0;" role="grid"> 
                 <thead>
                   <tr>
-                    <td>Comp</td>
-                    <td>Branch</td>
-                    <td class="text-right">Sales</td>
-                    <td class="text-right">GF Sales</td>
-                    <td class="text-right">GF Ded.</td>
-                    <td class="text-right">FP Sales</td>
-                    <td class="text-right">FP Ded.</td>
-                    <td class="text-right">Zap Sales</td>
-                    <td class="text-right">Zap Ded.</td>
-                    <td class="text-right">Card Sales</td>
-                    <td class="text-right">Card Ded.</td>
-                    <td class="text-right">Charged Sales</td>
-                    <td class="text-right">Deducted Sales</td>
-                    <td class="text-right">Deduction</td>
-                    <td class="text-right">%</td>
-                    <td class="text-right">Cash Depo</td>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">Sales</th>
+                    <th class="text-right">GF Sales</th>
+                    <th class="text-right">GF Ded.</th>
+                    <th class="text-right">FP Sales</th>
+                    <th class="text-right">FP Ded.</th>
+                    <th class="text-right">Zap Sales</th>
+                    <th class="text-right">Zap Ded.</th>
+                    <th class="text-right">Card Sales</th>
+                    <th class="text-right">Card Ded.</th>
+                    <th class="text-right">Charged Sales</th>
+                    <th class="text-right">Deducted Sales</th>
+                    <th class="text-right">Deduction</th>
+                    <th class="text-right">%</th>
+                    <th class="text-right">Cash Depo</th>
                   </tr>
                   <tbody>
+                    <?php
+                      $tot_sales = $tot_gfc = $tot_gfd = $tot_fpc = $tot_fpd = $tot_zc = $tot_zd = $tot_ccc = $tot_ccd = $tot_salesa  = $tot_salesd = $tot_salesl = $tot_depo = $ctr = 0;
+                    ?>
                     @foreach($datas as $key => $ds)
+                    <?php
+                    
+                      $tot_sales += $ds['sales'];
+                      $tot_gfc += $ds['grab'];
+                      $tot_gfd += $ds['grab_deduct'];
+                      $tot_fpc += $ds['panda'];
+                      $tot_fpd += $ds['panda_deduct'];
+                      $tot_zc += $ds['zap'];
+                      $tot_zd += $ds['zap_deduct'];
+                      $tot_ccc += $ds['ccard'];
+                      $tot_ccd += $ds['ccard_deduct'];
+                      $tot_salesa  += $ds['sales_actual'];
+                      $tot_salesd += $ds['sales_deduct'];
+                      $tot_salesl += $ds['sales_diff'];
+                      $tot_depo += $ds['depo_cash'];
+                      $ctr++;
+                     // $pct = $comp['sales_actual']>0 ? ($comp['sales_diff']/$comp['sales_actual'])*100 : 0; 
+                  ?>
                     <tr>
                       <td>{{ $ds['companycode'] }}</td>
                       <td>{{ $ds['branchcode'] }}</td>
                       <td class="text-right">{{ nf($ds['sales']) }}</td>
                       <td class="text-right">{{ nf($ds['grab']) }}</td>
-                      <td class="text-right text-muted">{{ nf($ds['grab_deduct']) }}</td>
+                      <td class="text-right text-info">{{ nf($ds['grab_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['panda']) }}</td>
-                      <td class="text-right text-muted">{{ nf($ds['panda_deduct']) }}</td>
+                      <td class="text-right text-info">{{ nf($ds['panda_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['zap']) }}</td>
-                      <td class="text-right text-muted">{{ nf($ds['zap_deduct']) }}</td>
+                      <td class="text-right text-info">{{ nf($ds['zap_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['ccard']) }}</td>
-                      <td class="text-right text-muted">{{ nf($ds['ccard_deduct']) }}</td>
+                      <td class="text-right text-info">{{ nf($ds['ccard_deduct']) }}</td>
                       <td class="text-right"><b>{{ nf($ds['sales_actual']) }}</b></td>
                       <td class="text-right"><b>{{ nf($ds['sales_deduct']) }}</b></td>
                       <td class="text-right"><b>{{ nf($ds['sales_diff']) }}</b></td>
                       <td class="text-right">{{ $ds['pct']>0?nf($ds['pct'])+0:'' }}</td>
-                      <td class="text-right">{{ nf($ds['depo_cash']) }}</td>
-                      
+                      <td class="text-right text-success">{{ nf($ds['depo_cash']) }}</td>
                     </tr>
                     @endforeach
                   </tbody>
+                  <?php
+                    $tot_pct = 0;
+                    if ($tot_salesl>0)
+                      $tot_pct = ($tot_salesl/$tot_salesa)*100;
+                  ?>
+                  <tfoot>
+                    <tr>
+                    <td></td>
+                    <td><b>{{ $ctr }}</b> <span class="gly gly-shop" style="font-size: smaller; margin-top: 4px;"></span></td>
+                    <td class="text-right"><b>{{ nf($tot_sales) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_gfc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_gfd) }}</b>
+                      <div>
+                        <b style="font-size: smaller;">{{ nf($tot_gfc-$tot_gfd) }}</b>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_fpc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_fpd) }}</b>
+                      <div>
+                        <b style="font-size: smaller;">{{ nf($tot_fpc-$tot_fpd) }}</b>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_zc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_zd) }}</b>
+                      <div>
+                        <b style="font-size: smaller;">{{ nf($tot_zc-$tot_zd) }}</b>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_ccc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_ccd) }}</b>
+                      <div>
+                        <b style="font-size: smaller;">{{ nf($tot_ccc-$tot_ccd) }}</b>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_salesa) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_salesd) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_salesl) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_pct) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_depo) }}</b></td>
+                  </tr>
+                  </tfoot>
                 </thead>
               </table>
               </div>
@@ -216,7 +281,8 @@
       </div>
     </div>
   </div>
-    
+  
+  <div style="margin-bottom: 50px;"></div>
 </div>
 @endsection
 

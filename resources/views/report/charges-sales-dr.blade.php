@@ -87,8 +87,8 @@
 
   
   <div class="row">
-    <div class="col-md-8 col-sm-12">
-      <div role="tabpanel" class="tab-pane" id="stats">
+    <div class="col-md-12">
+      <div role="tabpanel" class="tab-pane" id="stats" style="margin-top: 30px;">
         <!-- Copany Panel -->
         <div class="panel panel-default">
           <div class="panel-heading">Company</div>
@@ -100,6 +100,14 @@
                   <tr>
                     <th>Code</td>
                     <th>Company</td>
+                    <th class="text-right">GF Sales</th>
+                    <th class="text-right">GF Ded.</th>
+                    <th class="text-right">FP Sales</th>
+                    <th class="text-right">FP Ded.</th>
+                    <th class="text-right">Zap Sales</th>
+                    <th class="text-right">Zap Ded.</th>
+                    <th class="text-right">Card Sales</th>
+                    <th class="text-right">Card Ded.</th>
                     <th class="text-right">Charged Sales</th>
                     <th class="text-right">Deducted Sales</th>
                     <th class="text-right">Deduction</th>
@@ -109,10 +117,18 @@
                 </thead>
                 <tbody>
                 <?php
-                  $tot_actual = $tot_deduct = $tot_diff = $tot_depo = $pct = 0;
+                  $tot_gfc = $tot_gfd = $tot_fpc = $tot_fpd = $tot_zc = $tot_zd = $tot_ccc = $tot_ccd = $tot_actual = $tot_deduct = $tot_diff = $tot_depo = $pct = 0;
                 ?>
                 @foreach($comps as $key => $comp)
                 <?php
+                  $tot_gfc += $comp['grab'];
+                  $tot_gfd += $comp['grab_deduct'];
+                  $tot_fpc += $comp['panda'];
+                  $tot_fpd += $comp['panda_deduct'];
+                  $tot_zc += $comp['zap'];
+                  $tot_zd += $comp['zap_deduct'];
+                  $tot_ccc += $comp['ccard'];
+                  $tot_ccd += $comp['ccard_deduct'];
                   $tot_actual += $comp['sales_actual'];
                   $tot_deduct += $comp['sales_deduct'];
                   $tot_diff += $comp['sales_diff'];
@@ -123,6 +139,14 @@
                 <tr>
                   <td>{{ $key }}</td>
                   <td>{{ $comp['company'] }} &nbsp;&nbsp;<span class="badge" style="font-size: x-small;">{{ $comp['branch_cnt'] }}</span></td>
+                  <td class="text-right">{{ nf($comp['grab']) }}</td>
+                  <td class="text-right text-info">{{ nf($comp['grab_deduct']) }}</td>
+                  <td class="text-right">{{ nf($comp['panda']) }}</td>
+                  <td class="text-right text-info">{{ nf($comp['panda_deduct']) }}</td>
+                  <td class="text-right">{{ nf($comp['zap']) }}</td>
+                  <td class="text-right text-info">{{ nf($comp['zap_deduct']) }}</td>
+                  <td class="text-right">{{ nf($comp['ccard']) }}</td>
+                  <td class="text-right text-info">{{ nf($comp['ccard_deduct']) }}</td>
                   <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
                   <td class="text-right"><b>{{ nf($comp['sales_deduct']) }}</b></td>
                   <td class="text-right">{{ nf($comp['sales_diff']) }}</td>
@@ -140,6 +164,34 @@
                   <tr>
                     <td></td>
                     <td></td>
+                    <td class="text-right"><b>{{ nf($tot_gfc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_gfd) }}</b>
+                      <div>
+                        <span style="font-size: smaller;">{{ nf($tot_gfc-$tot_gfd) }}</span>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_fpc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_fpd) }}</b>
+                      <div>
+                        <span style="font-size: smaller;">{{ nf($tot_fpc-$tot_fpd) }}</span>
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_zc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_zd) }}</b>
+                      <div>
+                        <span style="font-size: smaller;">{{ nf($tot_zc-$tot_zd) }}</span>                      
+                      </div>
+                    </td>
+                    <td class="text-right"><b>{{ nf($tot_ccc) }}</b></td>
+                    <td class="text-right">
+                      <b>{{ nf($tot_ccd) }}</b>
+                      <div>
+                        <span style="font-size: smaller;">{{ nf($tot_ccc-$tot_ccd) }}</span>
+                      </div>
+                    </td>
                     <td class="text-right"><b>{{ nf($tot_actual) }}</b></td>
                     <td class="text-right"><b>{{ nf($tot_deduct) }}</b></td>
                     <td class="text-right"><b>{{ nf($tot_diff) }}</b></td>
@@ -157,7 +209,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div role="tabpanel" class="tab-pane" id="stats">
+      <div role="tabpanel" class="tab-pane" id="stats" style="margin-top: 30px;">
         <!-- Copany Panel -->
         <div class="panel panel-default">
           <div class="panel-heading">Branch Breakdown</div>
@@ -241,28 +293,28 @@
                     <td class="text-right">
                       <b>{{ nf($tot_gfd) }}</b>
                       <div>
-                        <b style="font-size: smaller;">{{ nf($tot_gfc-$tot_gfd) }}</b>
+                        <span style="font-size: smaller;">{{ nf($tot_gfc-$tot_gfd) }}</span>
                       </div>
                     </td>
                     <td class="text-right"><b>{{ nf($tot_fpc) }}</b></td>
                     <td class="text-right">
                       <b>{{ nf($tot_fpd) }}</b>
                       <div>
-                        <b style="font-size: smaller;">{{ nf($tot_fpc-$tot_fpd) }}</b>
+                        <span style="font-size: smaller;">{{ nf($tot_fpc-$tot_fpd) }}</span>
                       </div>
                     </td>
                     <td class="text-right"><b>{{ nf($tot_zc) }}</b></td>
                     <td class="text-right">
                       <b>{{ nf($tot_zd) }}</b>
                       <div>
-                        <b style="font-size: smaller;">{{ nf($tot_zc-$tot_zd) }}</b>
+                        <span style="font-size: smaller;">{{ nf($tot_zc-$tot_zd) }}</span>
                       </div>
                     </td>
                     <td class="text-right"><b>{{ nf($tot_ccc) }}</b></td>
                     <td class="text-right">
                       <b>{{ nf($tot_ccd) }}</b>
                       <div>
-                        <b style="font-size: smaller;">{{ nf($tot_ccc-$tot_ccd) }}</b>
+                        <span style="font-size: smaller;">{{ nf($tot_ccc-$tot_ccd) }}</span>
                       </div>
                     </td>
                     <td class="text-right"><b>{{ nf($tot_salesa) }}</b></td>

@@ -99,7 +99,7 @@
                 <thead>
                   <tr>
                     <th>Code</td>
-                    <th>Company</td>
+                    <th class="hidden-xs hidden-sm">Company</td>
                     <th class="text-right">GF Sales</th>
                     <th class="text-right">GF Ded.</th>
                     <th class="text-right">FP Sales</th>
@@ -137,8 +137,8 @@
                   $pct = $comp['sales_actual']>0 ? ($comp['sales_diff']/$comp['sales_actual'])*100 : 0;
                 ?>
                 <tr>
-                  <td>{{ $key }}</td>
-                  <td>{{ $comp['company'] }} &nbsp;&nbsp;<span class="badge" style="font-size: x-small;">{{ $comp['branch_cnt'] }}</span></td>
+                  <td><div class="help" data-toggle="tooltip" title="{{ $comp['company'] }}">{{ $key }}</div></td>
+                  <td class="hidden-xs hidden-sm">{{ $comp['company'] }} &nbsp;&nbsp;<span class="badge" style="font-size: x-small;">{{ $comp['branch_cnt'] }}</span></td>
                   <td class="text-right">{{ nf($comp['grab']) }}</td>
                   <td class="text-right text-info">{{ nf($comp['grab_deduct']) }}</td>
                   <td class="text-right">{{ nf($comp['panda']) }}</td>
@@ -163,7 +163,7 @@
                 ?>
                   <tr>
                     <td></td>
-                    <td></td>
+                    <td class="hidden-xs hidden-sm"></td>
                     <td class="text-right"><b>{{ nf($tot_gfc) }}</b></td>
                     <td class="text-right">
                       <b>{{ nf($tot_gfd) }}</b>

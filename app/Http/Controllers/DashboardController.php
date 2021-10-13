@@ -431,6 +431,18 @@ class DashboardController extends Controller
 
     // return $comps;
 
+    if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+
+      $email = [
+        'body' => $request->user()->name.' '.$this->dr->fr->format('Y-m-d').' '.$this->dr->to->format('Y-m-d')
+      ];
+
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('freakyash_02@yahoo.com')->subject('Charges Sales');
+      });
+    }
+
     return $this->setViewWithDR(view('report.charges-sales-dr')->with('comps', $comps)->with('datas', $datas));
   }
 

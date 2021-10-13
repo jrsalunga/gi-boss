@@ -419,6 +419,11 @@ class DashboardController extends Controller
       $comps[$dt['companycode']]['company'] = $dt['company'];
       $comps[$dt['companycode']]['company_id'] = $dt['company_id'];
 
+      if (array_key_exists('branch_cnt', $comps[$dt['companycode']]))
+        $comps[$dt['companycode']]['branch_cnt'] ++;
+      else
+        $comps[$dt['companycode']]['branch_cnt'] = 1;
+
       foreach ($parts as $p) {
         if (array_key_exists($p, $comps[$dt['companycode']])) {
           $comps[$dt['companycode']][$p] += $dt[$p];

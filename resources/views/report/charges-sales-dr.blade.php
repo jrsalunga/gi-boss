@@ -122,7 +122,7 @@
                 ?>
                 <tr>
                   <td>{{ $key }}</td>
-                  <td>{{ $comp['company'] }}</td>
+                  <td>{{ $comp['company'] }} <span class="badge" style="font-size: x-small;">{{ $comp['branch_cnt'] }}</span></td>
                   <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
                   <td class="text-right"><b>{{ nf($comp['sales_deduct']) }}</b></td>
                   <td class="text-right">{{ nf($comp['sales_diff']) }}</td>

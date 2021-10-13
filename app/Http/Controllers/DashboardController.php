@@ -363,6 +363,11 @@ class DashboardController extends Controller
 
   
   public function getChargesSalesDR(Request $request) {
+
+    if (is_null($request->input('fr')) || is_null($request->input('fr'))) {
+      $this->dr->to = c();
+      $this->dr->fr = c()->startOfmonth();
+    }
     
     $datas = [];
     $comps = [];

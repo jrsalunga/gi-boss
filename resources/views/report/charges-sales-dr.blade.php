@@ -167,8 +167,8 @@
               <table class="table table-condensed table-hover table-striped tablesorter table-sort-branch" style="margin-top: 0;" role="grid"> 
                 <thead>
                   <tr>
-                    <th></th>
-                    <th></th>
+                    <th>Company</th>
+                    <th>Branch</th>
                     <th class="text-right">Sales</th>
                     <th class="text-right">GF Sales</th>
                     <th class="text-right">GF Ded.</th>

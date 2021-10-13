@@ -23,8 +23,10 @@
 
 
 @section('container-body')
-<div class="container-fluid">
-  
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
+<div class="container-fluid">  
+
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
     <li><a href="/report/sales/charges/dr-all">Charges Sales</a></li>
@@ -54,7 +56,7 @@
 
         <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
             {!! Form::open(['url' => '/report/sales/charges/dr-all', 'method' => 'get', 'id'=>'dp-form']) !!}
-            <button type="submit" class="btn btn-success btn-go" title="Go">
+            <button type="submit" class="btn btn-success btn-go" title="Go" data-toggle="loader">
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
             </button> 
@@ -85,7 +87,7 @@
 
   
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8 col-sm-12">
       <div role="tabpanel" class="tab-pane" id="stats">
         <!-- Copany Panel -->
         <div class="panel panel-default">
@@ -102,20 +104,49 @@
                     <td class="text-right">Deducted Sales</td>
                     <td class="text-right">Deduction</td>
                     <td class="text-right">%</td>
+                    <td class="text-right">Cash Depo</td>
                   </tr>
-                  <tbody>
-                    @foreach($comps as $key => $comp)
-                    <tr>
-                      <td>{{ $key }}</td>
-                      <td>{{ $comp['company'] }}</td>
-                      <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
-                      <td class="text-right">{{ nf($comp['sales_deduct']) }}</td>
-                      <td class="text-right">{{ nf($comp['sales_diff']) }}</td>
-                      <td class="text-right">{{ nf(($comp['sales_diff']/$comp['sales_actual'])*100) }}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
                 </thead>
+                <tbody>
+                <?php
+                  $tot_actual = $tot_deduct = $tot_diff = $tot_depo = $pct = 0;
+                ?>
+                @foreach($comps as $key => $comp)
+                <?php
+                  $tot_actual += $comp['sales_actual'];
+                  $tot_deduct += $comp['sales_deduct'];
+                  $tot_diff += $comp['sales_diff'];
+                  $tot_depo += $comp['depo_cash'];
+
+                  $pct = $comp['sales_actual']>0 ? ($comp['sales_diff']/$comp['sales_actual'])*100 : 0;
+                ?>
+                <tr>
+                  <td>{{ $key }}</td>
+                  <td>{{ $comp['company'] }}</td>
+                  <td class="text-right">{{ nf($comp['sales_actual']) }}</td>
+                  <td class="text-right"><b>{{ nf($comp['sales_deduct']) }}</b></td>
+                  <td class="text-right">{{ nf($comp['sales_diff']) }}</td>
+                  <td class="text-right">{{ nf($pct) }}</td>
+                  <td class="text-right">{{ nf($comp['depo_cash']) }}</td>
+                </tr>
+                @endforeach
+                </tbody>
+                <tfoot>
+                <?php
+                  $tot_pct = 0;
+                  if ($tot_diff>0)
+                    $tot_pct = ($tot_diff/$tot_actual)*100;
+                ?>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><b>{{ nf($tot_actual) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_deduct) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_diff) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_pct) }}</b></td>
+                    <td class="text-right"><b>{{ nf($tot_depo) }}</b></td>
+                  </tr>
+                </tfoot>
               </table>
               </div>
             </div>
@@ -123,11 +154,13 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <div role="tabpanel" class="tab-pane" id="stats">
         <!-- Copany Panel -->
         <div class="panel panel-default">
-          <div class="panel-heading">Branch</div>
+          <div class="panel-heading">Branch Breakdown</div>
           <div class="panel-body">
             <div class="row">
               <div class="table-responsive">
@@ -137,19 +170,19 @@
                     <td>Comp</td>
                     <td>Branch</td>
                     <td class="text-right">Sales</td>
-                    <td class="text-right">Grab</td>
-                    <td class="text-right">Grab D</td>
-                    <td class="text-right">Panda</td>
-                    <td class="text-right">Panda D</td>
-                    <td class="text-right">Zap</td>
-                    <td class="text-right">Zap D</td>
-                    <td class="text-right">Card</td>
-                    <td class="text-right">Card D</td>
-                    <td class="text-right">Tot Charged</td>
-                    <td class="text-right">Tot Deducted</td>
-                    <td class="text-right">Tot Deduction</td>
+                    <td class="text-right">GF Sales</td>
+                    <td class="text-right">GF Ded.</td>
+                    <td class="text-right">FP Sales</td>
+                    <td class="text-right">FP Ded.</td>
+                    <td class="text-right">Zap Sales</td>
+                    <td class="text-right">Zap Ded.</td>
+                    <td class="text-right">Card Sales</td>
+                    <td class="text-right">Card Ded.</td>
+                    <td class="text-right">Charged Sales</td>
+                    <td class="text-right">Deducted Sales</td>
+                    <td class="text-right">Deduction</td>
                     <td class="text-right">%</td>
-                    <td class="text-right">Tot Cash Depo</td>
+                    <td class="text-right">Cash Depo</td>
                   </tr>
                   <tbody>
                     @foreach($datas as $key => $ds)
@@ -158,17 +191,17 @@
                       <td>{{ $ds['branchcode'] }}</td>
                       <td class="text-right">{{ nf($ds['sales']) }}</td>
                       <td class="text-right">{{ nf($ds['grab']) }}</td>
-                      <td class="text-right">{{ nf($ds['grab_deduct']) }}</td>
+                      <td class="text-right text-muted">{{ nf($ds['grab_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['panda']) }}</td>
-                      <td class="text-right">{{ nf($ds['panda_deduct']) }}</td>
+                      <td class="text-right text-muted">{{ nf($ds['panda_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['zap']) }}</td>
-                      <td class="text-right">{{ nf($ds['zap_deduct']) }}</td>
+                      <td class="text-right text-muted">{{ nf($ds['zap_deduct']) }}</td>
                       <td class="text-right">{{ nf($ds['ccard']) }}</td>
-                      <td class="text-right">{{ nf($ds['ccard_deduct']) }}</td>
+                      <td class="text-right text-muted">{{ nf($ds['ccard_deduct']) }}</td>
                       <td class="text-right"><b>{{ nf($ds['sales_actual']) }}</b></td>
                       <td class="text-right"><b>{{ nf($ds['sales_deduct']) }}</b></td>
                       <td class="text-right"><b>{{ nf($ds['sales_diff']) }}</b></td>
-                      <td class="text-right">{{ nf($ds['pct'])+0 }}</td>
+                      <td class="text-right">{{ $ds['pct']>0?nf($ds['pct'])+0:'' }}</td>
                       <td class="text-right">{{ nf($ds['depo_cash']) }}</td>
                       
                     </tr>

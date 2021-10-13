@@ -95,7 +95,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="table-responsive">
-              <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0;" role="grid"> 
+              <table class="table table-condensed table-hover table-striped table-sort tablesorter tablesorter-default" style="margin-top: 0; font-size: smaller;" role="grid" > 
                 <thead>
                   <tr>
                     <th>Code</td>
@@ -216,7 +216,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="table-responsive">
-              <table class="table table-condensed table-hover table-striped tablesorter table-sort-branch" style="margin-top: 0;" role="grid"> 
+              <table class="table table-condensed table-hover table-striped tablesorter table-sort-branch" style="margin-top: 0; font-size: smaller;" role="grid"> 
                 <thead>
                   <tr>
                     <th>Company</th>

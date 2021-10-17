@@ -287,7 +287,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Backard C.Cards</td>
+                    <td>Bankard C.Cards</td>
                     <td class="text-right">{{ nf($cash_audit->col_card, 2, true) }}</td>
                     <td class="text-right">{{ nf($cash_audit->col_cardk, 2, true) }}</td>
                   </tr>

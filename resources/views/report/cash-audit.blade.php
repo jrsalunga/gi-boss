@@ -114,7 +114,7 @@
     @include('_partials.alerts')
 
     <div class="row">
-      <div class="col-md-12" style="margin-top: 20px;">
+      <div class="col-md-8 col-sm-9 col-xs-9" style="margin-top: 20px;">
       @if(is_null($cash_audit))
         @if(!is_null($branch))
         No Data
@@ -193,6 +193,7 @@
                     <tr><td>Total Signed</td><td class="text-right">{{ nf($cash_audit->sig_sale, 2, true) }}</td></tr>
                     <tr><td>Total Discounts</td><td class="text-right">{{ nf($cash_audit->tot_disc, 2, true) }}</td></tr>
                     <tr><td>Total Cancellations</td><td class="text-right">{{ nf($cash_audit->tot_canc, 2, true) }}</td></tr>
+
                   </tbody>
                 </table>
               </div>
@@ -201,8 +202,40 @@
           </div>
         </div>
       @endif
-      </div> <!-- end: .col-md-12 -->
-      
+      </div> <!-- end: .col-md-8 -->
+
+      <div class="col-md-4 col-sm-3 col-xs-3" style="margin-top: 20px;">
+        @if(is_null($cash_audit))
+          @if(!is_null($branch))
+          No Data
+          @endif
+        @else
+          <div class="panel panel-primary">
+            <div class="panel-heading">Cash Summary ({{ $dr->date->format('M d Y') }})</div>
+            <div class="panel-body">
+             
+                <div class="table-responsive">
+                  <table class="table table-condensed table-striped">
+                    <tbody>
+                      <tr><td>Change Fund</td><td class="text-right">{{ nf($change_fund, 2, true) }}</td></tr>
+                      <tr><td>Cash Sales</td><td class="text-right">{{ nf($cash_audit->csh_sale, 2, true) }}</td></tr>
+                      <tr><td>Collections</td><td class="text-right">{{ nf($cash_audit->tot_coll, 2, true) }}</td></tr>
+                      <tr><td>Cash Disbursement</td><td class="text-right">-{{ nf($cash_audit->csh_disb, 2, true) }}</td></tr>
+                      <tr><td>CashOut/Refund</td><td class="text-right">{{ nf($cash_audit->csh_out, 2, true) }}</td></tr>
+                      <tr><td>Total Cash</td><td class="text-right">{{ nf($cash_audit->comp_bal, 2, true) }}</td></tr>
+                      <tr><td>Actual Cash </td><td class="text-right">{{ nf($cash_audit->csh_cnt, 2, true) }}</td></tr>
+                      <tr><td>(Short) / Over</td><td class="text-right">{{ nf($cash_audit->shrt_ovr, 2, true) }}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+             
+            </div>
+          </div>
+        @endif
+      </div> <!-- end: .col-md-4 -->
+    </div>
+
+    <div class="row">  
       <div class="col-md-4" style="margin-top: 20px;">
         @if(!is_null($cash_audit))
         <div class="panel panel-default">

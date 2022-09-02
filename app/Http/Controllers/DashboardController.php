@@ -288,7 +288,7 @@ class DashboardController extends Controller
     // return $this->dr->fr->copy()->subDay();
 
     $dailysales = $this->repo
-                    // ->skipCache()
+                    ->skipCache()
                     ->getAllByDr($this->dr->fr->copy()->subDay(), $this->dr->to, ['*']);
 
     // $branchs =  \App\Models\Boss\Branch::select(['code', 'descriptor', 'id'])->active()->orderBy('code')->get();

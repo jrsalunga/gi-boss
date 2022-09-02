@@ -288,7 +288,7 @@ class DashboardController extends Controller
     // return $this->dr->fr->copy()->subDay();
 
     $dailysales = $this->repo
-                    ->skipCache()
+                    // ->skipCache()
                     ->getAllByDr($this->dr->fr->copy()->subDay(), $this->dr->to, ['*']);
 
     // $branchs =  \App\Models\Boss\Branch::select(['code', 'descriptor', 'id'])->active()->orderBy('code')->get();
@@ -359,6 +359,36 @@ class DashboardController extends Controller
     return $this->setViewWithDR($view);
 
     return $datas[0]['dss'];
+  }
+
+
+  public function getFoodCostMonthly(Request $request) {
+
+    // return dd((($request->has('fr') && $request->has('to')) && (is_iso_date($request->input('fr')) && is_iso_date($request->input('to')))));
+
+
+    if (($request->has('fr') && $request->has('to')) && (is_iso_date($request->input('fr')) && is_iso_date($request->input('to')))) {
+
+      $this->dr->fr = carbonCheckorNow($request->input('fr'));
+      $this->dr->to = carbonCheckorNow($request->input('to'));
+
+      if ($this->dr->fr->gt($this->dr->to))
+        return 'fr is gt to';
+
+      $len = $this->dr->to->diffInDays($this->dr->fr);
+    } else {
+
+      $date = carbonCheckorNow($request->input('date'));
+      $len = 6;
+      if ($request->has('len') && $request->input('len')>0 && $request->input('len')<90)
+        $len = $request->input('len');
+
+      $this->dr->to = $date;
+      $this->dr->fr = $date->copy()->subDays($len);
+    } 
+
+    $datas = [];
+
   }
 
   

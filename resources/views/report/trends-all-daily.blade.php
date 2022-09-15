@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', ' - All Branches Sales Trend by Date Range')
+@section('title', ' - All Branch Sales Trend by Date Range')
 
 @section('css-internal')
 
@@ -44,11 +44,11 @@
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
           </a>  -->
-          <!-- <a href="/delivery" class="btn btn-default" title="All Branches">
+          <!-- <a href="/delivery" class="btn btn-default" title="All Branch">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
           </a>
-          <button type="button" class="btn btn-default active" title="Strarred Branches">
+          <button type="button" class="btn btn-default active" title="Strarred Branch">
             <span class="glyphicon glyphicon-list-alt"></span>
             <span class="hidden-xs hidden-sm">All</span>
           </button> -->
@@ -106,7 +106,7 @@
         <tr>
           <th>Branch</th>
           @foreach($datas[0]['dss'] as $h)
-            <th class="text-right">{{ $h['date']->format('D, M j') }}</th>
+            <th class="text-right">{{ $h['date']->format('D,M-j') }}</th>
           @endforeach
           <th class="text-right"><strong>Total</strong></th>
         </tr>

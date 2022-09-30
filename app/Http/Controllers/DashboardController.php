@@ -582,4 +582,19 @@ class DashboardController extends Controller
   }
 
 
+
+
+  public function test_email(Request $request) {
+
+
+    \Mail::send('emails.welcome', [], function ($m) {
+        $m->from('hello@app.com', 'Your Application');
+
+        $m->to('jefferson.salunga@gmail.com', 'Jeferson Salunga')->subject('Your Reminder!');
+    });
+
+
+  }
+
+
 }

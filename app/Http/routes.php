@@ -53,8 +53,11 @@ Route::get('report/food-cost-breakdown', ['uses'=>'ExpenseController@getMonthFoo
 Route::get('report/pnl-summary', ['uses'=>'ExpenseController@getMonthFoodCostBreakdown']);
 Route::get('report/pnl/daily', ['uses'=>'ExpenseController@getPnlDaily']);
 Route::get('report/pnl/month-range', ['uses'=>'ExpenseController@getMonthRangePnl']);
+Route::get('report/pnl/monthly', ['uses'=>'ExpenseController@getPnlMonthly']);
+
 //Route::get('report/expense-breakdown', ['uses'=>'ExpenseController@getMonthExpenseBreakdown']);
 Route::get('report/trends/daily', ['uses'=>'DashboardController@getThrendsDaily']);
+Route::get('report/trends/food-cost', ['uses'=>'DashboardController@getFoodCostMonthly']);
 Route::get('report/sales/charges/dr-all', ['uses'=>'DashboardController@getChargesSalesDR']);
 
 
@@ -156,6 +159,7 @@ Route::get('kitlog/checklist', ['uses'=>'KitlogController@getChecklist']);
 
 
 
+Route::get('test/email', ['uses'=>'DashboardController@test_email']);
 
 
 

@@ -626,14 +626,14 @@
                   </small></em>
                   </div>
                 </td>
-                <!-- <td class="text-right">
+                <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
                   <em><small title="{{$tot_headspend}}/{{$div_headspend}}={{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}" data-toggle="tooltip">
                     {{ $div_headspend!=0?nice_format($tot_headspend/$div_headspend):0 }}
                   </small></em>
                   </div>
-                </td> -->
+                </td>
                 <td class="text-right">
                   <strong data-toggle="tooltip" title="{{ number_format($tot_trans, 0) }}">
                     {{ nice_format($tot_trans) }}
@@ -670,7 +670,7 @@
                     </small></em>
                   </div>
                 </td>
-                <td class="text-right">
+                <!-- <td class="text-right">
                   <strong title="{{ number_format($tot_mancost,2) }}" data-toggle="tooltip">
                     {{ nice_format($tot_mancost) }}
                   </strong>
@@ -688,7 +688,7 @@
                       @endif
                     </small></em>
                   </div>
-                </td>
+                </td> -->
                 <td class="text-right">
                   <strong title="{{ number_format($tot_tips,2) }}" data-toggle="tooltip">
                     {{ nice_format($tot_tips) }}

@@ -621,11 +621,19 @@
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
+                  <em><small title="{{$tot_custcount}}/{{$div_custcount}}={{ $div_custcount!=0?number_format($tot_hcustcount/$div_custcount,2):0 }}" data-toggle="tooltip">
+                    {{ $div_custcount!=0?nice_format($tot_custcount/$div_custcount):0 }}
+                  </small></em>
+                  </div>
+                </td>
+                <!-- <td class="text-right">
+                  <strong>&nbsp;</strong>
+                  <div>
                   <em><small title="{{$tot_headspend}}/{{$div_headspend}}={{ $div_headspend!=0?number_format($tot_headspend/$div_headspend,2):0 }}" data-toggle="tooltip">
                     {{ $div_headspend!=0?nice_format($tot_headspend/$div_headspend):0 }}
                   </small></em>
                   </div>
-                </td>
+                </td> -->
                 <td class="text-right">
                   <strong data-toggle="tooltip" title="{{ number_format($tot_trans, 0) }}">
                     {{ nice_format($tot_trans) }}

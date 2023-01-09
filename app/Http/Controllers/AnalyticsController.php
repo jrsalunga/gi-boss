@@ -386,8 +386,8 @@ class AnalyticsController extends Controller
     if(!$y){
       
       // if more than a year
-      if($fr->diffInDays($to, false)>=731) { // 730 = 2yrs
-        $this->dr->fr = $to->copy()->subDays(730)->startOfMonth();
+      if($fr->diffInDays($to, false)>=1826) { // 730 = 2yrs , 1825 = 5yrs
+        $this->dr->fr = $to->copy()->subDays(1825)->startOfMonth();
         $this->dr->to = $to;
         $this->dr->date = $to;
         return false;

@@ -312,7 +312,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(sale_csh) AS sale_csh, SUM(sale_chg) AS sale_chg, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, SUM(disc_totamt) AS disc_totamt, SUM(vat_xmpt) AS vat_xmpt, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, ';
     $sql .= 'SUM(totdeliver_fee) AS totdeliver_fee, SUM(emp_meal) AS emp_meal,  branchid';
 

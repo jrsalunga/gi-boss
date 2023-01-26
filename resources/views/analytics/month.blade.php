@@ -212,8 +212,10 @@
                   <th class="text-right">Customers</th>
                   <th class="text-right">HeadSpend</th>
                   <th class="text-right">Txn</th>
+                  <th class="text-right">Discounts</th>
+                  <th class="text-right">Tax Xmpt</th>
                   <th class="text-right">Sales/Rcpt</th>
-                  <th class="text-right">Emp</th>
+                  <!-- <th class="text-right">Emp</th> -->
                   <th class="text-right">Sales/Emp</th>
                   <!--
                   <th class="text-right">
@@ -248,6 +250,8 @@
                 $tot_drinks = 0;
                 $tot_cog = 0;
                 $tot_profit = 0;
+                $tot_disc = 0;
+                $tot_vxmpt = 0;
 
                 $div_sales = 0;
                 $div_purchcost = 0;
@@ -263,6 +267,8 @@
                 $div_drinks = 0;
                 $div_cog = 0;
                 $div_profit = 0;
+                $div_disc = 0;
+                $div_vxmpt = 0;
               ?>
               @foreach($dailysales as $d)
               <?php
@@ -279,6 +285,8 @@
                 $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
                 $div_cog+=(!is_null($d->dailysale)  && $d->dailysale->costOfGoods()!=0)?1:0; 
                 $div_profit+=(!is_null($d->dailysale)  && $d->dailysale->directProfit()!=0)?1:0; 
+                $div_disc+=($d->dailysale['disc_totamt']!=0)?1:0;
+                $div_vxmpt+=($d->dailysale['vat_xmpt']!=0)?1:0;
 
                 $fr = $d->date->copy()->firstOfMonth();
                 $to = $d->date->copy()->lastOfMonth();
@@ -367,9 +375,12 @@
                 <!--- end: head speand -->
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['trans_cnt'], 0,'.','') }}">{{ number_format($d->dailysale['trans_cnt'], 0) }}</td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale->get_receipt_ave(false), 2,'.','') }}">{{ $d->dailysale->get_receipt_ave() }}</td>
-                <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">
+                <!-- <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">
                   {{ number_format($d->dailysale['empcount'], 0) }}
-                </td>
+                </td> -->
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}">{{ number_format($d->dailysale['disc_totamt'], 0) }}</td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['vat_xmpt'], 0,'.','') }}">{{ number_format($d->dailysale['vat_xmpt'], 0) }}</td>
+                
                 <!--- sales per emp -->
                 @if($d->dailysale['empcount']==0)
                   <td class="text-right" data-sort="0.00">
@@ -381,6 +392,8 @@
                   </td>
                 @endif
                 <!--- end: sales per emp -->
+                
+                
                 <?php
                   $mancost = $d->dailysale['empcount']*$branch->mancost;
                   $div_mancost+=($mancost!=0)?1:0; 
@@ -448,6 +461,8 @@
                   $tot_drinks     += $d->dailysale->getBeerPurch();
                   $tot_cog        += $d->dailysale->costOfGoods();
                   $tot_profit     += $d->dailysale->directProfit();
+                  $tot_disc       += $d->dailysale['disc_totamt'];
+                  $tot_vxmpt      += $d->dailysale['vat_xmpt'];
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
@@ -458,10 +473,11 @@
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
-                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
@@ -644,6 +660,49 @@
                   </small></em>
                   </div>
                 </td>
+
+                <td class="text-right">
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_disc, 2) }}">
+                    {{ nice_format($tot_disc) }}
+                  </strong>
+                  <div>
+                    <em><small title="{{$tot_disc}}/{{$div_disc}}={{ $div_disc!=0?number_format($tot_disc/$div_disc,2):0 }}" data-toggle="tooltip">
+                      {{ $div_disc!=0?nice_format($tot_disc/$div_disc):'-' }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_disc}}/{{$tot_disc}})*100" data-toggle="tooltip">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_disc/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+
+
+                <td class="text-right">
+                  <strong data-toggle="tooltip" title="{{ number_format($tot_vxmpt, 2) }}">
+                    {{ nice_format($tot_vxmpt) }}
+                  </strong>
+                  <div>
+                    <em><small title="{{$tot_vxmpt}}/{{$div_vxmpt}}={{ $div_vxmpt!=0?number_format($tot_vxmpt/$div_vxmpt,2):0 }}" data-toggle="tooltip">
+                      {{ $div_vxmpt!=0?nice_format($tot_vxmpt/$div_vxmpt):'-' }}
+                    </small></em>
+                  </div>
+                  <div>
+                    <em><small title="({{$tot_vxmpt}}/{{$tot_vxmpt}})*100" data-toggle="tooltip">
+                      @if($tot_sales!='0')
+                      {{ number_format(($tot_vxmpt/$tot_sales)*100,2) }}%
+                      @else
+                        0
+                      @endif
+                    </small></em>
+                  </div>
+                </td>
+                
+
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
@@ -652,7 +711,7 @@
                   </small></em>
                   </div>
                 </td>
-                <td class="text-right">
+                <!-- <td class="text-right">
                   <strong title="{{ number_format($tot_empcount,0) }}" data-toggle="tooltip">
                     {{ nice_format($tot_empcount) }}
                   </strong>
@@ -661,7 +720,7 @@
                     {{ $div_empcount!=0?nice_format($tot_empcount/$div_empcount):'-' }}
                   </small></em>
                   </div>
-                </td>
+                </td> -->
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>

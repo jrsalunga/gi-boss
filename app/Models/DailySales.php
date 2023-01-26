@@ -33,6 +33,7 @@ class DailySales extends BaseModel {
     'chrg_othr' => 'float',
     'bank_totchrg' => 'float',
     'disc_totamt' => 'float',
+    'vat_xmpt' => 'float',
     'slsmtd_totgrs' => 'float',
     'depo_check' => 'float',
     'depo_cash' => 'float',
@@ -56,6 +57,8 @@ class DailySales extends BaseModel {
     'totdeliver_fee' => 'float',
     'opex' => 'float',
     'ccard' => 'float',
+    'emp_meal' => 'float',
+    'trans_cnt' => 'integer',
   ];
 
 

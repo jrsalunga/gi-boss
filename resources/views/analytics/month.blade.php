@@ -377,7 +377,7 @@
                 <!-- <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">
                   {{ number_format($d->dailysale['empcount'], 0) }}
                 </td> -->
-                <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}"><span class="help" data-toggle="tooltip" title="{{ $d->dailysale->get_pct_disc_totamt() }}%">{{ number_format($d->dailysale['disc_totamt'], 2) }}</span></td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}"><span class="help" data-toggle="tooltip" title="">{{ number_format($d->dailysale['disc_totamt'], 2) }}</span></td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['vat_xmpt'], 0,'.','') }}">{{ number_format($d->dailysale['vat_xmpt'], 2) }}</td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale->get_receipt_ave(false), 2,'.','') }}">{{ $d->dailysale->get_receipt_ave() }}</td>
                 

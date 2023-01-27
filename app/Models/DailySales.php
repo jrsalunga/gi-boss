@@ -224,6 +224,17 @@ class DailySales extends BaseModel {
     return 0;
   }
 
+
+  public function get_pct_disc_totamt($format=true) {
+    if ($this->sales>0){
+      if ($format)
+        return number_format(($this->disc_totamt/$this->sales)*100, 2);
+      else
+        return ($this->disc_totamt/$this->sales)*100;
+    }
+    return 0;
+  }
+
 	
 	
  

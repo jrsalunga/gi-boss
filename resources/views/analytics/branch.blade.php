@@ -210,7 +210,9 @@
                   <th class="text-right">(Sales-Purch)</th>
                   <th class="text-right">Customers</th>
                   <th class="text-right">Head Spend</th>
-                  <th class="text-right">Trans</th>
+                  <th class="text-right">Txn</th>
+                  <th class="text-right">Discounts</th>
+                  <th class="text-right">Tax Xmpt</th>
                   <th class="text-right">Sales/Receipt</th>
                   <th class="text-right">Emp Count</th>
                   <th class="text-right">Sales/Emp</th>
@@ -244,6 +246,8 @@
                 $tot_cos = 0;
                 $tot_receipt = 0;
                 $tot_trans = 0;
+                $tot_disc = 0;
+                $tot_vxmpt = 0;
 
                 $div_sales = 0;
                 $div_totdeliver = 0;
@@ -257,6 +261,8 @@
                 $div_cos = 0;
                 $div_receipt = 0;
                 $div_trans = 0;
+                $div_disc = 0;
+                $div_vxmpt = 0;
               ?>
             @foreach($dailysales as $d)
               <?php 
@@ -271,6 +277,8 @@
                 $div_cos+=($d->dailysale['cos']!=0)?1:0; 
                 $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
                 $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
+                $div_disc+=($d->dailysale['disc_totamt']!=0)?1:0;
+                $div_vxmpt+=($d->dailysale['vat_xmpt']!=0)?1:0;
               ?>
 
             <tr data-dailysalesid="{{strtolower($d->dailysale['id'])}}">
@@ -316,6 +324,8 @@
               <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">{{ number_format($d->dailysale['custcount'], 0) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['headspend'], 2,'.','') }}">{{ number_format($d->dailysale['headspend'], 2) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale['trans_cnt'], 0,'.','') }}">{{ number_format($d->dailysale['trans_cnt'], 0) }}</td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}"><span class="help" data-toggle="tooltip" title="{{ $d->dailysale->get_pct_disc_totamt() }}%">{{ number_format($d->dailysale['disc_totamt'], 2) }}</span></td>
+              <td class="text-right" data-sort="{{ number_format($d->dailysale['vat_xmpt'], 0,'.','') }}">{{ number_format($d->dailysale['vat_xmpt'], 2) }}</td>
               <td class="text-right" data-sort="{{ number_format($d->dailysale->get_receipt_ave(false), 2,'.','') }}">{{ $d->dailysale->get_receipt_ave() }}</td>
               <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">{{ $d->dailysale['empcount'] }}</td>
               <?php
@@ -369,8 +379,12 @@
                 $tot_cos        += $d->dailysale['cos'];
                 $tot_trans      += $d->dailysale['trans_cnt'];
                 $tot_receipt    += $d->dailysale->get_receipt_ave(false);
+                $tot_disc       += $d->dailysale['disc_totamt'];
+                $tot_vxmpt      += $d->dailysale['vat_xmpt'];
               ?>
               @else 
+              <td class="text-right" data-sort="-">-</td>
+              <td class="text-right" data-sort="-">-</td>
               <td class="text-right" data-sort="-">-</td>
               <td class="text-right" data-sort="-">-</td>
               <td class="text-right" data-sort="-">-</td>
@@ -468,6 +482,25 @@
                 </small></em>
                 </div>
               </td>
+
+              <td class="text-right">
+                <strong>{{ number_format($tot_disc,0) }}</strong>
+                <div>
+                <em><small title="{{$tot_disc}}/{{$div_disc}}" >
+                  {{ $div_disc!=0?number_format($tot_disc/$div_disc,2):0 }}
+                </small></em>
+                </div>
+              </td>
+
+               <td class="text-right">
+                <strong>{{ number_format($tot_vxmpt,0) }}</strong>
+                <div>
+                <em><small title="{{$tot_vxmpt}}/{{$div_vxmpt}}" >
+                  {{ $div_vxmpt!=0?number_format($tot_vxmpt/$div_vxmpt,2):0 }}
+                </small></em>
+                </div>
+              </td>
+
               <td class="text-right">
                 <strong>&nbsp;</strong>
                 <div>
@@ -476,6 +509,7 @@
                 </small></em>
                 </div>
               </td>
+
               <td class="text-right">
                 <strong>{{ number_format($tot_empcount,0) }}</strong>
                 <div>

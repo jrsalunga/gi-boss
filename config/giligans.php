@@ -160,11 +160,13 @@ return [
   ],
 
   'deliveryfee' => [
-    'grab' => .10,
-    'grabc' => .10,
+    'grab' => .15,
+    'grabc' => .15,
     'panda' => .25,
     'zap' => .05,
     'ccard' => .03,
+    'smo' => .02,
+    'maya' => .025,
   ]
 	
 ];

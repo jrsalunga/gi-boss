@@ -74,6 +74,7 @@
 		  					&nbsp;
 		  				</td>
 		  				<td style="width: 33%;">
+
 								@if(isset($sector->am))
 		  						@if(isset($sector->am->position))
 		  							<span class="label label-default help" title="{{$sector->am->position->descriptor}}" data-toggle="tooltip">{{$sector->am->position->code}}</span>
@@ -88,7 +89,7 @@
 		  				<td>
 		  					@if(isset($sector->kh))
 		  						@if(isset($sector->kh->position))
-		  							<span class="label label-default help" title="{{$sector->am->position->descriptor}}" data-toggle="tooltip">{{$sector->kh->position->code}}</span>
+		  							<span class="label label-default help" title="{{$sector->kh->position->descriptor}}" data-toggle="tooltip">{{$sector->kh->position->code}}</span>
 		  						@endif
 		  						<span>
 		  							<a href="/hr/masterfiles/employee/{{$sector->kh->lid() }}" target="_blank">

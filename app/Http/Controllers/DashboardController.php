@@ -586,8 +586,9 @@ class DashboardController extends Controller
 
   public function test_email(Request $request) {
 
+    $user = [];
 
-    \Mail::send('emails.welcome', [], function ($m) {
+    \Mail::send('emails.welcome', ['user' => $user], function ($m) use ($user) {
         $m->from('hello@app.com', 'Your Application');
 
         $m->to('jefferson.salunga@gmail.com', 'Jeferson Salunga')->subject('Your Reminder!');

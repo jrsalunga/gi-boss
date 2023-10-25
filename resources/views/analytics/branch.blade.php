@@ -589,13 +589,14 @@
             <tr>
                 <th>Date</th>
                 <th>Sales</th>
+                <th>Delivery</th>
                 <th>Food Cost</th>
                 <th>OpEx</th>
                 <th>Purchased</th>
                 <th>Emp Count</th>
                 <th>Man Cost</th>
                 <th>Tips</th>
-                <th>Sales per Emp</th>
+                <!-- <th>Sales per Emp</th> -->
             </tr>
           </thead>
           <tbody>
@@ -604,13 +605,14 @@
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ number_format($d->dailysale['sales'],2,'.','') }}</td>
+              <td>{{ number_format($d->dailysale['totdeliver'],2,'.','') }}</td>
               <td>{{ number_format($d->dailysale['cos'],2,'.','') }}</td>
               <td>{{ number_format($d->opex,2,'.','') }}</td>
               <td>{{ number_format($d->dailysale['purchcost'],2,'.','') }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
               <td>{{ $d->dailysale['mancost'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
-              <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
+              <!-- <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td> -->
               @else 
               <td>0</td>
               <td>0</td>
@@ -1533,7 +1535,7 @@
           panning: true,
           panKey: 'shift'
         },
-        colors: ['#15C0C2', '#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+        colors: ['#15C0C2', '#5CB1EF', '#D36A71', '#B09ADB', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
         title: {
             text: ''
         },
@@ -1665,7 +1667,6 @@
           }, {
             type: 'line',
             yAxis: 0,
-            visible: false
           }, {
             type: 'line',
             yAxis: 0,

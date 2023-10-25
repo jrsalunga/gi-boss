@@ -201,11 +201,12 @@
               <tr>
                   <th>Month</th>
                   <th class="text-right">Sales</th>
-                  <th class="text-right">FoodCost</th>
+                  <th class="text-right">Delivery%</th>
+                  <th class="text-right">FoodCost%</th>
                   @if(is_me())
-                    <th class="text-right">Drinks</th>
+                    <th class="text-right">Drinks%</th>
                   @endif
-                  <th class="text-right">Purchased</th>
+                  <th class="text-right">Purchased%</th>
                   <th class="text-right">Cost of Goods</th>
                   <th class="text-right">OpEx</th>
                   <th class="text-right">Direct Profit</th>
@@ -233,6 +234,7 @@
             <tbody>
               <?php
                 $tot_sales = 0;
+                $tot_deliver = 0;
                 $tot_fsales = 0;
                 $tot_purchcost = 0;
                 $tot_custcount = 0;
@@ -254,6 +256,7 @@
                 $tot_vxmpt = 0;
 
                 $div_sales = 0;
+                $div_deliver = 0;
                 $div_purchcost = 0;
                 $div_custcount = 0;
                 $div_empcount = 0;
@@ -273,6 +276,7 @@
               @foreach($dailysales as $d)
               <?php
                 $div_sales+=($d->dailysale['sales']!=0)?1:0;
+                $div_deliver+=($d->dailysale['totdeliver']!=0)?1:0;
                 $div_purchcost+=($d->dailysale['purchcost']!=0)?1:0; 
                 $div_custcount+=($d->dailysale['custcount']!=0)?1:0; 
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
@@ -306,6 +310,16 @@
                       {{ number_format($d->dailysale['sales'], 2) }}
                     </a>
                   @endif
+                </td>
+                <td class="text-right" data-sort="{{ $d->dailysale->get_pct_totdeliver() }}">
+                  @if($d->dailysale->get_pct_totdeliver()=='0.00')
+                      -
+                  @else      
+                    <span data-toggle="tooltip" title="{{ number_format($d->dailysale['totdeliver'], 2) }}">
+                    {{ $d->dailysale->get_pct_totdeliver() }}
+                    </span>              
+                  @endif
+                
                 </td>
                 <td class="text-right" data-sort="{{ $d->dailysale->get_cospct() }}">
                   @if($d->dailysale->get_cospct()=='0.00')
@@ -377,7 +391,7 @@
                 <!-- <td class="text-right" data-sort="{{ $d->dailysale['empcount'] }}">
                   {{ number_format($d->dailysale['empcount'], 0) }}
                 </td> -->
-                <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}"><span class="help" data-toggle="tooltip" title="">{{ number_format($d->dailysale['disc_totamt'], 2) }}</span></td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['disc_totamt'], 0,'.','') }}"><span class="help" data-toggle="tooltip" title="{{ $d->dailysale->get_pct_disc_totamt() }}%">{{ number_format($d->dailysale['disc_totamt'], 2) }}</span></td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['vat_xmpt'], 0,'.','') }}">{{ number_format($d->dailysale['vat_xmpt'], 2) }}</td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale->get_receipt_ave(false), 2,'.','') }}">{{ $d->dailysale->get_receipt_ave() }}</td>
                 

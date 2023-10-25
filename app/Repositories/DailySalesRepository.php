@@ -314,6 +314,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, SUM(disc_totamt) AS disc_totamt, SUM(vat_xmpt) AS vat_xmpt, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, ';
+    $sql .= 'SUM(totdeliver) AS totdeliver, ';
     $sql .= 'SUM(totdeliver_fee) AS totdeliver_fee, SUM(emp_meal) AS emp_meal,  branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -353,6 +354,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $sql .= 'WEEKOFYEAR(date) as week, YEARWEEK(date, 3) AS yearweak, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
     $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(totdeliver) AS totdeliver, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {

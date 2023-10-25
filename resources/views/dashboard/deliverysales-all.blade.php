@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', ' - All Branches Delivery Sales')
+@section('title', ' - All Branch Delivery Sales')
 
 @section('css-internal')
 
@@ -28,7 +28,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
     <li><a href="/delivery/all">Delivery Sales</a></li>
-    <li class="active">All Branches <small>({{ $dr->date->format('D, M j, Y') }})</small></li>
+    <li class="active">All Branch <small>({{ $dr->date->format('D, M j, Y') }})</small></li>
   </ol>
 
     
@@ -42,11 +42,11 @@
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
           </a>  -->
-          <!-- <a href="/delivery" class="btn btn-default" title="All Branches">
+          <!-- <a href="/delivery" class="btn btn-default" title="All Branch">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
           </a>
-          <button type="button" class="btn btn-default active" title="Strarred Branches">
+          <button type="button" class="btn btn-default active" title="Strarred Branch">
             <span class="glyphicon glyphicon-list-alt"></span>
             <span class="hidden-xs hidden-sm">All</span>
           </button> -->

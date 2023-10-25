@@ -27,7 +27,7 @@
 	
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li class="active">Starred Branches Sales</li>
+    <li class="active">Starred Branch Sales</li>
   </ol>
 
   <nav id="nav-action" class="navbar navbar-default">
@@ -39,11 +39,11 @@
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
           </a>  -->
-          <button type="button" class="btn btn-default active" title="Strarred Branches">
+          <button type="button" class="btn btn-default active" title="Strarred Branch">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
           </button>
-          <a href="/dailysales/all" class="btn btn-default" title="All Branches">
+          <a href="/dailysales/all" class="btn btn-default" title="All Branch">
             <span class="glyphicon glyphicon-list-alt"></span>
             <span class="hidden-xs hidden-sm">All</span>
           </a>

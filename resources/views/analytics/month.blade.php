@@ -402,7 +402,9 @@
                   </td>
                 @else
                   <td class="text-right" data-sort="{{ number_format($d->dailysale['sales']/$d->dailysale['empcount'], 2,'.','') }}">
+                    <span class="help" data-toggle="tooltip" title="{{ $d->dailysale['empcount'] }}">
                     {{ number_format($d->dailysale['sales']/$d->dailysale['empcount'], 2) }}
+                    </span>
                   </td>
                 @endif
                 <!--- end: sales per emp -->
@@ -522,7 +524,7 @@
                 <td class="text-right">
                   <strong id="f-tot-sales">
                     <span data-toggle="tooltip"  title="{{ number_format($tot_sales,2) }}">
-                      {{ nice_format($tot_sales) }} sales
+                      {{ nice_format($tot_sales) }}
                     </span>
                   </strong>
                   <div>
@@ -534,7 +536,7 @@
                 <td class="text-right">
                   <strong id="f-tot-deliver">
                     <span data-toggle="tooltip"  title="{{ number_format($tot_deliver,2) }}">
-                      {{ nice_format($tot_deliver) }} del
+                      {{ nice_format($tot_deliver) }}
                     </span>
                   </strong>
                   <div>
@@ -546,7 +548,7 @@
                 <td class="text-right">
                   <strong id="f-tot-mancost">
                     <span data-toggle="tooltip" title="{{ number_format($tot_cos,2) }}">
-                      {{ nice_format($tot_cos) }} fc
+                      {{ nice_format($tot_cos) }}
                     </span>
                   </strong>
                   <div>

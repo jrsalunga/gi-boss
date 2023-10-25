@@ -8,7 +8,7 @@ class Salesmtd extends BaseModel {
 	protected $table = 'salesmtd';
   protected $fillable = ['tblno', 'wtrno', 'ordno', 'product_id', 'qty', 'uprice', 'grsamt', 
                         'disc', 'netamt', 'orddate', 'ordtime', 'recno', 'cslipno', 'custcount', 'paxloc', 
-                        'group', 'remarks', 'cashier', 'branch_id'];
+                        'group', 'salecat', 'remarks', 'cashier', 'branch_id'];
 	//protected $guarded = ['id'];
   //protected $appends = ['transdate'];
   protected $dates = ['orddate', 'ordtime'];
@@ -55,11 +55,6 @@ class Salesmtd extends BaseModel {
   }
 
  
-
-
-
- 
-
 
 
 }

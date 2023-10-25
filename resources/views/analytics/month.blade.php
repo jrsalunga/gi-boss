@@ -1103,7 +1103,7 @@
         panning: true,
         panKey: 'shift'
       },
-      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#4cae4c', '#F9CDAD', '#91e8e1', '#8d4653'],
       title: {
           text: ''
       },

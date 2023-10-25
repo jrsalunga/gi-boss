@@ -237,6 +237,7 @@ class DailySales extends BaseModel {
 
 
   public function get_pct_totdeliver($format=true) {
+    return $this->sales;
     if ($this->sales>0){
       if ($format)
         return number_format(($this->totdeliver/$this->sales)*100, 2);

@@ -220,40 +220,46 @@
             </a>
           </li>
         -->
-          <li role="presentation" style="float: right;">
-            <div>
-            Actual Expense: 
-            <h4 id="tot-actual" class="text-right" style="margin:0 0 10px 0;">0.00</h4>
+          <li role="presentation" style="float: right;" class="hidden-md hidden-sm hidden-xs">
+            <div data-toggle="tooltip" title="The total purchase record  on POS. (Purchased Cost - Utang)" class="help">
+            Total Expense on POS: 
+            <h4 class="tot-pos text-right" style="margin:0 0 10px 0;">0.00</h4>
             </div>
           </li>
-          <li role="presentation" style="float: right;">
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
+            <div data-toggle="tooltip" title="Gross Expense - Utang" class="help">
+            Net Expense: 
+            <h4 class="tot-actual text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            </div>
+          </li>
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
             <div>
             Utang: 
-            <h4 id="tot-utang" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            <h4 class="tot-utang text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
-          <li role="presentation" style="float: right;">
-            <div>
-            Total : 
-            <h4 id="tot-purch-cost" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
+            <div data-toggle="tooltip" title="Purchased Cost + Emp Meal + Delivery Fee" class="help">
+            Gross Expense: 
+            <h4 class="tot-purch-cost text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
-          <li role="presentation" style="float: right;">
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
             <div>
             Emp Meal: 
-            <h4 id="tot-emp" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            <h4 class="tot-emp text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
-          <li role="presentation" style="float: right;">
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
             <div>
             Delivery Fee: 
-            <h4 id="tot-df" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            <h4 class="tot-df text-right" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
-          <li role="presentation" style="float: right;">
+          <li role="presentation" style="float: right;"  class="hidden-md hidden-sm hidden-xs">
             <div>
             Purchased Cost: 
-            <h4 id="tot-pos-purch" class="text-right" style="margin:0 80px 10px 0;">0.00</h4>
+            <h4 class="text-right tot-pos-purch" style="margin:0 80px 10px 0;">0.00</h4>
             </div>
           </li>
         </ul>
@@ -399,6 +405,76 @@
           </div>
           <!-------------------------------------- start: STAT ----------------------------->
           <div role="tabpanel" class="tab-pane" id="stats">
+
+            <div class="panel panel-default hidden-lg" style="margin-top: 10px;">
+              <!-- <div class="panel-heading"></div> -->
+              <div class="panel-body">
+                <div class="row">
+
+                  <div class="col-xs-12 col-md-4">
+                    <table class="table table-condensed table-hover">
+                      <tbody>
+                        <tr>
+                          <td>Purchased Cost</td><td class="text-right"><span class="tot-pos-purch">0.00</span></td>
+                        </tr>
+                        <tr>
+                          <td>Delivery Fee</td><td class="text-right"><span class="tot-df">0.00</span></td>
+                        </tr>
+                        <tr>
+                          <td>Employee Meal</td><td class="text-right"><span class="tot-emp">0.00</span></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Gross Expense</th>
+                          <th class="text-right"><span class="tot-purch-cost">0.00</span></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  <div class="col-xs-12 col-md-4">
+                    <table class="table table-condensed table-hover">
+                      <tbody>
+                        <tr>
+                          <td>Gross Expense</td><td class="text-right"><span class="tot-purch-cost">0.00</span></td>
+                        </tr>
+                        <tr>
+                          <td>Utang</td><td class="text-right"><span class="tot-utang">0.00</span></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Net Expense on Module</th>
+                          <th class="text-right"><span class="tot-actual">0.00</span></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  <div class="col-xs-12 col-md-4">
+                    <table class="table table-condensed table-hover">
+                      <tbody>
+                        <tr>
+                          <td>Purchased Cost</td><td class="text-right"><span class="tot-pos-purch">0.00</span></td>
+                        </tr>
+                        <tr>
+                          <td>Utang</td><td class="text-right"><span class="tot-utang">0.00</span></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Total Expense on POS</th>
+                          <th class="text-right"><span class="tot-pos">0.00</span></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            
+            
             <!-- Supplier Panel -->
             <div class="panel panel-default">
               <div class="panel-heading">Supplier</div>
@@ -1043,12 +1119,13 @@
   });
   
 
-  $('#tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
-  $('#tot-emp').text('{{ number_format($totemp, 2) }}');
-  $('#tot-df').text('{{ number_format($totdf, 2) }}');
-  $('#tot-utang').text('({{ number_format($totutang, 2) }})');
-  $('#tot-pos-purch').text('{{ number_format($totpurchcost-$totemp-$totdf, 2) }}');
-  $('#tot-actual').text('{{ number_format($totpurchcost-$totutang, 2) }}');
+  $('.tot-purch-cost').text('{{ number_format($totpurchcost, 2) }}');
+  $('.tot-emp').text('{{ number_format($totemp, 2) }}');
+  $('.tot-df').text('{{ number_format($totdf, 2) }}');
+  $('.tot-utang').text('({{ number_format($totutang, 2) }})');
+  $('.tot-pos-purch').text('{{ number_format($totpurchcost-$totemp-$totdf, 2) }}');
+  $('.tot-actual').text('{{ number_format($totpurchcost-$totutang, 2) }}');
+  $('.tot-pos').text('{{ number_format($totpurchcost-$totemp-$totdf-$totutang, 2) }}');
     
 
     $('.show.toggle').on('click', function(){

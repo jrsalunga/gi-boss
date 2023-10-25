@@ -453,6 +453,7 @@
 
                 <?php
                   $tot_sales      += $d->dailysale['sales'];
+                  $tot_deliver += $d->dailysale['totdeliver'];
                   $tot_fsales     += $d->dailysale['food_sales'];
                   $tot_purchcost  += $d->dailysale['purchcost'];
                   $tot_custcount  += $d->dailysale['custcount'];
@@ -480,6 +481,7 @@
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
@@ -520,7 +522,7 @@
                 <td class="text-right">
                   <strong id="f-tot-sales">
                     <span data-toggle="tooltip"  title="{{ number_format($tot_sales,2) }}">
-                      {{ nice_format($tot_sales) }}
+                      {{ nice_format($tot_sales) }} sales
                     </span>
                   </strong>
                   <div>
@@ -530,9 +532,21 @@
                   </div>
                 </td>
                 <td class="text-right">
+                  <strong id="f-tot-deliver">
+                    <span data-toggle="tooltip"  title="{{ number_format($tot_deliver,2) }}">
+                      {{ nice_format($tot_deliver) }} del
+                    </span>
+                  </strong>
+                  <div>
+                  <em><small data-toggle="tooltip" title="{{$tot_deliver}}/{{$div_deliver}}={{ $div_deliver!=0?number_format($tot_deliver/$div_deliver,2):0 }}">
+                    {{ $div_deliver!=0?nice_format($tot_sales/$div_deliver):'-' }}
+                  </small></em>
+                  </div>
+                </td>
+                <td class="text-right">
                   <strong id="f-tot-mancost">
                     <span data-toggle="tooltip" title="{{ number_format($tot_cos,2) }}">
-                      {{ nice_format($tot_cos) }}
+                      {{ nice_format($tot_cos) }} fc
                     </span>
                   </strong>
                   <div>

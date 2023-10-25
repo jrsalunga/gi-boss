@@ -806,6 +806,7 @@
             <tr>
                 <th>Date</th>
                 <th>Sales</th>
+                <th>Delivery</th>
                 <th>Total Expense</th>
                 <th>Food Cost</th>
                 <th>Purchased</th>
@@ -819,6 +820,7 @@
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
+              <td>{{ $d->dailysale['totdeliver'] }}</td>
               <td>{{ $d->dailysale->totalExpense() }}</td>
               <td>{{ $d->dailysale['cos'] }}</td>
               <td>{{ $d->opex }}</td>
@@ -1103,7 +1105,7 @@
         panning: true,
         panKey: 'shift'
       },
-      colors: ['#15C0C2','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
       title: {
           text: ''
       },
@@ -1237,6 +1239,9 @@
         }, {
           type: 'line',
           yAxis: 0
+        }, {
+          type: 'line',
+          yAxis: 0,
         }, {
           type: 'line',
           yAxis: 0,

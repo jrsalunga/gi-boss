@@ -181,7 +181,7 @@
         <h3 id="h-tot-purch" style="margin:0">0</h3>
       </div>
       <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Sales per Employee</p>
+        <p style="margin-bottom:0">Total Delivery</p>
         <h3 id="h-tot-tips" style="margin:0">0</h3>
       </div>
     </div>
@@ -535,7 +535,7 @@
                 </td>
                 <td class="text-right">
                   <strong id="f-tot-deliver">
-                    <span data-toggle="tooltip"  title="{{ number_format($tot_deliver,2) }}">
+                    <span data-toggle="tooltip"  title="{{ number_format($tot_deliver,2) }}"  id="f-tot-tips" >
                       {{ nice_format($tot_deliver) }}
                     </span>
                   </strong>
@@ -754,7 +754,7 @@
                 <td class="text-right">
                   <strong>&nbsp;</strong>
                   <div>
-                  <em><small id="f-tot-tips" title="{{$tot_sales}}/{{$tot_empcount}}={{ $tot_empcount!='0'?number_format($tot_sales/$tot_empcount,2):'-' }}" data-toggle="tooltip">
+                  <em><small title="{{$tot_sales}}/{{$tot_empcount}}={{ $tot_empcount!='0'?number_format($tot_sales/$tot_empcount,2):'-' }}" data-toggle="tooltip">
                     {{ $tot_empcount!='0'?nice_format($tot_sales/$tot_empcount):'-' }}
                     </small></em>
                   </div>

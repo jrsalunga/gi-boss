@@ -110,28 +110,21 @@ class AnalyticsController extends Controller
     $dailysales = $this->ds->branchByDR($branch, $this->dr);
 
     if($request->has('export') && $request->input('export')==='true') {
-
       $ar = $this->dailyToArray($dailysales);
-
       return $this->exportDaily($ar);
     }
 
-
     if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
 
-        $email = [
-          'body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' '.$this->dr->to->format('Y-m-d')
-        ];
+      $email = ['body' => $request->user()->name.' '.$branch->code.' '.$this->dr->fr->format('Y-m-d').' '.$this->dr->to->format('Y-m-d')];
 
-        \Mail::queue('emails.notifier', $email, function ($m) {
-          $m->from('giligans.app@gmail.com', 'GI App - Boss');
-          $m->to('giligans.log@gmail.com')->subject('Daily Branch Analytics - '.rand());
-        });
-      }
-
+      \Mail::queue('emails.notifier', $email, function ($m) {
+        $m->from('giligans.app@gmail.com', 'GI App - Boss');
+        $m->to('giligans.log@gmail.com')->subject('Daily Branch Analytics - '.rand());
+      });
+    }
 
     return $this->setDailyViewVars('analytics.branch', $dailysales, $bb,  $branch);
-
   }
 
   public function dailyToArray($ds) {

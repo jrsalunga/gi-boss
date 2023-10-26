@@ -578,15 +578,24 @@ class BranchController extends Controller
     $attr['sectorid'] = $request->input('sector_id');
     $attr['companyid'] = $request->input('company_id');
     $attr['opendate'] = $request->input('date_start');
+    $attr['seating'] = $request->input('seating');
 
     if (!empty($request->input('date_end')) && $request->input('status')=='4') 
       $attr['closedate'] = '';
     else
       $attr['closedate'] = $request->input('date_end');
+
+
+    if ($request->input('space')>0) {
+      $area = 0;
+      foreach($request->input('space') as $k => $s)
+        $area += $s['area'];
+
+      $attr['area'] = $area;
+    } 
     
 
     $this->repository->update($attr, $request->input('id'));
-		
 	}
 
 

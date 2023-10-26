@@ -143,7 +143,6 @@
     @if(!is_null($branch))
     <div class="row"  style="margin: -10px 0 10px 0;">
       <div class="col-md-5" title="Address">
-
         <span class="glyphicon glyphicon-map-marker"></span>
         <?php
           if (!is_null($branch)) 

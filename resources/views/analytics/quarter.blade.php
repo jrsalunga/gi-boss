@@ -158,7 +158,13 @@
     @if(!is_null($branch))
     <div class="row"  style="margin: -10px 0 10px 0;">
       <div class="col-md-5" title="Address">
-        <span class="glyphicon glyphicon-map-marker"></span> {{ is_null($branch)?'':$branch->address}}
+        <span class="glyphicon glyphicon-map-marker"></span> 
+        <?php
+          if (!is_null($branch)) 
+            if ($branch->area > 0)
+              echo "<em><small>(".$branch->area." sqm) </small></em>";
+        ?>
+        {{ is_null($branch)?'':$branch->address}}
       </div>
       <div class="col-md-3 col-sm-6" title="Branch Manager / OIC">
         <span class="gly gly-user"></span> {{ is_null($branch)?'':''}}

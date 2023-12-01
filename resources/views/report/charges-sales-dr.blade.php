@@ -100,6 +100,7 @@
                   <tr>
                     <th>Code</td>
                     <th class="hidden-xs hidden-sm">Company</td>
+                    <th class="text-right">Sales</th>
                     <th class="text-right">GF Sales</th>
                     <th class="text-right">GF Ded.</th>
                     <th class="text-right">FP Sales</th>
@@ -117,10 +118,11 @@
                 </thead>
                 <tbody>
                 <?php
-                  $tot_gfc = $tot_gfd = $tot_fpc = $tot_fpd = $tot_zc = $tot_zd = $tot_ccc = $tot_ccd = $tot_actual = $tot_deduct = $tot_diff = $tot_depo = $pct = 0;
+                  $tot_sales = $tot_gfc = $tot_gfd = $tot_fpc = $tot_fpd = $tot_zc = $tot_zd = $tot_ccc = $tot_ccd = $tot_actual = $tot_deduct = $tot_diff = $tot_depo = $pct = 0;
                 ?>
                 @foreach($comps as $key => $comp)
                 <?php
+                  $tot_sales += $comp['sales'];
                   $tot_gfc += $comp['grab'];
                   $tot_gfd += $comp['grab_deduct'];
                   $tot_fpc += $comp['panda'];
@@ -139,6 +141,7 @@
                 <tr>
                   <td><div class="help" data-toggle="tooltip" title="{{ $comp['company'] }}">{{ $key }}</div></td>
                   <td class="hidden-xs hidden-sm">{{ $comp['company'] }} &nbsp;&nbsp;<span class="badge" style="font-size: x-small;">{{ $comp['branch_cnt'] }}</span></td>
+                  <td class="text-right">{{ nf($comp['sales']) }}</td>
                   <td class="text-right">{{ nf($comp['grab']) }}</td>
                   <td class="text-right text-info">{{ nf($comp['grab_deduct']) }}</td>
                   <td class="text-right">{{ nf($comp['panda']) }}</td>
@@ -164,6 +167,7 @@
                   <tr>
                     <td></td>
                     <td class="hidden-xs hidden-sm"></td>
+                    <td class="text-right"><b>{{ nf($tot_sales) }}</b></td>
                     <td class="text-right"><b>{{ nf($tot_gfc) }}</b></td>
                     <td class="text-right">
                       <b>{{ nf($tot_gfd) }}</b>

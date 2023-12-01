@@ -113,7 +113,7 @@
                             <?php $t+=$component->tcost; ?> 
                             @endforeach
                           </tbody>
-                          <tfoot><tr><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td><td></td><td></td</tr></tfoot>
+                          <tfoot><tr><td></td><td class="text-right"><b>{{number_format($t,2)}}</b></td><td></td><td></td></tr></tfoot>
                         </table>
                       </div>
                       <span class="label label-info show toggle" style="margin-left:3px;">show more</span>

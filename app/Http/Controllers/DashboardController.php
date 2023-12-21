@@ -421,6 +421,9 @@ class DashboardController extends Controller
       $datas[$k]['sale_chg'] = $ds->sale_chg;
       $datas[$k]['totdeliver'] = $ds->totdeliver;
 
+      if ($request->input('delpct'))
+        return config('giligans.deliveryfee');
+
       $a = $b = $c = 0;
       foreach (config('giligans.deliveryfee') as $del => $pct) {
 

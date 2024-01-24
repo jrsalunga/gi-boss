@@ -98,13 +98,23 @@ class SalesmtdRepository extends BaseRepository implements CacheableInterface
 
   public function menucatByDR(DateRange $dr, $menucatid=null) {
     return $this->scopeQuery(function($query) use ($dr, $menucatid) {
-      return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+      if (is_array($menucatid)) {
+         return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                    ->whereIn('product.menucat_id', $menucatid)
+                    ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
+                    ->select(DB::raw('product.descriptor as product, product.code as productcode, salesmtd.*, 
+                      salesmtd.qty as qty, salesmtd.grsamt as grsamt, salesmtd.netamt as netamt, cslipno'))
+                    //->groupBy('salesmtd.cslipno')
+                    ->orderBy('product.descriptor');
+      } else {
+        return $query->whereBetween('salesmtd.orddate', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
                     ->where('product.menucat_id', $menucatid)
                     ->leftJoin('product', 'product.id', '=', 'salesmtd.product_id')
                     ->select(DB::raw('product.descriptor as product, product.code as productcode, salesmtd.*, 
                       salesmtd.qty as qty, salesmtd.grsamt as grsamt, salesmtd.netamt as netamt, cslipno'))
                     //->groupBy('salesmtd.cslipno')
                     ->orderBy('product.descriptor');
+      }
     })->skipOrder();
   }
 

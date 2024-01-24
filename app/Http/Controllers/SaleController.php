@@ -153,8 +153,8 @@ class SaleController extends Controller {
     $kares = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $karemnuid)->findWhere($where));
 
     $cmbmnuid = (app()->environment()==='production') 
-      ? '11EB6A0361E87202B99214DDA9E4EAAF'
-      : '11EB774B5B9E3774BCFD00155DCB6D06';
+      ? ['11EB6A0361E87202B99214DDA9E4EAAF', '11EE470C6EDB9DFCBFA214DDA9E4EAAF']
+      : ['11EB774B5B9E3774BCFD00155DCB6D06', '11EE470C6EDB9DFCBFA214DDA9E4EAAF'];
     $combos = $this->aggregateMPs($this->sale->menucatByDR($this->dr, $cmbmnuid)->findWhere($where));
 
     $setmnuid = (app()->environment()==='production') 

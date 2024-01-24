@@ -564,7 +564,7 @@
                                 <!-- <td>{{ $key }}</td> -->
                                 <td>{{ $item['product'] }}</td>
                                 <td>{{ number_format($item['qty'], 0) }}</td>
-                                <td class="text-right">{{ number_format($item['grsamt'], 2) }} dsfafsa</td>
+                                <td class="text-right">{{ number_format($item['grsamt'], 2) }}</td>
 
                                 <td class="text-right">
                                   <small class="text-muted">

@@ -109,6 +109,7 @@
             <th class="text-right">{{ $h['date']->format('D,M-j') }}</th>
           @endforeach
           <th class="text-right"><strong>Total</strong></th>
+          <th>Branch</th>
         </tr>
       </thead>
       <tbody>
@@ -150,6 +151,7 @@
             ?>
           @endforeach
           <td class="text-right" data-sort="{{nf($tot)}}"><strong>{{ nf($tot) }}</strong></td>
+          <td data-sort="{{$data['code']}}">{{ $data['code']  }}</td>
         </tr>
         <?php $gtotal += $tot ?>
         @endforeach
@@ -171,6 +173,7 @@
             <td class="text-right">{{ nf($tf) }}</td>
           @endforeach
           <td class="text-right"><strong>{{ nf($gtotal) }}</strong></td>
+          <td></td>
         </tr>
       </tfoot>
       

@@ -320,7 +320,7 @@
                   {{ number_format($d->dailysale['purchcost'], 2) }}
                 @else
                   <!--<a href="#" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary btn-purch"> -->
-                  <a href="/component/purchases?branchid={{strtolower($branch->id)}}&amp;to={{$dr->to->format('Y-m-d')}}&amp;fr={{$dr->fr->format('Y-m-d')}}" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary" target="_blank">
+                  <a href="/component/purchases?branchid={{strtolower($branch->id)}}&amp;to={{$d->date->format('Y-m-d')}}&amp;fr={{$$d->date->format('Y-m-d')}}" data-date="{{ $d->date->format('Y-m-d') }}" class="text-primary" target="_blank">
                   {{ number_format($d->dailysale['purchcost'], 2) }}
                   </a>
                 @endif

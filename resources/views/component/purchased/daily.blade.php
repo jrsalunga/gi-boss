@@ -346,7 +346,7 @@
                     if ($purchase->componentid=='11E8BB3635ABF63DAEF21C1B0D85A7E0')
                       $totemp += $purchase->tcost;
                     
-                    if ($purchase->componentid=='11EB228238760B969E0C14DDA9E4EAAF')
+                    if ($purchase->componentid=='11EB228238760B969E0C14DDA9E4EAAF' || $purchase->componentid='11EE1B2F870FB663CCD5A1EF7D6E8E7E')
                       $totdf += $purchase->tcost;
 
                     if ($purchase->terms=='U')

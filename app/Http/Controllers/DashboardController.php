@@ -52,7 +52,7 @@ class DashboardController extends Controller
 		// $branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
 		// $branchs = $this->branch->all(['code', 'descriptor', 'id']);
     // $branchs = $this->bbranch->skipCache()->where('status', 2)->get(['code', 'descriptor', 'id']);
-    $branchs = \App\Models\Boss\Branch::whereIn('type', [1,2,3])->where('status', 2)->get(['code', 'descriptor', 'id']);
+    $branchs = \App\Models\Boss\Branch::whereNotIn('type', [4,5])->where('status', 2)->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];
 		$arr_wl = [];

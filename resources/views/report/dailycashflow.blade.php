@@ -1,10 +1,8 @@
 @extends('master')
 
-@section('title', ' - All Daily Cash Flow')
+@section('title', ' - Daily Cash Flow')
 
-@section('css-internal')
-
-@endsection
+@section('body-class', 'month-pnl-summary')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -21,7 +19,6 @@
 <p class="navbar-text navbar-right">{{ $name }}</p>
 @endsection
 
-
 @section('container-body')
 <div class="backdrop"></div>
 <div class="loader"><img src="/images/spinner_google.gif"></div>
@@ -29,7 +26,7 @@
   
   <ol class="breadcrumb">
     <li><a href="/"><span class="gly gly-shop"></span></a></li>
-    <li>All Branches Cash Flow</li>
+    <li>Daily Cash Flow</li>
     <li class="active">{{ $dr->date->format('D, M j, Y') }}</li>
   </ol>
 
@@ -44,11 +41,11 @@
             <span class="gly gly-unshare"></span>
             <span class="hidden-xs hidden-sm">Back</span>
           </a> 
-          <a href="/dailysales" class="btn btn-default" title="All Branches">
+          <a href="/dailysales" class="btn btn-default" title="All Branch">
             <span class="glyphicon glyphicon-star"></span>
             <span class="hidden-xs hidden-sm">Starred</span>
           </a>
-          <button type="button" class="btn btn-default active" title="Strarred Branches">
+          <button type="button" class="btn btn-default active" title="Strarred Branch">
             <span class="glyphicon glyphicon-list-alt"></span>
             <span class="hidden-xs hidden-sm">All</span>
           </button>

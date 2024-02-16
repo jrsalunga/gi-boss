@@ -51,7 +51,8 @@ class DashboardController extends Controller
 	private function delinquent(Request $request){
 		// $branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
 		// $branchs = $this->branch->all(['code', 'descriptor', 'id']);
-    $branchs = $this->bbranch->skipCache()->where('status', 2)->get(['code', 'descriptor', 'id']);
+    // $branchs = $this->bbranch->skipCache()->where('status', 2)->get(['code', 'descriptor', 'id']);
+    $branchs = \App\Models\Boss\Branch::where('status', 2)->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];
 		$arr_wl = [];

@@ -18,7 +18,7 @@ use App\Models\Backup;
 use App\Repositories\BranchRepository;
 use Illuminate\Container\Container as App;
 use Illuminate\Support\Collection;
-
+use App\Repositories\Boss\BranchRepository as BossBranch;
 
 
 class DashboardController extends Controller 
@@ -27,8 +27,9 @@ class DashboardController extends Controller
 	protected $repo;
 	protected $bb;
 	protected $dr;
+  protected $bbranch;
 
-	public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr, BRepo $brepo) {
+	public function __construct(DSRepo $dsrepo, BBRepo $bbrepo, DateRange $dr, BRepo $brepo, BossBranch $bbranch) {
 		$this->repo = $dsrepo;
 		$this->bb = $bbrepo;
 		$this->br = $brepo;
@@ -36,6 +37,7 @@ class DashboardController extends Controller
 		$this->dr = $dr;
 		$this->branch = new BranchRepository(new App, new Collection);
 		$this->branch->pushCriteria(new ActiveBranch);
+    $this->bbranch = $bbranch;
 	}
 
 	private function setViewWithDR($view){
@@ -48,7 +50,8 @@ class DashboardController extends Controller
 
 	private function delinquent(Request $request){
 		//$branchs = Branch::orderBy('code')->get(['code', 'descriptor', 'id']);
-		$branchs = $this->branch->all(['code', 'descriptor', 'id']);
+		// $branchs = $this->branch->whereIn('status')->all(['code', 'descriptor', 'id']);
+    $branchs = $this->bbranch->whereIn('status', [2])->get(['code', 'descriptor', 'id']);
 	
 		$arr = [];
 		$arr_wl = [];

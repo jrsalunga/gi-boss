@@ -221,6 +221,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       array_push($arr, $s);
     }
 
+    return collect([]);
     return collect($arr);
   }
 

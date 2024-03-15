@@ -221,8 +221,8 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       array_push($arr, $s);
     }
 
-    return collect([]);
     return collect($arr);
+    return collect([]);
   }
 
   public function getByBranchDate(Carbon $fr, Carbon $to, $branchid, $select=['*']) {

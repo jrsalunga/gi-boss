@@ -112,7 +112,53 @@
               </tr>
             </thead>
             <tbody>
-             
+              @foreach($dailysales as $ds)
+                <tr>
+                  <td>{{ $ds->branch->code }}</td>
+                  <td class="text-right">
+                    @if($ds->today->slsmtd_totgrs>0)
+                      <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$dr->now->format('Y-m-d')}}&to={{$dr->now->format('Y-m-d')}}" data-toggle="loader">
+                        {{ number_format($ds->today->sales,2) }}</a>
+                      @if($ds->today->sign=='+')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      @elseif($ds->today->sign=='-')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      @else
+
+                      @endif
+                    @else 
+                      {{ number_format($ds->today->sales,2) }}
+                    @endif
+                  </td>
+                  <td class="text-right">
+                    @if($ds->yesterday->slsmtd_totgrs>0)
+                      <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->yesterday->date->format('Y-m-d')}}&to={{$ds->yesterday->date->format('Y-m-d')}}" data-toggle="loader">
+                        {{ number_format($ds->yesterday->sales,2) }}</a>
+                      @if($ds->yesterday->sign=='+')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-up text-success"></span>
+                      @elseif($ds->yesterday->sign=='-')
+                        <span style="font-size: 70%;" title="{{ number_format($ds->diff->sales1,2) }}" class="glyphicon glyphicon-arrow-down text-danger"></span>
+                      @else
+
+                      @endif
+                    @else 
+                      {{ number_format($ds->yesterday->sales,2) }}
+                    @endif
+                  </td>
+                  <td class="text-right  hidden-xs">
+                  @if(is_null($ds->otherday))
+                    0.00
+                  @else
+                    @if($ds->otherday->slsmtd_totgrs>0)
+                    <a href="/product/sales?branchid={{$ds->branch->lid()}}&fr={{$ds->otherday->date->format('Y-m-d')}}&to={{$ds->otherday->date->format('Y-m-d')}}" data-toggle="loader">
+                      {{ number_format($ds->otherday->sales,2) }}</a>
+                    @else 
+                      {{ number_format($ds->otherday->sales,2) }}
+                    @endif
+                  @endif
+                  </td>
+                </tr>
+              @endforeach
             </tbody>
           </table>
 
@@ -211,7 +257,7 @@
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <strong style="color: red;">Delinquent Branch</strong>
+                    <strong>Delinquent Branch</strong>
                   </a>
                   <span class="badge">{{ count($delinquents[2]) }}</span>
                 </h4>

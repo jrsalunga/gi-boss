@@ -588,7 +588,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
@@ -679,7 +679,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
@@ -770,7 +770,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
@@ -861,7 +861,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
@@ -952,7 +952,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">
@@ -1043,7 +1043,7 @@
                             <tr>
                             <!-- <td></td> -->
                             <td></td>
-                            <td><b>{{ (number_format($q,2)+0) }}</b></td>
+                            <td><b>{{ (number_format($q,2)) }}</b></td>
                             <td class="text-right"><b>{{number_format($t,2)}}</b></td>
                             <td></td>
                               <td class="text-right">

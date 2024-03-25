@@ -223,7 +223,7 @@
                   <th>Month</th>
                   <th class="text-right">Sales</th>
                   <th class="text-right">Purchased</th>
-                  <th class="text-right">Customers</th>
+                  <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
                   <th class="text-right">Sales per Emp</th>

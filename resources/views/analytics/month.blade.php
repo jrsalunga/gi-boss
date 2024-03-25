@@ -216,10 +216,10 @@
                   <th class="text-right">Cost of Goods</th>
                   <th class="text-right">OpEx</th>
                   <th class="text-right">Direct Profit</th>
-                  <th class="text-right">Customers</th>
+                  <th class="text-right">Customer</th>
                   <th class="text-right">HeadSpend</th>
                   <th class="text-right">Txn</th>
-                  <th class="text-right">Discounts</th>
+                  <th class="text-right">Discount</th>
                   <th class="text-right">Tax Xmpt</th>
                   <th class="text-right">Sales/Rcpt</th>
                   <!-- <th class="text-right">Emp</th> -->

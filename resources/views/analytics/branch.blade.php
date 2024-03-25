@@ -214,10 +214,10 @@
                   <th class="text-right">Delivery Sales</th>
                   <th class="text-right">Purchased</th>
                   <th class="text-right">(Sales-Purch)</th>
-                  <th class="text-right">Customers</th>
+                  <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Txn</th>
-                  <th class="text-right">Discounts</th>
+                  <th class="text-right">Discount</th>
                   <th class="text-right">Tax Xmpt</th>
                   <th class="text-right">Sales/Receipt</th>
                   <th class="text-right">Emp Count</th>

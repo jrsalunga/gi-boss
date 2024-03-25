@@ -115,7 +115,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="date-type">
                   <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
+                  <!-- <li><a href="#" data-date-type="weekly">Weekly</a></li> -->
                   <li><a href="#" data-date-type="monthly">Monthly</a></li>
                   <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
                   <li><a href="#" data-date-type="yearly">Yearly</a></li>
@@ -818,6 +818,8 @@
                 <th>Purchased</th>
                 <th>Cost of Goods</th>
                 <th>Direct Profit</th>
+                <th>Customer</th>
+                <th>Transaction</th>
             </tr>
           </thead>
           <tbody>
@@ -832,7 +834,11 @@
               <td>{{ $d->opex }}</td>
               <td>{{ $d->dailysale->costOfGoods() }}</td>
               <td>{{ $d->dailysale->directProfit() }}</td>
+              <td>{{ $d->dailysale['custcount'] }}</td>
+              <td>{{ $d->dailysale['trans_cnt'] }}</td>
               @else 
+              <td>0</td>
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -1109,7 +1115,7 @@
         panning: true,
         panKey: 'shift'
       },
-      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#4cae4c', '#F9CDAD', '#91e8e1', '#8d4653'],
+      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#4cae4c', '#6AAA96', '#DB4437', '#8d4653'],
       title: {
           text: ''
       },
@@ -1261,6 +1267,16 @@
         }, {
           type: 'line',
           yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
+           dashStyle: 'shortdot',
+          yAxis: 1,
+          visible: false
+        }, {
+          type: 'line',
+           dashStyle: 'shortdot',
+          yAxis: 1,
           visible: false
         }
       ]

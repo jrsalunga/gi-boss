@@ -127,7 +127,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="date-type">
                   <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
+                  <!-- <li><a href="#" data-date-type="weekly">Weekly</a></li> -->
                   <li><a href="#" data-date-type="monthly">Monthly</a></li>
                   <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
                   <li><a href="#" data-date-type="yearly">Yearly</a></li>

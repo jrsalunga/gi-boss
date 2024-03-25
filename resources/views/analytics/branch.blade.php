@@ -112,7 +112,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="date-type">
                   <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
+                  <!-- <li><a href="#" data-date-type="weekly">Weekly</a></li> -->
                   <li><a href="#" data-date-type="monthly">Monthly</a></li>
                   <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
                   <li><a href="#" data-date-type="yearly">Yearly</a></li>
@@ -602,7 +602,8 @@
                 <th>Purchased</th>
                 <th>Emp Count</th>
                 <th>Man Cost</th>
-                <th>Tips</th>
+                <th>Customer</th>
+                <th>Transaction</th>
                 <!-- <th>Sales per Emp</th> -->
             </tr>
           </thead>
@@ -618,9 +619,11 @@
               <td>{{ number_format($d->dailysale['purchcost'],2,'.','') }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
               <td>{{ $d->dailysale['mancost'] }}</td>
-              <td>{{ $d->dailysale['tips'] }}</td>
+              <td>{{ $d->dailysale['custcount'] }}</td>
+              <td>{{ $d->dailysale['trans_cnt'] }}</td>
               <!-- <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td> -->
               @else 
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -1542,7 +1545,7 @@
           panning: true,
           panKey: 'shift'
         },
-        colors: ['#15C0C2', '#5CB1EF', '#D36A71', '#B09ADB', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+        colors: ['#15C0C2', '#5CB1EF', '#B09ADB', '#D36A71', '#F15C80', '#F49041', '#B55E64', '#6aaa96', '#DB4437'],
         title: {
             text: ''
         },
@@ -1684,6 +1687,10 @@
             visible: false
           }, {
             type: 'line',
+            yAxis: 0,
+            visible: false
+          }, {
+            type: 'line',
              dashStyle: 'shortdot',
             yAxis: 1,
             visible: false
@@ -1693,12 +1700,13 @@
             visible: false
           }, {
             type: 'line',
-            //dashStyle: 'shortdot',
-            yAxis: 0,
+            dashStyle: 'shortdot',
+            yAxis: 1,
             visible: false
           }, {
             type: 'line',
-            yAxis: 0,
+            dashStyle: 'shortdot',
+            yAxis: 1,
             visible: false
           }
         ]

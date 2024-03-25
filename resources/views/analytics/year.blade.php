@@ -114,7 +114,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="date-type">
                   <li><a href="#" data-date-type="daily">Daily</a></li>
-                  <li><a href="#" data-date-type="weekly">Weekly</a></li>
+                  <!-- <li><a href="#" data-date-type="weekly">Weekly</a></li> -->
                   <li><a href="#" data-date-type="monthly">Monthly</a></li>
                   <li><a href="#" data-date-type="quarterly">Quarterly</a></li>
                   <li><a href="#" data-date-type="yearly">Yearly</a></li>
@@ -210,7 +210,8 @@
                   <th>Month</th>
                   <th class="text-right">Sales</th>
                   <th class="text-right">Purchased</th>
-                  <th class="text-right">Customers</th>
+                  <th class="text-right">Transaction</th>
+                  <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
                   <th class="text-right">Sales per Emp</th>
@@ -237,6 +238,10 @@
                 $tot_sales_emp = 0;
                 $tot_mancostpct = 0;
                 $tot_tipspct = 0;
+                $tot_trans = 0;
+                $tot_profit = 0;
+                $tot_disc = 0;
+                $tot_vxmpt = 0;
 
                 $div_sales = 0;
                 $div_purchcost = 0;
@@ -245,6 +250,11 @@
                 $div_mancost = 0;
                 $div_tips = 0;
                 $div_headspend = 0;
+                $div_profit = 0;
+                $div_trans = 0;
+                $div_profit = 0;
+                $div_disc = 0;
+                $div_vxmpt = 0;
               ?>
               @foreach($dailysales as $d)
               <?php
@@ -254,6 +264,10 @@
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
                 $div_tips+=($d->dailysale['tips']!=0)?1:0; 
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0;
+                $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
+                $div_profit+=(!is_null($d->dailysale)  && $d->dailysale->directProfit()!=0)?1:0; 
+                $div_disc+=($d->dailysale['disc_totamt']!=0)?1:0;
+                $div_vxmpt+=($d->dailysale['vat_xmpt']!=0)?1:0;
               ?>
 
 
@@ -283,6 +297,7 @@
                   -->
                   @endif
                 </td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['trans_cnt'], 0,'.','') }}">{{ number_format($d->dailysale['trans_cnt'], 0) }}</td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">
                   {{ number_format($d->dailysale['custcount'], 0) }}
                 </td>
@@ -357,6 +372,10 @@
                   $tot_mancostpct += $d->dailysale['mancostpct'];
                   $tot_tips       += $d->dailysale['tips'];
                   $tot_tipspct    += $d->dailysale['tipspct'];
+                  $tot_trans      += $d->dailysale['trans_cnt'];
+                  $tot_profit     += $d->dailysale->directProfit();
+                  $tot_disc       += $d->dailysale['disc_totamt'];
+                  $tot_vxmpt      += $d->dailysale['vat_xmpt'];
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
@@ -394,6 +413,16 @@
                 <div>
                 <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
                   {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
+                </small></em>
+                </div>
+              </td>
+              <td class="text-right">
+                <strong data-toggle="tooltip" title="{{ number_format($tot_trans, 0) }}">
+                  {{ nice_format($tot_trans) }}
+                </strong>
+                <div>
+                <em><small title="{{$tot_trans}}/{{$div_trans}}={{ $div_trans!=0?number_format($tot_trans/$div_trans,2):0 }}" data-toggle="tooltip">
+                  {{ $div_trans!=0?nice_format($tot_trans/$div_trans):'-' }}
                 </small></em>
                 </div>
               </td>
@@ -488,12 +517,25 @@
             <tr>
                 <th>Date</th>
                 <th>Sales</th>
+                <th>Delivery</th>
                 <th>Purchased</th>
                 <th>Emp Count</th>
            
                 <th>Tips</th>
                 <th>Man Cost</th>
                 <th>Sales per Emp</th>
+                <th>Customer</th>
+                <th>Transaction</th>
+
+                <!-- <th>Date</th>
+                <th>Sales</th>
+                <th>Total Expense</th>
+                <th>Food Cost</th>
+                <th>Purchased</th>
+                <th>Cost of Goods</th>
+                <th>Direct Profit</th>
+                <th>Customer</th>
+                <th>Transaction</th> -->
             </tr>
           </thead>
           <tbody>
@@ -502,14 +544,20 @@
               <td>{{ $d->date->format('Y-m-d') }}</td>
               @if(!is_null($d->dailysale))
               <td>{{ $d->dailysale['sales'] }}</td>
+              <td>{{ $d->dailysale['totdeliver'] }}</td>
               <td>{{ $d->dailysale['purchcost'] }}</td>
               <td>{{ $d->dailysale['empcount'] }}</td>
               
               <td>{{ $d->dailysale['mancost'] }}</td>
               <td>{{ $d->dailysale['tips'] }}</td>
               <td>{{ $d->dailysale['empcount']=='0' ? 0:number_format(($d->dailysale['sales']/$d->dailysale['empcount']), 2, '.', '') }}</td>
+              <td>{{ $d->dailysale['custcount'] }}</td>
+              <td>{{ $d->dailysale['trans_cnt'] }}</td>
               @else 
            
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>
@@ -790,7 +838,7 @@
         panning: true,
         panKey: 'shift'
       },
-      colors: ['#15C0C2','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#f15c80', '#F9CDAD', '#91e8e1', '#8d4653'],
+      colors: ['#15C0C2','#5CB1EF', '#F15C80', '#F49041', '#F9CDAD', '#91E8E1', '#6AAA96', '#6AAA96', '#DB4437', '#4CAE4C'],
       title: {
           text: ''
       },
@@ -927,18 +975,32 @@
           yAxis: 0
         }, {
           type: 'line',
+          yAxis: 0
+        }, {
+          type: 'line',
+          dashStyle: 'shortdot',
+          yAxis: 1,
+          visible: false
+        }, {
+          type: 'line',
+          yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
+          yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
+          yAxis: 0,
+          visible: false
+        }, {
+          type: 'line',
           dashStyle: 'shortdot',
           yAxis: 1
         }, {
           type: 'line',
-          //dashStyle: 'shortdot',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0
+          dashStyle: 'shortdot',
+          yAxis: 1
         }
       ]
     });

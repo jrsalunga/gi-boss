@@ -300,6 +300,7 @@ class AnalyticsController extends Controller
     }
 
     $dailysales = $this->ds
+                      // ->skipCache()
                       ->pushCriteria(new BranchCriteria($branch))
                       ->getYear($request, $this->dr);
     if(!$res)

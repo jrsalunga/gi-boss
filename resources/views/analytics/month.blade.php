@@ -1273,11 +1273,11 @@
         }, {
           type: 'line',
            dashStyle: 'shortdot',
-          yAxis: 1
+          yAxis: 1,
         }, {
           type: 'line',
            dashStyle: 'shortdot',
-          yAxis: 1
+          yAxis: 1,
         }
       ]
     });

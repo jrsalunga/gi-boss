@@ -254,9 +254,9 @@
                 $tot_cos = 0;
                 $tot_opex = 0;
                 $tot_receipt = 0;
-                $tot_trans = 0;
                 $tot_drinks = 0;
                 $tot_cog = 0;
+                $tot_trans = 0;
                 $tot_profit = 0;
                 $tot_disc = 0;
                 $tot_vxmpt = 0;
@@ -272,9 +272,9 @@
                 $div_cos = 0;
                 $div_opex = 0;
                 $div_receipt = 0;
-                $div_trans = 0;
                 $div_drinks = 0;
                 $div_cog = 0;
+                $div_trans = 0;
                 $div_profit = 0;
                 $div_disc = 0;
                 $div_vxmpt = 0;
@@ -290,10 +290,10 @@
                 $div_headspend+=($d->dailysale['headspend']!=0)?1:0;
                 $div_cos+=($d->dailysale['cos']!=0)?1:0;
                 $div_opex+=($d->opex!=0)?1:0;
-                $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
                 $div_drinks+=(!is_null($d->dailysale)  && $d->dailysale->getBeerPurch()!=0)?1:0; 
                 $div_receipt+=(!is_null($d->dailysale) && $d->dailysale->get_receipt_ave()!=0)?1:0; 
                 $div_cog+=(!is_null($d->dailysale)  && $d->dailysale->costOfGoods()!=0)?1:0; 
+                $div_trans+=($d->dailysale['trans_cnt']!=0)?1:0; 
                 $div_profit+=(!is_null($d->dailysale)  && $d->dailysale->directProfit()!=0)?1:0; 
                 $div_disc+=($d->dailysale['disc_totamt']!=0)?1:0;
                 $div_vxmpt+=($d->dailysale['vat_xmpt']!=0)?1:0;
@@ -479,10 +479,10 @@
                   //$tot_cos        += $d->dailysale['cos'];
                   $tot_cos        += $d->dailysale->netCos();
                   $tot_opex       += $d->dailysale->getOpex();
-                  $tot_trans      += $d->dailysale['trans_cnt'];
                   $tot_receipt    += $d->dailysale->get_receipt_ave();
                   $tot_drinks     += $d->dailysale->getBeerPurch();
                   $tot_cog        += $d->dailysale->costOfGoods();
+                  $tot_trans      += $d->dailysale['trans_cnt'];
                   $tot_profit     += $d->dailysale->directProfit();
                   $tot_disc       += $d->dailysale['disc_totamt'];
                   $tot_vxmpt      += $d->dailysale['vat_xmpt'];
@@ -1248,10 +1248,12 @@
           yAxis: 0
         }, {
           type: 'line',
-          yAxis: 0
+          yAxis: 0,
+          visible: false
         }, {
           type: 'line',
           yAxis: 0,
+          visible: false
         }, {
           type: 'line',
           yAxis: 0,
@@ -1271,13 +1273,11 @@
         }, {
           type: 'line',
            dashStyle: 'shortdot',
-          yAxis: 1,
-          visible: false
+          yAxis: 1
         }, {
           type: 'line',
            dashStyle: 'shortdot',
-          yAxis: 1,
-          visible: false
+          yAxis: 1
         }
       ]
     });

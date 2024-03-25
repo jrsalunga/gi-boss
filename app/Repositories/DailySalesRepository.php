@@ -313,9 +313,10 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(sale_csh) AS sale_csh, SUM(sale_chg) AS sale_chg, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, SUM(disc_totamt) AS disc_totamt, SUM(vat_xmpt) AS vat_xmpt, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(disc_totamt) AS disc_totamt, SUM(vat_xmpt) AS vat_xmpt, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos, SUM(food_sales) AS food_sales, SUM(transncos) AS transncos, ';
     $sql .= 'SUM(totdeliver) AS totdeliver, ';
+    $sql .= '(SUM(sales)/SUM(custcount)) AS headspend, ';
     $sql .= 'SUM(totdeliver_fee) AS totdeliver_fee, SUM(emp_meal) AS emp_meal,  branchid';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -354,8 +355,9 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
     $sql = 'date, MONTH(date) AS month, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(sale_csh) AS sale_csh, SUM(sale_chg) AS sale_chg, ';
     $sql .= 'WEEKOFYEAR(date) as week, YEARWEEK(date, 3) AS yearweak, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, ';
     $sql .= 'SUM(totdeliver) AS totdeliver, ';
+    $sql .= '(SUM(sales)/SUM(custcount)) AS headspend, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -397,7 +399,8 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'date, QUARTER(date) as quarter, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(sale_csh) AS sale_csh, SUM(sale_chg) AS sale_chg, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, ';
+    $sql .= '(SUM(sales)/SUM(custcount)) AS headspend, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -437,8 +440,9 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'date, YEAR(date) as year, SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(sale_csh) AS sale_csh, SUM(sale_chg) AS sale_chg, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, ';
     $sql .= 'SUM(totdeliver) AS totdeliver, ';
+     $sql .= '(SUM(sales)/SUM(custcount)) AS headspend, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos';
 
     return $this->scopeQuery(function($query) use ($fr, $to, $sql) {
@@ -478,7 +482,8 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
 
     $sql = 'SUM(sales) AS sales, SUM(slsmtd_totgrs) AS slsmtd_totgrs, SUM(crew_kit) AS crew_kit, SUM(crew_din) AS crew_din, ';
     $sql .= 'SUM(purchcost) AS purchcost, SUM(cos) AS cos, SUM(tips) AS tips, SUM(mancost) AS mancost, SUM(trans_cnt) AS trans_cnt, SUM(depo_cash) AS depo_cash, ';
-    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, SUM(headspend) AS headspend, branchid, ';
+    $sql .= 'SUM(custcount) AS custcount, SUM(empcount) AS empcount, branchid, ';
+    $sql .= '(SUM(sales)/SUM(custcount)) AS headspend, ';
     $sql .= 'SUM(totdeliver) AS totdeliver, SUM(grab) AS grab, SUM(grabc) AS grabc, SUM(panda) AS panda, ';
     $sql .= 'SUM(opex) AS opex, SUM(transcost) AS transcost, SUM(transcos) AS transcos';
 

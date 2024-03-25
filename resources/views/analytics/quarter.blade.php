@@ -226,7 +226,7 @@
                   <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-right">Sales per Emp</th>
+                  <th class="text-right">Sales/Emp</th>
                   <th class="text-right">
                     <div style="font-weight: normal; font-size: 11px; cursor: help;">
                       <em title="Branch Mancost">{{is_null($branch)?'0.00':$branch->mancost}}</em>

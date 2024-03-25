@@ -550,6 +550,13 @@
                     {{ $div_deliver!=0?nice_format($tot_sales/$div_deliver):'-' }}
                   </small></em>
                   </div>
+                  <div>
+                  <em><small title="({{$tot_deliver}}/{{$tot_sales}})*100" data-toggle="tooltip">
+                    @if($tot_deliver!='0' && $tot_sales!='0')
+                      {{ number_format(($tot_deliver/$tot_sales)*100,2) }}%
+                    @endif
+                  </small></em>
+                </div>
                 </td>
                 <td class="text-right">
                   <strong id="f-tot-mancost">
@@ -837,6 +844,7 @@
               <td>{{ $d->dailysale['custcount'] }}</td>
               <td>{{ $d->dailysale['trans_cnt'] }}</td>
               @else 
+              <td>0</td>
               <td>0</td>
               <td>0</td>
               <td>0</td>

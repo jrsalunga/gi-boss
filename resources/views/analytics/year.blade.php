@@ -209,12 +209,13 @@
               <tr>
                   <th>Month</th>
                   <th class="text-right">Sales</th>
+                  <th class="text-right">Delivery</th>
                   <th class="text-right">Purchased</th>
                   <th class="text-right">Transaction</th>
                   <th class="text-right">Customer</th>
                   <th class="text-right">Head Spend</th>
                   <th class="text-right">Emp Count</th>
-                  <th class="text-right">Sales per Emp</th>
+                  <th class="text-right">Sales/Emp</th>
                   <th class="text-right">
                     <div style="font-weight: normal; font-size: 11px; cursor: help;">
                       <em title="Branch Mancost">{{is_null($branch)?'0.00':$branch->mancost}}</em>
@@ -229,6 +230,7 @@
             <tbody>
               <?php
                 $tot_sales = 0;
+                $tot_deliver = 0;
                 $tot_purchcost = 0;
                 $tot_custcount = 0;
                 $tot_empcount = 0;
@@ -244,6 +246,7 @@
                 $tot_vxmpt = 0;
 
                 $div_sales = 0;
+                $div_deliver = 0;
                 $div_purchcost = 0;
                 $div_custcount = 0;
                 $div_empcount = 0;
@@ -259,6 +262,7 @@
               @foreach($dailysales as $d)
               <?php
                 $div_sales+=($d->dailysale['sales']!=0)?1:0;
+                $div_deliver+=($d->dailysale['totdeliver']!=0)?1:0;
                 $div_purchcost+=($d->dailysale['purchcost']!=0)?1:0; 
                 $div_custcount+=($d->dailysale['custcount']!=0)?1:0; 
                 $div_empcount+=($d->dailysale['empcount']!=0)?1:0; 
@@ -284,6 +288,13 @@
                 @if(!is_null($d->dailysale))
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['sales'], 2,'.','') }}">
                   {{ number_format($d->dailysale['sales'], 2) }}
+                </td>
+                <td class="text-right" data-sort="{{ number_format($d->dailysale['totdeliver'], 2,'.','') }}">
+                  @if(($d->dailysale['totdeliver']+0)==0)
+
+                  @else
+                    {{ number_format($d->dailysale['totdeliver'], 2) }}
+                  @endif
                 </td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['purchcost'], 2,'.','') }}">
                     {{ number_format($d->dailysale['purchcost'], 2) }}
@@ -359,6 +370,7 @@
 
                 <?php
                   $tot_sales      += $d->dailysale['sales'];
+                  $tot_deliver    += $d->dailysale['totdeliver'];
                   $tot_purchcost  += $d->dailysale['purchcost'];
                   $tot_custcount  += $d->dailysale['custcount'];
                   $tot_headspend  += $d->dailysale['headspend'];
@@ -379,6 +391,7 @@
                 ?>
 
                 @else <!-- is_null d->dailysale) -->
+                <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0.00">-</td>
                 <td class="text-right" data-sort="0">-</td>
@@ -409,11 +422,33 @@
                 </div>
               </td>
               <td class="text-right">
+                <strong id="f-tot-deliver">{{ number_format($tot_deliver,2) }}</strong>
+                <div>
+                  <em><small title="{{$tot_deliver}}/{{$div_deliver}}">
+                    {{ $div_deliver!=0?number_format($tot_deliver/$div_deliver,2):0 }}
+                  </small></em>
+                </div>
+                <div>
+                  <em><small title="({{$tot_deliver}}/{{$tot_sales}})*100" data-toggle="tooltip">
+                    @if($tot_deliver!='0' && $tot_sales!='0')
+                      {{ number_format(($tot_deliver/$tot_sales)*100,2) }}%
+                    @endif
+                  </small></em>
+                </div>
+              </td>
+              <td class="text-right">
                 <strong id="f-tot-purch">{{ number_format($tot_purchcost,2) }}</strong>
                 <div>
                 <em><small title="{{$tot_purchcost}}/{{$div_purchcost}}">
                   {{ $div_purchcost!=0?number_format($tot_purchcost/$div_purchcost,2):0 }}
                 </small></em>
+                </div>
+                <div>
+                  <em><small title="({{$tot_purchcost}}/{{$tot_sales}})*100" data-toggle="tooltip">
+                    @if($tot_purchcost!='0' && $tot_sales!='0')
+                      {{ number_format(($tot_purchcost/$tot_sales)*100,2) }}%
+                    @endif
+                  </small></em>
                 </div>
               </td>
               <td class="text-right">

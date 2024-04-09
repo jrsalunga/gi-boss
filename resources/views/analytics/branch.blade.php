@@ -287,7 +287,7 @@
                 $div_vxmpt+=($d->dailysale['vat_xmpt']!=0)?1:0;
               ?>
 
-            <tr data-dailysalesid="{{strtolower($d->dailysale['id'])}}">
+            <tr data-dailysalesid="{{strtolower($d->dailysale['id'])}}" {{ $d->date->dayOfWeek=='0' ? 'class=warning':'' }}>
               <td data-sort="{{$d->date->format('Y-m-d')}}">
                 {{ $d->date->format('M j, D') }}
               </td>

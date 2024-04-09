@@ -332,7 +332,9 @@
                       -
                   @else      
                     <span data-toggle="tooltip" title="{{ number_format($d->dailysale->netCos(),2) }}" data-foodsales="{{ number_format($d->dailysale['food_sales'],2) }}">
+                    <a class="text-primary" target="_blank" href="/report/pnl-summary?branchid={{$branch->lid()}}&date={{$to->format('Y-m-d')}}">
                     {{ $d->dailysale->get_cospct() }}
+                    </a>
                     </span>              
                   @endif
                 
@@ -384,7 +386,9 @@
                   {{ $d->dailysale->get_dprofitpct() }}%
                   </span>
                   <span class="hidden-sx hidden-sm help" data-toggle="tooltip" title="{{ $d->dailysale->get_dprofitpct() }}%">
+                  <a class="text-primary" target="_blank" href="/report/pnl-summary?branchid={{$branch->lid()}}&date={{$to->format('Y-m-d')}}">
                     {{ nf($d->dailysale->directProfit(),2) }}
+                  </a>
                   </span>
                 </td>
                 <td class="text-right" data-sort="{{ number_format($d->dailysale['custcount'], 0) }}">

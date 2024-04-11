@@ -185,11 +185,33 @@ class ReportsController extends Controller
 
 public function getCustomerMonthly(Request $request) {
 
-  $this->dr->fr = carbonCheckorNow($request->input('fr'));
-  $this->dr->to = carbonCheckorNow($request->input('to'));
+  $this->dr->fr = c($request->input('fr'))->lastOfMonth();
+  $this->dr->to = c($request->input('to'))->lastOfMonth();
 
-  return $this->ms->getCustomerMonthly($this->dr);
+  $mss = $this->ms->getCustomerMonthly($this->dr);
 
+
+  $mss = $mss->pluck('code');
+  $mss = collect($mss->toArray());
+  $mss = $mss->unique();
+
+  return $mss;
+
+  exit;
+  // $c = $mss->contains('code', 'SPP');
+  // $c = collect($mss->toArray());
+
+
+  return dd($c);
+  return dd($c->contains('code', 'SPP'));
+
+
+
+
+
+
+
+  exit;
 
   return $this->dr->fr;
 

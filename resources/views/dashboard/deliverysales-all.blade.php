@@ -88,7 +88,7 @@
           <th class="text-right">Cash Sale</th>
           <th class="text-right">Charge Sale</th>
           <th class="text-right">Total Sales</th>
-          <th class="text-right">Delivery Sales</th>
+          <th class="text-right">Delivery</th>
           <th class="text-right">%</th>
           <th class="text-right">Grab Food</th>
           <th class="text-right">Grab Conceirge</th>

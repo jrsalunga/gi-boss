@@ -104,7 +104,7 @@
           <th class="text-right">Sales</th>
           <!-- <th class="text-right">Food Cost</th> -->
           <th class="text-right"></th>
-          <th class="text-right">Delivery Sales</th>
+          <th class="text-right">Delivery</th>
           <th class="text-right">Purchased</th>
           <th class="text-right">Customer</th>
           <th class="text-right">Head Spend</th>

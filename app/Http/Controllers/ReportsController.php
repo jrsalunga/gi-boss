@@ -183,6 +183,21 @@ class ReportsController extends Controller
 
  
 
+public function getCustomerMonthly(Request $request) {
+
+  $this->dr->fr = carbonCheckorNow($request->input('fr'));
+  $this->dr->to = carbonCheckorNow($request->input('to'));
+
+  return $this->ms->getCustomerMonthly($this->dr);
+
+
+  return $this->dr->fr;
+
+  return $this->ms->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
+  return $request->all();
+
+}
+
 
 
 

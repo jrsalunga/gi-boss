@@ -71,16 +71,42 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
     })->first();
   }
 
+  public function allBranchMonthlyCashFlow($date) {
+
+    $date = c($date)->endOfMonth();
 
 
+    return DB::table('monthlysales AS a')
+              ->select(DB::raw('rm.alias, b.code, a.sales, a.ave_sales, a.totdeliver, a.pct_deliver, a.ave_deliver, (a.tot_dine+a.tot_togo) as dine_togo_sales, a.sale_csh, a.depo_cash, a.ending_csh,
+c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
+              ->leftJoin('branch AS b', 'b.id', '=', 'a.branch_id')
+              ->join('month_cshaudit AS c', function ($join) {
+                $join->on('a.date', '=', 'c.date')
+                     ->on('a.branch_id', '=', 'c.branch_id');
+              })
+              ->leftJoin('sector AS sec', 'sec.id', '=', 'b.sector_id')
+              ->leftJoin('sector AS rm', 'sec.parent_id', '=', 'rm.id')
+              ->where('a.date', $date->format('Y-m-d'))
+              ->where('a.branch_id', '<>', '`ALL`')
+              ->orderBy('rm.alias')
+              ->orderBy('b.code')
+              ->get();
+   
+  }
 
 
+  public function getCustomerMonthly(DateRange $dr) {
 
 
-  
+    return $this->skipCache()->scopeQuery(function($query) use ($dr) {
+      return $query
+                  ->select(DB::raw('branch.code, date, sales, custcount, trans_cnt, branch_id'))
+                  ->leftJoin('branch', 'branch.id', '=', 'monthlysales.branch_id')
+                  ->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                  ->where('branch_id','<>','ALL')
+                  ->orderBy('date', 'asc')
+                  ->orderBy('branch.code');
+    })->get();
 
-  
-  
-	
-
+  }
 }

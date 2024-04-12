@@ -141,7 +141,8 @@ class DateRange {
     return $arr;
   }
 
-  public function monthInterval2(){ // leap year
+  // leap year function
+  public function monthInterval2(){ 
     $x =  0;
     $arr = [];
     $fr = $this->fr->copy();

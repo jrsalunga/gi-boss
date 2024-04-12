@@ -204,7 +204,7 @@ public function getCustomerMonthly(Request $request) {
 
 
   foreach($this->dr->monthInterval2() as $key2 => $value2)
-    $months[$key2] = $value2->format('Y-m-d');
+    $months[$key2] = $value2->format('Ymd');
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
@@ -214,8 +214,8 @@ public function getCustomerMonthly(Request $request) {
         $datas[$v][$m] = NULL;
 
   foreach($mss as $key3 => $value3) {
-    $datas[$value3->code][$value3->date->format('Y-m-d')] = $value3->toArray();
-    $datas['TOTAL'][$value3->date->format('Y-m-d')]['custcount'] += $value3->custcount;
+    $datas[$value3->code][$value3->date->format('Ymd')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->format('Ymd')]['custcount'] += $value3->custcount;
   }
 
   

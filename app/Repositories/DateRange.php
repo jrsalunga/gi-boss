@@ -141,6 +141,17 @@ class DateRange {
     return $arr;
   }
 
+  public function monthInterval2(){ // leap year
+    $x =  0;
+    $arr = [];
+    $fr = $this->fr->copy();
+     do {
+      array_push($arr, Carbon::parse($fr->copy()->addMonths($x)->subDays(5)->lastOfMonth()->format('Y-m-d')));
+      $x++;
+    } while ($x <= $this->fr->diffInMonths($this->to));
+    return $arr;
+  }
+
   public function weekInterval(){
   	$fr = $this->fr->copy();
   	$arr = [];

@@ -190,12 +190,27 @@ public function getCustomerMonthly(Request $request) {
 
   $mss = $this->ms->getCustomerMonthly($this->dr);
 
+  $datas = [];
+  $months = [];
+  $branches = [];
 
-  $mss = $mss->pluck('code');
-  $mss = collect($mss->toArray());
-  $mss = $mss->unique();
+  $brcodes = $mss->pluck('code');
+  $brcodes = collect($brcodes->toArray());
+  $unique = $brcodes->unique();
 
-  return $mss;
+  foreach($unique as $key => $value)
+    array_push($branches, $value);
+
+  foreach($this->dr->monthInterval2() as $key => $value)
+    $months[$key] = $value->format('Y-m-d');
+
+  // foreach($mss as $key => $value){
+
+  // }
+
+
+
+  return $branches;
 
   exit;
   // $c = $mss->contains('code', 'SPP');

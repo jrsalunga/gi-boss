@@ -204,34 +204,20 @@ public function getCustomerMonthly(Request $request) {
   foreach($this->dr->monthInterval2() as $key => $value)
     $months[$key] = $value->format('Y-m-d');
 
-  // foreach($mss as $key => $value){
+  foreach($branches as $k => $v) 
+    foreach($months as $i => $m) 
+      $datas[$v][$m] = NULL;
 
-  // }
+  foreach($mss as $key => $value) {
+    $datas[$value->code][$value->date->format('Y-m-d')] = $value;
+  }
 
-
-
-  return $branches;
-
-  exit;
-  // $c = $mss->contains('code', 'SPP');
-  // $c = collect($mss->toArray());
+  
 
 
-  return dd($c);
-  return dd($c->contains('code', 'SPP'));
+  return $datas;
 
-
-
-
-
-
-
-  exit;
-
-  return $this->dr->fr;
-
-  return $this->ms->findWhere(['branch_id'=>$branch->id, 'date'=>$date->format('Y-m-d')]);
-  return $request->all();
+  
 
 }
 

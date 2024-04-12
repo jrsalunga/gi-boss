@@ -200,16 +200,49 @@ public function getCustomerMonthly(Request $request) {
 
   foreach($unique as $key => $value)
     array_push($branches, $value);
+  array_push($branches, 'TOTAL');
+
+
+  foreach($this->dr->monthInterval2() as $key2 => $value2)
+    $months[$key2] = $value2->format('Y-m-d');
+
+  foreach($branches as $k => $v) 
+    foreach($months as $i => $m) 
+      if ($v=='TOTAL')
+        $datas['TOTAL'][$m]['custcount'] = 0;
+      else
+        $datas[$v][$m] = NULL;
+
+  foreach($mss as $key3 => $value3) {
+    $datas[$value3->code][$value3->date->format('Y-m-d')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->format('Y-m-d')]['custcount'] += $value3->custcount;
+  }
+
+  
+
+  if($request->has('raw'))
+    return $datas;
+
+  return $this->setViewWithDR(view('report.customer')
+                ->with('datas', $datas));
+
+
+  exit;
+
 
   foreach($this->dr->monthInterval2() as $key => $value)
     $months[$key] = $value->format('Y-m-d');
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
-      $datas[$v][$m] = NULL;
+      if ($v=='TOTAL')
+        $datas['TOTAL'][$m]['custcount'] = 0;
+      else
+        $datas[$v][$m] = NULL;
 
   foreach($mss as $key => $value) {
-    $datas[$value->code][$value->date->format('Y-m-d')] = $value;
+    $datas[$value->code][$value->date->format('Y-m-d')] = $value->toArray();
+    $datas['TOTAL'][$value->date->format('Y-m-d')]['custcount'] += $value->custcount;
   }
 
   

@@ -130,9 +130,14 @@
             <thead>
               <tr>
                 <th>Branch</th>
+                <?php
+                  $last = array_pop($datas);
+                  $gtot = 0;
+                ?>
                 @foreach(array_values($datas)[0] as $key => $value)
-                  <th class="text-right">{{ c($key)->format('Y-m') }}</th>
+                  <th class="text-right">{{ c($key)->format('M Y') }}</th>
                 @endforeach
+                <th class="text-right">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -140,18 +145,30 @@
                 @foreach($datas as $key => $value)
                 <tr>
                   <td>{{ $key }}</td>
+                  <?php $tot = 0; ?>
                   @foreach($value as $k => $v)
                     @if(is_null($v))
                     <td> </td>
                     @else 
-                    <td class="text-right">{{ nf($v->custcount,false) }}</td>
+                    <td class="text-right">{{ nf($v['custcount'],false) }}</td>
+                    <?php $tot += $v['custcount']; ?>
                     @endif
                   @endforeach
+                  <td class="text-right">{{ nf($tot,false) }}</td>
                 </tr>
                 @endforeach
               </tr>
             </tbody>
-            
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                @foreach($last as $key => $value)
+                <td class="text-right">{{ nf($value['custcount'],false) }}</td>
+                <?php $gtot+=$value['custcount']; ?>
+                @endforeach
+                <td class="text-right">{{ nf($gtot,false) }}</td>
+              </tr>
+            </tfoot>
           </table>
 
         

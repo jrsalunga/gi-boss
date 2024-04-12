@@ -661,6 +661,106 @@ class ExpenseController extends Controller
     return $datas;
   }
 
+
+
+
+
+
+  public function getPnlMonthly(Request $request) {
+
+    $date = carbonCheckorNow($request->input('date'));
+    $this->dr->date = $date;
+    $this->dr->fr = $date->copy()->startOfyear();
+    $this->dr->to = $date->copy()->lastOfyear();
+
+    $ms = null;
+
+    if ($request->has('branchid') && is_uuid($request->input('branchid')))
+      $branch = $this->branch->find(strtolower($request->input('branchid')));
+    else
+      $branch = null;
+
+
+     if (!is_null($branch)) {
+
+      return $this->PnlMonthly_Prodcat($branch->id, $this->dr->fr, $this->dr->to);
+
+
+
+
+     }
+
+     return 'fsadfas';
+     return $branch;
+
+
+
+
+
+
+
+     return 0;
+
+
+     $datas = [
+      'prodcat',
+      'cos',
+      'ncos',
+      'opex',
+     ];
+  }
+
+
+  public function PnlMonthly_Prodcat($branchid, $fr, $to) {
+
+    $data = [];
+
+    $prodcats = \App\Models\Prodcat::whereIn('ordinal', ['1', '3', '2', '4', '6'])->orderBy('ordinal')->get();
+    $mprodcats =  $this->mProdcat->allByMonth($branchid, $fr, $to);
+
+
+    foreach ($prodcats as $k => $p) {
+      $data[$k][0] = $p->code;
+      $data[$k][1] = $p->descriptor;
+
+      $gt = 0;
+      foreach(range(1,12) as $r) {
+
+        $d = c('2023-'.$r.-'01')->endOfMonth();
+
+        $f = $mprodcats->filter(function ($item) use ($p, $d) {
+          return $item->prodcat_id == $p->id && $item->date->format('Y-m-d') == $d->format('Y-m-d')
+            ? $item : null;
+        });
+
+        $b = $f->first();
+
+        $data[$k][($r+1)] = is_null($b) ? 0 : $b->sales;
+
+        // $data[$k][($r+1)] = $d;
+        // $data[$k][($r+1)] = $d;
+        $gt += $data[$k][($r+1)];
+      }
+      $data[$k][14] = $gt;
+    }
+
+
+    // return range(1,12);
+
+
+    return $data;
+
+
+
+
+  }
+
+
+
+
+
+
+
   
 
 

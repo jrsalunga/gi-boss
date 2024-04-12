@@ -185,8 +185,8 @@ class ReportsController extends Controller
 
 public function getCustomerMonthly(Request $request) {
 
-  $this->dr->fr = c($request->input('fr'))->lastOfMonth();
-  $this->dr->to = c($request->input('to'))->lastOfMonth();
+  $this->dr->fr = (is_null($request->input('fr')) && !is_iso_date($request->input('fr'))) ? c()->firstOfYear()->lastOfMonth() : c($request->input('fr'))->lastOfMonth(); 
+  $this->dr->to = (is_null($request->input('to')) && !is_iso_date($request->input('to'))) ? c()->lastOfMonth() : c($request->input('to'))->lastOfMonth();
 
   $mss = $this->ms->getCustomerMonthly($this->dr);
 
@@ -214,10 +214,11 @@ public function getCustomerMonthly(Request $request) {
 
   
 
+  if($request->has('raw'))
+    return $datas;
 
-  return $datas;
-
-  
+  return $this->setViewWithDR(view('report.customer')
+                ->with('datas', $datas));
 
 }
 

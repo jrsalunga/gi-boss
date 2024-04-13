@@ -20,6 +20,8 @@
 @endsection
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
@@ -882,6 +884,7 @@
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/hc-all.js"> </script>
+  <script src="/js/dr-picker.js"> </script>
   
 <script>
 

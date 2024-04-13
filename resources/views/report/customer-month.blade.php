@@ -20,6 +20,8 @@
 @endsection
 
 @section('container-body')
+<div class="backdrop"></div>
+<div class="loader"><img src="/images/spinner_google.gif"></div>
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
@@ -43,7 +45,7 @@
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/report/customer', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/report/customer/month', 'method' => 'get', 'id'=>'dp-form']) !!}
             <button type="submit" class="btn btn-success btn-go" title="Go"   }}>
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
@@ -61,9 +63,9 @@
             <label class="btn btn-default" for="dp-m-date-fr">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 90px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 110px;">
+            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 90px;">
             <label class="btn btn-default" for="dp-m-date-to">
               <span class="glyphicon glyphicon-calendar"></span>
             </label>
@@ -116,13 +118,14 @@
       </div>
     </div>
     <div class="row">
+    -->
 
       <div class="col-md-12">
         <div id="graph-container" style="overflow:hidden;">
           <div id="graph"></div>
         </div>
       </div>
-    </div> -->
+    </div> 
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -161,7 +164,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td>Total</td>
+                <td><small>({{ count($datas) }})</small> Total</td>
                 @foreach($last as $key => $value)
                 <td class="text-right">{{ nf($value['custcount'],false) }}</td>
                 <?php $gtot+=$value['custcount']; ?>
@@ -172,6 +175,22 @@
           </table>
 
         
+        <table id="datatable" class="tb-data" style="display:none;">
+          <thead>
+            <tr>
+                <th>Date</th>
+                <th>Customer</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($last as $k => $v)
+            <tr>
+              <td>{{ c($k)->format('M Y') }}</td>
+              <td>{{ $v['custcount'] }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div><!--  end: table-responsive -->
       </div>
     </div>
@@ -194,6 +213,7 @@
 @section('js-external')
   <script src="/js/vendors-common.min.js"></script>
   <script src="/js/hc-all.js"> </script>
+  <script src="/js/dr-picker.js"> </script>
   
 <script>
 
@@ -570,38 +590,6 @@
         {
           type: 'line',
           yAxis: 0
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-          yAxis: 0,
-          visible: false
-        }, {
-          type: 'line',
-           dashStyle: 'shortdot',
-          yAxis: 1,
-        }, {
-          type: 'line',
-           dashStyle: 'shortdot',
-          yAxis: 1,
         }
       ]
     });

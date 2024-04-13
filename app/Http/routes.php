@@ -60,7 +60,7 @@ Route::get('report/trends/daily', ['uses'=>'DashboardController@getThrendsDaily'
 Route::get('report/trends/food-cost', ['uses'=>'DashboardController@getFoodCostMonthly']);
 Route::get('report/sales/charges/dr-all', ['uses'=>'DashboardController@getChargesSalesDR']);
 
-Route::get('report/customer', ['uses'=>'ReportsController@getCustomerMonthly']); 
+Route::get('report/customer/month', ['uses'=>'ReportsController@getCustomerMonthly']); 
 
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);

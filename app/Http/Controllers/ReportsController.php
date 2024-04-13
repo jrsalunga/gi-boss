@@ -224,7 +224,7 @@ public function getCustomerMonthly(Request $request) {
   if($request->has('raw'))
     return $datas;
 
-  return $this->setViewWithDR(view('report.customer')
+  return $this->setViewWithDR(view('report.customer-month')
                 ->with('datas', $datas));
 
 

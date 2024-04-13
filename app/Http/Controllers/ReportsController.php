@@ -204,7 +204,8 @@ public function getCustomerMonthly(Request $request) {
 
 
   foreach($this->dr->monthInterval2() as $key2 => $value2)
-    $months[$key2] = $value2->format('Ymd');
+    array_push($months, $value2->format('Ymd'));
+    // $months[$key2] = $value2->format('Ymd');
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 

@@ -149,7 +149,7 @@ class DateRange {
      do {
       array_push($arr, Carbon::parse($fr->copy()->addMonths($x)->subDays(5)->lastOfMonth()->format('Y-m-d')));
       $x++;
-    } while ($x <= $this->fr->diffInMonths($this->to));
+    } while ($x <= $this->fr->copy()->startOfMonth()->diffInMonths($this->to));
     return $arr;
   }
 

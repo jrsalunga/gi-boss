@@ -224,6 +224,8 @@ public function getCustomerMonthly(Request $request) {
   if($request->has('raw'))
     return $datas;
 
+  
+
 
   if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
     $email = [
@@ -243,6 +245,8 @@ public function getCustomerMonthly(Request $request) {
 
 
 public function getCustomerYearly(Request $request) {
+
+}
 
 
 

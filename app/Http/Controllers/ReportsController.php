@@ -234,7 +234,7 @@ public function getCustomerMonthly(Request $request) {
 
     \Mail::queue('emails.notifier', $email, function ($m) {
       $m->from('giligans.app@gmail.com', 'GI App - Boss');
-      $m->to('giligans.log@gmail.com')->cc('freakyash_02@yahoo.com')->subject('Customer Report - '.rand());
+      $m->to('freakyash_02@yahoo.com')->subject('Customer Report - '.rand());
     });
   }
 

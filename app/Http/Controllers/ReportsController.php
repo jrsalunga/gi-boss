@@ -224,34 +224,19 @@ public function getCustomerMonthly(Request $request) {
   if($request->has('raw'))
     return $datas;
 
-  return $this->setViewWithDR(view('report.customer-month')
-                ->with('datas', $datas));
 
+  if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    $email = [
+      'body' => $request->user()->name.' '.$date->format('Y-m-d')
+    ];
 
-  exit;
-
-
-  foreach($this->dr->monthInterval2() as $key => $value)
-    $months[$key] = $value->format('Y-m-d');
-
-  foreach($branches as $k => $v) 
-    foreach($months as $i => $m) 
-      if ($v=='TOTAL')
-        $datas['TOTAL'][$m]['custcount'] = 0;
-      else
-        $datas[$v][$m] = NULL;
-
-  foreach($mss as $key => $value) {
-    $datas[$value->code][$value->date->format('Y-m-d')] = $value->toArray();
-    $datas['TOTAL'][$value->date->format('Y-m-d')]['custcount'] += $value->custcount;
+    \Mail::queue('emails.notifier', $email, function ($m) {
+      $m->from('giligans.app@gmail.com', 'GI App - Boss');
+      $m->to('giligans.log@gmail.com')->cc('freakyash_02@yahoo.com')->subject('Customer Report - '.rand());
+    });
   }
 
-  
-
-  if($request->has('raw'))
-    return $datas;
-
-  return $this->setViewWithDR(view('report.customer')
+  return $this->setViewWithDR(view('report.customer-month')
                 ->with('datas', $datas));
 
 }

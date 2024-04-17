@@ -71,6 +71,7 @@
             </label>
           </div><!-- end btn-grp -->
 
+          <!--
           <div class="btn-group pull-right clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
@@ -86,6 +87,7 @@
               </div>
             </div>
           </div>
+        -->
           
         </div>
       </div>
@@ -153,11 +155,11 @@
                     @if(is_null($v))
                     <td> </td>
                     @else 
-                    <td class="text-right">{{ nf($v['custcount'],false) }}</td>
+                    <td class="text-right" data-sort="{{number_format($v['custcount'],0,'','')}}">{{ nf($v['custcount'],false) }}</td>
                     <?php $tot += $v['custcount']; ?>
                     @endif
                   @endforeach
-                  <td class="text-right">{{ nf($tot,false) }}</td>
+                  <td class="text-right" data-sort="{{number_format($tot,0,'','')}}">{{ nf($tot,false) }}</td>
                 </tr>
                 @endforeach
               </tr>
@@ -179,7 +181,7 @@
           <thead>
             <tr>
                 <th>Date</th>
-                <th>Customer</th>
+                <th>Total Customer</th>
             </tr>
           </thead>
           <tbody>
@@ -596,10 +598,7 @@
 
 
 
-    $('#h-tot-sales').text($('#f-tot-sales').text());
-    $('#h-tot-purch').text($('#f-tot-purch').text());
-    $('#h-tot-mancost').text($('#f-tot-mancost').text());
-    $('#h-tot-tips').text($('#f-tot-tips').text());
+   
 
     $('.date-type-selector .dropdown-menu li a').on('click', function(e){
       e.preventDefault();

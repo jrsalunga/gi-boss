@@ -25,7 +25,7 @@
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch/month">Customer</a></li>
+    <li><a href="/report/customer/month">Customer</a></li>
     <li class="active">{{ $dr->fr->format('M Y') }} - {{ $dr->to->format('M Y') }}</li>
   </ol>
 

@@ -84,7 +84,8 @@
                 <li><a href="/saletype/branch">Sales Type <small class="text-muted">(By Branch)</small></a></li>
                 <li><a href="/report/daily-cash-flow">Cash Flow <small class="text-muted">(All Branch)</small></a></li>
                 <li><a href="/report/cash-audit">Daily Cash Audit <small class="text-muted">(By Branch)</small></a></li>
-                <li><a href="https://bit.ly/GI-HRPayrollData" target="_blank">HR Payroll Data <small class="text-muted">(All Branch)</small> <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="/report/customer/month">Customer Summary <small class="text-muted">(All Branch)</small>  <small><span class="label label-danger">new</span></small></a></li>
+                <li><a href="https://bit.ly/GI-HRPayrollData" target="_blank">HR Payroll Data <small class="text-muted">(All Branch)</small></a></li>
               </ul>
             </div>
           </div> 

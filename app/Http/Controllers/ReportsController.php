@@ -227,7 +227,7 @@ public function getCustomerMonthly(Request $request) {
 
   if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
     $email = [
-      'body' => $request->user()->name.' '.$date->format('Y-m-d')
+      'body' => $request->user()->name.' '.$this->dr->fr->format('Y-m-d').' - '.$this->dr->to->format('Y-m-d')
     ];
 
     \Mail::queue('emails.notifier', $email, function ($m) {
@@ -240,6 +240,9 @@ public function getCustomerMonthly(Request $request) {
                 ->with('datas', $datas));
 
 }
+
+
+public function getCustomerYearly(Request $request) {
 
 
 

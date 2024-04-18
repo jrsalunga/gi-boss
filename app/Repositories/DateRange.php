@@ -182,6 +182,18 @@ class DateRange {
   }
 
 
+  public function yearInterval2(){
+    $x = 0;
+    $arr = [];
+    $fr = $this->fr->copy();
+     do {
+      array_push($arr, Carbon::parse($fr->copy()->addYears($x)->lastOfYear()->format('Y-m-d')));
+      $x++;
+    } while ($x <= ($this->to->format('Y')-$this->fr->format('Y')));
+    return $arr;
+  }
+
+
 
 
   public function carbonCheckorNow($date=NULL) {

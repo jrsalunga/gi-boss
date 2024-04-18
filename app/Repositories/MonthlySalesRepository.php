@@ -96,8 +96,6 @@ c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
 
 
   public function getCustomerMonthly(DateRange $dr) {
-
-
     return $this->skipCache()->scopeQuery(function($query) use ($dr) {
       return $query
                   ->select(DB::raw('branch.code, date, sales, custcount, trans_cnt, branch_id'))
@@ -106,6 +104,20 @@ c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
                   ->where('branch_id','<>','ALL')
                   ->orderBy('branch.code')
                   ->orderBy('date', 'asc');
+    })->get();
+  }
+
+  public function getCustomerYearly(DateRange $dr) {
+    return $this->skipCache()->scopeQuery(function($query) use ($dr) {
+      return $query
+                  ->select(DB::raw('branch.code, date, sales, custcount, trans_cnt, branch_id'))
+                  ->leftJoin('branch', 'branch.id', '=', 'monthlysales.branch_id')
+                  ->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                  ->where('branch_id','<>','ALL')
+                  ->groupBy(DB::raw('year(date)'))
+                  ->groupBy('branch_id')
+                  ->orderBy('branch.code')
+                  ->orderBy(DB::raw('year(date)'), 'asc');
     })->get();
 
   }

@@ -61,6 +61,7 @@ Route::get('report/trends/food-cost', ['uses'=>'DashboardController@getFoodCostM
 Route::get('report/sales/charges/dr-all', ['uses'=>'DashboardController@getChargesSalesDR']);
 
 Route::get('report/customer/month', ['uses'=>'ReportsController@getCustomerMonthly']); 
+Route::get('report/customer/year', ['uses'=>'ReportsController@getCustomerYearly']); 
 
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);

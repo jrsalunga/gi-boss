@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Customer By Month')
+@section('title', '- Customer By Year')
 
-@section('body-class', 'customer-month')
+@section('body-class', 'customer-year')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -25,8 +25,8 @@
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch/month">Customer</a></li>
-    <li class="active">{{ $dr->fr->format('M Y') }} - {{ $dr->to->format('M Y') }}</li>
+    <li><a href="/report/customer/month">Customer</a></li>
+    <li class="active">{{ $dr->fr->format('Y') }} - {{ $dr->to->format('Y') }}</li>
   </ol>
 
   <div>
@@ -45,7 +45,7 @@
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/report/customer/month', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/report/customer/year', 'method' => 'get', 'id'=>'dp-form']) !!}
             <button type="submit" class="btn btn-success btn-go" title="Go"   }}>
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
@@ -56,27 +56,24 @@
           </div> <!-- end btn-grp -->
 
       
-          <?php $months = floor($dr->fr->diffInDays($dr->to, false)/30); ?>
           
           
           <div class="btn-group pull-right clearfix dp-container" role="group">
-            <label class="btn btn-default" for="dp-m-date-fr">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </label>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-fr" value="{{ $dr->fr->format('m/Y') }}" style="max-width: 90px;">
+            <label class="btn btn-default" for="dp-y-date-fr">
+            <span class="glyphicon glyphicon-calendar"></span></label>
+            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-fr" value="{{ $dr->fr->format('Y') }}" style="max-width: 90px;">
             <div class="btn btn-default" style="pointer-events: none;">-</div>
-            <input readonly type="text" class="btn btn-default dp" id="dp-m-date-to" value="{{ $dr->to->format('m/Y') }}" style="max-width: 90px;">
-            <label class="btn btn-default" for="dp-m-date-to">
-              <span class="glyphicon glyphicon-calendar"></span>
+            <input readonly type="text" class="btn btn-default dp" id="dp-y-date-to" value="{{ $dr->to->format('Y') }}" style="max-width: 90px;">
+            <label class="btn btn-default" for="dp-y-date-to">
+            <span class="glyphicon glyphicon-calendar"></span>
             </label>
           </div><!-- end btn-grp -->
 
-          
           <div class="btn-group pull-right clearfix" role="group">
             <div class="btn-group date-type-selector" style="margin-left: 5px;">
               <div class="dropdown">
                 <a class="btn btn-link" id="date-type" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span id="date-type-name">Monthly</span>
+                  <span id="date-type-name">Yearly</span>
                   <span class="caret"></span>
                 </a>
 
@@ -87,7 +84,6 @@
               </div>
             </div>
           </div>
-
           
         </div>
       </div>
@@ -129,7 +125,7 @@
       </div>
     </div> 
     <div class="row">
-      <div class="col-md-12" style="margin-top:20px;">
+      <div class="col-md-12"  style="margin-top:20px;">
         <div class="table-responsive">
           <table class="table table-hover table-striped table-sort-data">
             <thead>
@@ -140,7 +136,7 @@
                   $gtot = 0;
                 ?>
                 @foreach(array_values($datas)[0] as $key => $value)
-                  <th class="text-right">{{ c($key)->format('M Y') }}</th>
+                  <th class="text-right">{{ $key }}</th>
                 @endforeach
                 <th class="text-right">Total</th>
               </tr>
@@ -187,7 +183,7 @@
           <tbody>
             @foreach($last as $k => $v)
             <tr>
-              <td>{{ c($k)->format('M Y') }}</td>
+              <td>{{ c($k.'-12-31')->format('Y-m-d') }}</td>
               <td>{{ $v['custcount'] }}</td>
             </tr>
             @endforeach
@@ -481,7 +477,7 @@
               //var date = new Date(this.value);
               //console.log(date.getDay());
               //console.log(date);
-              return Highcharts.dateFormat('%b %Y',  this.value-86400000);
+              return Highcharts.dateFormat('%Y',  this.value-86400000);
             }
           },
           plotLines: arr
@@ -681,7 +677,7 @@
             +'<label class="btn btn-default" for="dp-y-date-to">'
             +'<span class="glyphicon glyphicon-calendar"></span>'
             +'</label>';
-          $('#dp-form').prop('action', '/report/customer/year');
+          $('#dp-form').prop('action', '/status/branch/year');
           break;
         default:
           html = '<label class="btn btn-default" for="dp-date-fr">'
@@ -693,7 +689,7 @@
             +'<label class="btn btn-default" for="dp-date-to">'
             +'<span class="glyphicon glyphicon-calendar"></span>'
             +'</label>';
-          $('#dp-form').prop('action', '/report/customer/month');
+          $('#dp-form').prop('action', '/report/customer/year');
       }
 
       return html;

@@ -202,10 +202,8 @@ public function getCustomerMonthly(Request $request) {
     array_push($branches, $value);
   array_push($branches, 'TOTAL');
 
-
   foreach($this->dr->monthInterval2() as $key2 => $value2)
     array_push($months, $value2->format('Ymd'));
-    // $months[$key2] = $value2->format('Ymd');
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
@@ -219,13 +217,8 @@ public function getCustomerMonthly(Request $request) {
     $datas['TOTAL'][$value3->date->format('Ymd')]['custcount'] += $value3->custcount;
   }
 
-  
-
   if($request->has('raw'))
     return $datas;
-
-  
-
 
   if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
     $email = [
@@ -238,14 +231,47 @@ public function getCustomerMonthly(Request $request) {
     });
   }
 
-  return $this->setViewWithDR(view('report.customer-month')
-                ->with('datas', $datas));
-
+  return $this->setViewWithDR(view('report.customer-month')->with('datas', $datas));
 }
 
 
 public function getCustomerYearly(Request $request) {
 
+  $this->dr->setMode('yearly');
+
+  $mss = $this->ms->getCustomerYearly($this->dr);
+
+  $datas = [];
+  $months = [];
+  $branches = [];
+
+  $brcodes = $mss->pluck('code');
+  $brcodes = collect($brcodes->toArray());
+  $unique = $brcodes->unique();
+
+  foreach($unique as $key => $value)
+    array_push($branches, $value);
+  array_push($branches, 'TOTAL');
+
+  foreach($this->dr->yearInterval2() as $key2 => $value2)
+    array_push($months, $value2->format('Y'));
+
+  foreach($branches as $k => $v) 
+    foreach($months as $i => $m) 
+      if ($v=='TOTAL')
+        $datas['TOTAL'][$m]['custcount'] = 0;
+      else
+        $datas[$v][$m] = NULL;
+
+  foreach($mss as $key3 => $value3) {
+    $datas[$value3->code][$value3->date->format('Y')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->format('Y')]['custcount'] += $value3->custcount;
+  }
+
+  if($request->has('raw'))
+    return $datas;
+
+  return $this->setViewWithDR(view('report.customer-year')->with('datas', $datas));
 }
 
 

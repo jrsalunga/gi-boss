@@ -179,7 +179,9 @@
                 <td>Total <div style="font-size:smaller;"> <span class="gly gly-shop"></span> {{ count($datas) }}</div></td>
                 @foreach($last as $key => $value)
                 <td class="text-right">
-                  {{ nf($value['custcount'],false) }}
+                  <div>
+                    <b>{{ nf($value['custcount'],false) }}</b>
+                  </div>
                   <div style="font-size:smaller;">
                     @if($stores[$key]>0)
                       <span class="gly gly-shop"></span> {{ $stores[$key] }}
@@ -193,7 +195,7 @@
                 </td>
                 <?php $gtot+=$value['custcount']; ?>
                 @endforeach
-                <td class="text-right">{{ nf($gtot,false) }}</td>
+                <td class="text-right"><b>{{ nf($gtot,false) }}</b></td>
               </tr>
             </tfoot>
           </table>

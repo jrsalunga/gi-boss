@@ -183,6 +183,9 @@
 
                     @endif
                   </div>
+                  @if(count($datas)>20)
+                    <div style="font-size:smaller;">{{ $key }}</div>
+                  @endif
                 </td>
                 <?php $gtot+=$value['custcount']; ?>
                 @endforeach

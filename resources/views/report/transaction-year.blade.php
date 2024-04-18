@@ -1,8 +1,8 @@
 @extends('master')
 
-@section('title', '- Customer By Year')
+@section('title', '- Transaction By Year')
 
-@section('body-class', 'customer-year')
+@section('body-class', 'transaction-year')
 
 @section('navbar-2')
 <ul class="nav navbar-nav navbar-right"> 
@@ -25,7 +25,7 @@
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/report/customer/year">Customer</a></li>
+    <li><a href="/report/transaction/year">Transaction</a></li>
     <li class="active">{{ $dr->fr->format('Y') }} - {{ $dr->to->format('Y') }}</li>
   </ol>
 
@@ -34,18 +34,18 @@
       <div class="container-fluid">
         <div class="navbar-form">
           <div class="btn-group" role="group">
-            <button class="btn btn-default active">
+           <a href="/report/customer/year?fr={{$dr->fr->format('Y-m-d')}}&amp;to={{ $dr->to->format('Y-m-d')}}" class="btn btn-default">
               <span class="fa fa-group"></span>
               <span class="hidden-xs hidden-sm">Customer</span>
-            </button>
-           <a href="/report/transaction/year?fr={{$dr->fr->format('Y-m-d')}}&amp;to={{ $dr->to->format('Y-m-d')}}" class="btn btn-default">
+            </a> 
+            <button class="btn btn-default active">
               <span class="gly gly-tag"></span>
               <span class="hidden-xs hidden-sm">Transaction</span>
-            </a> 
+            </button>
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">
-            {!! Form::open(['url' => '/report/customer/year', 'method' => 'get', 'id'=>'dp-form']) !!}
+            {!! Form::open(['url' => '/report/transaction/year', 'method' => 'get', 'id'=>'dp-form']) !!}
             <button type="submit" class="btn btn-success btn-go" title="Go"   }}>
               <span class="gly gly-search"></span>
               <span class="hidden-xs hidden-sm">Go</span>
@@ -95,29 +95,6 @@
 
       
     @if(count($datas)>0)
-
-   
-   <!--  <div class="row">
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Sales</p>
-        <h3 id="h-tot-sales" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Food Cost</p>
-        <h3 id="h-tot-mancost" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Purchased</p>
-        <h3 id="h-tot-purch" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Delivery</p>
-        <h3 id="h-tot-tips" style="margin:0">0</h3>
-      </div>
-    </div>
-    <div class="row">
-    -->
-
       <div class="col-md-12">
         <div id="graph-container" style="overflow:hidden;">
           <div id="graph"></div>
@@ -158,9 +135,9 @@
                     @if(is_null($v))
                     <td> </td>
                     @else 
-                    <td class="text-right" data-sort="{{number_format($v['custcount'],0,'','')}}">{{ nf($v['custcount'],false) }}</td>
+                    <td class="text-right" data-sort="{{number_format($v['trans_cnt'],0,'','')}}">{{ nf($v['trans_cnt'],false) }}</td>
                     <?php 
-                      $tot += $v['custcount']; 
+                      $tot += $v['trans_cnt']; 
                       $stores[$k]++;
                     ?>
                     @endif
@@ -176,7 +153,7 @@
                 @foreach($last as $key => $value)
                 <td class="text-right">
                   <div>
-                    <b>{{ nf($value['custcount'],false) }}</b>
+                    <b>{{ nf($value['trans_cnt'],false) }}</b>
                   </div>
                   <div style="font-size:smaller;">
                     @if($stores[$key]>0)
@@ -189,7 +166,7 @@
                     <div style="font-size:smaller;">{{ $key }}</div>
                   @endif
                 </td>
-                <?php $gtot+=$value['custcount']; ?>
+                <?php $gtot+=$value['trans_cnt']; ?>
                 @endforeach
                 <td class="text-right"><b>{{ nf($gtot,false) }}</b></td>
               </tr>
@@ -202,14 +179,14 @@
           <thead>
             <tr>
                 <th>Date</th>
-                <th>Total Customer</th>
+                <th>Total Transaction</th>
             </tr>
           </thead>
           <tbody>
             @foreach($last as $k => $v)
             <tr>
               <td>{{ c($k.'-12-31')->format('Y-m-d') }}</td>
-              <td>{{ $v['custcount'] }}</td>
+              <td>{{ $v['trans_cnt'] }}</td>
             </tr>
             @endforeach
           </tbody>
@@ -482,7 +459,7 @@
         panning: true,
         panKey: 'shift'
       },
-      colors: ['#15C0C2', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#4cae4c', '#6AAA96', '#DB4437', '#8d4653'],
+      colors: ['#DB4437', '#B09ADB','#D36A71', '#B09ADB', '#5CB1EF', '#F49041', '#4cae4c', '#6AAA96', '#DB4437', '#8d4653'],
       title: {
           text: ''
       },
@@ -667,7 +644,7 @@
             +'<label class="btn btn-default" for="dp-m-date-to">'
             +'<span class="glyphicon glyphicon-calendar"></span>'
             +'</label>';
-            $('#dp-form').prop('action', '/report/customer/month');
+            $('#dp-form').prop('action', '/report/transaction/month');
           break;
         case 'quarterly':
           html = '<select id="fr-y" class="btn btn-default dp-q-fr" style="height:34px; padding: 6px 3px 6px 12px">'
@@ -714,7 +691,7 @@
             +'<label class="btn btn-default" for="dp-date-to">'
             +'<span class="glyphicon glyphicon-calendar"></span>'
             +'</label>';
-          $('#dp-form').prop('action', '/report/customer/year');
+          $('#dp-form').prop('action', '/report/transaction/year');
       }
 
       return html;

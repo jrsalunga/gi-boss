@@ -185,8 +185,10 @@ class ReportsController extends Controller
 
 public function getCustomerMonthly(Request $request) {
 
-  $this->dr->fr = (is_null($request->input('fr')) && !is_iso_date($request->input('fr'))) ? c()->firstOfYear()->lastOfMonth() : c($request->input('fr'))->lastOfMonth(); 
-  $this->dr->to = (is_null($request->input('to')) && !is_iso_date($request->input('to'))) ? c()->lastOfMonth() : c($request->input('to'))->lastOfMonth();
+  //$this->dr->fr = (is_null($request->input('fr')) && !is_iso_date($request->input('fr'))) ? c()->firstOfYear()->lastOfMonth() : c($request->input('fr'))->lastOfMonth(); 
+  //$this->dr->to = (is_null($request->input('to')) && !is_iso_date($request->input('to'))) ? c()->lastOfMonth() : c($request->input('to'))->lastOfMonth();
+
+  $this->dr->setMode('monthly');
 
   $mss = $this->ms->getCustomerMonthly($this->dr);
 
@@ -283,6 +285,106 @@ public function getCustomerYearly(Request $request) {
   }
 
   return $this->setViewWithDR(view('report.customer-year')->with('datas', $datas));
+}
+
+public function getTransactionMonthly(Request $request) {
+
+  $this->dr->setMode('monthly');
+
+  $mss = $this->ms->getCustomerMonthly($this->dr);
+
+  $datas = [];
+  $months = [];
+  $branches = [];
+
+  $brcodes = $mss->pluck('code');
+  $brcodes = collect($brcodes->toArray());
+  $unique = $brcodes->unique();
+
+  foreach($unique as $key => $value)
+    array_push($branches, $value);
+  array_push($branches, 'TOTAL');
+
+  foreach($this->dr->monthInterval2() as $key2 => $value2)
+    array_push($months, $value2->format('Ymd'));
+
+  foreach($branches as $k => $v) 
+    foreach($months as $i => $m) 
+      if ($v=='TOTAL')
+        $datas['TOTAL'][$m]['trans_cnt'] = 0;
+      else
+        $datas[$v][$m] = NULL;
+
+  foreach($mss as $key3 => $value3) {
+    $datas[$value3->code][$value3->date->format('Ymd')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->format('Ymd')]['trans_cnt'] += $value3->trans_cnt;
+  }
+
+  if($request->has('raw'))
+    return $datas;
+
+  if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    $email = [
+      'body' => $request->user()->name.' '.$this->dr->fr->format('Y-m-d').' - '.$this->dr->to->format('Y-m-d')
+    ];
+
+    \Mail::queue('emails.notifier', $email, function ($m) {
+      $m->from('giligans.app@gmail.com', 'GI App - Boss');
+      $m->to('freakyash_02@yahoo.com')->subject('Transaction Report - '.rand());
+    });
+  }
+
+  return $this->setViewWithDR(view('report.transaction-month')->with('datas', $datas));
+}
+
+public function getTransactionYearly(Request $request) {
+
+  $this->dr->setMode('yearly');
+
+  $mss = $this->ms->getCustomerYearly($this->dr);
+
+  $datas = [];
+  $months = [];
+  $branches = [];
+
+  $brcodes = $mss->pluck('code');
+  $brcodes = collect($brcodes->toArray());
+  $unique = $brcodes->unique();
+
+  foreach($unique as $key => $value)
+    array_push($branches, $value);
+  array_push($branches, 'TOTAL');
+
+  foreach($this->dr->yearInterval2() as $key2 => $value2)
+    array_push($months, $value2->format('Y'));
+
+  foreach($branches as $k => $v) 
+    foreach($months as $i => $m) 
+      if ($v=='TOTAL')
+        $datas['TOTAL'][$m]['trans_cnt'] = 0;
+      else
+        $datas[$v][$m] = NULL;
+
+  foreach($mss as $key3 => $value3) {
+    $datas[$value3->code][$value3->date->format('Y')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->format('Y')]['trans_cnt'] += $value3->trans_cnt;
+  }
+
+  if($request->has('raw'))
+    return $datas;
+
+  if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
+    $email = [
+      'body' => $request->user()->name.' '.$this->dr->fr->format('Y').' - '.$this->dr->to->format('Y')
+    ];
+
+    \Mail::queue('emails.notifier', $email, function ($m) {
+      $m->from('giligans.app@gmail.com', 'GI App - Boss');
+      $m->to('freakyash_02@yahoo.com')->subject('Customer Report - '.rand());
+    });
+  }
+
+  return $this->setViewWithDR(view('report.transaction-year')->with('datas', $datas));
 }
 
 

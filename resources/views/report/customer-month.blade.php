@@ -25,7 +25,7 @@
 <div class="container-fluid">
 	<ol class="breadcrumb">
     <li><a href="/dashboard"><span class="gly gly-shop"></span> </a></li>
-    <li><a href="/status/branch/month">Customer</a></li>
+    <li><a href="/report/customer/month">Customer</a></li>
     <li class="active">{{ $dr->fr->format('M Y') }} - {{ $dr->to->format('M Y') }}</li>
   </ol>
 
@@ -38,10 +38,10 @@
               <span class="fa fa-group"></span>
               <span class="hidden-xs hidden-sm">Customer</span>
             </button>
-           <!--  <a href="/report/transaction" class="btn btn-default" title="Back to Main Menu">
+           <a href="/report/transaction/month?fr={{$dr->fr->format('Y-m-d')}}&amp;to={{ $dr->to->format('Y-m-d')}}" class="btn btn-default">
               <span class="gly gly-tag"></span>
               <span class="hidden-xs hidden-sm">Transaction</span>
-            </a>  -->
+            </a>
           </div> <!-- end btn-grp -->
 
           <div class="btn-group btn-group pull-right clearfix" role="group" style="margin-left: 5px;">

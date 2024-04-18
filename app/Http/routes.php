@@ -62,6 +62,8 @@ Route::get('report/sales/charges/dr-all', ['uses'=>'DashboardController@getCharg
 
 Route::get('report/customer/month', ['uses'=>'ReportsController@getCustomerMonthly']); 
 Route::get('report/customer/year', ['uses'=>'ReportsController@getCustomerYearly']); 
+Route::get('report/transaction/month', ['uses'=>'ReportsController@getTransactionMonthly']); 
+Route::get('report/transaction/year', ['uses'=>'ReportsController@getTransactionYearly']); 
 
 
 //Route::get('component', ['uses'=>'Purchase2Controller@getIndex']);

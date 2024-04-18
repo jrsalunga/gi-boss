@@ -112,7 +112,7 @@ c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
       return $query
                   ->select(DB::raw('branch.code, date, sum(sales) as sales, sum(custcount) as custcount, sum(trans_cnt) as trans_cnt, branch_id'))
                   ->leftJoin('branch', 'branch.id', '=', 'monthlysales.branch_id')
-                  ->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
+                  ->whereBetween('date', [$dr->fr->format('Y').'-01-01', $dr->to->format('Y').'-12-31'])
                   ->where('branch_id','<>','ALL')
                   ->groupBy(DB::raw('year(date)'))
                   ->groupBy('branch_id')

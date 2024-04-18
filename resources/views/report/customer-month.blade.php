@@ -211,7 +211,7 @@
           <tbody>
             @foreach($last as $k => $v)
             <tr>
-              <td>{{ c($k)->format('M Y') }}</td>
+              <td>{{ c($k)->format('Y-m-d') }}</td>
               <td>{{ $v['custcount'] }}</td>
             </tr>
             @endforeach

@@ -212,8 +212,8 @@ public function getCustomerMonthly(Request $request) {
         $datas[$v][$m] = NULL;
 
   foreach($mss as $key3 => $value3) {
-    $datas[$value3->code][$value3->date->format('Ymd')] = $value3->toArray();
-    $datas['TOTAL'][$value3->date->format('Ymd')]['custcount'] += $value3->custcount;
+    $datas[$value3->code][$value3->date->copy()->lastOfMonth()->format('Ymd')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->copy()->lastOfMonth()->format('Ymd')]['custcount'] += $value3->custcount;
   }
 
   if($request->has('raw'))
@@ -313,8 +313,8 @@ public function getTransactionMonthly(Request $request) {
         $datas[$v][$m] = NULL;
 
   foreach($mss as $key3 => $value3) {
-    $datas[$value3->code][$value3->date->format('Ymd')] = $value3->toArray();
-    $datas['TOTAL'][$value3->date->format('Ymd')]['trans_cnt'] += $value3->trans_cnt;
+    $datas[$value3->code][$value3->date->copy()->lastOfMonth()->format('Ymd')] = $value3->toArray();
+    $datas['TOTAL'][$value3->date->copy()->lastOfMonth()->format('Ymd')]['trans_cnt'] += $value3->trans_cnt;
   }
 
   if($request->has('raw'))

@@ -138,6 +138,7 @@
                 <?php
                   $last = array_pop($datas);
                   $gtot = 0;
+                  $stores = [];
                 ?>
                 @foreach(array_values($datas)[0] as $key => $value)
                   <th class="text-right">{{ c($key)->format('M Y') }}</th>
@@ -152,11 +153,20 @@
                   <td>{{ $key }}</td>
                   <?php $tot = 0; ?>
                   @foreach($value as $k => $v)
+                    @if(array_key_exists($k, $stores))
+
+                    @else 
+                      <?php $stores[$k]=0; ?>
+                    @endif
+
                     @if(is_null($v))
                     <td> </td>
                     @else 
                     <td class="text-right" data-sort="{{number_format($v['custcount'],0,'','')}}">{{ nf($v['custcount'],false) }}</td>
-                    <?php $tot += $v['custcount']; ?>
+                    <?php 
+                      $tot += $v['custcount']; 
+                      $stores[$k]++;
+                    ?>
                     @endif
                   @endforeach
                   <td class="text-right" data-sort="{{number_format($tot,0,'','')}}">{{ nf($tot,false) }}</td>
@@ -166,9 +176,18 @@
             </tbody>
             <tfoot>
               <tr>
-                <td><small>({{ count($datas) }})</small> Total</td>
+                <td>Total <div style="font-size:smaller;"> <span class="gly gly-shop"></span> {{ count($datas) }}</div></td>
                 @foreach($last as $key => $value)
-                <td class="text-right">{{ nf($value['custcount'],false) }}</td>
+                <td class="text-right">
+                  {{ nf($value['custcount'],false) }}
+                  <div style="font-size:smaller;">
+                    @if($stores[$key]>0)
+                      <span class="gly gly-shop"></span> {{ $stores[$key] }}
+                    @else
+
+                    @endif
+                  </div>
+                </td>
                 <?php $gtot+=$value['custcount']; ?>
                 @endforeach
                 <td class="text-right">{{ nf($gtot,false) }}</td>

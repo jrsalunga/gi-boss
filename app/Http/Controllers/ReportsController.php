@@ -185,9 +185,6 @@ class ReportsController extends Controller
 
 public function getCustomerMonthly(Request $request) {
 
-  //$this->dr->fr = (is_null($request->input('fr')) && !is_iso_date($request->input('fr'))) ? c()->firstOfYear()->lastOfMonth() : c($request->input('fr'))->lastOfMonth(); 
-  //$this->dr->to = (is_null($request->input('to')) && !is_iso_date($request->input('to'))) ? c()->lastOfMonth() : c($request->input('to'))->lastOfMonth();
-
   $this->dr->setMode('monthly');
 
   $mss = $this->ms->getCustomerMonthly($this->dr);
@@ -204,8 +201,8 @@ public function getCustomerMonthly(Request $request) {
     array_push($branches, $value);
   array_push($branches, 'TOTAL');
 
-  foreach($this->dr->monthInterval2() as $key2 => $value2)
-    array_push($months, $value2->format('Ymd'));
+  foreach($this->dr->monthInterval() as $key2 => $value2)
+    array_push($months, $value2->copy()->lastOfMonth()->format('Ymd'));
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
@@ -305,8 +302,8 @@ public function getTransactionMonthly(Request $request) {
     array_push($branches, $value);
   array_push($branches, 'TOTAL');
 
-  foreach($this->dr->monthInterval2() as $key2 => $value2)
-    array_push($months, $value2->format('Ymd'));
+  foreach($this->dr->monthInterval() as $key2 => $value2)
+    array_push($months, $value2->copy()->lastOfMonth()->format('Ymd'));
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 

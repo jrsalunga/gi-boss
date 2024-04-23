@@ -57,6 +57,10 @@ class BackupController extends Controller
 		$data = $this->disk->folderInfo($folder);
 		//return $data;
 		//return dd(count($data['breadcrumbs']));
+
+    arsort($data['subfolders']);
+    arsort($data['files']);
+
 		return view('backup.filelist')->with('data', $data);
 		
 		return dd($this->disk);

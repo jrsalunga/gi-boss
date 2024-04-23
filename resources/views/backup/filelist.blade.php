@@ -90,19 +90,19 @@
         @endif
         </div>
 
-        <table id="tb-backups" class="table table-hover">
-          <!--
-          <thead>
+        <table id="tb-backups" class="table table-hover table-sort-data">
+          
+          <!-- <thead>
             <tr>
               <th>File/Folder</th><th>Size</th><th>Type</th><th>Date Modified</th>
             </tr>
-          </thead>
-        -->
+          </thead> -->
+        
           <tbody>
           @if(count($data['subfolders'])>0)
             @foreach($data['subfolders'] as $path => $folder)
             <tr>
-              <td colspan="4"><a href="/storage{{ $path }}"><span class="fa fa-folder-o"></span> {{ $folder }}</a></td>
+              <td colspan="4" data-sort="{{ $folder }}"><a href="/storage{{ $path }}"><span class="fa fa-folder-o"></span> {{ $folder }}</a></td>
             </tr>
             @endforeach
           @endif
@@ -111,7 +111,7 @@
           @if(count($data['files'])>0)
             @foreach($data['files'] as $path => $file)
             <tr>
-              <td>
+              <td data-sort="{{$file['name']}}">
                 @if($file['type']=='zip')
                   <span class="fa fa-file-archive-o"></span>
                 @elseif($file['type']=='img')
@@ -125,9 +125,9 @@
                 
                 <td><a href="/download{{ $file['fullPath'] }}" target="_blank"><span class="glyphicon glyphicon-download-alt"></span></a></td>
                 
-                <td>{{ human_filesize($file['size']) }}</td>
+                <td data-sort="{{$file['size']}}">{{ human_filesize($file['size']) }}</td>
                 <td class="hidden-xs hidden-sm">{{ $file['type'] or 'Unknown' }}</td>
-                <td class="hidden-xs">{{ $file['modified']->format('D, M j, Y g:i A') }}</td>
+                <td data-sort="{{ $file['modified']->format('D, M j, Y g:i A') }}" class="hidden-xs">{{ $file['modified']->format('D, M j, Y g:i A') }}</td>
             </tr>
             @endforeach
           @endif
@@ -150,8 +150,22 @@
   <script src="/js/vendors-common.min.js"></script>
   
   <script>
-  
+
+
+    // $('#tb-backups').dataTable({
+    //   "aaSorting": [[0, 'asc']],
+    //   "order": [[0, "asc"]]
+    // });
     
- 
+    
+   $(document).ready(function() {
+  //   $('#tb-backups').DataTable({
+  //     order: [[ 1, 'desc' ]]
+  //   });
+    $('#tb-backups').dataTable({
+      "aaSorting": [[0, 'desc']],
+       "order": [[0, "desc"]]
+    });
+   });
   </script>
 @endsection

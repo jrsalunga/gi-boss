@@ -58,7 +58,9 @@ class BackupController extends Controller
 		//return $data;
 		//return dd(count($data['breadcrumbs']));
 
-    arsort($data['subfolders']);
+    if (count($data['breadcrumbs'])!=0)
+      arsort($data['subfolders']);
+
     arsort($data['files']);
 
 		return view('backup.filelist')->with('data', $data);

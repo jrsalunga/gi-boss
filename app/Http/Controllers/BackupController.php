@@ -55,8 +55,6 @@ class BackupController extends Controller
 		$folder = $p1.'/'.$p2.'/'.$p3;
 
 		$data = $this->disk->folderInfo($folder);
-		//return $data;
-		//return dd(count($data['breadcrumbs']));
 
     if (count($data['breadcrumbs'])!=0)
       arsort($data['subfolders']);

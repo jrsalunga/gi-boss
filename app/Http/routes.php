@@ -144,6 +144,13 @@ Route::put('put/setslp', ['uses'=>'SetslpController@put']);
 Route::post('delete/setslp', ['uses'=>'SetslpController@delete']);
 Route::get('download/SETSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'SetslpController@getDownload']);
 
+
+Route::get('asr/{id?}/{action?}/{p?}', ['uses'=>'AsrController@getAction']);
+Route::get('download/ASR/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'AsrController@getDownload']);
+
+
+
+
 Route::get('timesheet/employee/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@employeeTimesheet']);
 Route::get('timesheet/{param1?}', ['as'=>'timesheet.daily', 'uses'=>'TimesheetController@getRoute']);
 

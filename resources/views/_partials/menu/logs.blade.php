@@ -14,6 +14,7 @@
     <li><a href="/storage"><span class="fa fa-file-archive-o"></span> Backup</a></li>
     <li><a href="/depslp"><span class="fa fa-bank"></span> Deposit Slip</a></li>
     <li><a href="/setslp"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
+    <li><a href="/asr"><span class="fa fa-calculator"></span> POS Audit Summary</a></li>
   </ul>
 </div>
 

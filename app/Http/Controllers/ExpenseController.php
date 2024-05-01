@@ -199,9 +199,6 @@ class ExpenseController extends Controller
 		    });
 		    $b = $f->first();
 				$datas[$key]['data'][$k] = is_null($b) ? 0 : $b->tcost-$b->xfred;
-
-		    
-
 			}
 
 			$g = $mss->filter(function ($item) use ($date){
@@ -259,8 +256,6 @@ class ExpenseController extends Controller
 	  	$datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];			
 	  	$datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;	
       $datas[$x]['sales_pct'] = !is_null($ms) && $ms->sales > 0 ? ($datas[$x]['net'] / $ms->sales) * 100 : 0;  
-      // $datas[$x]['sales_pct'] = 0;  
-
 		}
 		return $datas;
 	}
@@ -284,8 +279,6 @@ class ExpenseController extends Controller
 	    $datas[$key]['sales'] = is_null($b) ? 0 : $b->sales;
 	    $datas[$key]['pct'] = is_null($b) ? 0 : $b->pct;
 		}
-		
-		
 		return $datas;
 	}
 
@@ -410,8 +403,6 @@ class ExpenseController extends Controller
       $datas[$key]['sales'] = is_null($b) ? 0 : $b->sales;
       $datas[$key]['pct'] = is_null($b) ? 0 : $b->pct;
     }
-    
-    
     return $datas;
   }
 
@@ -465,7 +456,6 @@ class ExpenseController extends Controller
 
     $datas = [];
 
-    
     $ids = $exps->pluck('id')->toArray();
 
     $ms = $this->ms->skipCache()->aggBranchByDR($branch, $this->dr);
@@ -504,7 +494,6 @@ class ExpenseController extends Controller
       $datas[$x]['net'] = $datas[$x]['purch'] - $datas[$x]['trans'];      
       $datas[$x]['pct'] = $datas[$x]['food_sales'] > 0 ? ($datas[$x]['net'] / $datas[$x]['food_sales']) * 100 : 0;  
       $datas[$x]['sales_pct'] = !is_null($ms) && $ms->sales > 0 ? ($datas[$x]['net'] / $ms->sales) * 100 : 0;  
-      // $datas[$x]['sales_pct'] = 0;  
 
     }
     return $datas;
@@ -547,11 +536,8 @@ class ExpenseController extends Controller
       $chargetypes =  $this->getChargeTypeDR($branch);
       $cardtypes =  $this->getCardTypeDR($branch);
                                
-    //return $fc_hist;
     }
 
-
-    // if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67'])) {
     if (!in_array($request->user()->id, ['41F0FB56DFA811E69815D19988DDBE1E', '11E943EA14DDA9E4EAAFBD26C5429A67']) && !is_null($branch)) {
 
       $email = [
@@ -662,10 +648,6 @@ class ExpenseController extends Controller
   }
 
 
-
-
-
-
   public function getPnlMonthly(Request $request) {
 
     $date = carbonCheckorNow($request->input('date'));
@@ -682,25 +664,13 @@ class ExpenseController extends Controller
 
 
      if (!is_null($branch)) {
-
       return $this->PnlMonthly_Prodcat($branch->id, $this->dr->fr, $this->dr->to);
-
-
-
-
      }
 
      return 'fsadfas';
      return $branch;
 
-
-
-
-
-
-
      return 0;
-
 
      $datas = [
       'prodcat',
@@ -743,25 +713,8 @@ class ExpenseController extends Controller
       }
       $data[$k][14] = $gt;
     }
-
-
-    // return range(1,12);
-
-
     return $data;
-
-
-
-
   }
-
-
-
-
-
-
-
-  
 
 
 }

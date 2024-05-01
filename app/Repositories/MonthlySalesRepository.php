@@ -53,11 +53,7 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
         $m->delete();
     }
     return true;
-    
   }
-
-
-
 
   public function aggBranchByDR(Branch $branch, DateRange $dr) {
 
@@ -93,7 +89,6 @@ c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
               ->get();
    
   }
-
 
   public function getCustomerMonthly(DateRange $dr) {
     return $this->scopeQuery(function($query) use ($dr) {

@@ -684,7 +684,7 @@
                   </div>
                 </td>
                 <td class="text-right">
-                  <strong>&nbsp;</strong>
+                  <strong>{{ number_format($tot_custcount, 0) }}</strong>
                   <div>
                   <em><small title="{{$tot_custcount}}/{{$div_custcount}}={{ $div_custcount!=0?number_format($tot_custcount/$div_custcount,2):0 }}" data-toggle="tooltip">
                     {{ $div_custcount!=0?nice_format($tot_custcount/$div_custcount):0 }}

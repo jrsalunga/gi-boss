@@ -23,7 +23,7 @@
 					</td>
 					<td>
 						<h3 class="text-{{$employee->isActive()?'success':'muted'}}print-preview.blade.php" style="margin-top: 10px;">
-							{{ $employee->lastname }}, {{ $employee->firstname }} {{ {{ substr($employee->middlename,0,1) }}.  {{ $employee->middlename }} 
+							{{ $employee->lastname }}, {{ $employee->firstname }} {{ substr($employee->middlename,0,1) }}.  {{ $employee->middlename }} 
 							<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 						</h3>
 						@if(isset($employee->position))
@@ -34,7 +34,7 @@
 						@if(isset($employee->branch))
 						<div>
 				  		<a href="/hr/masterfiles/employee/branch/{{ $employee->branch->lid() }}">
-								{{ $employee->branch->code }} - $employee->branch->descriptor }}
+								{{ $employee->branch->code }} - {{ $employee->branch->descriptor }}
 				  		</a>
 						</div>
 						@endif

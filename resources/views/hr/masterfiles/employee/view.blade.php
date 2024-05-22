@@ -23,7 +23,9 @@
 					</td>
 					<td>
 						<h3 class="text-{{$employee->isActive()?'success':'muted'}}print-preview.blade.php" style="margin-top: 10px;">
-							{{ $employee->lastname }}, {{ $employee->firstname }} {{ substr($employee->middlename,0,1) }}.  {{ $employee->middlename }} 
+							{{ $employee->lastname }}, {{ $employee->firstname }} 
+              {{ session('user.id')=='41F0FB56DFA811E69815D19988DDBE1E' ? substr($employee->middlename,0,1).'.':'' }}
+              {{ $employee->middlename }} 
 							<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 						</h3>
 						@if(isset($employee->position))

@@ -118,6 +118,7 @@ return [
 		'B0092A7B666611E596ECDA40B3C0AA12' => ['ordinal' => 24, 'code' => 'BM',  'postion' => 'Branch Manager'],
 		'55FC33F0A30211E592E000FF59FBB323' => ['ordinal' => 26, 'code' => 'OIC', 'postion' => 'OIC Branch'],
 		'69427592A5E111E385D3C0188508F93C' => ['ordinal' => 28, 'code' => 'SCA', 'postion' => 'Senior Cashier'],
+    '11EF198289E94B9DA9F11C1B0D85A7E0' => ['ordinal' => 29, 'code' => 'HC',  'postion' => 'Head Cashier'],
 		'B688FC60666611E596ECDA40B3C0AA12' => ['ordinal' => 30, 'code' => 'CAS', 'postion' => 'Cashier'],
 		'790CF69B949D469CAD9E2B90FFB26009' => ['ordinal' => 32, 'code' => 'TCA', 'postion' => 'Trainee Cashier'],
 		'4C97B1DD673B11E596ECDA40B3C0AA12' => ['ordinal' => 34, 'code' => 'SKH', 'postion' => 'Senior Kitchen Head'],

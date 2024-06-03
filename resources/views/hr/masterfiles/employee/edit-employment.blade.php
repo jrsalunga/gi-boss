@@ -175,6 +175,14 @@
 				  </div>
 				</div><!-- end: .col-md-3 -->
 			</div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group @include('_partials.input-error', ['field'=>'rfid'])">
+            <label for="rfid" class="control-label">RFID</label>
+            <input type="text" class="form-control" id="rfid" name="rfid" data-mask-reverse="true" maxlength="15" value="{{ !is_null(old('rfid'))?old('rfid')>0?old('rfid'):'':$employee->rfid }}">
+          </div>
+        </div><!-- end: .col-md-3 -->
+      </div>
 	  				  
 	  </div><!-- end: .panel-body -->
 	</div><!-- end: .panel.panel-primary -->

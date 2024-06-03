@@ -177,7 +177,15 @@
 								</div>
 								@endif
 				  		</div>
-				  	</div>
+       	  	</div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>RFID</label>
+                  <div>{{ !is_null($employee->rfid) ? $employee->rfid : '-' }}</div>
+                </div>
+              </div>
+            </div>
 				  </div>
 				</div><!-- end: .panel.panel-primary -->
 				<div class="panel panel-primary">

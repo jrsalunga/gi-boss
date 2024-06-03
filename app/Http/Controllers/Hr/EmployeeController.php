@@ -190,6 +190,7 @@ class EmployeeController extends Controller
       'ecola' 			=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'allowance1' 	=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
       'allowance2' 	=> 'regex:/^(?!$)(?:[0-9]\d{0,5})?(?:\.\d{1,2})?$/',
+      'rfid'        => 'max:15',
       //'sssno'			 	=> 'required|regex:/^\d{10}$/',
       //'phicno' 			=> 'regex:/^\d{12}$/',
       //'hdmfno' 			=> 'regex:/^\d{12}$/',

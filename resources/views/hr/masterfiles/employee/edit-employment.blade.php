@@ -121,7 +121,7 @@
 							@if($_empstatus==0)
 								<option disabled selected>-- Select Emp Status -- </option>
 							@endif
-							@foreach(['TRAINEE', 'CONTRACTUAL', 'REGULAR', 'RESIGNED', 'TERMNINATED', 'END OF TRAINEE CONTRACT', 'END OF CONTRACT (ENDO)'] as $key => $status)
+							@foreach(['TRAINEE', 'PROBATIONARY', 'REGULAR', 'RESIGNED', 'TERMNINATED', 'END OF TRAINEE CONTRACT', 'END OF CONTRACT (ENDO)'] as $key => $status)
 						  	<option value="{{ ($key+1) }}" <?=(($key+1)==$_empstatus)?'selected':'';?> data-tokens="{{ $status }}">
 						  		{{ $status }}
 						  	</option>

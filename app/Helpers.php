@@ -379,7 +379,7 @@ if (!function_exists('emp_status')) {
     	case '1':
     		return 'TRAINEE';
     	case '2':
-    		return 'CONTRACTUAL';
+    		return 'PROBATIONARY';
     	case '3':
     		return 'REGULAR';
     	case '4':

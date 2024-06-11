@@ -28,7 +28,7 @@ class DateRange {
     return $this->mode;
   }
 
-   public function setMode($mode=null) {
+  public function setMode($mode=null) {
     return $this->mode = $mode;
   }
 
@@ -180,7 +180,6 @@ class DateRange {
     } while ($fr->addYear() <= $this->to);
     return $arr;
   }
-
 
   public function yearInterval2(){
     $x = 0;

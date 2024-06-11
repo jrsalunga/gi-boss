@@ -53,7 +53,7 @@ class AsrController extends Controller {
 				if($this->files->exists($path.DS.strtoupper($id)))
 					$dirs[$path] = $folder;
 			}
-
+      arsort($dirs);
 			$data = [
 				'folder' 			=> "/ASR/".strtoupper($id),
 				'folderName' 	=> strtoupper($id),
@@ -65,10 +65,10 @@ class AsrController extends Controller {
 				'files'				=> []
 			];
 
-
 		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && is_null($p))  {
 
 			$root = $this->files->folderInfo('ASR/'.$action.'/'.strtoupper($id));
+      arsort($root['subfolders']);
 			$data = [
 				'folder' 			=> "/ASR/".strtoupper($id).'/'.$action,
 				'folderName' 	=> $action,
@@ -84,6 +84,7 @@ class AsrController extends Controller {
 		} elseif (in_array(strtoupper($id), $paths) && (!is_null($action) && is_year($action)) && (!is_null($p) && is_month($p)))  {
 
 			$root = $this->files->folderInfo('ASR/'.$action.'/'.strtoupper($id).'/'.$p);
+      arsort($root['files']);
 			$data = [
 				'folder' 			=> "/ASR/".strtoupper($id).'/'.$action.'/'.$p,
 				'folderName' 	=> $p,
@@ -96,8 +97,6 @@ class AsrController extends Controller {
 				'subfolders'	=> $root['subfolders'],
 				'files'				=> $root['files']
 			];
-			
-			
 
 		} else 
 			return abort('404');

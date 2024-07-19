@@ -1,6 +1,10 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', 'Branch Employee')
+<?php
+  $title = $branch ? $branch->code.' | ':''; 
+?>
+
+@section('title', $title.'Branch Employee')
 
 @section('body-class', 'branch-list mdc-typography')
 

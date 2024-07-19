@@ -1,6 +1,6 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', '- Employee Add')
+@section('title', 'Employee Add')
 
 @section('body-class', 'employee-add')
 

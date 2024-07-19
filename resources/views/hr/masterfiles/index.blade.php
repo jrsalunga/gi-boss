@@ -1,6 +1,6 @@
 @extends('hr.dash', ['search_url'=> $active])
 
-@section('title', '- '.hr_nav_caption($active).' List')
+@section('title', hr_nav_caption($active).' List')
 
 @section('body-class', $active.'-list mdc-typography')
 

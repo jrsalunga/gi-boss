@@ -63,7 +63,7 @@
                   </td>
                   <td>
                     <div>
-                      <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}">{{ $employee->code }}</a> 
+                      <a href="/hr/masterfiles/employee/{{ strtolower($employee->code) }}/edit/employment">{{ $employee->code }}</a> 
                     </div>
                     <div>
                       <a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} <small class="text-muted">{{ $employee->middlename }}</small></a> 

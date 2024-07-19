@@ -105,6 +105,7 @@
     $('.searchbar').val(val);
     @endif
 
+    $('#rfid','form#employee-edit').focus();
   });
   </script>
 

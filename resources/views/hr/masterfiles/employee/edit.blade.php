@@ -1,6 +1,6 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', '- Employee Edit: General Info')
+@section('title', $employee->code .' - '.$employee->lastname.', '.$employee->firstname.' '.$employee->middlename .'- Employee Edit: General Info')
 
 @section('body-class', 'employee-edit-general')
 

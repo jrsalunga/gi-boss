@@ -421,6 +421,3 @@ $('.form-control', '.form-group').on('change', function(e){
   if ($p.hasClass('has-feedback'))
     $p.removeClass('has-feedback')
 });
-
-
-

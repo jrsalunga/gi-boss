@@ -1,6 +1,6 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', '- Employee Update Family Info')
+@section('title', $employee->code .' - '.$employee->lastname.', '.$employee->firstname.' '.$employee->middlename .' - Employee Update Family Info')
 
 @section('body-class', 'employee-update-family')
 

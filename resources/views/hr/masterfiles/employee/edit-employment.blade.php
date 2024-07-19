@@ -1,6 +1,6 @@
 @extends('hr.dash', ['search_url'=> 'employee'])
 
-@section('title', '- Employee Update Employment')
+@section('title', $employee->code .' - '.$employee->lastname.', '.$employee->firstname.' '.$employee->middlename .' Employee Update Employment')
 
 @section('body-class', 'employee-update-employment')
 
@@ -27,7 +27,7 @@
 	<a href="/hr/masterfiles/employee/{{ $employee->lid() }}">{{ $employee->lastname }}, {{ $employee->firstname }} {{ $employee->middlename }}</a>
 	<small data-id="{{ $employee->id }}">{{ $employee->code }}</small>
 </h3>
-<form action="/hr/masterfiles/employee" method="POST">
+<form action="/hr/masterfiles/employee" method="POST" name="employee-edit">
 	{{ csrf_field() }}
 	<div class="panel panel-primary">
 	<div class="panel-heading">Employer</div>
@@ -179,7 +179,7 @@
         <div class="col-md-3">
           <div class="form-group @include('_partials.input-error', ['field'=>'rfid'])">
             <label for="rfid" class="control-label">RFID</label>
-            <input type="text" class="form-control" id="rfid" name="rfid" data-mask-reverse="true" maxlength="15" value="{{ !is_null(old('rfid'))?old('rfid')>0?old('rfid'):'':$employee->rfid }}">
+            <input type="text" class="form-control" id="rfid" name="rfid" data-mask-reverse="true" focus maxlength="15" value="{{ !is_null(old('rfid'))?old('rfid')>0?old('rfid'):'':$employee->rfid }}">
           </div>
         </div><!-- end: .col-md-3 -->
       </div>

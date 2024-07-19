@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', '- Employment Activity')
+@section('title', $employee->code .' - '.$employee->lastname.', '.$employee->firstname.' '.$employee->middlename .'- Employment Activity')
 
 @section('body-class', 'employment-activity')
 

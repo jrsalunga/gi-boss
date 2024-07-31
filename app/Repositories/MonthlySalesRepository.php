@@ -71,7 +71,6 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
 
     $date = c($date)->endOfMonth();
 
-
     return DB::table('monthlysales AS a')
               ->select(DB::raw('rm.alias, b.code, a.sales, a.ave_sales, a.totdeliver, a.pct_deliver, a.ave_deliver, (a.tot_dine+a.tot_togo) as dine_togo_sales, a.sale_csh, a.depo_cash, a.ending_csh, c.csh_disb, c.csh_out, a.tot_dine, a.tot_togo, a.fc, b.code, a.ending_csh'))
               ->leftJoin('branch AS b', 'b.id', '=', 'a.branch_id')

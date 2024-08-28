@@ -145,12 +145,12 @@
           @endif
           <th class="text-right">
             <span style="cursor: help;" title="Combined amount of cash deposit uploaded the new way" data-toogle="tooltip">
-              Cash
+              Depo Cash
             </span>
           </th>
           <th class="text-right">
             <span style="cursor: help;" title="Combined amount of cheque deposit uploaded the new way" data-toogle="tooltip">
-              Cheque
+              Depo Cheque
             </span>
           </th>
           <th class="text-right">

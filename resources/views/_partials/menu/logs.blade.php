@@ -15,6 +15,8 @@
     <li><a href="/depslp"><span class="fa fa-bank"></span> Deposit Slip</a></li>
     <li><a href="/setslp"><span class="fa fa-credit-card"></span> Card Settlement Slip</a></li>
     <li><a href="/asr"><span class="fa fa-calculator"></span> POS Audit Summary</a></li>
+    <li><a href="/zread"><span class="fa fa-clipboard"></span> POS Z-Reading</a></li>
+    <li><a href="/cshaudt"><span class="fa fa-money"></span> POS Daily Cash Flow</a></li>
   </ul>
 </div>
 

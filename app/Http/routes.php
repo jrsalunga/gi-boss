@@ -147,7 +147,10 @@ Route::get('download/SETSLP/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'
 
 Route::get('asr/{id?}/{action?}/{p?}', ['uses'=>'AsrController@getAction']);
 Route::get('download/ASR/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'AsrController@getDownload']);
-
+Route::get('zread/{id?}/{action?}/{p?}', ['uses'=>'ZReadController@getAction']);
+Route::get('download/ZREAD/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'ZReadController@getDownload']);
+Route::get('cshaudt/{id?}/{action?}/{p?}', ['uses'=>'CshAudtController@getAction']);
+Route::get('download/CSHAUDT/{param1?}/{param2?}/{param3?}/{param4?}', ['uses'=>'CshAudtController@getDownload']);
 
 
 

@@ -259,14 +259,17 @@ public function getCustomerYearly(Request $request) {
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
-      if ($v=='TOTAL')
+      if ($v=='TOTAL') {
         $datas['TOTAL'][$m]['custcount'] = 0;
-      else
+        $datas['TOTAL'][$m]['pax_dine'] = 0;
+      } else
         $datas[$v][$m] = NULL;
 
   foreach($mss as $key3 => $value3) {
     $datas[$value3->code][$value3->date->format('Y')] = $value3->toArray();
     $datas['TOTAL'][$value3->date->format('Y')]['custcount'] += $value3->custcount;
+    $datas['TOTAL'][$value3->date->format('Y')]['pax_dine'] += $value3->pax_dine;
+    
   }
 
   if($request->has('raw'))

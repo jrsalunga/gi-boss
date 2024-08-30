@@ -95,32 +95,7 @@
 
     @include('_partials.alerts')
     
-    
-
-      
     @if(count($datas)>0)
-
-   
-   <!--  <div class="row">
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Sales</p>
-        <h3 id="h-tot-sales" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Food Cost</p>
-        <h3 id="h-tot-mancost" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Purchased</p>
-        <h3 id="h-tot-purch" style="margin:0">0</h3>
-      </div>
-      <div class="col-xs-6 col-md-3 text-right" style="margin-bottom: 10px;">
-        <p style="margin-bottom:0">Total Delivery</p>
-        <h3 id="h-tot-tips" style="margin:0">0</h3>
-      </div>
-    </div>
-    <div class="row">
-    -->
 
       <div class="col-md-12">
         <div id="graph-container" style="overflow:hidden;">
@@ -304,7 +279,7 @@
         <tr>
             <th>Date</th>
             <th>Total Customer</th>
-            <th>Total DineIn</th>
+            <th>Total Dine In</th>
         </tr>
       </thead>
       <tbody>

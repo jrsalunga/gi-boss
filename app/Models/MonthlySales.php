@@ -50,6 +50,8 @@ class MonthlySales extends BaseModel {
     'depslpk' => 'float',
     'depslpc' => 'float',
     'setslp' => 'float',
+    'trans_cnt' => 'integer',
+    'pax_dine' => 'integer',
   ];
 
 

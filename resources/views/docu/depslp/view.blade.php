@@ -85,7 +85,7 @@
             <h5>
               
               @if($depslp->verified and $depslp->matched)
-                <span class="glyphicon glyphicon-ok-sign text-success"></span> Matched and verified by <strong>{{ $depslp->user->name }}</strong>
+                <span class="glyphicon glyphicon-ok-sign text-success"></span> Matched and verified by <strong>{{ $depslp->user->name }}</strong> <em><small>@ {{ $depslp->updated_at->format('D M j, Y h:i A') }}</small></em>
               @elseif($depslp->verified and !$depslp->matched)
                 <span class="gly gly-ok"></span> Verified by <strong>{{ $depslp->user->name }}</strong> <em><small>@ {{ $depslp->updated_at->format('D M j, Y h:i A') }}</small></em>
               @else

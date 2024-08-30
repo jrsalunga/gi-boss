@@ -187,7 +187,7 @@ public function getCustomerMonthly(Request $request) {
 
   $this->dr->setMode('monthly');
 
-  $mss = $this->ms->getCustomerMonthly($this->dr);
+  $mss = $this->ms->skipCache()->getCustomerMonthly($this->dr);
 
   $datas = [];
   $months = [];
@@ -206,14 +206,16 @@ public function getCustomerMonthly(Request $request) {
 
   foreach($branches as $k => $v) 
     foreach($months as $i => $m) 
-      if ($v=='TOTAL')
+      if ($v=='TOTAL') {
         $datas['TOTAL'][$m]['custcount'] = 0;
-      else
+        $datas['TOTAL'][$m]['dine'] = 0;
+      } else
         $datas[$v][$m] = NULL;
 
   foreach($mss as $key3 => $value3) {
     $datas[$value3->code][$value3->date->copy()->lastOfMonth()->format('Ymd')] = $value3->toArray();
     $datas['TOTAL'][$value3->date->copy()->lastOfMonth()->format('Ymd')]['custcount'] += $value3->custcount;
+    $datas['TOTAL'][$value3->date->copy()->lastOfMonth()->format('Ymd')]['dine'] += $value3->pax_dine;
   }
 
   if($request->has('raw'))

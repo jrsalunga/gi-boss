@@ -91,7 +91,7 @@ class MonthlySalesRepository extends BaseRepository implements CacheableInterfac
   public function getCustomerMonthly(DateRange $dr) {
     return $this->scopeQuery(function($query) use ($dr) {
       return $query
-                  ->select(DB::raw('branch.code, date, sales, custcount, trans_cnt, branch_id'))
+                  ->select(DB::raw('branch.code, date, sales, custcount, trans_cnt, pax_dine, trx_dine, pax_onlrid, trx_onlrid, pax_togo, trx_dine, branch_id'))
                   ->leftJoin('branch', 'branch.id', '=', 'monthlysales.branch_id')
                   ->whereBetween('date', [$dr->fr->format('Y-m-d'), $dr->to->format('Y-m-d')])
                   ->where('branch_id','<>','ALL')

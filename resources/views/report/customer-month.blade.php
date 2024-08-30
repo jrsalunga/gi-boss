@@ -202,10 +202,12 @@
 
         
         <table id="datatable" class="tb-data" style="display:none;">
+        {{-- <table id="datatable" class="tb-data"> --}}
           <thead>
             <tr>
                 <th>Date</th>
                 <th>Total Customer</th>
+                <th>Total DineIn</th>
             </tr>
           </thead>
           <tbody>
@@ -213,6 +215,7 @@
             <tr>
               <td>{{ c($k)->format('Y-m-d') }}</td>
               <td>{{ $v['custcount'] }}</td>
+              <td>{{ $v['dine'] }}</td>
             </tr>
             @endforeach
           </tbody>

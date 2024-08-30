@@ -272,6 +272,7 @@
         <tr>
             <th>Date</th>
             <th>Total Customer</th>
+            <th>Total Dine In</th>
         </tr>
       </thead>
       <tbody>
@@ -279,6 +280,7 @@
         <tr>
           <td>{{ c($k.'-12-31')->format('Y-m-d') }}</td>
           <td>{{ $v['custcount'] }}</td>
+          <td>{{ $v['pax_dine'] }}</td>
         </tr>
         @endforeach
       </tbody>

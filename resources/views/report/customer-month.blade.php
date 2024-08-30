@@ -130,99 +130,193 @@
     </div> 
     <div class="row">
       <div class="col-md-12" style="margin-top:20px;">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped table-sort-data">
-            <thead>
-              <tr>
-                <th>Branch</th>
-                <?php
-                  $last = array_pop($datas);
-                  $gtot = 0;
-                  $stores = [];
-                ?>
-                @foreach(array_values($datas)[0] as $key => $value)
-                  <th class="text-right">{{ c($key)->format('M Y') }}</th>
-                @endforeach
-                <th class="text-right">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                @foreach($datas as $key => $value)
-                <tr>
-                  <td>{{ $key }}</td>
-                  <?php $tot = 0; ?>
-                  @foreach($value as $k => $v)
-                    @if(array_key_exists($k, $stores))
+        <ul class="nav nav-pills" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#total" aria-controls="total" role="tab" data-toggle="tab">
+              <span class="fa fa-group"></span>
+              <span class="hidden-xs">
+                Total
+              </span>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#dine" aria-controls="dine" role="tab" data-toggle="tab">
+              <span class="gly gly-cutlery"></span>
+              <span class="hidden-xs">
+                Dine In
+              </span> 
+            </a>
+          </li>
+        </ul>
+      </div>
 
-                    @else 
-                      <?php $stores[$k]=0; ?>
-                    @endif
-
-                    @if(is_null($v))
-                    <td> </td>
-                    @else 
-                    <td class="text-right" data-sort="{{number_format($v['custcount'],0,'','')}}">{{ nf($v['custcount'],false) }}</td>
-                    <?php 
-                      $tot += $v['custcount']; 
-                      $stores[$k]++;
+      <div class="col-md-12" style="margin-top:10px;">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="total">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped table-sort-data">
+                <thead>
+                  <tr>
+                    <th>Branch</th>
+                    <?php
+                      $last = array_pop($datas);
+                      $gtot = 0;
+                      $stores = [];
                     ?>
-                    @endif
-                  @endforeach
-                  <td class="text-right" data-sort="{{number_format($tot,0,'','')}}">{{ nf($tot,false) }}</td>
-                </tr>
-                @endforeach
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td>Total <div style="font-size:smaller;"> <span class="gly gly-shop"></span> {{ count($datas) }}</div></td>
-                @foreach($last as $key => $value)
-                <td class="text-right">
-                  <div>
-                    <b>{{ nf($value['custcount'],false) }}</b>
-                  </div>
-                  <div style="font-size:smaller;">
-                    @if($stores[$key]>0)
-                      <span class="gly gly-shop"></span> {{ $stores[$key] }}
-                    @else
+                    @foreach(array_values($datas)[0] as $key => $value)
+                      <th class="text-right">{{ c($key)->format('M Y') }}</th>
+                    @endforeach
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    @foreach($datas as $key => $value)
+                    <tr>
+                      <td>{{ $key }}</td>
+                      <?php $tot = 0; ?>
+                      @foreach($value as $k => $v)
+                        @if(array_key_exists($k, $stores))
 
-                    @endif
-                  </div>
-                  @if(count($datas)>20)
-                    <div style="font-size:smaller;">{{ c($key)->format('M Y') }}</div>
-                  @endif
-                </td>
-                <?php $gtot+=$value['custcount']; ?>
-                @endforeach
-                <td class="text-right"><b>{{ nf($gtot,false) }}</b></td>
-              </tr>
-            </tfoot>
-          </table>
+                        @else 
+                          <?php $stores[$k]=0; ?>
+                        @endif
 
-        
-        <table id="datatable" class="tb-data" style="display:none;">
-        {{-- <table id="datatable" class="tb-data"> --}}
-          <thead>
-            <tr>
-                <th>Date</th>
-                <th>Total Customer</th>
-                <th>Total DineIn</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($last as $k => $v)
-            <tr>
-              <td>{{ c($k)->format('Y-m-d') }}</td>
-              <td>{{ $v['custcount'] }}</td>
-              <td>{{ $v['dine'] }}</td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
-      </div><!--  end: table-responsive -->
+                        @if(is_null($v))
+                        <td> </td>
+                        @else 
+                        <td class="text-right" data-sort="{{number_format($v['custcount'],0,'','')}}">{{ nf($v['custcount'],false) }}</td>
+                        <?php 
+                          $tot += $v['custcount']; 
+                          $stores[$k]++;
+                        ?>
+                        @endif
+                      @endforeach
+                      <td class="text-right" data-sort="{{number_format($tot,0,'','')}}">{{ nf($tot,false) }}</td>
+                    </tr>
+                    @endforeach
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total <div style="font-size:smaller;"> <span class="gly gly-shop"></span> {{ count($datas) }}</div></td>
+                    @foreach($last as $key => $value)
+                    <td class="text-right">
+                      <div>
+                        <b>{{ nf($value['custcount'],false) }}</b>
+                      </div>
+                      <div style="font-size:smaller;">
+                        @if($stores[$key]>0)
+                          <span class="gly gly-shop"></span> {{ $stores[$key] }}
+                        @else
+
+                        @endif
+                      </div>
+                      @if(count($datas)>20)
+                        <div style="font-size:smaller;">{{ c($key)->format('M Y') }}</div>
+                      @endif
+                    </td>
+                    <?php $gtot+=$value['custcount']; ?>
+                    @endforeach
+                    <td class="text-right"><b>{{ nf($gtot,false) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div><!--  end: table-responsive -->
+          </div>
+          <div role="tabpanel" class="tab-pane" id="dine">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped table-sort-data">
+                <thead>
+                  <tr>
+                    <th>Branch</th>
+                    <?php
+                      $gtot = 0;
+                      $stores = [];
+                    ?>
+                    @foreach(array_values($datas)[0] as $key => $value)
+                      <th class="text-right">{{ c($key)->format('M Y') }}</th>
+                    @endforeach
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    @foreach($datas as $key => $value)
+                    <tr>
+                      <td>{{ $key }}</td>
+                      <?php $tot = 0; ?>
+                      @foreach($value as $k => $v)
+                        @if(array_key_exists($k, $stores))
+
+                        @else 
+                          <?php $stores[$k]=0; ?>
+                        @endif
+
+                        @if(is_null($v))
+                        <td> </td>
+                        @else 
+                        <td class="text-right" data-sort="{{number_format($v['pax_dine'],0,'','')}}">{{ nf($v['pax_dine'],false) }}</td>
+                        <?php 
+                          $tot += $v['pax_dine']; 
+                          $stores[$k]++;
+                        ?>
+                        @endif
+                      @endforeach
+                      <td class="text-right" data-sort="{{number_format($tot,0,'','')}}">{{ nf($tot,false) }}</td>
+                    </tr>
+                    @endforeach
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total <div style="font-size:smaller;"> <span class="gly gly-shop"></span> {{ count($datas) }}</div></td>
+                    @foreach($last as $key => $value)
+                    <td class="text-right">
+                      <div>
+                        <b>{{ nf($value['dine'],false) }}</b>
+                      </div>
+                      <div style="font-size:smaller;">
+                        @if($stores[$key]>0)
+                          <span class="gly gly-shop"></span> {{ $stores[$key] }}
+                        @else
+
+                        @endif
+                      </div>
+                      @if(count($datas)>20)
+                        <div style="font-size:smaller;">{{ c($key)->format('M Y') }}</div>
+                      @endif
+                    </td>
+                    <?php $gtot+=$value['dine']; ?>
+                    @endforeach
+                    <td class="text-right"><b>{{ nf($gtot,false) }}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <table id="datatable" class="tb-data" style="display:none;">
+    {{-- <table id="datatable" class="tb-data"> --}}
+      <thead>
+        <tr>
+            <th>Date</th>
+            <th>Total Customer</th>
+            <th>Total DineIn</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($last as $k => $v)
+        <tr>
+          <td>{{ c($k)->format('Y-m-d') }}</td>
+          <td>{{ $v['custcount'] }}</td>
+          <td>{{ $v['dine'] }}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
     <p>&nbsp;</p>
     @else
 

@@ -82,6 +82,16 @@
             <h6><span class="gly gly-pencil"></span> {{ $depslp->remarks }}</h6>
             
             <h6><span class="glyphicon glyphicon-cloud-upload"></span> {{ $depslp->created_at->format('D M j h:i:s A') }} <small>{{ diffForHumans($depslp->created_at) }}</small></h6>
+            <h6>
+              
+              @if($depslp->verified and $depslp->matched)
+                <span class="glyphicon glyphicon-ok-sign text-success"></span> Matched and verified by {{ $depslp->user->name }}
+              @elseif($depslp->verified and !$depslp->matched)
+                <span class="gly gly-ok">Verified by {{ $depslp->user->name }}</span>
+              @else
+
+              @endif
+            </h6>
           </div>
           <div class="panel-footer">
             @if($depslp->verified || $depslp->matched)

@@ -29,7 +29,7 @@
 		@if (!is_null($branch->date_start))
 			{{ $branch->date_start->format('j M Y') }}
 
-			@if($branch->status=='3' && !is_null($branch->date_end))
+			@if(($branch->status=='3' || $branch->status=='4') && !is_null($branch->date_end))
 				- {{ $branch->date_end->format('j M Y') }}
 				@endif
 			@endif

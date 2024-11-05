@@ -196,7 +196,7 @@
             </div><!--  end: table-responsive -->
           </div>
           <div role="tabpanel" class="tab-pane" id="dine">
-            <table class="table table-hover table-striped table-sort-data">
+            <table class="table table-hover table-striped table-sort-data" style="margin-top:0;">
               <thead>
                 <tr>
                   <th>Branch</th>

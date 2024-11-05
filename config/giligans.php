@@ -102,6 +102,7 @@ return [
 		'4EDF31E5B9964CADA70BDD9CEC45BEE0' => ['ordinal' => 2, 'code' => 'UM',  'postion' => 'Unit Manager'],
 		'007D930D283F4362B893F9A29F6DFE2B' => ['ordinal' => 3, 'code' => 'OUH', 'postion' => 'Operations Unit Head'],
 		'94D95DF4CF9A458AB425800861E67C14' => ['ordinal' => 4, 'code' => 'TM',  'postion' => 'Training Manager'],
+    '11E8E73314DDA9E4EAAF53C657F2806C' => ['ordinal' => 4, 'code' => 'OM',  'postion' => 'Operations Manager'],
 		'0DB4E7CCCC824F6B8AD5B48CB4C127B6' => ['ordinal' => 5, 'code' => 'HRM', 'postion' => 'HR Manager'],
 		'772D31E752D04BFE89377B96B7CF9CEE' => ['ordinal' => 6, 'code' => 'HR',  'postion' => 'HR Assistant'],
 		'48851257E73E4A85AAAAD3731DC2AC3E' => ['ordinal' => 7, 'code' => 'HRO', 'postion' => 'HR Officer'],

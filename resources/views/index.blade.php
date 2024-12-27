@@ -257,7 +257,9 @@
           </div>
 
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-             
+            @if(isset($delinquents))
+
+            @else
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
@@ -373,7 +375,7 @@
                 </div>
               </div>
             </div> <!-- end: panel for did not upload -->   
-            
+            @endif            
           </div> <!-- end: panel-group -->
         </div>
       </div> 

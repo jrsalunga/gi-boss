@@ -114,6 +114,7 @@
               </tr>
             </thead>
             <tbody>
+            @if(isset($dailysales))
               @foreach($dailysales as $ds)
                 <tr>
                   <td>{{ $ds->branch->code }}</td>
@@ -161,6 +162,9 @@
                   </td>
                 </tr>
               @endforeach
+            @else
+
+            @endif
             </tbody>
           </table>
 
@@ -259,7 +263,7 @@
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             @if(isset($delinquents))
 
-            @else
+           
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
@@ -374,7 +378,9 @@
                   </table>
                 </div>
               </div>
-            </div> <!-- end: panel for did not upload -->   
+            </div> <!-- end: panel for did not upload -->  
+            @else 
+            
             @endif            
           </div> <!-- end: panel-group -->
         </div>

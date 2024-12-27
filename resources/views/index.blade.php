@@ -169,7 +169,6 @@
           </table>
 
           &nbsp;&nbsp;<a href="/report/trends/daily"><small>view all</small></a>
-
           
         </div>
       </div>

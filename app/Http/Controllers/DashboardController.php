@@ -126,8 +126,7 @@ class DashboardController extends Controller
 		$dailysales = [];
     // $dailysales = $this->repo->todayTopSales($this->dr->now);
 		
-    $delinquents = [];
-		// $delinquents = $this->delinquent($request);
+    $delinquents = $this->delinquent($request);
 		//return $delinquents;
 		$view = view('index')
 			->with('dailysales', $dailysales)

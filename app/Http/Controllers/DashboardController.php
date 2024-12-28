@@ -123,8 +123,8 @@ class DashboardController extends Controller
 	   	 return $query->orderBy('uploaddate','desc')->take(10);
 			})->all();
 		*/
-		$dailysales = [];
-    // $dailysales = $this->repo->todayTopSales($this->dr->now);
+		// $dailysales = [];
+    $dailysales = $this->repo->todayTopSales($this->dr->now);
 		
     $delinquents = $this->delinquent($request);
 		//return $delinquents;

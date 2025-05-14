@@ -74,7 +74,7 @@
 		     					@if($branch->status=='1')
 										<span class="label label-warning pull-right">Under Construction</span>
 									@endif
-                  @if($branch->status=='2')
+                  @if($branch->status=='4')
                     <span class="label label-default pull-right">Temp Closed</span>
                   @endif
 									@if($branch->status=='3')

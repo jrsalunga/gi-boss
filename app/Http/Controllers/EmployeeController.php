@@ -31,11 +31,11 @@ class EmployeeController extends Controller
 									->with('position')
 									->orderBy('lastname')
 									->orderBy('firstname')
-									->findWhere(['deptid'=>'201E68D4674111E596ECDA40B3C0AA12'], ['code', 'lastname', 'firstname', 'positionid','id']);
-									//->findWhereIn('deptid',
-									//		['201E68D4674111E596ECDA40B3C0AA12', 'D2E8E339A47B11E592E000FF59FBB323'], 
-									//		['code', 'lastname', 'firstname', 'positionid','id']
-									//);
+									// ->findWhere(['deptid'=>'201E68D4674111E596ECDA40B3C0AA12'], ['code', 'lastname', 'firstname', 'positionid','id']);
+									->findWhereIn('deptid',
+											['201E68D4674111E596ECDA40B3C0AA12', '11F05E2A1C1B0D85A7E030AADB939400'], 
+											['code', 'lastname', 'firstname', 'positionid','id']
+									);
 	}
 
 	private function getTimelog($date, $empids) {

@@ -197,11 +197,13 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $c = new StdClass;
 
       
+      if (!isset($ds_yesteday))
+        continue;
 
       $s->branch = $branch;
-      $s->today = isset($ds_today) ? isset($ds_today) : 0;
-      $s->yesterday = isset($ds_yesteday) ? isset($ds_yesteday) : 0;
-      $s->otherday = isset($ds_otherday) ? isset($ds_otherday) : 0;
+      $s->today = $ds_today;
+      $s->yesterday = $ds_yesteday;
+      $s->otherday = $ds_otherday;
 
         $c->sales = ($ds_today->sales - $ds_yesteday->sales);
         $s->today->sign = $this->getSign($ds_today->sales - $ds_yesteday->sales);

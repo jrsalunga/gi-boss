@@ -197,7 +197,7 @@ class DailySalesRepository extends BaseRepository implements CacheableInterface 
       $c = new StdClass;
 
       
-      if (!isset($ds_yesteday))
+      if (is_null($ds_yesteday))
         continue;
 
       $s->branch = $branch;

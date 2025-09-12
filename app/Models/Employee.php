@@ -134,7 +134,7 @@ class Employee extends BaseModel {
 
   public function getPhotoUrl(){
     return $this->photo
-      ? 'http://cashier.giligansrestaurant.com/images/employees/'.$this->code.'.jpg'
+      ? url('/images/employees/').'/'.$this->code.'.jpg'
       : 'http://cashier.giligansrestaurant.com/images/login-avatar.png';
   }
 
